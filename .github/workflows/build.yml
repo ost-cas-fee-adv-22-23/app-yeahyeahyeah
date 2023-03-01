@@ -55,4 +55,4 @@ jobs:
             docker update --restart=no app-yeahyeahyeah || true
             docker stop $(docker ps -a -q) || true
             docker rm $(docker ps -a -q) || true
-            docker run --env NEXT_PUBLIC_QWACKER_API_URL=${{ secrets.NEXT_PUBLIC_QWACKER_API_URL }} --env NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} --env NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} --env ZITADEL_ISSUER=${{ secrets.ZITADEL_ISSUER }} --env ZITADEL_CLIENT_ID=${{ secrets.ZITADEL_CLIENT_ID }} -d --restart unless-stopped -p 3000:3000 --name app-yeahyeahyeah $IMAGE_ID:$VERSION
+            docker run --env NEXT_PUBLIC_QWACKER_API_URL=${{ secrets.NEXT_PUBLIC_QWACKER_API_URL }} --env ZITADEL_ISSUER=${{ secrets.ZITADEL_ISSUER }} --env ZITADEL_CLIENT_ID=${{ secrets.ZITADEL_CLIENT_ID }} -d --restart unless-stopped -p 3000:3000 --name app-yeahyeahyeah $IMAGE_ID:$VERSION
