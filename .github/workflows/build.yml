@@ -51,12 +51,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build image
-        run: docker build . --file Dockerfile --tag nextjs-blog --label "runnumber=${GITHUB_RUN_ID}"
+        run: docker build . --file Dockerfile --tag app-yeahyeahyeah --label "runnumber=${GITHUB_RUN_ID}"
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Push image
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/nextjs-blog
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/app-yeahyeahyeah
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           # Strip git ref prefix from version

@@ -1,0 +1,11 @@
+node_modules
+.husky/
+.next/
+.vscode/
+.dependency-cruiser.json
+.env
+.eslintrc.json
+.gitignore
+.lintstagedrc.json
+.nvmrm
+.prettierrc
