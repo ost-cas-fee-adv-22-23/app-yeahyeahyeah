@@ -32,7 +32,7 @@ jobs:
           echo VERSION=$VERSION
           docker tag app-yeahyeahyeah $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-      - name: Deploy Container to Digitalocean
+      - name: Deploy container to digital ocean
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
