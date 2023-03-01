@@ -1,9 +1,10 @@
 name: Code quality checks, dependency graph and build
 
 on:
+  push:
+    branches: ['main']
   pull_request:
-    branches:
-      - main
+    branches: ['main']
   workflow_dispatch:
 
 jobs:
