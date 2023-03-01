@@ -3,9 +3,11 @@ on: [pull_request, push]
 
 jobs:
   commitlint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v4
+    - name: Testing Commit Messages
+      run: echo "{name}={value}" >> $GITHUB_STATE
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+        - uses: wagoid/commitlint-github-action@v4
