@@ -1,12 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  presets: [require('@smartive-education/design-system-component-library-yeahyeahyeah')],
   content: [
-    "./app/**/*.{ts,tsx}",
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
+    './src/**/*.{ts,tsx}',
+    './node_modules/@smartive-education/design-system-component-library-yeahyeahyeah/**/*.{js,ts,jsx,tsx}',
   ],
-  theme: {
-    extend: {},
-  },
   plugins: [],
 };
