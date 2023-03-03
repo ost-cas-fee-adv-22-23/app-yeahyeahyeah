@@ -7,8 +7,5 @@ jobs:
 
     steps:
       - name: Testing Commits
-        run: echo "{name}={value}" >> $GITHUB_OUTPUT
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v4
+        uses: wagoid/commitlint-github-action@v4
