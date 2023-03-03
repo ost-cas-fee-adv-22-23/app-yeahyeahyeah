@@ -37,4 +37,4 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd /usr/src/app
             docker-compose stop app-yeahyeahyeah
-            docker-compose up -d --no-deps --build app-yeahyeahyeah
+            docker-compose up -d --no-deps --build --force-recreate app-yeahyeahyeah

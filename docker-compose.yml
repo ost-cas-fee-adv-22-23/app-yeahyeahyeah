@@ -16,11 +16,13 @@ services:
     restart: unless-stopped
     ports:
       - '80:80'
+      - '443:443'
     volumes:
       - web-root:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
+      - dhparam:/etc/ssl/certs
     depends_on:
       - app-yeahyeahyeah
     networks:
@@ -44,7 +46,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /Users/thomas.schallert@fhnw.ch/Projects/app-yeahyeahyeah/views
+      device: /Users/thomas.schallert@fhnw.ch/Projects/app-yeahyeahyeah/dhparam
+      o: bind
+  dhparam:
+    driver: local
+    driver_opts:
+      type: none
+      device: /usr/src/app/dhparam/
       o: bind
 
 networks:
