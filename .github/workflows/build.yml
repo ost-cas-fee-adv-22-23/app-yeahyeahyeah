@@ -35,14 +35,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            IMAGE_ID=ghcr.io/${{ github.repository_owner }}/app-yeahyeahyeah
-            # Change all uppercase to lowercase
-            IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-            VERSION=latest
-            echo IMAGE_ID=$IMAGE_ID
-            echo VERSION=$VERSION
-            docker pull $IMAGE_ID:$VERSION
-            docker update --restart=no app-yeahyeahyeah || true
-            docker stop $(docker ps -a -q) || true
-            docker rm $(docker ps -a -q) || true
-            docker run --env NEXT_PUBLIC_QWACKER_API_URL=${{ secrets.NEXT_PUBLIC_QWACKER_API_URL }} --env ZITADEL_ISSUER=${{ secrets.ZITADEL_ISSUER }} --env ZITADEL_CLIENT_ID=${{ secrets.ZITADEL_CLIENT_ID }} --env NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} --env NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} -d --restart unless-stopped -p 3000:3000 --name app-yeahyeahyeah $IMAGE_ID:$VERSION
+            docker-compose up -d --no-deps --build app-yeahyeahyeah
