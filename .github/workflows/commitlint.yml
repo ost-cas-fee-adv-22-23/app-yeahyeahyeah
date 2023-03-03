@@ -4,6 +4,7 @@ on: [pull_request, push]
 jobs:
   commitlint:
     runs-on: ubuntu-latest
+
     steps:
       - name: Testing Commmit Messages
         uses: actions/checkout@v3
