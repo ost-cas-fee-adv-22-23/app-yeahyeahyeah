@@ -6,9 +6,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Testing Commits
-        run: echo "{name}={value}" >> $GITHUB_OUTPUT
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v3
       - uses: wagoid/commitlint-github-action@v4
