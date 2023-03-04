@@ -19,24 +19,11 @@ services:
     ports:
       - '80:80'
     volumes:
-      - web-root:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
     depends_on:
       - app-yeahyeahyeah
     networks:
       - app-network
-
-volumes:
-  certbot-etc:
-  certbot-var:
-  web-root:
-    driver: local
-    driver_opts:
-      type: none
-      device: /usr/src/app/views/
-      o: bind
 
 networks:
   app-network:
