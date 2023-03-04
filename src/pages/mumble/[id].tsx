@@ -18,7 +18,7 @@ export default function MumblePage({ mumble }: Props): InferGetServerSidePropsTy
         mediaUrl={'https://picsum.photos/640/360'}
         text={mumble.id}
       />
-      <TextBoxComponent />
+      <TextBoxComponent variant="inline" />
     </Container>
   );
 }

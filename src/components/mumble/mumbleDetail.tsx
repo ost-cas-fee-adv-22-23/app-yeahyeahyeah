@@ -30,19 +30,16 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp
     <ArticleMumble id={id}>
       <ArticleHeader>
         <Avatar
-          variant="medium"
-          src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
-          alt="Username"
+          alt="Image description"
           href={`/profile/${id}`}
-          title={'username'}
-          legacyBehavior
-          passHref
-          linkComponent={Link}
+          title={id}
+          src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+          variant="medium"
         />
         <ArticleHeaderContent>
           <User label="Username" variant="large" />
           <ArticleDatas>
-            <IconLink label="User" type="username" color="violet" onClick={handleShowUser} />
+            <IconLink label="Username" type="username" color="violet" onClick={handleShowUser} />
             <IconLink
               label={createdTimestamp.toString()}
               type="timestamp"

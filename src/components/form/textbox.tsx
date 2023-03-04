@@ -3,7 +3,11 @@ import { FileRejection } from 'react-dropzone';
 import debounce from 'lodash.debounce';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-export const TextBoxComponent: React.FC = () => {
+interface TextBoxProps {
+  variant: string;
+}
+
+export const TextBoxComponent: React.FC<TextBoxProps> = ({ variant }) => {
   const [posts, setPosts] = useState(['']);
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -57,7 +61,7 @@ export const TextBoxComponent: React.FC = () => {
   return (
     <div tw="mb-16">
       <TextBox
-        variant="write"
+        variant={variant}
         user={{
           label: 'Hey, was läuft?',
           avatar: {

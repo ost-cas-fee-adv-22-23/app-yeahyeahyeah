@@ -43,7 +43,7 @@ export default function Page({
       {session ? (
         <>
           <WelcomeText />
-          <TextBoxComponent />
+          <TextBoxComponent variant="write" />
 
           {mumbles.map((mumble) => (
             <MumblePost

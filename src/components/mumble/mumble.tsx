@@ -48,7 +48,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
       <ArticleHeader>
         <Avatar
           alt="Image description"
-          onClick={() => handleShowUser(creator)}
           href={`/profile/${id}`}
           src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
           variant="medium"
