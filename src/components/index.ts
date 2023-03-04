@@ -5,3 +5,4 @@ export * from './form/textbox';
 export * from './navigation/navigation';
 export * from './mumble/mumble';
 export { MumbleDetail } from './mumble/mumbleDetail';
+export { MumbleHeader } from './mumble/mumbleHeader';
