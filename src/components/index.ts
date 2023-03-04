@@ -1,8 +1,8 @@
-export * from './content/footer';
-export * from './content/welcome-text';
-export * from './form/settings';
-export * from './form/textbox';
-export * from './navigation/navigation';
-export * from './mumble/mumble';
-export { MumbleDetail } from './mumble/mumbleDetail';
-export { MumbleHeader } from './mumble/mumbleHeader';
+export * from './content/Footer';
+export * from './content/WelcomeText';
+export * from './form/Settings';
+export * from './form/Textbox';
+export * from './navigation/Navigation';
+export * from './mumble/MumbleDetail';
+export * from './mumble/MumblePost';
+export * from './mumble/MumbleHeader';

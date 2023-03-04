@@ -6,6 +6,7 @@ import {
   Avatar,
   CommentButton,
   LikeButton,
+  ImageContainer,
   User,
   IconLink,
   Paragraph,
@@ -54,6 +55,9 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp
       </ArticleHeader>
 
       <Paragraph text={text} mbSpacing="16" size="large" />
+
+      {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
+
       <ArticleInteraction>
         <CommentButton type="comment" quantity={45} legacyBehavior passHref href={`/mumble/${id}`} linkComponent={Link} />
         <LikeButton favourite={false} quantity={0} onClick={() => console.log('Like clicked')} />
@@ -63,8 +67,8 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp
   );
 };
 
-export const ArticleMumble = tw.article`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48 rounded-lg mb-16`;
-export const ArticleHeader = tw.div`flex flex-row items-center gap-16 relative left-0 sm:-left-[86px] mb-32`;
-export const ArticleHeaderContent = tw.div`flex flex-col`;
-export const ArticleDatas = tw.div`flex flex-row gap-16`;
-export const ArticleInteraction = tw.div`flex flex-row`;
+const ArticleMumble = tw.article`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48 rounded-lg mb-16`;
+const ArticleHeader = tw.div`flex flex-row items-center gap-16 relative left-0 sm:-left-[86px] mb-32`;
+const ArticleHeaderContent = tw.div`flex flex-col`;
+const ArticleDatas = tw.div`flex flex-row gap-16`;
+const ArticleInteraction = tw.div`flex flex-row`;

@@ -1,6 +1,5 @@
 import tw from 'twin.macro';
-import { Footer } from '../components/content/footer';
-import { Navi } from '../components/navigation/navigation';
+import { Footer, Navi } from '@/components';
 
 export type IDefaultLayout = React.DOMAttributes<HTMLDivElement>;
 
