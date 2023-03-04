@@ -36,12 +36,9 @@ export const MumblePost: React.FC<MumbleProps> = ({
   replyCount,
 }) => {
   const router = useRouter();
-  const handleComment = (id: string) => {
-    router.push(`/mumble/${id}`);
-  };
 
-  const handleShowUser = (id: string) => {
-    router.push(`/profile/${id}`);
+  const handleClickTimestamp = () => {
+    console.log('Timestamp clicked');
   };
 
   const convertedTime = dayjs(createdTimestamp).locale('de-ch').format('DD.MM.YYYY HH:MM:ss');
@@ -55,16 +52,16 @@ export const MumblePost: React.FC<MumbleProps> = ({
         <ArticleHeaderContent>
           <User label="Username" variant="large" />
           <ArticleDatas>
-            <IconLink label={creator} type="username" color="violet" onClick={() => handleShowUser(creator)} />
             <IconLink
-              label={convertedTime}
-              type="timestamp"
-              color="slate"
-              href="/"
+              label={creator}
+              type="username"
+              color="violet"
+              href={`/profile/${id}`}
               legacyBehavior
               passHref
               linkComponent={Link}
             />
+            <IconLink label={convertedTime} type="timestamp" color="slate" onClick={handleClickTimestamp} />
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
@@ -72,7 +69,14 @@ export const MumblePost: React.FC<MumbleProps> = ({
       <Paragraph text={text} mbSpacing="16" />
       {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
       <ArticleInteraction>
-        <CommentButton type="comment" quantity={replyCount} onClick={() => handleComment(id)} />
+        <CommentButton
+          type="comment"
+          quantity={replyCount}
+          href={`/mumble/${id}`}
+          legacyBehavior
+          passHref
+          linkComponent={Link}
+        />
         <LikeButton favourite={likedByUser} quantity={likeCount} onClick={() => console.log('Like clicked')} />
       </ArticleInteraction>
     </ArticleMumble>
