@@ -9,6 +9,8 @@ services:
       - app-network
     env_file:
       - .env
+    ports:
+      - '3000:3000'
 
   webserver:
     image: nginx:mainline-alpine
@@ -16,28 +18,15 @@ services:
     restart: unless-stopped
     ports:
       - '80:80'
-      - '443:443'
     volumes:
       - web-root:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-      - dhparam:/etc/ssl/certs
     depends_on:
       - app-yeahyeahyeah
     networks:
       - app-network
-
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    depends_on:
-      - webserver
-    command: certonly --webroot --webroot-path=/var/www/html --email thomas.schallert@gmail.com --agree-tos --no-eff-email --staging -d mumble-yeahyeahyeah.ch  -d www.mumble-yeahyeahyeah.ch
 
 volumes:
   certbot-etc:
@@ -46,13 +35,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /Users/thomas.schallert@fhnw.ch/Projects/app-yeahyeahyeah/dhparam
-      o: bind
-  dhparam:
-    driver: local
-    driver_opts:
-      type: none
-      device: /usr/src/app/dhparam/
+      device: /usr/src/app/views/
       o: bind
 
 networks:
