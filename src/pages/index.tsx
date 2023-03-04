@@ -40,33 +40,27 @@ export default function Page({
 
   return (
     <Container layout="plain">
-      {session ? (
-        <>
-          <WelcomeText />
-          <TextBoxComponent />
+      <WelcomeText />
+      <TextBoxComponent />
 
-          {mumbles.map((mumble) => (
-            <MumblePost
-              key={mumble.id}
-              id={mumble.id}
-              creator={mumble.creator}
-              text={mumble.text}
-              mediaUrl={mumble.mediaUrl}
-              createdTimestamp={mumble.createdTimestamp}
-              likeCount={mumble.likeCount}
-              likedByUser={mumble.likedByUser}
-              replyCount={mumble.replyCount}
-            />
-          ))}
+      {mumbles.map((mumble) => (
+        <MumblePost
+          key={mumble.id}
+          id={mumble.id}
+          creator={mumble.creator}
+          text={mumble.text}
+          mediaUrl={mumble.mediaUrl}
+          createdTimestamp={mumble.createdTimestamp}
+          likeCount={mumble.likeCount}
+          likedByUser={mumble.likedByUser}
+          replyCount={mumble.replyCount}
+        />
+      ))}
 
-          {hasMore ? (
-            <Button onClick={() => loadMore()} disabled={loading} color="violet" label={loading ? '...' : 'Load more'} />
-          ) : (
-            ''
-          )}
-        </>
+      {hasMore ? (
+        <Button onClick={() => loadMore()} disabled={loading} color="violet" label={loading ? '...' : 'Load more'} />
       ) : (
-        <Heading label="Not authorized" size="default" tag="h1" alignment="center" mbSpacing="32" color="pink" />
+        ''
       )}
     </Container>
   );
