@@ -36,9 +36,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
   replyCount,
 }) => {
   const router = useRouter();
-  const handleComment = (id: string) => {
-    router.push(`/mumble/${id}`);
-  };
 
   const handleShowUser = (id: string) => {
     router.push(`/profile/${id}`);
@@ -49,11 +46,15 @@ export const MumblePost: React.FC<MumbleProps> = ({
   return (
     <ArticleMumble id={id}>
       <ArticleHeader>
-        <Link href={`/profile/${creator}`} title={creator} target="_self">
-          <Avatar variant="medium" src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif" alt={creator} />
-        </Link>
+        <Avatar
+          alt="Image description"
+          onClick={() => handleShowUser(creator)}
+          href={`/profile/${id}`}
+          src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+          variant="medium"
+        />
         <ArticleHeaderContent>
-          <User label="Username" variant="large" />
+          <User label={'username'} variant="large" />
           <ArticleDatas>
             <IconLink label={creator} type="username" color="violet" onClick={() => handleShowUser(creator)} />
             <IconLink
@@ -72,7 +73,14 @@ export const MumblePost: React.FC<MumbleProps> = ({
       <Paragraph text={text} mbSpacing="16" />
       {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
       <ArticleInteraction>
-        <CommentButton type="comment" quantity={replyCount} onClick={() => handleComment(id)} />
+        <CommentButton
+          type="comment"
+          quantity={replyCount}
+          legacyBehavior
+          passHref
+          href={`/mumble/${id}`}
+          linkComponent={Link}
+        />
         <LikeButton favourite={likedByUser} quantity={likeCount} onClick={() => console.log('Like clicked')} />
       </ArticleInteraction>
     </ArticleMumble>
