@@ -9,6 +9,7 @@ import {
   User,
   IconLink,
   Paragraph,
+  ShareButton,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleSingleProps = {
@@ -22,19 +23,28 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp
   const router = useRouter();
 
   const handleShowUser = () => {
-    router.push(`/profilepage`);
+    router.push(`/profile/${id}`);
   };
 
   return (
     <ArticleMumble id={id}>
       <ArticleHeader>
-        <Avatar variant="medium" src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif" alt="Username" />
+        <Avatar
+          variant="medium"
+          src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+          alt="Username"
+          href={`/profile/${id}`}
+          title={'username'}
+          legacyBehavior
+          passHref
+          linkComponent={Link}
+        />
         <ArticleHeaderContent>
           <User label="Username" variant="large" />
           <ArticleDatas>
             <IconLink label="User" type="username" color="violet" onClick={handleShowUser} />
             <IconLink
-              label={'timestamp'}
+              label={createdTimestamp.toString()}
               type="timestamp"
               color="slate"
               href="/"
@@ -46,10 +56,11 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph text={id} mbSpacing="16" size="large" />
+      <Paragraph text={text} mbSpacing="16" size="large" />
       <ArticleInteraction>
-        <CommentButton quantity={0} />
+        <CommentButton type="comment" quantity={45} legacyBehavior passHref href={`/mumble/${id}`} linkComponent={Link} />
         <LikeButton favourite={false} quantity={0} onClick={() => console.log('Like clicked')} />
+        <ShareButton label="Copy link" />
       </ArticleInteraction>
     </ArticleMumble>
   );
