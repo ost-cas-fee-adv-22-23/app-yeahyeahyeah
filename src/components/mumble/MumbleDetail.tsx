@@ -1,11 +1,11 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import {
   Avatar,
   CommentButton,
   LikeButton,
+  ImageContainer,
   User,
   IconLink,
   Paragraph,
@@ -19,12 +19,6 @@ type MumbleSingleProps = {
 };
 
 export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp, mediaUrl, text }) => {
-  const router = useRouter();
-
-  const handleShowUser = () => {
-    router.push(`/profilepage`);
-  };
-
   return (
     <ArticleMumble id={id}>
       <ArticleHeader>
@@ -32,9 +26,17 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp
         <ArticleHeaderContent>
           <User label="Username" variant="large" />
           <ArticleDatas>
-            <IconLink label="User" type="username" color="violet" onClick={handleShowUser} />
             <IconLink
-              label={'timestamp'}
+              label={'username'}
+              type="username"
+              color="violet"
+              href={`/profile/${id}`}
+              legacyBehavior
+              passHref
+              linkComponent={Link}
+            />
+            <IconLink
+              label={createdTimestamp.toString()}
               type="timestamp"
               color="slate"
               href="/"
@@ -47,9 +49,12 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp
       </ArticleHeader>
 
       <Paragraph text={id} mbSpacing="16" size="large" />
+
+      {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
+
       <ArticleInteraction>
-        <CommentButton quantity={0} />
-        <LikeButton favourite={false} quantity={0} onClick={() => console.log('Like clicked')} />
+        <CommentButton type="comment" quantity={64} href={`/mumble/${id}`} legacyBehavior passHref linkComponent={Link} />
+        <LikeButton favourite={false} quantity={42} onClick={() => console.log('Like clicked')} />
       </ArticleInteraction>
     </ArticleMumble>
   );

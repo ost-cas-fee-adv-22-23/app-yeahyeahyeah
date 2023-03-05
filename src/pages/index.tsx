@@ -41,7 +41,7 @@ export default function Page({
   return (
     <Container layout="plain">
       <WelcomeText />
-      <TextBoxComponent />
+      <TextBoxComponent variant="write" />
 
       {mumbles.map((mumble) => (
         <MumblePost
