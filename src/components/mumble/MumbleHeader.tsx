@@ -1,4 +1,3 @@
-import React from 'react';
 import tw from 'twin.macro';
 import Link from 'next/link';
 import {
@@ -6,7 +5,6 @@ import {
   IconLink,
   ImageContainer,
   Paragraph,
-  Switch,
   User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
@@ -15,12 +13,16 @@ type MumbleHeaderProps = {
 };
 
 export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
+  const handleImageIconClick = () => {
+    console.log('image clicked', { name: 'MumbleHeaderIconClick' });
+  };
+
   return (
     <MumbleHeaderWrapper>
       <ImageWrapper>
         <ImageContainer
           alt="This is a profile picture"
-          onImageIconClick={function noRefCheck() {}}
+          onImageIconClick={handleImageIconClick}
           src="https://picsum.photos/640/360"
         />
       </ImageWrapper>
@@ -29,15 +31,7 @@ export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
       </AvatarWrapper>
       <User label={'User Name'} variant="xlarge" />
       <InteractionWrapper>
-        <IconLink
-          label={'username'}
-          type="username"
-          color="violet"
-          href={'#'}
-          legacyBehavior
-          passHref
-          linkComponent={Link}
-        />
+        <IconLink label={alias} type="username" color="violet" href={'#'} legacyBehavior passHref linkComponent={Link} />
         <IconLink
           label={'timestamp'}
           type="timestamp"
@@ -59,21 +53,6 @@ export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
       </InteractionWrapper>
 
       <Paragraph text="Schreib was über dich!" color="default" mbSpacing="32" />
-
-      <Switch
-        fCallBack={(value) => console.log(value)}
-        options={[
-          {
-            label: 'Deine Mumbles',
-            value: 'mumbles',
-          },
-          {
-            label: 'Deine Likes',
-            value: 'likes',
-          },
-        ]}
-        value="likes"
-      />
     </MumbleHeaderWrapper>
   );
 };
