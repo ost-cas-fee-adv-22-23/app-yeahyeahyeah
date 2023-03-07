@@ -1,0 +1,37 @@
+{
+  "data": [
+    {
+      "id": "01GTPJTZ85Q2KPZE6EQF5EJMJZ",
+      "creator": "201267617518846209",
+      "text": "Fussball!",
+      "mediaUrl": null,
+      "mediaType": null,
+      "likeCount": 0,
+      "likedByUser": false,
+      "type": "post",
+      "replyCount": 0
+    },
+    {
+      "id": "01GSWTK8P8J4P0FBS69ZP9HY05",
+      "creator": "201267617518846209",
+      "text": "Test",
+      "mediaUrl": "https://storage.googleapis.com/qwacker-api-prod-data/6fc4302b-8089-4f92-86cf-75684b1aaf8f",
+      "mediaType": "image/jpeg",
+      "likeCount": 1,
+      "likedByUser": false,
+      "type": "post",
+      "replyCount": 1
+    },
+    {
+      "id": "01GSCYHZ3CD48DD0EDHV8BE2EG",
+      "creator": "201267617518846209",
+      "text": "saletti",
+      "mediaUrl": null,
+      "mediaType": null,
+      "likeCount": 0,
+      "likedByUser": false,
+      "type": "post",
+      "replyCount": 0
+    }
+  ]
+}

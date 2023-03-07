@@ -35,8 +35,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
   likedByUser,
   replyCount,
 }) => {
-  const router = useRouter();
-
   const handleClickTimestamp = () => {
     console.log('Timestamp clicked');
   };
