@@ -2,16 +2,14 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { MumbleHeader } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-type ProfilePageProps = {
-  profile: {
-    alias: string;
-  };
+type MumbleHeaderProps = {
+  alias: string;
 };
 
-export default function ProfilePage({ profile }: ProfilePageProps): InferGetServerSidePropsType<typeof getServerSideProps> {
+export default function ProfilePage({ alias }: MumbleHeaderProps): InferGetServerSidePropsType<typeof getServerSideProps> {
   return (
     <Container layout="plain">
-      <MumbleHeader alias={profile.alias} />
+      <MumbleHeader alias={alias} />
     </Container>
   );
 }
