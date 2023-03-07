@@ -1,83 +1,68 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
 import { Mumble } from 'services/qwacker';
 import { fetchMumbles } from '../../services/fetchMumbles';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { MumblePost, WelcomeText, TextBoxComponent } from '@/components';
 
-type PageProps = {
-  count: number;
-  mumbles: Mumble[];
-  error?: string;
-};
+const getKey = (pageIndex: number, previousPageData: any) => {
+  console.log('pageIndex', pageIndex);
+  console.log('previousPageData', previousPageData);
 
-export default function Page({
-  count: initialCount,
-  mumbles: initialMumbles,
-  error,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data: session } = useSession();
-  const [mumbles, setMumbles] = useState(initialMumbles);
-  const [loading, setLoading] = useState(false);
-  const [count] = useState(initialCount);
-  const [hasMore, setHasMore] = useState(initialMumbles.length < count);
-
-  if (error) {
-    return <div>An error occurred: {error}</div>;
+  if (previousPageData && !previousPageData.mumbles.length) {
+    return null;
   }
 
-  const loadMore = async () => {
-    const { count, mumbles: newMumbles } = await fetchMumbles({
-      limit: 2,
-      offset: mumbles.length,
-    });
+  return { url: '/api/mumbles', limit: 2, offset: pageIndex * 2 };
+};
 
-    setLoading(false);
-    setHasMore(mumbles.length + newMumbles.length < count);
-    setMumbles([...mumbles, ...newMumbles]);
-  };
+export default function Page() {
+  const [hasMore, setHasMore] = useState(true);
+
+  const { data, error, isLoading: loading, size, setSize } = useSWRInfinite(getKey, fetchMumbles);
+
+  if (!data) return 'loading';
+
+  console.log('data', data);
 
   return (
     <Container layout="plain">
       <WelcomeText />
       <TextBoxComponent variant="write" />
 
-      {mumbles.map((mumble) => (
-        <MumblePost
-          key={mumble.id}
-          id={mumble.id}
-          creator={mumble.creator}
-          text={mumble.text}
-          mediaUrl={mumble.mediaUrl}
-          createdTimestamp={mumble.createdTimestamp}
-          likeCount={mumble.likeCount}
-          likedByUser={mumble.likedByUser}
-          replyCount={mumble.replyCount}
-        />
-      ))}
+      {data.map((page) => {
+        return page.mumbles.map((mumble: Mumble) => (
+          <MumblePost
+            key={mumble.id}
+            id={mumble.id}
+            creator={mumble.creator}
+            text={mumble.text}
+            mediaUrl={mumble.mediaUrl}
+            createdTimestamp={mumble.createdTimestamp}
+            likeCount={mumble.likeCount}
+            likedByUser={mumble.likedByUser}
+            replyCount={mumble.replyCount}
+          />
+        ));
+      })}
 
-      {hasMore ? (
-        <Button onClick={() => loadMore()} disabled={loading} color="violet" label={loading ? '...' : 'Load more'} />
-      ) : (
-        ''
-      )}
+      <Button onClick={() => setSize(size + 1)} disabled={loading} color="violet" label={loading ? '...' : 'Load more'} />
     </Container>
   );
 }
-export const getServerSideProps: GetServerSideProps<PageProps> = async ({ req }: GetServerSidePropsContext) => {
-  try {
-    const { count, mumbles } = await fetchMumbles({ limit: 2 });
+export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
+  const fetch = await fetchMumbles({ limit: 2 });
 
-    return { props: { count, mumbles } };
-  } catch (error) {
-    let message;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
+  console.log(fetch);
 
-    return { props: { error: message, mumbles: [], count: 0 } };
-  }
+  return {
+    props: {
+      fallback: {
+        '/api/mumbles': fetch,
+      },
+    },
+  };
 };
