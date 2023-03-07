@@ -5,6 +5,8 @@ import { fetchMumbles } from '../../services/fetchMumbles';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, RenderMumbles } from '@/components';
 
+const quantity = 10;
+
 export default function Page() {
   const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -13,7 +15,7 @@ export default function Page() {
   const pages: any = [];
 
   for (let i = 0; i < count; i++) {
-    pages.push(<RenderMumbles key={i} offset={offset} />);
+    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} />);
   }
 
   return (
@@ -25,7 +27,7 @@ export default function Page() {
 
       <Button
         onClick={() => {
-          setOffset(offset + 2);
+          setOffset(offset + quantity);
           setCount(count + 1);
         }}
         color="violet"
@@ -34,8 +36,9 @@ export default function Page() {
     </Container>
   );
 }
+
 export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
-  const fetch = await fetchMumbles({ limit: 2 });
+  const fetch = await fetchMumbles({ limit: quantity });
 
   console.log(fetch);
 

@@ -6,16 +6,18 @@ import { MumblePost } from './MumblePost';
 
 type RenderMumbleProps = {
   offset: number;
+  limit: number;
 };
 
-export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset }) => {
-  const off = useMemo(() => offset, []);
+export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) => {
+  const _offset = useMemo(() => offset, []);
+  const _limit = useMemo(() => limit, []);
 
   const {
     data,
     error,
     isLoading: loading,
-  } = useSWR({ url: '/api/mumbles', limit: 2, offset: off }, fetchMumbles, {
+  } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset }, fetchMumbles, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
