@@ -19,9 +19,9 @@ const LayoutStyles = tw.div`
   flex
   flex-col
   justify-start
-  items-start
-  w-full
-  h-screen
-  pb-64
+  items-center
+  m-0
+  mx-auto
+  p-0
   bg-slate-200
 `;

@@ -11,14 +11,14 @@ type Props = {
 
 export default function MumblePage({ mumble }: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
   return (
-    <Container layout="plain">
+    <Container layout="box">
       <MumbleDetail
         id={mumble.id}
         createdTimestamp={6546464654}
         mediaUrl={'https://picsum.photos/640/360'}
         text={mumble.id}
       />
-      <TextBoxComponent />
+      <TextBoxComponent variant="inline" />
     </Container>
   );
 }
