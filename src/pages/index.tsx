@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchMumbles } from '../../services/fetchMumbles';
@@ -7,19 +8,29 @@ import { WelcomeText, TextBoxComponent, RenderMumbles } from '@/components';
 import debounce from 'lodash.debounce';
 import useOnScreen from 'hooks/useOnScreen';
 
-const quantity = 5;
+const quantity = 2;
 
 export default function Page() {
   const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
-  const [quantityItemsTotal, setQuantityItemsTotal] = useState(0);
+  const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
-  const isOnScreen = useOnScreen(ref);
-  const quantitiyItems = (quantity: number) => setQuantityItemsTotal(quantity);
+  const { isOnScreen, setIsOnScreen } = useOnScreen(ref);
+
+  const { data, error } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0 }, fetchMumbles, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
+
+  useEffect(() => {
+    data && data.count > 0 && setQuantityTotal(data.count);
+  }, [data]);
 
   const handleIntersectionCallback = () => {
     setOffset((offset) => offset + quantity);
     setCount((count) => count + 1);
+    setIsOnScreen(false);
   };
 
   const handleIntersectionCallbackDebounced = debounce(async () => {
@@ -27,15 +38,13 @@ export default function Page() {
   }, 1000);
 
   useEffect(() => {
-    if (isOnScreen && quantityItemsTotal >= offset) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityItemsTotal, offset]);
+    if (isOnScreen && quantityTotal - quantity * 2 >= offset) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset]);
 
   const pages: any = [];
 
   for (let i = 0; i < count; i++) {
-    i === 0
-      ? pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} />)
-      : pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} quantitiyItems={quantitiyItems} />);
+    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} />);
   }
 
   return (
@@ -45,7 +54,7 @@ export default function Page() {
 
       {pages}
 
-      <div tw="invisible" ref={ref} />
+      <div key="last" tw="invisible" ref={ref} />
     </Container>
   );
 }

@@ -7,10 +7,9 @@ import { MumblePost } from './MumblePost';
 type RenderMumbleProps = {
   offset: number;
   limit: number;
-  quantitiyItems?: (quantity: number) => void;
 };
 
-export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, quantitiyItems }) => {
+export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) => {
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
@@ -19,10 +18,6 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, quan
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
-
-  useEffect(() => {
-    data && data.count > 0 && quantitiyItems && quantitiyItems(data.count);
-  }, [data, quantitiyItems]);
 
   if (error) return <>Failed to load</>;
 
