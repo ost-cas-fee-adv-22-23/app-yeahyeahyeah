@@ -1,83 +1,74 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
-import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import { Mumble } from 'services/qwacker';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchMumbles } from '../../services/fetchMumbles';
-import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumblePost, WelcomeText, TextBoxComponent } from '@/components';
+import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { WelcomeText, TextBoxComponent, RenderMumbles } from '@/components';
+import debounce from 'lodash.debounce';
+import useOnScreen from 'hooks/useOnScreen';
 
-type PageProps = {
-  count: number;
-  mumbles: Mumble[];
-  error?: string;
-};
+const quantity = 2;
 
-export default function Page({
-  count: initialCount,
-  mumbles: initialMumbles,
-  error,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data: session } = useSession();
-  const [mumbles, setMumbles] = useState(initialMumbles);
-  const [loading, setLoading] = useState(false);
-  const [count] = useState(initialCount);
-  const [hasMore, setHasMore] = useState(initialMumbles.length < count);
+export default function Page() {
+  const [count, setCount] = useState(1);
+  const [offset, setOffset] = useState(0);
+  const [quantityTotal, setQuantityTotal] = useState(0);
+  const ref = useRef(null);
+  const { isOnScreen, setIsOnScreen } = useOnScreen(ref);
 
-  if (error) {
-    return <div>An error occurred: {error}</div>;
-  }
+  const { data, error } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0 }, fetchMumbles, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
 
-  const loadMore = async () => {
-    const { count, mumbles: newMumbles } = await fetchMumbles({
-      limit: 2,
-      offset: mumbles.length,
-    });
+  useEffect(() => {
+    data && data.count > 0 && setQuantityTotal(data.count);
+  }, [data]);
 
-    setLoading(false);
-    setHasMore(mumbles.length + newMumbles.length < count);
-    setMumbles([...mumbles, ...newMumbles]);
+  const handleIntersectionCallback = () => {
+    setOffset((offset) => offset + quantity);
+    setCount((count) => count + 1);
+    setIsOnScreen(false);
   };
+
+  const handleIntersectionCallbackDebounced = debounce(async () => {
+    handleIntersectionCallback();
+  }, 1000);
+
+  useEffect(() => {
+    if (isOnScreen && quantityTotal - quantity * 2 >= offset) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset]);
+
+  const pages: any = [];
+
+  for (let i = 0; i < count; i++) {
+    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} />);
+  }
 
   return (
     <Container layout="plain">
       <WelcomeText />
       <TextBoxComponent variant="write" />
 
-      {mumbles.map((mumble) => (
-        <MumblePost
-          key={mumble.id}
-          id={mumble.id}
-          creator={mumble.creator}
-          text={mumble.text}
-          mediaUrl={mumble.mediaUrl}
-          createdTimestamp={mumble.createdTimestamp}
-          likeCount={mumble.likeCount}
-          likedByUser={mumble.likedByUser}
-          replyCount={mumble.replyCount}
-        />
-      ))}
+      {pages}
 
-      {hasMore ? (
-        <Button onClick={() => loadMore()} disabled={loading} color="violet" label={loading ? '...' : 'Load more'} />
-      ) : (
-        ''
-      )}
+      <div key="last" tw="invisible" ref={ref} />
     </Container>
   );
 }
-export const getServerSideProps: GetServerSideProps<PageProps> = async ({ req }: GetServerSidePropsContext) => {
-  try {
-    const { count, mumbles } = await fetchMumbles({ limit: 2 });
 
-    return { props: { count, mumbles } };
-  } catch (error) {
-    let message;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
+export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
+  const fetch = await fetchMumbles({ limit: quantity });
 
-    return { props: { error: message, mumbles: [], count: 0 } };
-  }
+  console.log(fetch);
+
+  return {
+    props: {
+      fallback: {
+        '/api/mumbles': fetch,
+      },
+    },
+  };
 };

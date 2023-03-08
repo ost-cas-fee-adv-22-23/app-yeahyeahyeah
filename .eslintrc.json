@@ -8,6 +8,7 @@
         "patterns": ["@/src/components"]
       }
     ],
-    "import/no-cycle": "error"
+    "import/no-cycle": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
