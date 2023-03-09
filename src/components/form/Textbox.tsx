@@ -2,32 +2,28 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import debounce from 'lodash.debounce';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { postMumble } from '@/postMumble';
+import { useSession } from 'next-auth/react';
 
 type TextBoxComponentProps = {
   variant: 'write' | 'inline' | 'start';
 };
 
 export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) => {
-  // const [posts, setPosts] = useState(['']);
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
   const [fileUploadError, setFileUploadError] = useState('');
+  const { data: session }: any = useSession();
 
-  const addText = () => {
+  const addText = async () => {
     if (inputValue === '') {
       setErrorMessage('Bitte füllen Sie das Feld aus.');
       return;
     }
 
-    console.log('inputValue', inputValue);
-
-    // if (posts[0] === '') {
-    //   setPosts([inputValue]);
-    //   setInputValue('');
-    //   return;
-    // }
-    // setPosts([...posts, inputValue]);
+    const res = await postMumble(inputValue, null, session?.accessToken);
+    console.log('res', res);
     setInputValue('');
   };
 
