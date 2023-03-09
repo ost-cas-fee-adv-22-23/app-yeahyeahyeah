@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -35,5 +38,5 @@ jobs:
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd /usr/src/app
-            docker-compose pull
+            docker-compose stop app-yeahyeahyeah
             docker-compose up -d --no-deps --build --force-recreate app-yeahyeahyeah
