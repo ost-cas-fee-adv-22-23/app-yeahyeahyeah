@@ -57,6 +57,8 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) =
         preview: URL.createObjectURL(newFile),
       })
     );
+
+    showModal && setShowModal(false);
   };
 
   const handleUpload = () => {
