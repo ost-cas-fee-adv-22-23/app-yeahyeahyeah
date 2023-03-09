@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { fetchMumbles } from '../../services/fetchMumbles';
+import { fetchMumbles } from '@/fetchMumbles';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, RenderMumbles } from '@/components';
 import debounce from 'lodash.debounce';
-import useOnScreen from 'hooks/useOnScreen';
+import useOnScreen from '@/useOnScreen';
 
 const quantity = 2;
 

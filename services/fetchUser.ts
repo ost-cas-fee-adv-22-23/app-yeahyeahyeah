@@ -1,25 +1,23 @@
-import { transformMumble, QwackerMumbleResponse } from './qwacker';
+import axios from 'axios';
+import { User } from './qwacker';
 
-export const fetchUsers = async (params?: { limit?: number; offset?: number; newerThanMumbleId?: string }) => {
-  const { limit, offset, newerThanMumbleId } = params || {};
+export const fetchUser = async (params?: { id: string; token: string }) => {
+  const { id, token } = params || {};
+  const idParams = id ? `${id}` : '';
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/users/${idParams}`;
 
-  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/users?${new URLSearchParams({
-    limit: limit?.toString() || '10',
-    offset: offset?.toString() || '0',
-    newerThan: newerThanMumbleId || '',
-  })}`;
-
-  const res = await fetch(url, {
+  const { data } = await axios.get(url, {
     headers: {
       'content-type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
   });
 
-  const { data } = (await res.json()) as QwackerMumbleResponse;
-
-  const users = data.map(transformMumble);
-
   return {
-    users,
-  };
+    avatarUrl: data.avatarUrl,
+    firstName: data.firstName,
+    id: data.id,
+    lastName: data.lastName,
+    userName: data.userName,
+  } as User;
 };

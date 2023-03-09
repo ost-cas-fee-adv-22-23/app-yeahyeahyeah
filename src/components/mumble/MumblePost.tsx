@@ -1,9 +1,8 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import 'dayjs/locale/de-ch';
 import dayjs from 'dayjs';
-
+import useSWR from 'swr';
 import {
   Avatar,
   CommentButton,
@@ -13,6 +12,8 @@ import {
   IconLink,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { useSession } from 'next-auth/react';
+import { fetchUser } from '@/fetchUser';
 
 export interface MumbleProps {
   id: string;
@@ -35,6 +36,14 @@ export const MumblePost: React.FC<MumbleProps> = ({
   likedByUser,
   replyCount,
 }) => {
+  const { data: session }: any = useSession();
+
+  const { data, error }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
+
   const handleClickTimestamp = () => {
     console.log('Timestamp clicked');
   };
@@ -45,13 +54,18 @@ export const MumblePost: React.FC<MumbleProps> = ({
     <ArticleMumble id={id}>
       <ArticleHeader>
         <Link href={`/profile/${creator}`} title={creator} target="_self">
-          <Avatar variant="medium" src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif" alt={creator} />
+          <Avatar
+            key={data ? data.id : ''}
+            variant="medium"
+            src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+            alt={data ? data.userName : 'username'}
+          />
         </Link>
         <ArticleHeaderContent>
-          <User label="Username" variant="large" />
+          <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="large" />
           <ArticleDatas>
             <IconLink
-              label={creator}
+              label={data ? data.userName : 'username'}
               type="username"
               color="violet"
               href={`/profile/${id}`}
@@ -63,7 +77,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
-
       <Paragraph text={text} mbSpacing="16" />
       {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
       <ArticleInteraction>
