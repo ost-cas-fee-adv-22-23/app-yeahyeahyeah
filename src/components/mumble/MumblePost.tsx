@@ -13,7 +13,7 @@ import {
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { useSession } from 'next-auth/react';
-import { fetchUser } from '../../../services/fetchUser';
+import { fetchUser } from '@/fetchUser';
 
 export interface MumbleProps {
   id: string;

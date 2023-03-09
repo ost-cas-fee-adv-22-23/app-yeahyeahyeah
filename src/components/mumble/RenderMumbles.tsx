@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 import { Mumble } from 'services/qwacker';
-import { fetchMumbles } from '../../../services/fetchMumbles';
+import { fetchMumbles } from '@/fetchMumbles';
 import { MumblePost } from './MumblePost';
 
 type RenderMumbleProps = {
