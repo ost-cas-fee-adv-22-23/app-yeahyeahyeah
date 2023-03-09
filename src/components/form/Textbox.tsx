@@ -8,7 +8,7 @@ type TextBoxComponentProps = {
 };
 
 export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) => {
-  const [posts, setPosts] = useState(['']);
+  // const [posts, setPosts] = useState(['']);
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
@@ -20,12 +20,14 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) =
       return;
     }
 
-    if (posts[0] === '') {
-      setPosts([inputValue]);
-      setInputValue('');
-      return;
-    }
-    setPosts([...posts, inputValue]);
+    console.log('inputValue', inputValue);
+
+    // if (posts[0] === '') {
+    //   setPosts([inputValue]);
+    //   setInputValue('');
+    //   return;
+    // }
+    // setPosts([...posts, inputValue]);
     setInputValue('');
   };
 
