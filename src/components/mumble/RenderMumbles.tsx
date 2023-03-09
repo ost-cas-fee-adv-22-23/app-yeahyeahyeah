@@ -15,11 +15,7 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) =>
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
-  const { data, isLoading, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset }, fetchMumbles, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  const { data, isLoading, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset }, fetchMumbles);
 
   if (error) return <ErrorBox message={error} />;
 

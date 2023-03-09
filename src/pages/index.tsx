@@ -18,9 +18,7 @@ export default function Page() {
   const { isOnScreen, setIsOnScreen } = useOnScreen(ref);
 
   const { data, error } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0 }, fetchMumbles, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
+    refreshInterval: 5000,
   });
 
   useEffect(() => {
