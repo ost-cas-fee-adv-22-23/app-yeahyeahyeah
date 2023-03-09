@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import tw from 'twin.macro';
 import Link from 'next/link';
 import { elapsedTime } from 'lib/timeConverter';
@@ -7,24 +8,18 @@ import {
   CommentButton,
   LikeButton,
   ImageContainer,
-  User,
   IconLink,
+  Modal,
   Paragraph,
+  ShareButton,
+  User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Mumble } from '@/qwacker';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/fetchUser';
-export interface MumbleProps {
-  id: string;
-  creator: string;
-  text: string;
-  mediaUrl: string;
-  createdTimestamp: number;
-  likeCount: number;
-  likedByUser: boolean;
-  replyCount: number;
-}
+import Image from 'next/image';
 
-export const MumblePost: React.FC<MumbleProps> = ({
+export const MumblePost: React.FC<Mumble> = ({
   id,
   creator,
   text,
@@ -35,7 +30,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
   replyCount,
 }) => {
   const { data: session }: any = useSession();
-
+  const [open, setOpen] = useState(false);
   const { data }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -74,7 +69,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
         </ArticleHeaderContent>
       </ArticleHeader>
       <Paragraph text={text} mbSpacing="16" />
-      {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
+      {mediaUrl && <ImageContainer src={mediaUrl} alt={text} onImageIconClick={() => setOpen(!open)} />}
       <ArticleInteraction>
         <CommentButton
           type="comment"
@@ -85,7 +80,11 @@ export const MumblePost: React.FC<MumbleProps> = ({
           linkComponent={Link}
         />
         <LikeButton favourite={likedByUser} quantity={likeCount} onClick={() => console.log('Like clicked')} />
+        <ShareButton label="Copy link" onClick={() => console.log('share clicked')} />
       </ArticleInteraction>
+      <Modal label={data ? data.userName : 'username'} onClose={() => !open} isOpen={open} wide={true}>
+        {mediaUrl && <Image unoptimized src={mediaUrl} alt={text} width="560" height="768" loading="lazy" />}
+      </Modal>
     </ArticleMumble>
   );
 };

@@ -30,9 +30,11 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) =>
               <MumblePost
                 key={mumble.id}
                 id={mumble.id}
+                type={mumble.type}
                 creator={mumble.creator}
                 text={mumble.text}
                 mediaUrl={mumble.mediaUrl}
+                mediaType={mumble.mediaType}
                 createdTimestamp={mumble.createdTimestamp}
                 likeCount={mumble.likeCount}
                 likedByUser={mumble.likedByUser}
