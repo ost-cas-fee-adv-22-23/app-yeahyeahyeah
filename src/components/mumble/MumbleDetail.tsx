@@ -1,5 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import { Mumble } from '@/qwacker';
 
 import {
   Avatar,
@@ -11,14 +12,7 @@ import {
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-type MumbleSingleProps = {
-  id: string;
-  createdTimestamp: number;
-  mediaUrl: string;
-  text: string;
-};
-
-export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp, mediaUrl, text }) => {
+export const MumbleDetail: React.FC<Mumble> = ({ id, createdTimestamp, mediaUrl, text }) => {
   return (
     <ArticleMumble id={id}>
       <ArticleHeader>

@@ -1,30 +1,24 @@
+import { useState } from 'react';
 import tw from 'twin.macro';
 import Link from 'next/link';
+import Image from 'next/image';
 import { elapsedTime } from 'lib/timeConverter';
+import { Mumble } from '@/qwacker';
 import useSWR from 'swr';
 import {
   Avatar,
   CommentButton,
   LikeButton,
   ImageContainer,
+  Modal,
   User,
   IconLink,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/fetchUser';
-export interface MumbleProps {
-  id: string;
-  creator: string;
-  text: string;
-  mediaUrl: string;
-  createdTimestamp: number;
-  likeCount: number;
-  likedByUser: boolean;
-  replyCount: number;
-}
 
-export const MumblePost: React.FC<MumbleProps> = ({
+export const MumblePost: React.FC<Mumble> = ({
   id,
   creator,
   text,
@@ -35,6 +29,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
   replyCount,
 }) => {
   const { data: session }: any = useSession();
+  const [open, setOpen] = useState(false);
 
   const { data }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateIfStale: false,
@@ -44,6 +39,14 @@ export const MumblePost: React.FC<MumbleProps> = ({
 
   const handleClickTimestamp = () => {
     console.log('Timestamp clicked');
+  };
+
+  const handleClick = () => {
+    setOpen((open) => !open);
+  };
+
+  const handleClose = () => {
+    setOpen((open) => !open);
   };
 
   return (
@@ -74,7 +77,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
         </ArticleHeaderContent>
       </ArticleHeader>
       <Paragraph text={text} mbSpacing="16" />
-      {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
+      {mediaUrl && <ImageContainer src={mediaUrl} alt={text} onImageIconClick={handleClick} />}
       <ArticleInteraction>
         <CommentButton
           type="comment"
@@ -86,6 +89,9 @@ export const MumblePost: React.FC<MumbleProps> = ({
         />
         <LikeButton favourite={likedByUser} quantity={likeCount} onClick={() => console.log('Like clicked')} />
       </ArticleInteraction>
+      <Modal label={data ? data.userName : 'username'} isOpen={open} onClose={handleClose} wide={true}>
+        {mediaUrl && <Image unoptimized width={560} height={768} src={mediaUrl} alt="Picture of the author" />}
+      </Modal>
     </ArticleMumble>
   );
 };

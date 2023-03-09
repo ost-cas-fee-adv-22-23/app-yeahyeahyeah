@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import useSWR from 'swr';
-import { Mumble } from 'services/qwacker';
+import { Mumble } from '@/qwacker';
 import { fetchMumbles } from '@/fetchMumbles';
 import { MumblePost } from './MumblePost';
 import { LoadingSpinner } from '../utils/LoadingSpinner';
@@ -41,6 +41,8 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) =>
                 likeCount={mumble.likeCount}
                 likedByUser={mumble.likedByUser}
                 replyCount={mumble.replyCount}
+                mediaType={mumble.mediaType}
+                type={mumble.type}
               />
             ))}
         </>
