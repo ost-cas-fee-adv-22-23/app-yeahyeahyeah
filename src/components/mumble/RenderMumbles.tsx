@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { fetchMumbles } from '@/services/fetchMumbles';

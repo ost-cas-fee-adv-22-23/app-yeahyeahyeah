@@ -107,6 +107,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
               onClick={() => handleDelete(id)}
             />
           )}
+          <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
         </ArticleInteractionDelete>
       </ArticleInteraction>
     </ArticleMumble>
