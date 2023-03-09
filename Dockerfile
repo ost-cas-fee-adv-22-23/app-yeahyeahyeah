@@ -7,7 +7,7 @@ RUN echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> .npmrc
 COPY package*.json ./
 RUN npm install
 COPY ./ ./
-RUN npm run build --omit=dev
+RUN npm run build
 EXPOSE 3000
 USER node
 CMD [ "pm2-runtime", "npm", "--", "start" ]
