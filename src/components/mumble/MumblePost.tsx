@@ -1,7 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import 'dayjs/locale/de-ch';
-import dayjs from 'dayjs';
+import { elapsedTime } from 'lib/timeConverter';
 import useSWR from 'swr';
 import {
   Avatar,
@@ -14,7 +13,6 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/fetchUser';
-
 export interface MumbleProps {
   id: string;
   creator: string;
@@ -38,7 +36,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
 }) => {
   const { data: session }: any = useSession();
 
-  const { data, error }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
+  const { data }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -47,8 +45,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
   const handleClickTimestamp = () => {
     console.log('Timestamp clicked');
   };
-
-  const convertedTime = dayjs(createdTimestamp).locale('de-ch').format('DD.MM.YYYY HH:MM:ss');
 
   return (
     <ArticleMumble id={id}>
@@ -73,7 +69,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
               passHref
               linkComponent={Link}
             />
-            <IconLink label={convertedTime} type="timestamp" color="slate" onClick={handleClickTimestamp} />
+            <IconLink label={elapsedTime(createdTimestamp)} type="timestamp" color="slate" onClick={handleClickTimestamp} />
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
