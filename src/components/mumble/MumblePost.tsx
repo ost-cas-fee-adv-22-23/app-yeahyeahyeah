@@ -1,6 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import { ElapsedTime } from 'lib/timeConverter';
+import { elapsedTime } from 'lib/timeConverter';
 import useSWR from 'swr';
 import {
   Avatar,
@@ -69,7 +69,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
               passHref
               linkComponent={Link}
             />
-            <IconLink label={ElapsedTime(createdTimestamp)} type="timestamp" color="slate" onClick={handleClickTimestamp} />
+            <IconLink label={elapsedTime(createdTimestamp)} type="timestamp" color="slate" onClick={handleClickTimestamp} />
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
