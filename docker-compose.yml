@@ -9,6 +9,8 @@ services:
       - app-network
     ports:
       - '3000:3000'
+    volumes:
+      - .env:/usr/src/app/.env
 
   webserver:
     image: nginx:mainline-alpine
