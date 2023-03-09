@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { postMumble } from '@/postMumble';
 import { useSession } from 'next-auth/react';
+import { UploadImage } from '@/qwacker';
 
 type TextBoxComponentProps = {
   variant: 'write' | 'inline' | 'start';
@@ -15,6 +16,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) =
   const [showModal, setShowModal] = useState(false);
   const [fileUploadError, setFileUploadError] = useState('');
   const { data: session }: any = useSession();
+  const [file, setFile] = useState<UploadImage | null>(null);
 
   const addText = async () => {
     if (inputValue === '') {
@@ -22,7 +24,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) =
       return;
     }
 
-    const res = await postMumble(inputValue, null, session?.accessToken);
+    const res = await postMumble(inputValue, file, session?.accessToken);
     console.log('res', res);
     setInputValue('');
   };
@@ -44,6 +46,19 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) =
     console.log('acceptedFiles, fileRejections', acceptedFiles, fileRejections);
     fileRejections?.length && setFileUploadError(fileRejections[0].errors[0].message);
     setTimerForError();
+
+    const newFile = acceptedFiles[0];
+    if (!newFile) {
+      return;
+    }
+
+    setFile(
+      Object.assign(newFile, {
+        preview: URL.createObjectURL(newFile),
+      })
+    );
+
+    showModal && setShowModal(false);
   };
 
   const handleUpload = () => {

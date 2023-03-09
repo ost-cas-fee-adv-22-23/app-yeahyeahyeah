@@ -7,6 +7,7 @@ import { Container } from '@smartive-education/design-system-component-library-y
 import { WelcomeText, TextBoxComponent, RenderMumbles } from '@/components';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/useOnScreen';
+import { UploadImage } from '@/qwacker';
 
 const quantity = 2;
 
