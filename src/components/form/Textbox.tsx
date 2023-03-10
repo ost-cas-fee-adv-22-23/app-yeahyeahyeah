@@ -2,15 +2,16 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import debounce from 'lodash.debounce';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { postMumble } from '@/postMumble';
+import { postMumble } from '@/services/postMumble';
 import { useSession } from 'next-auth/react';
-import { UploadImage } from '@/qwacker';
+import { Mumble, UploadImage } from '@/services/qwacker';
 
 type TextBoxComponentProps = {
   variant: 'write' | 'inline' | 'start';
+  setPost?: React.Dispatch<React.SetStateAction<Mumble | null>>;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) => {
+export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant, setPost }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
@@ -27,6 +28,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant }) =
     const res = await postMumble(inputValue, file, session?.accessToken);
     console.log('res', res);
     setInputValue('');
+    setPost && setPost(res);
   };
 
   const setErrorDebounced = useMemo(
