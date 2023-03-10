@@ -1,6 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import { elapsedTime } from 'lib/timeConverter';
+import { elapsedTime } from '@/lib/timeConverter';
 import useSWR from 'swr';
 import {
   Avatar,
@@ -12,7 +12,7 @@ import {
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { useSession } from 'next-auth/react';
-import { fetchUser } from '@/fetchUser';
+import { fetchUser } from '@/services/fetchUser';
 export interface MumbleProps {
   id: string;
   creator: string;

@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import debounce from 'lodash.debounce';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { postMumble } from '@/postMumble';
+import { postMumble } from '@/services/postMumble';
 import { useSession } from 'next-auth/react';
-import { Mumble, UploadImage } from '@/qwacker';
+import { Mumble, UploadImage } from '@/services/qwacker';
 
 type TextBoxComponentProps = {
   variant: 'write' | 'inline' | 'start';
