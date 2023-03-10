@@ -85,6 +85,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant, set
           },
         }}
         form={{
+          name: 'textbox-mumble',
           errorMessage: errorMessage,
           placeholder: 'Deine Meinung zählt ...',
         }}
