@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { transformMumble, QwackerMumbleResponse } from './qwacker';
+import { transformMumble, QwackerMumbleResponse, Mumble } from './qwacker';
 
 export const fetchMumbles = async (params?: { limit?: number; offset?: number; newerThanMumbleId?: string }) => {
   const { limit, offset, newerThanMumbleId } = params || {};
@@ -10,8 +10,16 @@ export const fetchMumbles = async (params?: { limit?: number; offset?: number; n
     newerThan: newerThanMumbleId || '',
   })}`;
 
+  const instance = axios.create();
+  instance.interceptors.response.use((response) => {
+    const res = response.data.data.filter((mumble: Mumble) => mumble.type === 'post');
+    response.data.data = res;
+
+    return response;
+  });
+
   const { data, count } = (
-    await axios.get(url, {
+    await instance.get(url, {
       headers: {
         'content-type': 'application/json',
       },
