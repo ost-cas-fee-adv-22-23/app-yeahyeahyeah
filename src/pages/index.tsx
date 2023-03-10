@@ -39,7 +39,7 @@ export default function Page() {
 
   const handleIntersectionCallbackDebounced = debounce(async () => {
     handleIntersectionCallback();
-  }, 500);
+  }, 800);
 
   useEffect(() => {
     if (isOnScreen && quantityTotal - quantity * 2 >= offset) handleIntersectionCallbackDebounced();
