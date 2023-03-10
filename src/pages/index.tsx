@@ -4,10 +4,10 @@ import { useSession } from 'next-auth/react';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchMumbles } from '@/fetchMumbles';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, RenderMumbles } from '@/components';
+import { WelcomeText, TextBoxComponent, RenderMumbles, MumblePost } from '@/components';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/useOnScreen';
-import { UploadImage } from '@/qwacker';
+import { Mumble, UploadImage } from '@/qwacker';
 
 const quantity = 2;
 
@@ -17,14 +17,23 @@ export default function Page() {
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
   const { isOnScreen, setIsOnScreen } = useOnScreen(ref);
+  const [post, setPost] = useState<Mumble | null>(null);
 
-  const { data, error } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0 }, fetchMumbles, {
-    refreshInterval: 5000,
-  });
+  const { data, error, isLoading, isValidating } = useSWR(
+    { url: '/api/mumbles', limit: quantity, offset: 0 },
+    fetchMumbles,
+    {
+      refreshInterval: 20000,
+    }
+  );
 
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);
   }, [data]);
+
+  useEffect(() => {
+    setPost(null);
+  }, [isLoading, isValidating]);
 
   const handleIntersectionCallback = () => {
     setOffset((offset) => offset + quantity);
@@ -49,7 +58,21 @@ export default function Page() {
   return (
     <Container layout="plain">
       <WelcomeText />
-      <TextBoxComponent variant="write" />
+      <TextBoxComponent variant="write" setPost={setPost} />
+
+      {post && (
+        <MumblePost
+          key={post.id}
+          id={post.id}
+          creator={post.creator}
+          text={post.text}
+          mediaUrl={post.mediaUrl}
+          createdTimestamp={post.createdTimestamp}
+          likeCount={post.likeCount}
+          likedByUser={post.likedByUser}
+          replyCount={post.replyCount}
+        />
+      )}
 
       {pages}
 
