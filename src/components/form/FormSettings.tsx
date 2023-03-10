@@ -31,6 +31,8 @@ export const FormSettings: React.FC = () => {
   return (
     <form>
       <InputForm
+        name="settings-firstname"
+        key={'settings-firstname'}
         label="Name und Vorname"
         editType={'input'}
         placeholder={'Bitte geben sie einen Text ein '}
@@ -43,7 +45,8 @@ export const FormSettings: React.FC = () => {
         data-testid={'name'}
       />
       <InputForm
-        key={'email'}
+        name="settings-email"
+        key={'settings-email'}
         label="E-Mail"
         editType={'input'}
         placeholder={'Bitte geben sie einen Text ein '}
