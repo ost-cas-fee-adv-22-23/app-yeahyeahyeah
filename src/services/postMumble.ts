@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { transformMumble } from './qwacker';
 import { UploadImage } from './qwacker';
 
@@ -13,18 +14,17 @@ export const postMumble = async (text: string, file: UploadImage | null, accessT
   }
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts`, {
-      method: 'POST',
-      body: formData,
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts`, formData, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    if (!response.ok) {
+
+    if (!response) {
       throw new Error('Something was not okay');
     }
 
-    return transformMumble(await response.json());
+    return transformMumble(await response.data);
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : 'Could not post mumble');
   }

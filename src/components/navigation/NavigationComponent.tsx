@@ -10,9 +10,9 @@ import {
   NavigationColumn,
   NavigationRow,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { FormSettings } from '../form/Settings';
+import { FormSettings } from '../form/FormSettings';
 
-export const Navi: React.FC = () => {
+export const NavigationComponent: React.FC = () => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
