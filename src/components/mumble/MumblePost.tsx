@@ -1,6 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import { elapsedTime } from '@/lib/timeConverter';
+import { elapsedTime } from '@/utils/timeConverter';
 import useSWR from 'swr';
 import {
   Avatar,
