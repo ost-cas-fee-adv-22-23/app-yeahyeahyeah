@@ -1,5 +1,5 @@
 import tw from 'twin.macro';
-import { Footer, Navi } from '../components';
+import { Footer, NavigationComponent } from '../components';
 
 export type IDefaultLayout = React.DOMAttributes<HTMLDivElement>;
 
@@ -7,7 +7,7 @@ export const DefaultLayout: React.FC<IDefaultLayout> = ({ children }) => {
   return (
     <>
       <LayoutStyles>
-        <Navi />
+        <NavigationComponent />
         {children}
         <Footer />
       </LayoutStyles>
