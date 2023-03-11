@@ -5,19 +5,22 @@ import { TextBox, UploadForm } from '@smartive-education/design-system-component
 import { postMumble } from '@/services/postMumble';
 import { useSession } from 'next-auth/react';
 import { Mumble, UploadImage } from '@/services/qwacker';
+import { postReply } from '@/services/postReply';
 
 type TextBoxComponentProps = {
+  id?: string;
   variant: 'write' | 'inline' | 'start';
   setPost?: React.Dispatch<React.SetStateAction<Mumble | null>>;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant, setPost }) => {
+export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, setPost }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
   const [fileUploadError, setFileUploadError] = useState('');
   const { data: session }: any = useSession();
   const [file, setFile] = useState<UploadImage | null>(null);
+  let res: Mumble | null = null;
 
   const addText = async () => {
     if (inputValue === '') {
@@ -25,8 +28,12 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant, set
       return;
     }
 
-    const res = await postMumble(inputValue, file, session?.accessToken);
-    console.log('res', res);
+    if (id) {
+      res = await postReply(id, inputValue, file, session?.accessToken);
+    } else {
+      res = await postMumble(inputValue, file, session?.accessToken);
+    }
+
     setInputValue('');
     setPost && setPost(res);
     setFile(null);
