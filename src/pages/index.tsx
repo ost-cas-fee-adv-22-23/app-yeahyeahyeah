@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
-import { useSession } from 'next-auth/react';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, RenderMumbles, MumblePost } from '@/components';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
-import { Mumble, UploadImage } from '@/services/qwacker';
+import { Mumble } from '@/services/qwacker';
 
 const quantity = 2;
 
@@ -67,6 +66,7 @@ export default function Page() {
           likeCount={post.likeCount}
           likedByUser={post.likedByUser}
           replyCount={post.replyCount}
+          type={post.type}
         />
       )}
 

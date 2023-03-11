@@ -1,21 +1,24 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
-import { fetchMumbles } from '@/services/fetchMumbles';
 import { MumblePost } from './MumblePost';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
+import { fetchReplies } from '@/services/fetchReplies';
 
-type RenderMumbleProps = {
-  offset: number;
-  limit: number;
+type RenderRepliesProps = {
+  id: string;
+  setValidate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) => {
-  const _offset = useMemo(() => offset, []);
-  const _limit = useMemo(() => limit, []);
+export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate }) => {
+  const { data, isLoading, error, isValidating } = useSWR({ url: '/api/replies', id }, fetchReplies, {
+    refreshInterval: 30000,
+  });
 
-  const { data, isLoading, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset }, fetchMumbles);
+  useEffect(() => {
+    setValidate(isValidating);
+  }, [isValidating, setValidate]);
 
   if (error) return <ErrorBox message={error} />;
 
@@ -26,7 +29,7 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) =>
       ) : (
         <>
           {data &&
-            data.mumbles.map((mumble: Mumble) => (
+            data.replies.map((mumble: any) => (
               <MumblePost
                 key={mumble.id}
                 id={mumble.id}

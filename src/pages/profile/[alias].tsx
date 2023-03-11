@@ -54,6 +54,7 @@ export default function ProfilePage({ alias }: MumbleHeaderProps): InferGetServe
                 createdTimestamp={123456}
                 likedByUser={data.likedByUser || false}
                 replyCount={data.replyCount || 0}
+                type="post"
               />
             ))}
           </>
@@ -71,6 +72,7 @@ export default function ProfilePage({ alias }: MumbleHeaderProps): InferGetServe
                 createdTimestamp={123456}
                 likedByUser={data.likedByUser || false}
                 replyCount={data.replyCount || 0}
+                type="post"
               />
             ))}
           </>
