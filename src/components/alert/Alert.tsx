@@ -1,23 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { alertService, AlertType } from '../../services/alert.service';
-export { Alert };
 
-Alert.propTypes = {
-  id: PropTypes.string,
-  fade: PropTypes.bool,
+export type AlertProps = {
+  id?: string;
+  fade?: boolean;
 };
 
-Alert.defaultProps = {
-  id: 'default-alert',
-  fade: true,
+export type Alerts = {
+  autoClose: boolean;
+  id?: string;
+  itemId?: string;
+  keepAfterRouteChange: boolean;
+  message: string;
+  type: string;
+  fade?: boolean;
 };
 
-function Alert({ id, fade }) {
+export const Alert: React.FC<AlertProps> = ({ id = 'default-alert', fade = true }) => {
   const mounted = useRef(false);
   const router = useRouter();
-  const [alerts, setAlerts] = useState([]);
+  const [alerts, setAlerts] = useState<any>([]);
 
   useEffect(() => {
     mounted.current = true;
@@ -26,7 +29,7 @@ function Alert({ id, fade }) {
     const subscription = alertService.onAlert(id).subscribe((alert) => {
       // clear alerts when an empty alert is received
       if (!alert.message) {
-        setAlerts((alerts) => {
+        setAlerts((alerts: Alerts[]) => {
           // filter out alerts without 'keepAfterRouteChange' flag
           const filteredAlerts = alerts.filter((x) => x.keepAfterRouteChange);
 
@@ -36,7 +39,7 @@ function Alert({ id, fade }) {
       } else {
         // add alert to array with unique id
         alert.itemId = Math.random();
-        setAlerts((alerts) => [...alerts, alert]);
+        setAlerts((alerts: Alerts[]) => [...alerts, alert]);
 
         // auto close alert if required
         if (alert.autoClose) {
@@ -61,31 +64,31 @@ function Alert({ id, fade }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function omit(arr, key) {
-    return arr.map((obj) => {
+  function omit(arr: any, key: string) {
+    return arr.map((obj: any) => {
       const { [key]: omitted, ...rest } = obj;
       return rest;
     });
   }
 
-  function removeAlert(alert) {
+  function removeAlert(alert: Alerts) {
     if (!mounted.current) return;
 
     if (fade) {
       // fade out alert
-      setAlerts((alerts) => alerts.map((x) => (x.itemId === alert.itemId ? { ...x, fade: true } : x)));
+      setAlerts((alerts: Alerts[]) => alerts.map((x) => (x.itemId === alert.itemId ? { ...x, fade: true } : x)));
 
       // remove alert after faded out
       setTimeout(() => {
-        setAlerts((alerts) => alerts.filter((x) => x.itemId !== alert.itemId));
+        setAlerts((alerts: Alerts[]) => alerts.filter((x) => x.itemId !== alert.itemId));
       }, 250);
     } else {
       // remove alert
-      setAlerts((alerts) => alerts.filter((x) => x.itemId !== alert.itemId));
+      setAlerts((alerts: Alerts[]) => alerts.filter((x) => x.itemId !== alert.itemId));
     }
   }
 
-  function cssClasses(alert) {
+  function cssClasses(alert: Alerts) {
     if (!alert) return;
 
     const classes = ['alert', 'alert-dismissable'];
@@ -110,7 +113,7 @@ function Alert({ id, fade }) {
 
   return (
     <div>
-      {alerts.map((alert, index) => (
+      {alerts.map((alert: Alerts, index: number) => (
         <div key={index} className={cssClasses(alert)}>
           <a className="close" onClick={() => removeAlert(alert)}>
             &times;
@@ -120,4 +123,4 @@ function Alert({ id, fade }) {
       ))}
     </div>
   );
-}
+};
