@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import useSWR from 'swr';
 import tw from 'twin.macro';
-import { MumbleDetail, MumblePost, TextBoxComponent } from '@/components';
+import { Alert, MumbleDetail, MumblePost, TextBoxComponent } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { fetchUser, Mumble } from '@/services';
 import { useSession } from 'next-auth/react';
@@ -39,6 +39,9 @@ export default function MumblePage({ id }: Props): InferGetServerSidePropsType<t
   return (
     <Container layout="box">
       {mumble && <MumbleDetail mumble={mumble} user={user} />}
+      <Container layout="plain">
+        <Alert />
+      </Container>
       <TextBoxComponent id={id} variant="inline" setPost={setReply} />
 
       {reply && (

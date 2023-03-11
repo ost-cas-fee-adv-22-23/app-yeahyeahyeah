@@ -6,6 +6,7 @@ import { postMumble } from '@/services/postMumble';
 import { useSession } from 'next-auth/react';
 import { Mumble, UploadImage } from '@/services/qwacker';
 import { postReply } from '@/services/postReply';
+import { alertService } from '@/services';
 
 type TextBoxComponentProps = {
   id?: string;
@@ -25,6 +26,16 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   const addText = async () => {
     if (inputValue === '') {
       setErrorMessage('Bitte füllen Sie das Feld aus.');
+      return;
+    }
+
+    if (!session?.accessToken) {
+      alertService.error('Bitte melde dich an, sonst kannst du nicht posten!!', {
+        autoClose: false,
+        keepAfterRouteChange: false,
+      });
+      setInputValue('');
+      setFile(null);
       return;
     }
 

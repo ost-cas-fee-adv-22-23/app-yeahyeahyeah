@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, RenderMumbles, MumblePost } from '@/components';
+import { WelcomeText, TextBoxComponent, RenderMumbles, MumblePost, Alert } from '@/components';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { Mumble } from '@/services/qwacker';
@@ -53,6 +53,9 @@ export default function Page() {
   return (
     <Container layout="plain">
       <WelcomeText />
+      <Container layout="plain">
+        <Alert />
+      </Container>
       <TextBoxComponent variant="write" setPost={setPost} />
 
       {post && (
