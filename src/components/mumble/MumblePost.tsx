@@ -22,6 +22,7 @@ export interface MumbleProps {
   likeCount: number;
   likedByUser: boolean;
   replyCount: number;
+  type: string;
 }
 
 export const MumblePost: React.FC<MumbleProps> = ({
@@ -33,6 +34,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
   likeCount,
   likedByUser,
   replyCount,
+  type,
 }) => {
   const { data: session }: any = useSession();
 
@@ -48,31 +50,73 @@ export const MumblePost: React.FC<MumbleProps> = ({
 
   return (
     <ArticleMumble id={id}>
-      <ArticleHeader>
-        <Link href={`/profile/${creator}`} title={creator} target="_self">
-          <Avatar
-            key={data ? data.id : ''}
-            variant="medium"
-            src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
-            alt={data ? data.userName : 'username'}
-          />
-        </Link>
-        <ArticleHeaderContent>
-          <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="large" />
-          <ArticleDatas>
-            <IconLink
-              label={data ? data.userName : 'username'}
-              type="username"
-              color="violet"
-              href={`/profile/${id}`}
-              legacyBehavior
-              passHref
-              linkComponent={Link}
-            />
-            <IconLink label={elapsedTime(createdTimestamp)} type="timestamp" color="slate" onClick={handleClickTimestamp} />
-          </ArticleDatas>
-        </ArticleHeaderContent>
-      </ArticleHeader>
+      {type === 'post' ? (
+        <ArticleHeader>
+          {type === 'post' && (
+            <Link href={`/profile/${creator}`} title={creator} target="_self">
+              <Avatar
+                key={data ? data.id : ''}
+                variant="medium"
+                src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+                alt={data ? data.userName : 'username'}
+              />
+            </Link>
+          )}
+          <ArticleHeaderContent>
+            <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="large" />
+            <ArticleDatas>
+              <IconLink
+                label={data ? data.userName : 'username'}
+                type="username"
+                color="violet"
+                href={`/profile/${id}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
+              />
+              <IconLink
+                label={elapsedTime(createdTimestamp)}
+                type="timestamp"
+                color="slate"
+                onClick={handleClickTimestamp}
+              />
+            </ArticleDatas>
+          </ArticleHeaderContent>
+        </ArticleHeader>
+      ) : (
+        <ArticleHeaderReply>
+          {type === 'reply' && (
+            <Link href={`/profile/${creator}`} title={creator} target="_self">
+              <Avatar
+                key={data ? data.id : ''}
+                variant="small"
+                src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+                alt={data ? data.userName : 'username'}
+              />
+            </Link>
+          )}
+          <ArticleHeaderContent>
+            <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
+            <ArticleDatas>
+              <IconLink
+                label={data ? data.userName : 'username'}
+                type="username"
+                color="violet"
+                href={`/profile/${id}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
+              />
+              <IconLink
+                label={elapsedTime(createdTimestamp)}
+                type="timestamp"
+                color="slate"
+                onClick={handleClickTimestamp}
+              />
+            </ArticleDatas>
+          </ArticleHeaderContent>
+        </ArticleHeaderReply>
+      )}
       <Paragraph text={text} mbSpacing="16" />
       {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
       <ArticleInteraction>
@@ -92,6 +136,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
 
 const ArticleMumble = tw.article`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48 rounded-lg mb-16`;
 const ArticleHeader = tw.div`flex flex-row items-center gap-16 w-full relative left-0 sm:-left-[86px] mb-16 sm:(mb-32)`;
+const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relative left-0 mb-16 sm:(mb-32)`;
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-col gap-8 sm:(flex-row gap-16)`;
 const ArticleInteraction = tw.div`flex flex-row`;

@@ -1,6 +1,5 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-
 import {
   Avatar,
   CommentButton,
@@ -10,50 +9,54 @@ import {
   IconLink,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Mumble } from '@/services';
+import { elapsedTime } from '@/utils';
 
 type MumbleSingleProps = {
-  id: string;
-  createdTimestamp: number;
-  mediaUrl: string;
-  text: string;
+  mumble: Mumble;
+  user: any;
 };
 
-export const MumbleDetail: React.FC<MumbleSingleProps> = ({ id, createdTimestamp, mediaUrl, text }) => {
+export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
   return (
-    <ArticleMumble id={id}>
+    <ArticleMumble id={mumble.id}>
       <ArticleHeader>
         <Avatar variant="medium" src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif" alt="Username" />
         <ArticleHeaderContent>
-          <User label="Username" variant="large" />
+          <User label={user ? `${user.firstName} ${user.lastName}` : 'Username'} variant="large" />
           <ArticleDatas>
             <IconLink
-              label={'username'}
+              label={user ? user.userName : 'username'}
               type="username"
               color="violet"
-              href={`/profile/${id}`}
+              href={`/profile/${mumble.id}`}
               legacyBehavior
               passHref
               linkComponent={Link}
             />
             <IconLink
-              label={createdTimestamp.toString()}
+              label={elapsedTime(mumble.createdTimestamp)}
               type="timestamp"
               color="slate"
-              href="/"
-              legacyBehavior
-              passHref
-              linkComponent={Link}
+              onClick={() => console.log('clicked timestamp')}
             />
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph text={id} mbSpacing="16" size="large" />
+      <Paragraph text={mumble.text} mbSpacing="16" size="large" />
 
-      {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
+      {mumble.mediaUrl && <ImageContainer src={mumble.mediaUrl} alt={mumble.text} />}
 
       <ArticleInteraction>
-        <CommentButton type="comment" quantity={64} href={`/mumble/${id}`} legacyBehavior passHref linkComponent={Link} />
+        <CommentButton
+          type="comment"
+          quantity={64}
+          href={`/mumble/${mumble.id}`}
+          legacyBehavior
+          passHref
+          linkComponent={Link}
+        />
         <LikeButton favourite={false} quantity={42} onClick={() => console.log('Like clicked')} />
       </ArticleInteraction>
     </ArticleMumble>

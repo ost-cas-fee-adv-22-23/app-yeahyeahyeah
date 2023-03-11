@@ -67,6 +67,7 @@ export default function Page() {
           likeCount={post.likeCount}
           likedByUser={post.likedByUser}
           replyCount={post.replyCount}
+          type={post.type}
         />
       )}
 

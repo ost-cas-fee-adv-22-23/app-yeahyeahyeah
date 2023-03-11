@@ -2,16 +2,17 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import debounce from 'lodash.debounce';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { postMumble } from '@/services/postMumble';
 import { useSession } from 'next-auth/react';
 import { Mumble, UploadImage } from '@/services/qwacker';
+import { postReply } from '@/services/postReply';
 
-type TextBoxComponentProps = {
+type TextBoxReplyComponentProps = {
   variant: 'write' | 'inline' | 'start';
-  setPost?: React.Dispatch<React.SetStateAction<Mumble | null>>;
+  id: string;
+  setReply?: React.Dispatch<React.SetStateAction<Mumble | null>>;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant, setPost }) => {
+export const TextBoxReplyComponent: React.FC<TextBoxReplyComponentProps> = ({ id, variant, setReply }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
@@ -25,10 +26,10 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ variant, set
       return;
     }
 
-    const res = await postMumble(inputValue, file, session?.accessToken);
+    const res = await postReply(id, inputValue, file, session?.accessToken);
     console.log('res', res);
     setInputValue('');
-    setPost && setPost(res);
+    setReply && setReply(res);
     setFile(null);
   };
 
