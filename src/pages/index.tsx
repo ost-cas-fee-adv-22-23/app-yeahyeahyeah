@@ -9,7 +9,7 @@ import useOnScreen from '@/hooks/useOnScreen';
 import { Mumble } from '@/services/qwacker';
 import { useSession } from 'next-auth/react';
 
-const quantity = 2;
+const quantity = 20;
 
 export default function Page() {
   const { data: session }: any = useSession();

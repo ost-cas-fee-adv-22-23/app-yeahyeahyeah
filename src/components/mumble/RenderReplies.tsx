@@ -20,7 +20,6 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate })
 
   const { data, isLoading, error, isValidating } = useSWR({ url: '/api/replies', id }, fetchReplies, {
     refreshInterval(latestData) {
-      console.log('latestData', latestData);
       if (latestData?.replies.length === 0) {
         return 0;
       }
@@ -38,7 +37,6 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate })
     }
     const res = await deleteMumble(id, session?.accessToken);
     res && setInterval(3000);
-    console.log('res', res);
   };
 
   useEffect(() => {

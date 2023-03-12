@@ -40,7 +40,6 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) =>
     }
     const res = await deleteMumble(id, session?.accessToken);
     res && setInterval(3000);
-    console.log('res', res);
   };
 
   if (error) return <ErrorBox message={error} />;
