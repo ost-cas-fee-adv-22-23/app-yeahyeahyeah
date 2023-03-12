@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { MumblePost } from './MumblePost';
@@ -16,12 +16,19 @@ type RenderRepliesProps = {
 
 export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate }) => {
   const { data: session }: any = useSession();
+  const [interval, setInterval] = useState(30000);
 
   const { data, isLoading, error, isValidating } = useSWR({ url: '/api/replies', id }, fetchReplies, {
-    refreshInterval: 30000,
+    refreshInterval(latestData) {
+      console.log('latestData', latestData);
+      if (latestData?.replies.length === 0) {
+        return 0;
+      }
+      return interval;
+    },
   });
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
       alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {
         autoClose: true,
@@ -29,7 +36,8 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate })
       });
       return;
     }
-    const res = deleteMumble(id, session?.accessToken);
+    const res = await deleteMumble(id, session?.accessToken);
+    res && setInterval(3000);
     console.log('res', res);
   };
 
