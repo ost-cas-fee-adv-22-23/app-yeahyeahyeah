@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import tw from 'twin.macro';
 import Link from 'next/link';
 import { elapsedTime } from '@/utils/timeConverter';
+import { likeMumble, dislikeMumble } from '@/services';
 import useSWR from 'swr';
 import {
   Avatar,
@@ -13,6 +15,7 @@ import {
   Cancel,
   Container,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/services/fetchUser';
 export interface MumbleProps {
@@ -41,8 +44,8 @@ export const MumblePost: React.FC<MumbleProps> = ({
   handleDeleteCallback,
 }) => {
   const { data: session }: any = useSession();
-
-  const { data }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
+  const [liked, setLiked] = useState<boolean>(likedByUser);
+  const { data, isLoading }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -56,22 +59,39 @@ export const MumblePost: React.FC<MumbleProps> = ({
     handleDeleteCallback && handleDeleteCallback(id);
   };
 
+  const handleLike = async (id: string) => {
+    if (liked === true) {
+      await dislikeMumble({ id: id, token: session?.accessToken });
+      setLiked(false);
+    } else {
+      await likeMumble({ id: id, token: session?.accessToken });
+      setLiked(true);
+    }
+  };
+
   return (
     <ArticleMumble id={id}>
       {type === 'post' ? (
         <Container layout="plain">
           <div tw="flex justify-between">
             <ArticleHeader>
-              {type === 'post' && (
-                <Link href={`/profile/${creator}`} title={creator} target="_self">
+              <Link href={`/profile/${creator}`} title={creator} target="_self">
+                {isLoading ? (
+                  <AvatarLoader>
+                    <LoadingSpinner />
+                  </AvatarLoader>
+                ) : (
                   <Avatar
                     key={data ? data.id : ''}
                     variant="medium"
-                    src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+                    src={
+                      data?.avatarUrl !== '' ? data?.avatarUrl : 'https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif'
+                    }
                     alt={data ? data.userName : 'username'}
                   />
-                </Link>
-              )}
+                )}
+              </Link>
+
               <ArticleHeaderContent>
                 <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="large" />
                 <ArticleDatas>
@@ -146,7 +166,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
           passHref
           linkComponent={Link}
         />
-        <LikeButton favourite={likedByUser} quantity={likeCount} onClick={() => console.log('Like clicked')} />
+        <LikeButton favourite={liked} quantity={likeCount} onClick={() => handleLike(id)} />
       </ArticleInteraction>
     </ArticleMumble>
   );
@@ -158,3 +178,4 @@ const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relati
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-col gap-8 sm:(flex-row gap-16)`;
 const ArticleInteraction = tw.div`flex flex-row`;
+const AvatarLoader = tw.div`h-70 w-70 rounded-full flex justify-center items-center bg-violet-200 border-4 border-slate-300`;
