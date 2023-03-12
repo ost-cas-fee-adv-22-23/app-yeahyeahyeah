@@ -11,19 +11,20 @@ import { deleteMumble } from '@/services/deleteMumble';
 
 type RenderRepliesProps = {
   id: string;
-  setValidate: React.Dispatch<React.SetStateAction<boolean>>;
+  fallback?: any;
 };
 
-export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate }) => {
+export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, fallback }) => {
   const { data: session }: any = useSession();
 
-  const { data, isLoading, error, isValidating } = useSWR({ url: '/api/replies', id }, fetchReplies, {
+  const { data, error } = useSWR({ url: '/api/replies', id }, fetchReplies, {
     refreshInterval(latestData) {
       if (latestData?.replies.length === 0) {
         return 0;
       }
       return 2000;
     },
+    fallbackData: fallback['/api/replies'],
   });
 
   const handleDelete = async (id: string) => {
@@ -37,36 +38,26 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate })
     const res = await deleteMumble(id, session?.accessToken);
   };
 
-  useEffect(() => {
-    setValidate(isValidating);
-  }, [isValidating, setValidate]);
-
   if (error) return <ErrorBox message={error} />;
 
   return (
     <>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          {data &&
-            data.replies.map((mumble: any) => (
-              <MumblePost
-                key={mumble.id}
-                id={mumble.id}
-                creator={mumble.creator}
-                text={mumble.text}
-                mediaUrl={mumble.mediaUrl}
-                createdTimestamp={mumble.createdTimestamp}
-                likeCount={mumble.likeCount}
-                likedByUser={mumble.likedByUser}
-                replyCount={mumble.replyCount}
-                type={mumble.type}
-                handleDeleteCallback={handleDelete}
-              />
-            ))}
-        </>
-      )}
+      {data &&
+        data.replies.map((mumble: any) => (
+          <MumblePost
+            key={mumble.id}
+            id={mumble.id}
+            creator={mumble.creator}
+            text={mumble.text}
+            mediaUrl={mumble.mediaUrl}
+            createdTimestamp={mumble.createdTimestamp}
+            likeCount={mumble.likeCount}
+            likedByUser={mumble.likedByUser}
+            replyCount={mumble.replyCount}
+            type={mumble.type}
+            handleDeleteCallback={handleDelete}
+          />
+        ))}
     </>
   );
 };

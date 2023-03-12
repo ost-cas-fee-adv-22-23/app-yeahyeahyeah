@@ -12,15 +12,16 @@ type RenderMumbleProps = {
   offset: number;
   limit: number;
   token?: string;
+  fallback?: any;
 };
 
-export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, token }) => {
+export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, token, fallback }) => {
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
-  const { data, isLoading, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset, token }, fetchMumbles);
-
-  data && console.log('data', data);
+  const { data, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset, token }, fetchMumbles, {
+    fallbackData: fallback['/api/mumbles'],
+  });
 
   const handleDelete = async (id: string) => {
     if (!token) {
@@ -38,28 +39,24 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
 
   return (
     <>
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          {data &&
-            data.mumbles.map((mumble: Mumble) => (
-              <MumblePost
-                key={mumble.id}
-                id={mumble.id}
-                creator={mumble.creator}
-                text={mumble.text}
-                mediaUrl={mumble.mediaUrl}
-                createdTimestamp={mumble.createdTimestamp}
-                likeCount={mumble.likeCount}
-                likedByUser={mumble.likedByUser}
-                replyCount={mumble.replyCount}
-                type={mumble.type}
-                handleDeleteCallback={handleDelete}
-              />
-            ))}
-        </>
-      )}
+      {data &&
+        data.mumbles.map((mumble: Mumble) => (
+          <>
+            <MumblePost
+              key={mumble.id}
+              id={mumble.id}
+              creator={mumble.creator}
+              text={mumble.text}
+              mediaUrl={mumble.mediaUrl}
+              createdTimestamp={mumble.createdTimestamp}
+              likeCount={mumble.likeCount}
+              likedByUser={mumble.likedByUser}
+              replyCount={mumble.replyCount}
+              type={mumble.type}
+              handleDeleteCallback={handleDelete}
+            />
+          </>
+        ))}
     </>
   );
 };

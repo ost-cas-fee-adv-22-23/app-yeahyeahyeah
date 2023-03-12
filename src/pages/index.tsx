@@ -43,23 +43,21 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const pages: any = [];
 
   for (let i = 0; i < count; i++) {
-    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} token={session?.accessToken} />);
+    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} token={session?.accessToken} fallback={fallback} />);
   }
 
   return (
-    <SWRConfig value={fallback}>
+    <Container layout="plain">
+      <WelcomeText />
       <Container layout="plain">
-        <WelcomeText />
-        <Container layout="plain">
-          <Alert />
-        </Container>
-        <TextBoxComponent variant="write" />
-
-        {pages}
-
-        <div key="last" tw="invisible" ref={ref} />
+        <Alert />
       </Container>
-    </SWRConfig>
+      <TextBoxComponent variant="write" />
+
+      {pages}
+
+      <div key="last" tw="invisible" ref={ref} />
+    </Container>
   );
 }
 
@@ -73,7 +71,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetSe
     props: {
       quantity,
       fallback: {
-        '/api/article': fetch,
+        '/api/mumbles': fetch,
       },
     },
   };
