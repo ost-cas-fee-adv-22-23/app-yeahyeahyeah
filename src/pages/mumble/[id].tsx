@@ -42,7 +42,7 @@ export default function MumblePage({ id }: Props): InferGetServerSidePropsType<t
       <Container layout="plain">
         <Alert />
       </Container>
-      <TextBoxComponent id={id} variant="inline" setPost={setReply} />
+      <TextBoxComponent id={id} variant="inline" />
 
       {reply && (
         <MumblePost
