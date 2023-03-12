@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import useSWR, { SWRConfig } from 'swr';
+import useSWR from 'swr';
 import tw from 'twin.macro';
 import { Alert, MumbleDetail, MumblePost, TextBoxComponent } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';

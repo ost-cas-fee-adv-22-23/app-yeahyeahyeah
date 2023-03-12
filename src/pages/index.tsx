@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useSWR, { SWRConfig } from 'swr';
+import useSWR from 'swr';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -19,8 +19,6 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const { data } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken }, fetchMumbles, {
     refreshInterval: 2000,
   });
-
-  console.log('fallback', fallback);
 
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);

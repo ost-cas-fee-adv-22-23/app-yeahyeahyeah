@@ -18,12 +18,7 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, fallback }) =>
   const { data: session }: any = useSession();
 
   const { data, error } = useSWR({ url: '/api/replies', id }, fetchReplies, {
-    refreshInterval(latestData) {
-      if (latestData?.replies.length === 0) {
-        return 0;
-      }
-      return 2000;
-    },
+    refreshInterval: 2000,
     fallbackData: fallback['/api/replies'],
   });
 

@@ -41,21 +41,19 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
     <>
       {data &&
         data.mumbles.map((mumble: Mumble) => (
-          <>
-            <MumblePost
-              key={mumble.id}
-              id={mumble.id}
-              creator={mumble.creator}
-              text={mumble.text}
-              mediaUrl={mumble.mediaUrl}
-              createdTimestamp={mumble.createdTimestamp}
-              likeCount={mumble.likeCount}
-              likedByUser={mumble.likedByUser}
-              replyCount={mumble.replyCount}
-              type={mumble.type}
-              handleDeleteCallback={handleDelete}
-            />
-          </>
+          <MumblePost
+            key={mumble.id}
+            id={mumble.id}
+            creator={mumble.creator}
+            text={mumble.text}
+            mediaUrl={mumble.mediaUrl}
+            createdTimestamp={mumble.createdTimestamp}
+            likeCount={mumble.likeCount}
+            likedByUser={mumble.likedByUser}
+            replyCount={mumble.replyCount}
+            type={mumble.type}
+            handleDeleteCallback={handleDelete}
+          />
         ))}
     </>
   );
