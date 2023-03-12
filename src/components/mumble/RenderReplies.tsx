@@ -5,6 +5,9 @@ import { MumblePost } from './MumblePost';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
 import { fetchReplies } from '@/services/fetchReplies';
+import { useSession } from 'next-auth/react';
+import { alertService } from '@/services';
+import { deleteMumble } from '@/services/deleteMumble';
 
 type RenderRepliesProps = {
   id: string;
@@ -12,9 +15,23 @@ type RenderRepliesProps = {
 };
 
 export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate }) => {
+  const { data: session }: any = useSession();
+
   const { data, isLoading, error, isValidating } = useSWR({ url: '/api/replies', id }, fetchReplies, {
     refreshInterval: 30000,
   });
+
+  const handleDelete = (id: string) => {
+    if (!session?.accessToken) {
+      alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {
+        autoClose: true,
+        keepAfterRouteChange: false,
+      });
+      return;
+    }
+    const res = deleteMumble(id, session?.accessToken);
+    console.log('res', res);
+  };
 
   useEffect(() => {
     setValidate(isValidating);
@@ -41,6 +58,7 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate })
                 likedByUser={mumble.likedByUser}
                 replyCount={mumble.replyCount}
                 type={mumble.type}
+                handleDeleteCallback={handleDelete}
               />
             ))}
         </>
