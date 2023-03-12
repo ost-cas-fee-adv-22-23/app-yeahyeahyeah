@@ -8,9 +8,7 @@ import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { useSession } from 'next-auth/react';
 
-const quantity = 20;
-
-export default function Page() {
+export default function Page({ quantity }: { quantity: number }) {
   const { data: session }: any = useSession();
   const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -38,7 +36,7 @@ export default function Page() {
 
   useEffect(() => {
     if (isOnScreen && quantityTotal - quantity * 2 >= offset) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset]);
+  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, quantity]);
 
   const pages: any = [];
 
@@ -62,15 +60,14 @@ export default function Page() {
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
+  const quantity = 20;
   const fetch = await fetchMumbles({ limit: quantity });
 
   console.log(fetch);
 
   return {
     props: {
-      fallback: {
-        '/api/mumbles': fetch,
-      },
+      quantity,
     },
   };
 };
