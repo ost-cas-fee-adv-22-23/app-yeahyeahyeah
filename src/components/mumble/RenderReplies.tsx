@@ -1,10 +1,13 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { MumblePost } from './MumblePost';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
 import { fetchReplies } from '@/services/fetchReplies';
+import { useSession } from 'next-auth/react';
+import { alertService } from '@/services';
+import { deleteMumble } from '@/services/deleteMumble';
 
 type RenderRepliesProps = {
   id: string;
@@ -12,9 +15,29 @@ type RenderRepliesProps = {
 };
 
 export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate }) => {
+  const { data: session }: any = useSession();
+  const [interval, setInterval] = useState(30000);
+
   const { data, isLoading, error, isValidating } = useSWR({ url: '/api/replies', id }, fetchReplies, {
-    refreshInterval: 30000,
+    refreshInterval(latestData) {
+      if (latestData?.replies.length === 0) {
+        return 0;
+      }
+      return interval;
+    },
   });
+
+  const handleDelete = async (id: string) => {
+    if (!session?.accessToken) {
+      alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {
+        autoClose: true,
+        keepAfterRouteChange: false,
+      });
+      return;
+    }
+    const res = await deleteMumble(id, session?.accessToken);
+    res && setInterval(3000);
+  };
 
   useEffect(() => {
     setValidate(isValidating);
@@ -41,6 +64,7 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, setValidate })
                 likedByUser={mumble.likedByUser}
                 replyCount={mumble.replyCount}
                 type={mumble.type}
+                handleDeleteCallback={handleDelete}
               />
             ))}
         </>
