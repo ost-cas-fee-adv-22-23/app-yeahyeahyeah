@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Mumble, transformSingleMumble, QwackerSingleMumbleResponse } from './qwacker';
 
-export const fetchSingleMumble = async (params?: { id: string }) => {
+export const fetchSingleMumble = async (params?: { id: number }) => {
   const { id } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}`;
