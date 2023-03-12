@@ -24,7 +24,7 @@ export default function Page() {
     { url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken },
     fetchMumbles,
     {
-      refreshInterval: 20000,
+      refreshInterval: 5000,
     }
   );
 
@@ -34,7 +34,7 @@ export default function Page() {
 
   useEffect(() => {
     setPost(null);
-  }, [isLoading, isValidating]);
+  }, [isValidating, isLoading]);
 
   const handleIntersectionCallback = () => {
     setOffset((offset) => offset + quantity);
@@ -53,7 +53,7 @@ export default function Page() {
   const pages: any = [];
 
   for (let i = 0; i < count; i++) {
-    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} />);
+    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} token={session?.accessToken} post={post} />);
   }
 
   return (
@@ -63,21 +63,6 @@ export default function Page() {
         <Alert />
       </Container>
       <TextBoxComponent variant="write" setPost={setPost} />
-
-      {post && (
-        <MumblePost
-          key={post.id}
-          id={post.id}
-          creator={post.creator}
-          text={post.text}
-          mediaUrl={post.mediaUrl}
-          createdTimestamp={post.createdTimestamp}
-          likeCount={post.likeCount}
-          likedByUser={post.likedByUser}
-          replyCount={post.replyCount}
-          type={post.type}
-        />
-      )}
 
       {pages}
 
