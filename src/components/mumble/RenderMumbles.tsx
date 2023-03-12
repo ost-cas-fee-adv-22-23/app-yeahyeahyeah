@@ -1,45 +1,35 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { MumblePost } from './MumblePost';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
-import { useSession } from 'next-auth/react';
 import { alertService } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
 
 type RenderMumbleProps = {
   offset: number;
   limit: number;
+  token?: string;
 };
 
-export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) => {
-  const { data: session }: any = useSession();
-  const [interval, setInterval] = useState(0);
-
+export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, token }) => {
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
-  const { data, isLoading, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset }, fetchMumbles, {
-    refreshInterval(latestData) {
-      if (latestData?.mumbles.length === 0) {
-        return 0;
-      }
-      return interval;
-    },
-  });
+  const { data, isLoading, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset, token }, fetchMumbles);
 
   const handleDelete = async (id: string) => {
-    if (!session?.accessToken) {
+    if (!token) {
       alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {
         autoClose: true,
         keepAfterRouteChange: false,
       });
       return;
     }
-    const res = await deleteMumble(id, session?.accessToken);
-    res && setInterval(3000);
+    const res = await deleteMumble(id, token);
+    console.log('res', res);
   };
 
   if (error) return <ErrorBox message={error} />;
