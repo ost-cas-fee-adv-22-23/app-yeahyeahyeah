@@ -12,10 +12,9 @@ type RenderMumbleProps = {
   offset: number;
   limit: number;
   token?: string;
-  post?: Mumble | null;
 };
 
-export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, token, post }) => {
+export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, token }) => {
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
@@ -41,21 +40,6 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
         <LoadingSpinner />
       ) : (
         <>
-          {post && (
-            <MumblePost
-              key={post.id}
-              id={post.id}
-              creator={post.creator}
-              text={post.text}
-              mediaUrl={post.mediaUrl}
-              createdTimestamp={post.createdTimestamp}
-              likeCount={post.likeCount}
-              likedByUser={post.likedByUser}
-              replyCount={post.replyCount}
-              type={post.type}
-              handleDeleteCallback={handleDelete}
-            />
-          )}
           {data &&
             data.mumbles.map((mumble: Mumble) => (
               <MumblePost

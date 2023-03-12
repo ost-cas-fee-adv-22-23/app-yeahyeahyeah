@@ -11,10 +11,9 @@ import { alertService } from '@/services';
 type TextBoxComponentProps = {
   id?: string;
   variant: 'write' | 'inline' | 'start';
-  setPost?: React.Dispatch<React.SetStateAction<Mumble | null>>;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, setPost }) => {
+export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
@@ -46,7 +45,6 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     }
 
     setInputValue('');
-    setPost && setPost(res);
     setFile(null);
   };
 

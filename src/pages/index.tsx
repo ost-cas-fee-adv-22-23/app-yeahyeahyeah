@@ -3,10 +3,9 @@ import useSWR from 'swr';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, RenderMumbles, MumblePost, Alert } from '@/components';
+import { WelcomeText, TextBoxComponent, RenderMumbles, Alert } from '@/components';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
-import { Mumble } from '@/services/qwacker';
 import { useSession } from 'next-auth/react';
 
 const quantity = 20;
@@ -18,23 +17,14 @@ export default function Page() {
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
   const { isOnScreen, setIsOnScreen } = useOnScreen(ref);
-  const [post, setPost] = useState<Mumble | null>(null);
 
-  const { data, isLoading, isValidating } = useSWR(
-    { url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken },
-    fetchMumbles,
-    {
-      refreshInterval: 5000,
-    }
-  );
+  const { data } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken }, fetchMumbles, {
+    refreshInterval: 2000,
+  });
 
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);
   }, [data]);
-
-  useEffect(() => {
-    setPost(null);
-  }, [isValidating, isLoading]);
 
   const handleIntersectionCallback = () => {
     setOffset((offset) => offset + quantity);
@@ -53,7 +43,7 @@ export default function Page() {
   const pages: any = [];
 
   for (let i = 0; i < count; i++) {
-    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} token={session?.accessToken} post={post} />);
+    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} token={session?.accessToken} />);
   }
 
   return (
@@ -62,7 +52,7 @@ export default function Page() {
       <Container layout="plain">
         <Alert />
       </Container>
-      <TextBoxComponent variant="write" setPost={setPost} />
+      <TextBoxComponent variant="write" />
 
       {pages}
 
