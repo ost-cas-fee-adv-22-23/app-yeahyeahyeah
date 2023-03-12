@@ -7,10 +7,12 @@ import { WelcomeText, TextBoxComponent, RenderMumbles, MumblePost, Alert } from 
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { Mumble } from '@/services/qwacker';
+import { useSession } from 'next-auth/react';
 
 const quantity = 2;
 
 export default function Page() {
+  const { data: session }: any = useSession();
   const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
   const [quantityTotal, setQuantityTotal] = useState(0);
@@ -18,9 +20,13 @@ export default function Page() {
   const { isOnScreen, setIsOnScreen } = useOnScreen(ref);
   const [post, setPost] = useState<Mumble | null>(null);
 
-  const { data, isLoading, isValidating } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0 }, fetchMumbles, {
-    refreshInterval: 20000,
-  });
+  const { data, isLoading, isValidating } = useSWR(
+    { url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken },
+    fetchMumbles,
+    {
+      refreshInterval: 20000,
+    }
+  );
 
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);

@@ -10,6 +10,8 @@ import {
   User,
   IconLink,
   Paragraph,
+  Cancel,
+  Container,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/services/fetchUser';
@@ -23,6 +25,7 @@ export interface MumbleProps {
   likedByUser: boolean;
   replyCount: number;
   type: string;
+  handleDeleteCallback?: (id: string) => void;
 }
 
 export const MumblePost: React.FC<MumbleProps> = ({
@@ -35,6 +38,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
   likedByUser,
   replyCount,
   type,
+  handleDeleteCallback,
 }) => {
   const { data: session }: any = useSession();
 
@@ -48,74 +52,88 @@ export const MumblePost: React.FC<MumbleProps> = ({
     console.log('Timestamp clicked');
   };
 
+  const handleDelete = (id: string) => {
+    handleDeleteCallback && handleDeleteCallback(id);
+  };
+
   return (
     <ArticleMumble id={id}>
       {type === 'post' ? (
-        <ArticleHeader>
-          {type === 'post' && (
-            <Link href={`/profile/${creator}`} title={creator} target="_self">
-              <Avatar
-                key={data ? data.id : ''}
-                variant="medium"
-                src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
-                alt={data ? data.userName : 'username'}
-              />
-            </Link>
-          )}
-          <ArticleHeaderContent>
-            <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="large" />
-            <ArticleDatas>
-              <IconLink
-                label={data ? data.userName : 'username'}
-                type="username"
-                color="violet"
-                href={`/profile/${id}`}
-                legacyBehavior
-                passHref
-                linkComponent={Link}
-              />
-              <IconLink
-                label={elapsedTime(createdTimestamp)}
-                type="timestamp"
-                color="slate"
-                onClick={handleClickTimestamp}
-              />
-            </ArticleDatas>
-          </ArticleHeaderContent>
-        </ArticleHeader>
+        <Container layout="plain">
+          <div tw="flex justify-between">
+            <ArticleHeader>
+              {type === 'post' && (
+                <Link href={`/profile/${creator}`} title={creator} target="_self">
+                  <Avatar
+                    key={data ? data.id : ''}
+                    variant="medium"
+                    src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+                    alt={data ? data.userName : 'username'}
+                  />
+                </Link>
+              )}
+              <ArticleHeaderContent>
+                <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="large" />
+                <ArticleDatas>
+                  <IconLink
+                    label={data ? data.userName : 'username'}
+                    type="username"
+                    color="violet"
+                    href={`/profile/${id}`}
+                    legacyBehavior
+                    passHref
+                    linkComponent={Link}
+                  />
+                  <IconLink
+                    label={elapsedTime(createdTimestamp)}
+                    type="timestamp"
+                    color="slate"
+                    onClick={handleClickTimestamp}
+                  />
+                </ArticleDatas>
+              </ArticleHeaderContent>
+            </ArticleHeader>
+            <Cancel onClick={() => handleDelete(id)} />
+          </div>
+        </Container>
       ) : (
-        <ArticleHeaderReply>
-          {type === 'reply' && (
-            <Link href={`/profile/${creator}`} title={creator} target="_self">
-              <Avatar
-                key={data ? data.id : ''}
-                variant="small"
-                src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
-                alt={data ? data.userName : 'username'}
-              />
-            </Link>
-          )}
-          <ArticleHeaderContent>
-            <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
-            <ArticleDatas>
-              <IconLink
-                label={data ? data.userName : 'username'}
-                type="username"
-                color="violet"
-                href={`/profile/${id}`}
-                legacyBehavior
-                passHref
-                linkComponent={Link}
-              />
-              <IconLink
-                label={elapsedTime(createdTimestamp)}
-                type="timestamp"
-                color="slate"
-                onClick={handleClickTimestamp}
-              />
-            </ArticleDatas>
-          </ArticleHeaderContent>
-        </ArticleHeaderReply>
+        <Container layout="plain">
+          <div tw="flex justify-between">
+            <ArticleHeaderReply>
+              {type === 'reply' && (
+                <Link href={`/profile/${creator}`} title={creator} target="_self">
+                  <Avatar
+                    key={data ? data.id : ''}
+                    variant="small"
+                    src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+                    alt={data ? data.userName : 'username'}
+                  />
+                </Link>
+              )}
+              <ArticleHeaderContent>
+                <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
+                <ArticleDatas>
+                  <IconLink
+                    label={data ? data.userName : 'username'}
+                    type="username"
+                    color="violet"
+                    href={`/profile/${id}`}
+                    legacyBehavior
+                    passHref
+                    linkComponent={Link}
+                  />
+                  <IconLink
+                    label={elapsedTime(createdTimestamp)}
+                    type="timestamp"
+                    color="slate"
+                    onClick={handleClickTimestamp}
+                  />
+                </ArticleDatas>
+              </ArticleHeaderContent>
+            </ArticleHeaderReply>
+            <Cancel onClick={() => handleDelete(id)} />
+          </div>
+        </Container>
       )}
       <Paragraph text={text} mbSpacing="16" />
       {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}

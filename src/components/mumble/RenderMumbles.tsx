@@ -5,6 +5,9 @@ import { fetchMumbles } from '@/services/fetchMumbles';
 import { MumblePost } from './MumblePost';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
+import { useSession } from 'next-auth/react';
+import { alertService } from '@/services';
+import { deleteMumble } from '@/services/deleteMumble';
 
 type RenderMumbleProps = {
   offset: number;
@@ -12,10 +15,24 @@ type RenderMumbleProps = {
 };
 
 export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) => {
+  const { data: session }: any = useSession();
+
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
   const { data, isLoading, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset }, fetchMumbles);
+
+  const handleDelete = (id: string) => {
+    if (!session?.accessToken) {
+      alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {
+        autoClose: true,
+        keepAfterRouteChange: false,
+      });
+      return;
+    }
+    const res = deleteMumble(id, session?.accessToken);
+    console.log('res', res);
+  };
 
   if (error) return <ErrorBox message={error} />;
 
@@ -38,6 +55,7 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit }) =>
                 likedByUser={mumble.likedByUser}
                 replyCount={mumble.replyCount}
                 type={mumble.type}
+                handleDeleteCallback={handleDelete}
               />
             ))}
         </>

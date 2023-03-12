@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { transformMumble, QwackerMumbleResponse, Mumble } from './qwacker';
 
-export const fetchMumbles = async (params?: { limit?: number; offset?: number; newerThanMumbleId?: string }) => {
-  const { limit, offset, newerThanMumbleId } = params || {};
+export const fetchMumbles = async (params?: {
+  limit?: number;
+  offset?: number;
+  newerThanMumbleId?: string;
+  token?: string;
+}) => {
+  const { limit, offset, newerThanMumbleId, token } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
     limit: limit?.toString() || '10',
@@ -22,6 +27,7 @@ export const fetchMumbles = async (params?: { limit?: number; offset?: number; n
     await instance.get(url, {
       headers: {
         'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     })
   ).data as QwackerMumbleResponse;
