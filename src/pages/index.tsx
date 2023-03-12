@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { SWRConfig } from 'swr';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -8,7 +8,7 @@ import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { useSession } from 'next-auth/react';
 
-export default function Page({ quantity }: { quantity: number }) {
+export default function Page({ quantity, fallback }: { quantity: number; fallback: any }) {
   const { data: session }: any = useSession();
   const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -19,6 +19,8 @@ export default function Page({ quantity }: { quantity: number }) {
   const { data } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken }, fetchMumbles, {
     refreshInterval: 2000,
   });
+
+  console.log('fallback', fallback);
 
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);
@@ -45,29 +47,34 @@ export default function Page({ quantity }: { quantity: number }) {
   }
 
   return (
-    <Container layout="plain">
-      <WelcomeText />
+    <SWRConfig value={fallback}>
       <Container layout="plain">
-        <Alert />
+        <WelcomeText />
+        <Container layout="plain">
+          <Alert />
+        </Container>
+        <TextBoxComponent variant="write" />
+
+        {pages}
+
+        <div key="last" tw="invisible" ref={ref} />
       </Container>
-      <TextBoxComponent variant="write" />
-
-      {pages}
-
-      <div key="last" tw="invisible" ref={ref} />
-    </Container>
+    </SWRConfig>
   );
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
   const quantity = 20;
-  const fetch = await fetchMumbles({ limit: quantity });
+  const fetch = await fetchMumbles({ limit: quantity, offset: 0 });
 
   console.log(fetch);
 
   return {
     props: {
       quantity,
+      fallback: {
+        '/api/article': fetch,
+      },
     },
   };
 };

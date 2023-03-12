@@ -20,6 +20,8 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
 
   const { data, isLoading, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset, token }, fetchMumbles);
 
+  data && console.log('data', data);
+
   const handleDelete = async (id: string) => {
     if (!token) {
       alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {

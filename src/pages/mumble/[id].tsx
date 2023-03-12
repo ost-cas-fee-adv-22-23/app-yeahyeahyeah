@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import useSWR from 'swr';
+import useSWR, { SWRConfig } from 'swr';
 import tw from 'twin.macro';
 import { Alert, MumbleDetail, MumblePost, TextBoxComponent } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -11,6 +11,7 @@ import { RenderReplies } from '@/components/mumble/RenderReplies';
 
 type Props = {
   id: string;
+  fallback: any;
 };
 
 const swrConfig = {
@@ -19,10 +20,12 @@ const swrConfig = {
   revalidateOnReconnect: false,
 };
 
-export default function MumblePage({ id }: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
+export default function MumblePage({ id, fallback }: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
   const { data: session }: any = useSession();
   const [reply, setReply] = useState<Mumble | null>(null);
   const [validate, setValidate] = useState(false);
+
+  console.log('fallback', fallback);
 
   const { data: mumble } = useSWR({ url: '/api/singleMumble', id }, fetchSingleMumble, swrConfig);
 
@@ -37,39 +40,46 @@ export default function MumblePage({ id }: Props): InferGetServerSidePropsType<t
   }, [validate]);
 
   return (
-    <Container layout="box">
-      {mumble && <MumbleDetail mumble={mumble} user={user} />}
-      <Container layout="plain">
-        <Alert />
+    <SWRConfig value={fallback}>
+      <Container layout="box">
+        {mumble && <MumbleDetail mumble={mumble} user={user} />}
+        <Container layout="plain">
+          <Alert />
+        </Container>
+        <TextBoxComponent id={id} variant="inline" />
+
+        {reply && (
+          <MumblePost
+            key={reply.id}
+            id={reply.id}
+            creator={reply.creator}
+            text={reply.text}
+            mediaUrl={reply.mediaUrl}
+            createdTimestamp={reply.createdTimestamp}
+            likeCount={reply.likeCount}
+            likedByUser={reply.likedByUser}
+            replyCount={reply.replyCount}
+            type={reply.type}
+          />
+        )}
+
+        <RenderReplies id={id} setValidate={setValidate} />
       </Container>
-      <TextBoxComponent id={id} variant="inline" />
-
-      {reply && (
-        <MumblePost
-          key={reply.id}
-          id={reply.id}
-          creator={reply.creator}
-          text={reply.text}
-          mediaUrl={reply.mediaUrl}
-          createdTimestamp={reply.createdTimestamp}
-          likeCount={reply.likeCount}
-          likedByUser={reply.likedByUser}
-          replyCount={reply.replyCount}
-          type={reply.type}
-        />
-      )}
-
-      <RenderReplies id={id} setValidate={setValidate} />
-    </Container>
+    </SWRConfig>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query: { id } }) => {
-  console.log({ id });
+  const fetch = await fetchSingleMumble({ id: id as string });
+
+  console.log(fetch);
 
   return {
     props: {
       id,
+      fallback: {
+        '/api/singleMumble': fetch,
+      },
     },
   };
 };
