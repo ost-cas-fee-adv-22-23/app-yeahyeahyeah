@@ -3,6 +3,7 @@ import useSWR, { useSWRConfig } from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { MumblePost } from './MumblePost';
+import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
 import { alertService } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';

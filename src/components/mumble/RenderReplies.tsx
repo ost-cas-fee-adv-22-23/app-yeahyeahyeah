@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import useSWR, { KeyedMutator } from 'swr';
+import React from 'react';
+import { KeyedMutator } from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { MumblePost } from './MumblePost';
+import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
-import { fetchReplies } from '@/services/fetchReplies';
 import { useSession } from 'next-auth/react';
 import { alertService } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
