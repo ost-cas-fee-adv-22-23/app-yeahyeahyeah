@@ -44,6 +44,7 @@ export default function MumblePage({
   const { data, error, mutate, isLoading } = useSWR({ url: '/api/replies', id, token: session?.accessToken }, fetchReplies, {
     fallbackData: fallbackReplies['/api/replies'],
     revalidateOnFocus: false,
+    refreshInterval: 10000,
   });
 
   return (
