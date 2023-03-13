@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useSWR from 'swr';
-import { Mumble } from '@/services/qwacker';
 import { MumblePost } from './MumblePost';
-import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
 import { fetchReplies } from '@/services/fetchReplies';
 import { useSession } from 'next-auth/react';

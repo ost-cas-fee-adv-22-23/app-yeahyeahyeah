@@ -14,13 +14,20 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { MumbleLike } from './MumbleLike';
-import { Mumble } from '@/services';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/services/fetchUser';
-
-type MumbleProps = {
+export interface MumbleProps {
+  id: string;
+  creator: string;
+  text: string;
+  mediaUrl: string;
+  createdTimestamp: number;
+  likeCount: number;
+  likedByUser: boolean;
+  replyCount: number;
+  type: string;
   handleDeleteCallback?: (id: string) => void;
-} & Mumble;
+}
 
 export const MumblePost: React.FC<MumbleProps> = ({
   id,
