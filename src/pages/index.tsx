@@ -8,7 +8,7 @@ import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { useSession } from 'next-auth/react';
 
-export default function Page({ quantity }: { quantity: number }) {
+export default function Page({ quantity, fallback }: { quantity: number; fallback: any }) {
   const { data: session }: any = useSession();
   const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -41,7 +41,7 @@ export default function Page({ quantity }: { quantity: number }) {
   const pages: any = [];
 
   for (let i = 0; i < count; i++) {
-    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} token={session?.accessToken} />);
+    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} token={session?.accessToken} fallback={fallback} />);
   }
 
   return (
@@ -61,13 +61,16 @@ export default function Page({ quantity }: { quantity: number }) {
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
   const quantity = 20;
-  const fetch = await fetchMumbles({ limit: quantity });
+  const fetch = await fetchMumbles({ limit: quantity, offset: 0 });
 
   console.log(fetch);
 
   return {
     props: {
       quantity,
+      fallback: {
+        '/api/mumbles': fetch,
+      },
     },
   };
 };

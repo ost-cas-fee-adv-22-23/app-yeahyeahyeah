@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import useSWR from 'swr';
 import tw from 'twin.macro';
@@ -8,9 +8,12 @@ import { fetchUser, Mumble } from '@/services';
 import { useSession } from 'next-auth/react';
 import { fetchSingleMumble } from '@/services/fetchSingleMumble';
 import { RenderReplies } from '@/components/mumble/RenderReplies';
+import { fetchReplies } from '@/services/fetchReplies';
 
 type Props = {
   id: string;
+  fallback: any;
+  fallbackReplies: any;
 };
 
 const swrConfig = {
@@ -19,22 +22,23 @@ const swrConfig = {
   revalidateOnReconnect: false,
 };
 
-export default function MumblePage({ id }: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
+export default function MumblePage({
+  id,
+  fallback,
+  fallbackReplies,
+}: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
   const { data: session }: any = useSession();
-  const [reply, setReply] = useState<Mumble | null>(null);
-  const [validate, setValidate] = useState(false);
 
-  const { data: mumble } = useSWR({ url: '/api/singleMumble', id }, fetchSingleMumble, swrConfig);
+  const { data: mumble } = useSWR({ url: '/api/singleMumble', id }, fetchSingleMumble, {
+    ...swrConfig,
+    fallbackData: fallback['/api/singleMumble'],
+  });
 
   const { data: user }: any = useSWR(
     { url: '/api/user', id: mumble?.creator, token: session?.accessToken },
     fetchUser,
     swrConfig
   );
-
-  useEffect(() => {
-    setReply(null);
-  }, [validate]);
 
   return (
     <Container layout="box">
@@ -44,32 +48,26 @@ export default function MumblePage({ id }: Props): InferGetServerSidePropsType<t
       </Container>
       <TextBoxComponent id={id} variant="inline" />
 
-      {reply && (
-        <MumblePost
-          key={reply.id}
-          id={reply.id}
-          creator={reply.creator}
-          text={reply.text}
-          mediaUrl={reply.mediaUrl}
-          createdTimestamp={reply.createdTimestamp}
-          likeCount={reply.likeCount}
-          likedByUser={reply.likedByUser}
-          replyCount={reply.replyCount}
-          type={reply.type}
-        />
-      )}
-
-      <RenderReplies id={id} setValidate={setValidate} />
+      <RenderReplies id={id} fallback={fallbackReplies} />
     </Container>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query: { id } }) => {
-  console.log({ id });
+  const fetch = await fetchSingleMumble({ id: id as string });
+  const replies = await fetchReplies({ id: id as string });
+
+  console.log(fetch);
 
   return {
     props: {
       id,
+      fallback: {
+        '/api/singleMumble': fetch,
+      },
+      fallbackReplies: {
+        '/api/replies': replies,
+      },
     },
   };
 };
