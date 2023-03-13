@@ -84,9 +84,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                   <Avatar
                     key={data ? data.id : ''}
                     variant="medium"
-                    src={
-                      data?.avatarUrl !== '' ? data?.avatarUrl : 'https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif'
-                    }
+                    src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
                     alt={data ? data.userName : 'username'}
                   />
                 )}
