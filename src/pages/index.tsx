@@ -16,9 +16,16 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const ref = useRef(null);
   const { isOnScreen } = useOnScreen(ref);
 
-  const { data } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken }, fetchMumbles, {
-    refreshInterval: 2000,
-  });
+  const { data, mutate } = useSWR(
+    { url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken },
+    fetchMumbles,
+    {
+      refreshInterval: 30000,
+      revalidateOnFocus: false,
+    }
+  );
+
+  console.log('data', data);
 
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);
@@ -49,7 +56,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
       <Container layout="plain">
         <Alert />
       </Container>
-      <TextBoxComponent variant="write" />
+      <TextBoxComponent variant="write" mutate={mutate} data={data} />
 
       {pages}
 

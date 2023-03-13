@@ -11,9 +11,11 @@ import { alertService } from '@/services';
 type TextBoxComponentProps = {
   id?: string;
   variant: 'write' | 'inline' | 'start';
+  mutate?: any;
+  data?: any;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant }) => {
+export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate, data }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
@@ -42,6 +44,8 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant 
       res = await postReply(id, inputValue, file, session?.accessToken);
     } else {
       res = await postMumble(inputValue, file, session?.accessToken);
+      console.log('res', res);
+      mutate({ ...data, mumbles: [res, ...data.mumbles] });
     }
 
     setInputValue('');
