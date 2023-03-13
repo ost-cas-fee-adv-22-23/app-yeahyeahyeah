@@ -41,7 +41,7 @@ export default function MumblePage({
   );
 
   const { data, error, mutate, isLoading } = useSWR({ url: '/api/replies', id }, fetchReplies, {
-    fallbackData: fallback['/api/replies'],
+    fallbackData: fallbackReplies['/api/replies'],
     revalidateOnFocus: false,
   });
 

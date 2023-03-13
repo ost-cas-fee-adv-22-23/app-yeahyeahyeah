@@ -51,6 +51,7 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
 
   return (
     <>
+      {isLoading && <LoadingSpinner />}
       {data &&
         data.mumbles.map((mumble: Mumble) => (
           <MumblePost
@@ -67,7 +68,6 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
             handleDeleteCallback={handleDelete}
           />
         ))}
-      {isLoading && <LoadingSpinner />}
     </>
   );
 };
