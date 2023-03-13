@@ -11,6 +11,7 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { Mumble } from '@/services';
 import { elapsedTime } from '@/utils';
+import { MumbleLike } from './MumbleLike';
 
 type MumbleSingleProps = {
   mumble: Mumble;
@@ -51,13 +52,13 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
       <ArticleInteraction>
         <CommentButton
           type="comment"
-          quantity={64}
+          quantity={mumble.replyCount}
           href={`/mumble/${mumble.id}`}
           legacyBehavior
           passHref
           linkComponent={Link}
         />
-        <LikeButton favourite={false} quantity={42} onClick={() => console.log('Like clicked')} />
+        <MumbleLike id={mumble.id} favourite={mumble.likedByUser} quantity={mumble.likeCount} />
       </ArticleInteraction>
     </ArticleMumble>
   );

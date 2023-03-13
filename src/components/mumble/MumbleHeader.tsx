@@ -27,7 +27,7 @@ export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
         />
       </ImageWrapper>
       <AvatarWrapper>
-        <Avatar variant="xlarge" src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif" alt="Username" />
+        <Avatar variant="xlarge" src="/avatar_default.png/" alt="Username" />
       </AvatarWrapper>
       <User label={'User Name'} variant="xlarge" />
       <InteractionWrapper>

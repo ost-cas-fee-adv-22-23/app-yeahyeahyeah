@@ -2,9 +2,9 @@ import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import useSWR from 'swr';
 import tw from 'twin.macro';
-import { Alert, MumbleDetail, MumblePost, TextBoxComponent } from '@/components';
+import { Alert, MumbleDetail, TextBoxComponent } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { fetchUser, Mumble } from '@/services';
+import { fetchUser } from '@/services';
 import { useSession } from 'next-auth/react';
 import { fetchSingleMumble } from '@/services/fetchSingleMumble';
 import { RenderReplies } from '@/components/mumble/RenderReplies';
@@ -32,6 +32,7 @@ export default function MumblePage({
   const { data: mumble } = useSWR({ url: '/api/singleMumble', id }, fetchSingleMumble, {
     ...swrConfig,
     fallbackData: fallback['/api/singleMumble'],
+    refreshInterval: 10000,
   });
 
   const { data: user }: any = useSWR(
@@ -40,15 +41,19 @@ export default function MumblePage({
     swrConfig
   );
 
+  const { data, error, mutate, isLoading } = useSWR({ url: '/api/replies', id }, fetchReplies, {
+    fallbackData: fallbackReplies['/api/replies'],
+    revalidateOnFocus: false,
+  });
+
   return (
     <Container layout="box">
       {mumble && <MumbleDetail mumble={mumble} user={user} />}
       <Container layout="plain">
         <Alert />
       </Container>
-      <TextBoxComponent id={id} variant="inline" />
-
-      <RenderReplies id={id} fallback={fallbackReplies} />
+      <TextBoxComponent id={id} variant="inline" mutate={mutate} data={data} />
+      <RenderReplies data={data} error={error} isLoading={isLoading} mutate={mutate} />
     </Container>
   );
 }

@@ -1,26 +1,36 @@
-import React, { useEffect } from 'react';
-import useSWR from 'swr';
+import React from 'react';
+import { KeyedMutator } from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { MumblePost } from './MumblePost';
-import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { ErrorBox } from '../error/ErrorBox';
-import { fetchReplies } from '@/services/fetchReplies';
 import { useSession } from 'next-auth/react';
 import { alertService } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
+import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 type RenderRepliesProps = {
-  id: string;
-  fallback?: any;
+  data: { replies: Mumble[]; count: number };
+  mutate: KeyedMutator<{
+    count: number;
+    replies: {
+      createdTimestamp: number;
+      text: string;
+      id: string;
+      creator: string;
+      mediaUrl: string;
+      likeCount: number;
+      likedByUser: boolean;
+      replyCount: number;
+      type: string;
+      mediaType: string;
+    }[];
+  }>;
+  error: any;
+  isLoading: boolean;
 };
 
-export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, fallback }) => {
+export const RenderReplies: React.FC<RenderRepliesProps> = ({ data, mutate, error, isLoading }) => {
   const { data: session }: any = useSession();
-
-  const { data, error } = useSWR({ url: '/api/replies', id }, fetchReplies, {
-    refreshInterval: 2000,
-    fallbackData: fallback['/api/replies'],
-  });
 
   const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
@@ -31,12 +41,21 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ id, fallback }) =>
       return;
     }
     const res = await deleteMumble(id, session?.accessToken);
+
+    // TODO: Is this a magic number ?
+    if (res.status === 204) {
+      const newData = data.replies.filter((mumble: Mumble) => mumble.id !== id);
+      data.replies = newData;
+
+      mutate({ ...data });
+    }
   };
 
   if (error) return <ErrorBox message={error} />;
 
   return (
     <>
+      {isLoading && <LoadingSpinner />}
       {data &&
         data.replies.map((mumble: any) => (
           <MumblePost

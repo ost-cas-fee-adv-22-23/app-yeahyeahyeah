@@ -14,11 +14,16 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const [offset, setOffset] = useState(0);
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
-  const { isOnScreen, setIsOnScreen } = useOnScreen(ref);
+  const { isOnScreen } = useOnScreen(ref);
 
-  const { data } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken }, fetchMumbles, {
-    refreshInterval: 2000,
-  });
+  const { data, mutate } = useSWR(
+    { url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken },
+    fetchMumbles,
+    {
+      refreshInterval: 30000,
+      revalidateOnFocus: false,
+    }
+  );
 
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);
@@ -27,7 +32,6 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const handleIntersectionCallback = () => {
     setOffset((offset) => offset + quantity);
     setCount((count) => count + 1);
-    setIsOnScreen(false);
   };
 
   const handleIntersectionCallbackDebounced = debounce(async () => {
@@ -35,7 +39,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   }, 800);
 
   useEffect(() => {
-    if (isOnScreen && quantityTotal - quantity * 2 >= offset) handleIntersectionCallbackDebounced();
+    if (isOnScreen && quantityTotal - quantity >= offset) handleIntersectionCallbackDebounced();
   }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, quantity]);
 
   const pages: any = [];
@@ -50,7 +54,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
       <Container layout="plain">
         <Alert />
       </Container>
-      <TextBoxComponent variant="write" />
+      <TextBoxComponent variant="write" mutate={mutate} data={data} />
 
       {pages}
 
@@ -60,7 +64,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
-  const quantity = 20;
+  const quantity = 50;
   const fetch = await fetchMumbles({ limit: quantity, offset: 0 });
 
   console.log(fetch);

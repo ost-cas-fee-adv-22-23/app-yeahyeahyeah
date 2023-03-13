@@ -5,7 +5,6 @@ import useSWR from 'swr';
 import {
   Avatar,
   CommentButton,
-  LikeButton,
   ImageContainer,
   User,
   IconLink,
@@ -13,6 +12,7 @@ import {
   Cancel,
   Container,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { MumbleLike } from './MumbleLike';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/services/fetchUser';
 export interface MumbleProps {
@@ -41,7 +41,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
   handleDeleteCallback,
 }) => {
   const { data: session }: any = useSession();
-
   const { data }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -62,18 +61,16 @@ export const MumblePost: React.FC<MumbleProps> = ({
         <Container layout="plain">
           <div tw="flex justify-between">
             <ArticleHeader>
-              {type === 'post' && (
-                <Link href={`/profile/${creator}`} title={creator} target="_self">
-                  <Avatar
-                    key={data ? data.id : ''}
-                    variant="medium"
-                    src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
-                    alt={data ? data.userName : 'username'}
-                  />
-                </Link>
-              )}
+              <Link href={`/profile/${creator}`} title={creator} target="_self">
+                <Avatar
+                  key={data ? data.id : ''}
+                  variant="medium"
+                  src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
+                  alt={data ? data.userName : 'username'}
+                />
+              </Link>
               <ArticleHeaderContent>
-                <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="large" />
+                <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
                 <ArticleDatas>
                   <IconLink
                     label={data ? data.userName : 'username'}
@@ -93,7 +90,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 </ArticleDatas>
               </ArticleHeaderContent>
             </ArticleHeader>
-            <Cancel onClick={() => handleDelete(id)} />
+            {creator === session?.user?.id && <Cancel tw="fill-slate-300" onClick={() => handleDelete(id)} />}
           </div>
         </Container>
       ) : (
@@ -105,7 +102,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                   <Avatar
                     key={data ? data.id : ''}
                     variant="small"
-                    src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+                    src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
                     alt={data ? data.userName : 'username'}
                   />
                 </Link>
@@ -131,7 +128,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 </ArticleDatas>
               </ArticleHeaderContent>
             </ArticleHeaderReply>
-            <Cancel onClick={() => handleDelete(id)} />
+            {creator === session?.user?.id && <Cancel tw="fill-slate-300" onClick={() => handleDelete(id)} />}
           </div>
         </Container>
       )}
@@ -146,15 +143,16 @@ export const MumblePost: React.FC<MumbleProps> = ({
           passHref
           linkComponent={Link}
         />
-        <LikeButton favourite={likedByUser} quantity={likeCount} onClick={() => console.log('Like clicked')} />
+        <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
       </ArticleInteraction>
     </ArticleMumble>
   );
 };
 
 const ArticleMumble = tw.article`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48 rounded-lg mb-16`;
-const ArticleHeader = tw.div`flex flex-row items-center gap-16 w-full relative left-0 sm:-left-[86px] mb-16 sm:(mb-32)`;
+const ArticleHeader = tw.div`flex flex-row items-center gap-16 w-full relative -left-16 sm:-left-[88px] mb-16 sm:(mb-32)`;
 const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relative left-0 mb-16 sm:(mb-32)`;
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-col gap-8 sm:(flex-row gap-16)`;
 const ArticleInteraction = tw.div`flex flex-row`;
+const AvatarLoader = tw.div`h-70 w-70 rounded-full flex justify-center items-center bg-violet-200 border-4 border-slate-300`;
