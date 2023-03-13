@@ -42,10 +42,10 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
 
     if (id) {
       res = await postReply(id, inputValue, file, session?.accessToken);
+      res && mutate({ ...data, replies: [res, ...data.replies] });
     } else {
       res = await postMumble(inputValue, file, session?.accessToken);
-      console.log('res', res);
-      mutate({ ...data, mumbles: [res, ...data.mumbles] });
+      res && mutate({ ...data, mumbles: [res, ...data.mumbles] });
     }
 
     setInputValue('');

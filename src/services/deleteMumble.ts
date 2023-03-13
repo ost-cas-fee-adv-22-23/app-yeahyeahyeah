@@ -16,7 +16,6 @@ export const deleteMumble = async (id: string, accessToken?: string) => {
       throw new Error('Something was not okay');
     }
 
-    console.log('response', response);
     return response;
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : 'Could not post mumble');

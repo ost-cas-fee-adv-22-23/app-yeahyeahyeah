@@ -40,15 +40,19 @@ export default function MumblePage({
     swrConfig
   );
 
+  const { data, error, mutate, isLoading } = useSWR({ url: '/api/replies', id }, fetchReplies, {
+    fallbackData: fallback['/api/replies'],
+    revalidateOnFocus: false,
+  });
+
   return (
     <Container layout="box">
       {mumble && <MumbleDetail mumble={mumble} user={user} />}
       <Container layout="plain">
         <Alert />
       </Container>
-      <TextBoxComponent id={id} variant="inline" />
-
-      <RenderReplies id={id} fallback={fallbackReplies} />
+      <TextBoxComponent id={id} variant="inline" mutate={mutate} data={data} />
+      <RenderReplies data={data} error={error} isLoading={isLoading} mutate={mutate} />
     </Container>
   );
 }
