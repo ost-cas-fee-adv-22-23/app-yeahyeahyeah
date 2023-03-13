@@ -5,8 +5,8 @@ export const likeMumble = async (params?: { id: string; token: string }) => {
   const idParams = id ? `${id}` : '';
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${idParams}/likes`;
 
-  await axios
-    .put(
+  try {
+    const response = await axios.put(
       url,
       {},
       {
@@ -15,9 +15,13 @@ export const likeMumble = async (params?: { id: string; token: string }) => {
           Authorization: `Bearer ${token}`,
         },
       }
-    )
-    .then((response) => console.log('Like mumble success', response.status))
-    .catch((error) => {
-      console.error('There was an error!', error);
-    });
+    );
+    if (!response) {
+      throw new Error('Something was not okay.');
+    }
+
+    return response;
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : 'Could not like mumble');
+  }
 };
