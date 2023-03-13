@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { MumblePost } from './MumblePost';
@@ -19,9 +19,13 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
-  const { data, error, isLoading } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset, token }, fetchMumbles, {
-    fallbackData: fallback['/api/mumbles'],
-  });
+  const { data, error, isLoading, mutate } = useSWR(
+    { url: '/api/mumbles', limit: _limit, offset: _offset, token },
+    fetchMumbles,
+    {
+      fallbackData: fallback['/api/mumbles'],
+    }
+  );
 
   const handleDelete = async (id: string) => {
     if (!token) {
@@ -32,7 +36,14 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
       return;
     }
     const res = await deleteMumble(id, token);
-    console.log('res', res);
+
+    // TODO: Is this a magic number ?
+    if (res.status === 204) {
+      const newData = data.mumbles.filter((mumble: Mumble) => mumble.id !== id);
+      data.mumbles = newData;
+
+      mutate({ ...data });
+    }
   };
 
   if (error) return <ErrorBox message={error} />;
