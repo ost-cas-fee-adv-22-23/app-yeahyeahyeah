@@ -12,7 +12,6 @@ import {
   Cancel,
   Container,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { MumbleLike } from './MumbleLike';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/services/fetchUser';

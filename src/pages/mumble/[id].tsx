@@ -32,6 +32,7 @@ export default function MumblePage({
   const { data: mumble } = useSWR({ url: '/api/singleMumble', id }, fetchSingleMumble, {
     ...swrConfig,
     fallbackData: fallback['/api/singleMumble'],
+    refreshInterval: 10000,
   });
 
   const { data: user }: any = useSWR(
