@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
+import React, { useMemo } from 'react';
+import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { MumblePost } from './MumblePost';
 import { ErrorBox } from '../error/ErrorBox';
 import { alertService } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
+import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 type RenderMumbleProps = {
   offset: number;

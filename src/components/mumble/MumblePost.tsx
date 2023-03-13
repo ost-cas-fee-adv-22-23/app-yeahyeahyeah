@@ -63,18 +63,12 @@ export const MumblePost: React.FC<MumbleProps> = ({
           <div tw="flex justify-between">
             <ArticleHeader>
               <Link href={`/profile/${creator}`} title={creator} target="_self">
-                {isLoading ? (
-                  <AvatarLoader>
-                    <LoadingSpinner />
-                  </AvatarLoader>
-                ) : (
-                  <Avatar
-                    key={data ? data.id : ''}
-                    variant="medium"
-                    src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
-                    alt={data ? data.userName : 'username'}
-                  />
-                )}
+                <Avatar
+                  key={data ? data.id : ''}
+                  variant="medium"
+                  src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
+                  alt={data ? data.userName : 'username'}
+                />
               </Link>
 
               <ArticleHeaderContent>
