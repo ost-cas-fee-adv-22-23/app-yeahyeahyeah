@@ -39,7 +39,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   }, 800);
 
   useEffect(() => {
-    if (isOnScreen && quantityTotal - quantity * 2 >= offset) handleIntersectionCallbackDebounced();
+    if (isOnScreen && quantityTotal - quantity >= offset) handleIntersectionCallbackDebounced();
   }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, quantity]);
 
   const pages: any = [];

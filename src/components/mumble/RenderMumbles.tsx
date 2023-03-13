@@ -25,6 +25,7 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
     {
       fallbackData: fallback['/api/mumbles'],
       revalidateOnFocus: false,
+      refreshInterval: 10000,
     }
   );
 
