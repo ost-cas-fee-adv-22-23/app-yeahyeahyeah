@@ -25,8 +25,6 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
     }
   );
 
-  console.log('data', data);
-
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);
   }, [data]);

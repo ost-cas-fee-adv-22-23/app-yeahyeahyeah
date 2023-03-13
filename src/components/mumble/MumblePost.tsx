@@ -42,7 +42,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
   handleDeleteCallback,
 }) => {
   const { data: session }: any = useSession();
-  const { data, isLoading }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
+  const { data }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -70,7 +70,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
                   alt={data ? data.userName : 'username'}
                 />
               </Link>
-
               <ArticleHeaderContent>
                 <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
                 <ArticleDatas>
@@ -92,7 +91,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 </ArticleDatas>
               </ArticleHeaderContent>
             </ArticleHeader>
-            <Cancel onClick={() => handleDelete(id)} />
+            {creator === session?.user?.id && <Cancel tw="fill-slate-300" onClick={() => handleDelete(id)} />}
           </div>
         </Container>
       ) : (
@@ -130,7 +129,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 </ArticleDatas>
               </ArticleHeaderContent>
             </ArticleHeaderReply>
-            <Cancel onClick={() => handleDelete(id)} />
+            {creator === session?.user?.id && <Cancel tw="fill-slate-300" onClick={() => handleDelete(id)} />}
           </div>
         </Container>
       )}
