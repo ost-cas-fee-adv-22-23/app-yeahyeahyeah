@@ -19,7 +19,7 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
-  const { data, error } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset, token }, fetchMumbles, {
+  const { data, error, isLoading } = useSWR({ url: '/api/mumbles', limit: _limit, offset: _offset, token }, fetchMumbles, {
     fallbackData: fallback['/api/mumbles'],
   });
 
@@ -55,6 +55,7 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
             handleDeleteCallback={handleDelete}
           />
         ))}
+      {isLoading && <LoadingSpinner />}
     </>
   );
 };

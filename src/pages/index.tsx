@@ -14,7 +14,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const [offset, setOffset] = useState(0);
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
-  const { isOnScreen, setIsOnScreen } = useOnScreen(ref);
+  const { isOnScreen } = useOnScreen(ref);
 
   const { data } = useSWR({ url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken }, fetchMumbles, {
     refreshInterval: 2000,
@@ -27,7 +27,6 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const handleIntersectionCallback = () => {
     setOffset((offset) => offset + quantity);
     setCount((count) => count + 1);
-    setIsOnScreen(false);
   };
 
   const handleIntersectionCallbackDebounced = debounce(async () => {
@@ -60,7 +59,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
-  const quantity = 20;
+  const quantity = 10;
   const fetch = await fetchMumbles({ limit: quantity, offset: 0 });
 
   console.log(fetch);
