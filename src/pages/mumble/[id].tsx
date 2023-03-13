@@ -29,7 +29,7 @@ export default function MumblePage({
 }: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
   const { data: session }: any = useSession();
 
-  const { data: mumble } = useSWR({ url: '/api/singleMumble', id }, fetchSingleMumble, {
+  const { data: mumble } = useSWR({ url: '/api/singleMumble', id, token: session?.accessToken }, fetchSingleMumble, {
     ...swrConfig,
     fallbackData: fallback['/api/singleMumble'],
     refreshInterval: 10000,
@@ -41,7 +41,7 @@ export default function MumblePage({
     swrConfig
   );
 
-  const { data, error, mutate, isLoading } = useSWR({ url: '/api/replies', id }, fetchReplies, {
+  const { data, error, mutate, isLoading } = useSWR({ url: '/api/replies', id, token: session?.accessToken }, fetchReplies, {
     fallbackData: fallbackReplies['/api/replies'],
     revalidateOnFocus: false,
   });
