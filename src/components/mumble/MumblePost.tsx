@@ -1,13 +1,10 @@
-import { useState } from 'react';
 import tw from 'twin.macro';
 import Link from 'next/link';
 import { elapsedTime } from '@/utils/timeConverter';
-import { likeMumble, dislikeMumble } from '@/services';
 import useSWR from 'swr';
 import {
   Avatar,
   CommentButton,
-  LikeButton,
   ImageContainer,
   User,
   IconLink,
@@ -16,20 +13,14 @@ import {
   Container,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
+import { MumbleLike } from './MumbleLike';
+import { Mumble } from '@/services';
 import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/services/fetchUser';
-export interface MumbleProps {
-  id: string;
-  creator: string;
-  text: string;
-  mediaUrl: string;
-  createdTimestamp: number;
-  likeCount: number;
-  likedByUser: boolean;
-  replyCount: number;
-  type: string;
+
+type MumbleProps = {
   handleDeleteCallback?: (id: string) => void;
-}
+} & Mumble;
 
 export const MumblePost: React.FC<MumbleProps> = ({
   id,
@@ -44,7 +35,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
   handleDeleteCallback,
 }) => {
   const { data: session }: any = useSession();
-  const [liked, setLiked] = useState<boolean>(likedByUser);
   const { data, isLoading }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -57,16 +47,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
 
   const handleDelete = (id: string) => {
     handleDeleteCallback && handleDeleteCallback(id);
-  };
-
-  const handleLike = async (id: string) => {
-    if (liked === true) {
-      await dislikeMumble({ id: id, token: session?.accessToken });
-      setLiked(false);
-    } else {
-      await likeMumble({ id: id, token: session?.accessToken });
-      setLiked(true);
-    }
   };
 
   return (
@@ -123,7 +103,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                   <Avatar
                     key={data ? data.id : ''}
                     variant="small"
-                    src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+                    src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
                     alt={data ? data.userName : 'username'}
                   />
                 </Link>
@@ -164,7 +144,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
           passHref
           linkComponent={Link}
         />
-        <LikeButton favourite={liked} quantity={likeCount} onClick={() => handleLike(id)} />
+        <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
       </ArticleInteraction>
     </ArticleMumble>
   );
