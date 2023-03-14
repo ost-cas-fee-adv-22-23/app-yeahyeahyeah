@@ -1,13 +1,7 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
 import { elapsedTime } from '@/utils';
-import {
-  Avatar,
-  IconLink,
-  ImageContainer,
-  Paragraph,
-  User,
-} from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Avatar, IconLink, ImageContainer, User } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleHeaderProps = {
   user: any;

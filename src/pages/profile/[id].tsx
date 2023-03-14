@@ -5,6 +5,7 @@ import tw from 'twin.macro';
 import { fetchUser } from '@/services';
 import { useSession } from 'next-auth/react';
 import { fetchSingleMumble } from '@/services/fetchSingleMumble';
+// import { RenderReplies } from '@/components/mumble/RenderReplies';
 import { fetchReplies } from '@/services/fetchReplies';
 
 import { data as myMumbles } from '../../../data/myMumbles.json';
@@ -39,14 +40,14 @@ export default function ProfilePage({
     setselection(value);
   };
 
-  const { data: mumble } = useSWR({ url: '/api/singleMumble', id, token: session?.accessToken }, fetchSingleMumble, {
+  const { data: mumbles } = useSWR({ url: '/api/singleMumble', id, token: session?.accessToken }, fetchSingleMumble, {
     ...swrConfig,
     fallbackData: fallback['/api/singleMumble'],
     refreshInterval: 10000,
   });
 
   const { data: user }: any = useSWR(
-    { url: '/api/user', id: mumble?.creator, token: session?.accessToken },
+    { url: '/api/user', id: mumbles?.creator, token: session?.accessToken },
     fetchUser,
     swrConfig
   );
