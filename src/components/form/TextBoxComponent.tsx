@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import useSWR from 'swr';
 import { FileRejection } from 'react-dropzone';
 import debounce from 'lodash.debounce';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -6,7 +7,8 @@ import { postMumble } from '@/services/postMumble';
 import { useSession } from 'next-auth/react';
 import { Mumble, UploadImage } from '@/services/qwacker';
 import { postReply } from '@/services/postReply';
-import { alertService } from '@/services';
+import { alertService, fetchUser } from '@/services';
+import Link from 'next/link';
 
 type TextBoxComponentProps = {
   id?: string;
@@ -23,6 +25,10 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   const { data: session }: any = useSession();
   const [file, setFile] = useState<UploadImage | null>(null);
   let res: Mumble | null = null;
+
+  const { data: user }: any = useSWR({ url: '/api/user', id: session?.user?.id, token: session?.accessToken }, fetchUser, {
+    revalidateOnFocus: false,
+  });
 
   const addText = async () => {
     if (inputValue === '') {
@@ -100,9 +106,15 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         variant={variant}
         user={{
           label: 'Hey, was läuft?',
+          username: user ? user.userName : 'username',
+          href: session?.user?.id ? `/profile/${session?.user?.id}` : '/',
           avatar: {
-            src: 'https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif',
-            alt: 'Family Guy goes Mumble',
+            src: user && user?.avatarUrl !== '' ? user?.avatarUrl : '/avatar_default.png/',
+            alt: user ? user.userName : 'username',
+            href: session?.user?.id ? `/profile/${session?.user?.id}` : '/',
+            legacyBehavior: true,
+            passHref: true,
+            linkComponent: Link,
           },
         }}
         form={{

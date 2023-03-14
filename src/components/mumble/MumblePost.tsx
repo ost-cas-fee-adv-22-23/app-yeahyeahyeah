@@ -42,9 +42,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
 }) => {
   const { data: session }: any = useSession();
   const { data }: any = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
-    revalidateIfStale: false,
     revalidateOnFocus: false,
-    revalidateOnReconnect: false,
   });
 
   const handleClickTimestamp = () => {
@@ -65,7 +63,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 <Avatar
                   key={data ? data.id : ''}
                   variant="medium"
-                  src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
+                  src={data && data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
                   alt={data ? data.userName : 'username'}
                 />
               </Link>
@@ -102,7 +100,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                   <Avatar
                     key={data ? data.id : ''}
                     variant="small"
-                    src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
+                    src={data && data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
                     alt={data ? data.userName : 'username'}
                   />
                 </Link>

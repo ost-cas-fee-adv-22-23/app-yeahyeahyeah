@@ -16,13 +16,23 @@ import { MumbleLike } from './MumbleLike';
 type MumbleSingleProps = {
   mumble: Mumble;
   user: any;
+  id: string;
 };
 
-export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
+export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user, id }) => {
   return (
     <ArticleMumble id={mumble.id}>
       <ArticleHeader>
-        <Avatar variant="medium" src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif" alt="Username" />
+        <Avatar
+          key={user ? user.id : ''}
+          variant="medium"
+          src={user && user?.avatarUrl !== '' ? user?.avatarUrl : '/avatar_default.png/'}
+          alt={user ? user.userName : 'username'}
+          href={`/profile/${id}`}
+          legacyBehavior
+          passHref
+          linkComponent={Link}
+        />
         <ArticleHeaderContent>
           <User label={user ? `${user.firstName} ${user.lastName}` : 'Username'} variant="large" />
           <ArticleDatas>
