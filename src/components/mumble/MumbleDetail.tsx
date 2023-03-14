@@ -3,7 +3,6 @@ import Link from 'next/link';
 import {
   Avatar,
   CommentButton,
-  LikeButton,
   ImageContainer,
   User,
   IconLink,

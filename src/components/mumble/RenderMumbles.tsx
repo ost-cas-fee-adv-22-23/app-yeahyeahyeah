@@ -7,20 +7,21 @@ import { ErrorBox } from '../error/ErrorBox';
 import { alertService } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
+import { useSession } from 'next-auth/react';
 
 type RenderMumbleProps = {
   offset: number;
   limit: number;
-  token?: string;
   fallback?: any;
 };
 
-export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, token, fallback }) => {
+export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fallback }) => {
+  const { data: session }: any = useSession();
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
   const { data, error, isLoading, mutate } = useSWR(
-    { url: '/api/mumbles', limit: _limit, offset: _offset, token },
+    { url: '/api/mumbles', limit: _limit, offset: _offset, token: session?.accessToken },
     fetchMumbles,
     {
       fallbackData: fallback['/api/mumbles'],
@@ -30,14 +31,14 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, toke
   );
 
   const handleDelete = async (id: string) => {
-    if (!token) {
+    if (!session?.accessToken) {
       alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {
         autoClose: true,
         keepAfterRouteChange: false,
       });
       return;
     }
-    const res = await deleteMumble(id, token);
+    const res = await deleteMumble(id, session?.accessToken);
 
     // TODO: Is this a magic number ?
     if (res.status === 204) {
