@@ -8,11 +8,12 @@ import { alertService } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { useSession } from 'next-auth/react';
+import { FetchMumbles } from '@/types/fallback';
 
 type RenderMumbleProps = {
   offset: number;
   limit: number;
-  fallback?: any;
+  fallback: { '/api/mumbles': FetchMumbles };
 };
 
 export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fallback }) => {

@@ -8,13 +8,13 @@ import {
   IconLink,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { Mumble } from '@/services';
+import { Mumble, User as TUser } from '@/services';
 import { elapsedTime } from '@/utils';
 import { MumbleLike } from './MumbleLike';
 
 type MumbleSingleProps = {
   mumble: Mumble;
-  user: any;
+  user: TUser;
   id: string;
 };
 

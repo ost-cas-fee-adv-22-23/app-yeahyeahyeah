@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSideProps } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, RenderMumbles, Alert } from '@/components';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { useSession } from 'next-auth/react';
+import { FetchMumbles } from '@/types/fallback';
 
-export default function Page({ quantity, fallback }: { quantity: number; fallback: any }) {
+export default function Page({ quantity, fallback }: { quantity: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
   const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -42,7 +43,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
     if (isOnScreen && quantityTotal - quantity >= offset) handleIntersectionCallbackDebounced();
   }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, quantity]);
 
-  const pages: any = [];
+  const pages: JSX.Element[] = [];
 
   for (let i = 0; i < count; i++) {
     pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} fallback={fallback} />);
@@ -64,16 +65,17 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async () => {
-  const quantity = 20;
-  const fetch = await fetchMumbles({ limit: quantity, offset: 0 });
+  const quantity = 2;
 
-  console.log(fetch);
+  const mumbles: FetchMumbles = await fetchMumbles({ limit: quantity, offset: 0 });
+
+  console.log(mumbles);
 
   return {
     props: {
       quantity,
       fallback: {
-        '/api/mumbles': fetch,
+        '/api/mumbles': mumbles,
       },
     },
   };

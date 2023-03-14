@@ -13,8 +13,8 @@ import Link from 'next/link';
 type TextBoxComponentProps = {
   id?: string;
   variant: 'write' | 'inline' | 'start';
-  mutate?: any;
-  data?: any;
+  mutate: any;
+  data: any;
 };
 
 export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate, data }) => {
@@ -48,10 +48,10 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
 
     if (id) {
       res = await postReply(id, inputValue, file, session?.accessToken);
-      res && mutate({ ...data, replies: [res, ...data.replies] });
+      res && mutate({ ...data, replies: [res, ...data?.replies] });
     } else {
       res = await postMumble(inputValue, file, session?.accessToken);
-      res && mutate({ ...data, mumbles: [res, ...data.mumbles] });
+      res && mutate({ ...data, mumbles: [res, ...data?.mumbles] });
     }
 
     setInputValue('');
