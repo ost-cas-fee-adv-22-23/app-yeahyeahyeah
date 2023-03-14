@@ -45,7 +45,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const pages: any = [];
 
   for (let i = 0; i < count; i++) {
-    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} token={session?.accessToken} fallback={fallback} />);
+    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} fallback={fallback} />);
   }
 
   return (
@@ -63,8 +63,8 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   );
 }
 
-export const getServerSideProps: GetServerSideProps<any> = async ({ req }: GetServerSidePropsContext) => {
-  const quantity = 50;
+export const getServerSideProps: GetServerSideProps<any> = async () => {
+  const quantity = 20;
   const fetch = await fetchMumbles({ limit: quantity, offset: 0 });
 
   console.log(fetch);
