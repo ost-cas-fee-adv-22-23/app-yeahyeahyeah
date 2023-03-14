@@ -26,7 +26,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user, id }) 
         <Avatar
           key={user ? user.id : ''}
           variant="medium"
-          src={user?.avatarUrl !== '' ? user?.avatarUrl : '/avatar_default.png/'}
+          src={user && user.avatarUrl !== '' ? user?.avatarUrl : '/avatar_default.png/'}
           alt={user ? user.userName : 'username'}
           href={`/profile/${id}`}
           legacyBehavior
