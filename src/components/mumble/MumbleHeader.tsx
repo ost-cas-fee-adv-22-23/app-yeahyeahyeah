@@ -9,10 +9,12 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleHeaderProps = {
-  alias: string;
+  user: string[];
 };
 
-export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
+export const MumbleHeader = ({ user }: MumbleHeaderProps) => {
+  console.table({ user });
+
   const handleImageIconClick = () => {
     console.log('image clicked', { name: 'MumbleHeaderIconClick' });
   };
@@ -29,9 +31,17 @@ export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
       <AvatarWrapper>
         <Avatar variant="xlarge" src="/avatar_default.png/" alt="Username" />
       </AvatarWrapper>
-      <User label={'User Name'} variant="xlarge" />
+      <User label={'username'} variant="xlarge" />
       <InteractionWrapper>
-        <IconLink label={alias} type="username" color="violet" href={'#'} legacyBehavior passHref linkComponent={Link} />
+        <IconLink
+          label={'username'}
+          type="username"
+          color="violet"
+          href={'#'}
+          legacyBehavior
+          passHref
+          linkComponent={Link}
+        />
         <IconLink
           label={'timestamp'}
           type="timestamp"
