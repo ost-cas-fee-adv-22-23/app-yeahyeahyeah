@@ -49,12 +49,13 @@ export default function MumblePage({
 
   return (
     <Container layout="box">
-      {mumble && <MumbleDetail mumble={mumble} user={user} />}
+      {mumble && <MumbleDetail mumble={mumble} user={user} id={id} />}
       <Container layout="plain">
         <Alert />
       </Container>
       <TextBoxComponent id={id} variant="inline" mutate={mutate} data={data} />
-      <RenderReplies data={data} error={error} isLoading={isLoading} mutate={mutate} />
+
+      <RenderReplies isLoading={isLoading} error={error} mutate={mutate} data={data} />
     </Container>
   );
 }

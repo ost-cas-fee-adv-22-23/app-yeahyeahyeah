@@ -14,7 +14,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const [offset, setOffset] = useState(0);
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
-  const { isOnScreen } = useOnScreen(ref);
+  const [isOnScreen] = useOnScreen(ref);
 
   const { data, mutate } = useSWR(
     { url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken },

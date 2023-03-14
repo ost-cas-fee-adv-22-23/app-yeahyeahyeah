@@ -13,7 +13,7 @@ import {
 import { FormSettings } from '../form/FormSettings';
 
 export const NavigationComponent: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session }: any = useSession();
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -37,7 +37,7 @@ export const NavigationComponent: React.FC = () => {
                 <NaviButton
                   label="Profile"
                   variant="profile"
-                  href="/profilepage"
+                  href={session.user?.id && `/profile/${session.user?.id}`}
                   legacyBehavior={true}
                   passHref={true}
                   linkComponent={Link}
@@ -48,42 +48,11 @@ export const NavigationComponent: React.FC = () => {
                     variant="small"
                   />
                 </NaviButton>
-                <NaviButton
-                  label="Settings"
-                  variant="default"
-                  icon="settings"
-                  onClick={handleClick}
-                  href=""
-                  legacyBehavior={true}
-                  passHref={false}
-                  linkComponent={Link}
-                />
+                <NaviButton label="Settings" variant="default" icon="settings" onClick={handleClick} />
               </>
             )}
-            {!session && (
-              <NaviButton
-                label="Login"
-                variant="default"
-                icon="logout"
-                href=""
-                onClick={() => signIn('zitadel')}
-                legacyBehavior={true}
-                passHref={true}
-                linkComponent={Link}
-              />
-            )}
-            {!!session && (
-              <NaviButton
-                label="Logout"
-                variant="default"
-                icon="heart-filled"
-                href="/"
-                onClick={() => signOut()}
-                legacyBehavior={true}
-                passHref={true}
-                linkComponent={Link}
-              />
-            )}
+            {!session && <NaviButton label="Login" variant="default" icon="logout" onClick={() => signIn('zitadel')} />}
+            {!!session && <NaviButton label="Logout" variant="default" icon="heart-filled" onClick={() => signOut()} />}
           </NavigationRow>
         </NavigationColumn>
       </Navigation>
