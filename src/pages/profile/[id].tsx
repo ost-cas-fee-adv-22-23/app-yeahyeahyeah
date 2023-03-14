@@ -5,7 +5,6 @@ import tw from 'twin.macro';
 import { fetchUser } from '@/services';
 import { useSession } from 'next-auth/react';
 import { fetchSingleMumble } from '@/services/fetchSingleMumble';
-// import { RenderReplies } from '@/components/mumble/RenderReplies';
 import { fetchReplies } from '@/services/fetchReplies';
 
 import { data as myMumbles } from '../../../data/myMumbles.json';

@@ -1,5 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import { elapsedTime } from '@/utils';
 import {
   Avatar,
   IconLink,
@@ -9,12 +10,10 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleHeaderProps = {
-  user: string[];
+  user: any;
 };
 
-export const MumbleHeader = ({ user }: MumbleHeaderProps) => {
-  console.table({ user });
-
+export const MumbleHeader = ({ ...user }: MumbleHeaderProps) => {
   const handleImageIconClick = () => {
     console.log('image clicked', { name: 'MumbleHeaderIconClick' });
   };
@@ -29,12 +28,16 @@ export const MumbleHeader = ({ user }: MumbleHeaderProps) => {
         />
       </ImageWrapper>
       <AvatarWrapper>
-        <Avatar variant="xlarge" src="/avatar_default.png/" alt="Username" />
+        <Avatar
+          variant="xlarge"
+          src={user.user.avatarUrl !== '' ? user.user.avatarUrl : '/avatar_default.png/'}
+          alt="Username"
+        />
       </AvatarWrapper>
-      <User label={'username'} variant="xlarge" />
+      <User label={`${user.user.firstName} ${user.user.lastName}`} variant="xlarge" />
       <InteractionWrapper>
         <IconLink
-          label={'username'}
+          label={`${user.user.userName}`}
           type="username"
           color="violet"
           href={'#'}
@@ -42,17 +45,10 @@ export const MumbleHeader = ({ user }: MumbleHeaderProps) => {
           passHref
           linkComponent={Link}
         />
+
+        <IconLink color="slate" href="#" label={'Switzerland'} onClick={function noRefCheck() {}} type="location" />
         <IconLink
-          label={'timestamp'}
-          type="timestamp"
-          color="slate"
-          href={'#'}
-          legacyBehavior
-          passHref
-          linkComponent={Link}
-        />
-        <IconLink
-          label="Mitglied seit x Wochen"
+          label={elapsedTime(user.user.id)}
           type="joined"
           color="slate"
           href={'#'}
@@ -61,8 +57,6 @@ export const MumbleHeader = ({ user }: MumbleHeaderProps) => {
           linkComponent={Link}
         />
       </InteractionWrapper>
-
-      <Paragraph text="Schreib was über dich!" color="default" mbSpacing="32" />
     </MumbleHeaderWrapper>
   );
 };
