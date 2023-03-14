@@ -37,7 +37,7 @@ export const NavigationComponent: React.FC = () => {
                 <NaviButton
                   label="Profile"
                   variant="profile"
-                  href={session?.user?.id && `/profile/${session.user?.id}`}
+                  href={session.user?.id && `/profile/${session.user?.id}`}
                   legacyBehavior={true}
                   passHref={true}
                   linkComponent={Link}

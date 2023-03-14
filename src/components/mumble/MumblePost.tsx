@@ -153,4 +153,3 @@ const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relati
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-col gap-8 sm:(flex-row gap-16)`;
 const ArticleInteraction = tw.div`flex flex-row`;
-const AvatarLoader = tw.div`h-70 w-70 rounded-full flex justify-center items-center bg-violet-200 border-4 border-slate-300`;
