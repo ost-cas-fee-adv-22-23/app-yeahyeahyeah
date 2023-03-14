@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import tw from 'twin.macro';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import useSWR from 'swr';
+import tw from 'twin.macro';
+import { fetchUser } from '@/services';
+import { useSession } from 'next-auth/react';
+import { fetchSingleMumble } from '@/services/fetchSingleMumble';
+// import { RenderReplies } from '@/components/mumble/RenderReplies';
+import { fetchReplies } from '@/services/fetchReplies';
 
 import { data as myMumbles } from '../../../data/myMumbles.json';
 import { data as myLikes } from '../../../data/myLikes.json';
@@ -9,20 +15,46 @@ import { MumbleHeader, MumblePost } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleHeaderProps = {
-  alias: string;
+  id: string;
   myMumbles: string[];
   myLikes: string[];
+  fallback: any;
+  fallbackReplies: any;
 };
 
-export default function ProfilePage({ alias }: MumbleHeaderProps): InferGetServerSidePropsType<typeof getServerSideProps> {
+const swrConfig = {
+  revalidateIfStale: false,
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false,
+};
+
+export default function ProfilePage({
+  id,
+  fallback,
+  fallbackReplies,
+}: MumbleHeaderProps): InferGetServerSidePropsType<typeof getServerSideProps> {
+  const { data: session }: any = useSession();
   const [selection, setselection] = useState('mumbles');
   const handleSelection = (value: string) => {
     console.log({ value });
     setselection(value);
   };
+
+  const { data: mumble } = useSWR({ url: '/api/singleMumble', id, token: session?.accessToken }, fetchSingleMumble, {
+    ...swrConfig,
+    fallbackData: fallback['/api/singleMumble'],
+    refreshInterval: 10000,
+  });
+
+  const { data: user }: any = useSWR(
+    { url: '/api/user', id: mumble?.creator, token: session?.accessToken },
+    fetchUser,
+    swrConfig
+  );
+
   return (
     <Container layout="plain">
-      <MumbleHeader alias={alias} />
+      <MumbleHeader user={user} />
 
       <Switch
         fCallBack={(value) => handleSelection(value)}
@@ -95,10 +127,21 @@ export default function ProfilePage({ alias }: MumbleHeaderProps): InferGetServe
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query: { alias } }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query: { id } }) => {
+  const fetch = await fetchSingleMumble({ id: id as string });
+  const replies = await fetchReplies({ id: id as string });
+
+  console.log(fetch);
+
   return {
     props: {
-      profile: { alias },
+      id,
+      fallback: {
+        '/api/singleMumble': fetch,
+      },
+      fallbackReplies: {
+        '/api/replies': replies,
+      },
     },
   };
 };
