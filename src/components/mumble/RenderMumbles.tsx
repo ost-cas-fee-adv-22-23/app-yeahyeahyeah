@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { fetchMumbles } from '@/services/fetchMumbles';
@@ -21,12 +21,17 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fall
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
+  const hasMounted = useRef(false);
+
+  useEffect(() => {
+    hasMounted.current = true;
+  }, []);
+
   const { data, error, isLoading, mutate } = useSWR(
     { url: '/api/mumbles', limit: _limit, offset: _offset, token: session?.accessToken },
     fetchMumbles,
     {
       fallbackData: fallback['/api/mumbles'],
-      revalidateOnFocus: false,
       refreshInterval: 10000,
     }
   );
@@ -43,10 +48,11 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fall
 
     // TODO: Is this a magic number ?
     if (res.status === 204) {
-      const newData = data.mumbles.filter((mumble: Mumble) => mumble.id !== id);
-      data.mumbles = newData;
-
-      mutate({ ...data });
+      const newData = data?.mumbles.filter((mumble: Mumble) => mumble.id !== id);
+      if (data) {
+        data.mumbles = newData as Mumble[];
+        mutate({ ...data });
+      }
     }
   };
 

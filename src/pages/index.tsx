@@ -65,7 +65,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async () => {
-  const quantity = 2;
+  const quantity = 20;
 
   const mumbles: FetchMumbles = await fetchMumbles({ limit: quantity, offset: 0 });
 

@@ -67,8 +67,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
   const mumble: FetchSingleMumble = await fetchSingleMumble({ id: id as string });
   const replies: FetchReplies = await fetchReplies({ id: id as string });
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const user: User | string | undefined =
-    token?.accessToken && (await fetchUser({ id: mumble.creator, token: token?.accessToken }));
+  const user: User | string = token?.accessToken ? await fetchUser({ id: mumble.creator, token: token?.accessToken }) : '';
 
   return {
     props: {
@@ -80,7 +79,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
         '/api/replies': replies,
       },
       fallbackUser: {
-        '/api/user': user,
+        '/api/user': user || {
+          userName: 'username',
+          firstName: 'Unknown',
+          lastName: 'User',
+          avatarUrl: '',
+        },
       },
     },
   };
