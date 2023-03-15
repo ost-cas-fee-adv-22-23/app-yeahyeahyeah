@@ -5,18 +5,15 @@ import { transformMumble, QwackerMumbleResponse, Mumble } from './qwacker';
   example: https://qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts?offset=0&limit=100&creator=201161756305785089
  */
 
-export const fetchMumblesByCreator = async (params?: {
-  limit?: number;
-  offset?: number;
-  creator?: number;
-  token?: string;
-}) => {
+export const fetchMumblesByCreator = async (params?: { limit?: number; offset?: number; creator: any; token?: string }) => {
   const { limit, offset, creator, token } = params || {};
+
+  console.log('params', params);
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
     limit: limit?.toString() || '10',
     offset: offset?.toString() || '0',
-    creator: creator?.toString() || '',
+    creator: creator || '',
   })}`;
 
   const instance = axios.create();
