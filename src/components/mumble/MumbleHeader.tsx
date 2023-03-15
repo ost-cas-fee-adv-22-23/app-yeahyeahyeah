@@ -22,11 +22,7 @@ export const MumbleHeader = ({ ...user }: MumbleHeaderProps) => {
         />
       </ImageWrapper>
       <AvatarWrapper>
-        <Avatar
-          variant="xlarge"
-          src={user.user.avatarUrl !== '' ? user.user.avatarUrl : '/avatar_default.png/'}
-          alt="Username"
-        />
+        <Avatar variant="xlarge" src={user.user.avatarUrl ? user.user.avatarUrl : '/avatar_default.png/'} alt="Username" />
       </AvatarWrapper>
       <User label={`${user.user.firstName} ${user.user.lastName}`} variant="xlarge" />
       <InteractionWrapper>
