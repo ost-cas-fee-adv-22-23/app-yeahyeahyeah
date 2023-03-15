@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import tw from 'twin.macro';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
@@ -6,9 +6,13 @@ import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchUser, fetchMyMumbles, fetchMyLikes } from '@/services';
 import { LoadingSpinner, MumbleHeader, MumblePost, ErrorBox } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import useOnScreen from '@/hooks/useOnScreen';
+import debounce from 'lodash.debounce';
+import { RenderProfileMumbles } from '@/components/mumble/RenderProfileMumbles';
 
 type MumbleHeaderProps = {
   creator: any;
+  quantity: number;
   fallback: any;
   fallbackReplies: any;
 };
@@ -19,36 +23,53 @@ const swrConfig = {
   revalidateOnReconnect: false,
 };
 
-export default function Page({ creator }: MumbleHeaderProps) {
+export default function Page({ creator, quantity }: MumbleHeaderProps) {
   const { data: session }: any = useSession();
-  const [selection, setselection] = useState('mumbles');
+  const [selection, setSelection] = useState('mumbles');
   const _id = creator?.id;
+  const [count, setCount] = useState(1);
+  const [offset, setOffset] = useState(0);
+  const [quantityTotal, setQuantityTotal] = useState(0);
+  const ref = useRef(null);
+  const [isOnScreen] = useOnScreen(ref);
+
+  useEffect(() => {}, [quantityTotal]);
 
   const handleSelection = (value: string) => {
-    setselection(value);
+    setSelection(value);
   };
 
   const { data: user, isLoading } = useSWR({ url: '/api/user', id: _id, token: session?.accessToken }, fetchUser, {
     ...swrConfig,
   });
 
-  const { data: myMumbles, isLoading: loadingMyMumbles } = useSWR(
-    { url: '/api/myMumbles', limit: 100, offset: 0, creator: _id, token: session?.accessToken },
-    fetchMyMumbles,
-    {
-      refreshInterval: 10000,
-      revalidateOnFocus: false,
-    }
-  );
+  const handleIntersectionCallback = () => {
+    setOffset((offset) => offset + quantity);
+    setCount((count) => count + 1);
+  };
 
-  const { data: myLikes, isLoading: loadingMyLikes } = useSWR(
-    { url: '/api/myLikes', limit: 100, offset: 0, token: session?.accessToken },
-    fetchMyLikes,
-    {
-      refreshInterval: 10000,
-      revalidateOnFocus: false,
-    }
-  );
+  const handleIntersectionCallbackDebounced = debounce(async () => {
+    handleIntersectionCallback();
+  }, 800);
+
+  useEffect(() => {
+    if (isOnScreen && quantityTotal - quantity >= offset) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, quantity]);
+
+  const pages: JSX.Element[] = [];
+
+  for (let i = 0; i < count; i++) {
+    pages.push(
+      <RenderProfileMumbles
+        key={i}
+        offset={offset}
+        limit={quantity}
+        creator={creator?.id}
+        selection={selection}
+        setQuantityTotal={setQuantityTotal}
+      />
+    );
+  }
 
   return (
     <Container layout="plain">
@@ -70,48 +91,14 @@ export default function Page({ creator }: MumbleHeaderProps) {
         ]}
         value="mumbles"
       />
-
       <SelectionWrapper>
-        {loadingMyMumbles && <LoadingSpinner />}
-        {selection === 'mumbles' && (
-          <>
-            {myMumbles?.mumbles.map((data: any, idx: number) => (
-              <MumblePost
-                key={idx}
-                id={data.id}
-                creator={data.creator}
-                text={data.text || ''}
-                mediaUrl={data.mediaUrl || ''}
-                likeCount={data.likeCount || 0}
-                createdTimestamp={data.createdTimestamp}
-                likedByUser={data.likedByUser || false}
-                replyCount={data.replyCount || 0}
-                type="post"
-              />
-            ))}
-            {myMumbles?.mumbles.length === 0 && <ErrorBox message="Die Liste ist leer. Schreib deinen ersten Mumble." />}
-          </>
+        {pages}
+
+        {selection === 'mumbles' && quantityTotal === 0 && (
+          <ErrorBox message="Die Liste ist leer. Schreib deinen ersten Mumble." />
         )}
-        {loadingMyLikes && <LoadingSpinner />}
-        {selection === 'likes' && (
-          <>
-            {myLikes?.mumbles.map((data: any, idx: number) => (
-              <MumblePost
-                key={idx}
-                id={data.id}
-                creator={data.creator}
-                text={data.text || ''}
-                mediaUrl={data.mediaUrl || ''}
-                likeCount={data.likeCount || 0}
-                createdTimestamp={data.createdTimestamp}
-                likedByUser={data.likedByUser || false}
-                replyCount={data.replyCount || 0}
-                type="post"
-              />
-            ))}
-            {myLikes?.mumbles.length === 0 && <ErrorBox message="Du hast noch kein Mumble abgeliked!" />}
-          </>
-        )}
+        {selection === 'likes' && quantityTotal === 0 && <ErrorBox message="Du hast noch kein Mumble abgeliked!" />}
+
         {/* End user profile page */}
 
         {/* Start profile page STRANGER */}
@@ -125,22 +112,23 @@ export default function Page({ creator }: MumbleHeaderProps) {
           <p tw="text-slate-white font-medium">TBD - Profile Page NEW USER - Lists recommended mumbles</p>
         </div>
         {/* End profile  */}
+        <div key="last" tw="invisible" ref={ref} />
       </SelectionWrapper>
     </Container>
   );
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ query: id }: GetServerSidePropsContext) => {
-  const profileID = id?.id;
-  console.log('server creator', profileID);
+  const quantity = 2;
 
-  const fetch = await fetchMyMumbles({ limit: 100, offset: 0, creator: { id: id } });
+  const fetch = await fetchMyMumbles({ limit: quantity, offset: 0, creator: id });
 
   console.log(fetch);
 
   return {
     props: {
       creator: id,
+      quantity,
     },
   };
 };

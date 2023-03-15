@@ -4,8 +4,6 @@ import { transformMumble, QwackerMumbleResponse, Mumble } from './qwacker';
 export const fetchMyLikes = async (params?: { limit?: number; offset?: number; token?: string }) => {
   const { limit, offset, token } = params || {};
 
-  console.log('params', params);
-
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
     limit: limit?.toString() || '10',
     offset: offset?.toString() || '0',
