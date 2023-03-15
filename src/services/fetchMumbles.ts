@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { transformMumble, QwackerMumbleResponse, Mumble } from './qwacker';
+import { transformMumble, QwackerMumbleResponse } from './qwacker';
 
 export const fetchMumbles = async (params?: {
   limit?: number;

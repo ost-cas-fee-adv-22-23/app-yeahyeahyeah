@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { transformMumble, QwackerMumbleResponse, Mumble } from './qwacker';
+import { transformMumble, QwackerMumbleResponse } from './qwacker';
 
 export const fetchReplies = async (params?: { id: string; token?: string }) => {
   const { id, token } = params || {};
