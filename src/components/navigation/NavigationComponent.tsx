@@ -12,11 +12,7 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { FormSettings } from '../form/FormSettings';
 
-type NavigationProps = {
-  id: number;
-};
-
-export const NavigationComponent: React.FC<NavigationProps> = ({ id }) => {
+export const NavigationComponent: React.FC = () => {
   const { data: session }: any = useSession();
   const [open, setOpen] = useState(false);
 
