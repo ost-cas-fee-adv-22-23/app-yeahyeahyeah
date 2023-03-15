@@ -9,7 +9,7 @@ import { data as myLikes } from '../../../data/myLikes.json'; // tbd myLikes
 import { LoadingSpinner, MumbleHeader, MumblePost } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-type ProfileProps = {
+type MumbleHeaderProps = {
   creator: any;
   fallback: any;
   fallbackReplies: any;
@@ -21,15 +21,14 @@ const swrConfig = {
   revalidateOnReconnect: false,
 };
 
-export default function Page({ creator }: ProfileProps) {
+export default function Page({ creator }: MumbleHeaderProps) {
   const { data: session }: any = useSession();
   const [selection, setselection] = useState('mumbles');
+  const _id = creator?.id;
+
   const handleSelection = (value: string) => {
-    console.log({ value });
     setselection(value);
   };
-  const _id = creator?.id;
-  console.log('creator', creator?.id);
 
   const { data: user, isLoading } = useSWR({ url: '/api/user', id: _id, token: session?.accessToken }, fetchUser, {
     revalidateIfStale: false,
@@ -69,8 +68,7 @@ export default function Page({ creator }: ProfileProps) {
       />
 
       <SelectionWrapper>
-        {/* User profile page */}
-        {isLoading && <LoadingSpinner />}
+        {loadingMyMumbles && <LoadingSpinner />}
         {selection === 'mumbles' && (
           <>
             {mumbles?.mumbles.map((data: any, idx: number) => (
