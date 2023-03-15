@@ -63,7 +63,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 <Avatar
                   key={creator ? creator : ''}
                   variant="medium"
-                  src={data && data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
+                  src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
                   alt={data ? data.userName : 'username'}
                 />
               </Link>
@@ -100,7 +100,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                   <Avatar
                     key={creator ? creator : ''}
                     variant="small"
-                    src={data && data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
+                    src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
                     alt={data ? data.userName : 'username'}
                   />
                 </Link>
