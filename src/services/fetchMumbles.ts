@@ -15,16 +15,8 @@ export const fetchMumbles = async (params?: {
     newerThan: newerThanMumbleId || '',
   })}`;
 
-  const instance = axios.create();
-  instance.interceptors.response.use((response) => {
-    const res = response.data.data.filter((mumble: Mumble) => mumble.type === 'post');
-    response.data.data = res;
-
-    return response;
-  });
-
   const { data, count } = (
-    await instance.get(url, {
+    await axios.get(url, {
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${token}`,
