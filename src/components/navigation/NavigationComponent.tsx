@@ -12,7 +12,11 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { FormSettings } from '../form/FormSettings';
 
-export const NavigationComponent: React.FC = () => {
+type NavigationProps = {
+  id: number;
+};
+
+export const NavigationComponent: React.FC<NavigationProps> = ({ id }) => {
   const { data: session }: any = useSession();
   const [open, setOpen] = useState(false);
 
@@ -37,14 +41,14 @@ export const NavigationComponent: React.FC = () => {
                 <NaviButton
                   label="Profile"
                   variant="profile"
-                  href={session.user?.id && `/profile/${session.user?.id}`}
+                  href={`/profile/${session.user.id}`}
                   legacyBehavior={true}
                   passHref={true}
                   linkComponent={Link}
                 >
                   <Avatar
                     alt="Small Avatar"
-                    src="https://media.giphy.com/media/cfuL5gqFDreXxkWQ4o/giphy.gif"
+                    src={session.user.avatarUrl ? `${session.user.avatarUrl}` : '/avatar_default.png/'}
                     variant="small"
                   />
                 </NaviButton>
