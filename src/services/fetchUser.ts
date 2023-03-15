@@ -14,10 +14,10 @@ export const fetchUser = async (params?: { id: string; token: string }) => {
   });
 
   return {
-    avatarUrl: data.avatarUrl,
-    firstName: data.firstName,
     id: data.id,
-    lastName: data.lastName,
     userName: data.userName,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    avatarUrl: data.avatarUrl,
   } as User;
 };

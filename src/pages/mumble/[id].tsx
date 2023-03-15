@@ -4,18 +4,19 @@ import useSWR from 'swr';
 import tw from 'twin.macro';
 import { Alert, MumbleDetail, TextBoxComponent } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { fetchUser } from '@/services';
+import { fetchUser, User } from '@/services';
 import { useSession } from 'next-auth/react';
 import { fetchSingleMumble } from '@/services/fetchSingleMumble';
 import { RenderReplies } from '@/components/mumble/RenderReplies';
 import { fetchReplies } from '@/services/fetchReplies';
 import { getToken } from 'next-auth/jwt';
+import { FetchReplies, FetchSingleMumble } from '@/types/fallback';
 
 type Props = {
   id: string;
-  fallback: any;
-  fallbackReplies: any;
-  fallbackUser: any;
+  fallback: { '/api/singleMumble': FetchSingleMumble };
+  fallbackReplies: { '/api/replies': FetchReplies };
+  fallbackUser: { '/api/user': User };
 };
 
 const swrConfig = {
@@ -63,10 +64,10 @@ export default function MumblePage({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query: { id } }) => {
-  const mumble = await fetchSingleMumble({ id: id as string });
-  const replies = await fetchReplies({ id: id as string });
+  const mumble: FetchSingleMumble = await fetchSingleMumble({ id: id as string });
+  const replies: FetchReplies = await fetchReplies({ id: id as string });
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const user = token?.accessToken && (await fetchUser({ id: mumble.creator, token: token?.accessToken }));
+  const user: User | string = token?.accessToken ? await fetchUser({ id: mumble.creator, token: token?.accessToken }) : '';
 
   return {
     props: {
@@ -78,7 +79,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
         '/api/replies': replies,
       },
       fallbackUser: {
-        '/api/user': user,
+        '/api/user': user || {
+          userName: 'username',
+          firstName: 'Unknown',
+          lastName: 'User',
+          avatarUrl: '',
+        },
       },
     },
   };

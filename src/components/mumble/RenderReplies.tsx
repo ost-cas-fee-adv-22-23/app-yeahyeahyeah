@@ -57,7 +57,7 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ data, mutate, erro
     <>
       {isLoading && <LoadingSpinner />}
       {data &&
-        data.replies.map((mumble: any) => (
+        data.replies.map((mumble: Mumble) => (
           <MumblePost
             key={mumble.id}
             id={mumble.id}

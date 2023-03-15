@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { fetchMumbles } from '@/services/fetchMumbles';
@@ -8,11 +8,12 @@ import { alertService } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { useSession } from 'next-auth/react';
+import { FetchMumbles } from '@/types/fallback';
 
 type RenderMumbleProps = {
   offset: number;
   limit: number;
-  fallback?: any;
+  fallback: { '/api/mumbles': FetchMumbles };
 };
 
 export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fallback }) => {
@@ -27,6 +28,7 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fall
       fallbackData: fallback['/api/mumbles'],
       revalidateOnFocus: false,
       refreshInterval: 10000,
+      dedupingInterval: 10000,
     }
   );
 
@@ -42,10 +44,11 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fall
 
     // TODO: Is this a magic number ?
     if (res.status === 204) {
-      const newData = data.mumbles.filter((mumble: Mumble) => mumble.id !== id);
-      data.mumbles = newData;
-
-      mutate({ ...data });
+      const newData = data?.mumbles.filter((mumble: Mumble) => mumble.id !== id);
+      if (data) {
+        data.mumbles = newData as Mumble[];
+        mutate({ ...data });
+      }
     }
   };
 

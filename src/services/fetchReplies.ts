@@ -1,19 +1,11 @@
 import axios from 'axios';
-import { transformMumble, QwackerMumbleResponse, Mumble } from './qwacker';
+import { transformMumble, QwackerMumbleResponse } from './qwacker';
 
 export const fetchReplies = async (params?: { id: string; token?: string }) => {
   const { id, token } = params || {};
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}/replies`;
 
-  const instance = axios.create();
-  instance.interceptors.response.use((response) => {
-    const res = response.data.filter((mumble: Mumble) => mumble.type === 'reply');
-    response.data = res;
-
-    return response;
-  });
-
-  const { data } = (await instance.get(url, {
+  const { data } = (await axios.get(url, {
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`,

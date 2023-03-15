@@ -8,13 +8,13 @@ import {
   IconLink,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { Mumble } from '@/services';
+import { Mumble, User as TUser } from '@/services';
 import { elapsedTime } from '@/utils';
 import { MumbleLike } from './MumbleLike';
 
 type MumbleSingleProps = {
   mumble: Mumble;
-  user: any;
+  user: TUser;
   id: string;
 };
 
@@ -25,7 +25,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user, id }) 
         <Avatar
           key={user ? user.id : ''}
           variant="medium"
-          src={user && user.avatarUrl !== '' ? user?.avatarUrl : '/avatar_default.png/'}
+          src={user && user.avatarUrl !== '' ? user.avatarUrl : '/avatar_default.png/'}
           alt={user ? user.userName : 'username'}
           href={`/profile/${id}`}
           legacyBehavior

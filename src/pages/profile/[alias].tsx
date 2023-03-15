@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import tw from 'twin.macro';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-
 import { data as myMumbles } from '../../../data/myMumbles.json';
 import { data as myLikes } from '../../../data/myLikes.json';
-
 import { MumbleHeader, MumblePost } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
