@@ -21,18 +21,14 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fall
   const _offset = useMemo(() => offset, []);
   const _limit = useMemo(() => limit, []);
 
-  const hasMounted = useRef(false);
-
-  useEffect(() => {
-    hasMounted.current = true;
-  }, []);
-
   const { data, error, isLoading, mutate } = useSWR(
     { url: '/api/mumbles', limit: _limit, offset: _offset, token: session?.accessToken },
     fetchMumbles,
     {
       fallbackData: fallback['/api/mumbles'],
+      revalidateOnFocus: false,
       refreshInterval: 10000,
+      dedupingInterval: 10000,
     }
   );
 

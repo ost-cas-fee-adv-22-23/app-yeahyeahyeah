@@ -21,8 +21,9 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
     { url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken },
     fetchMumbles,
     {
-      refreshInterval: 30000,
       revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
     }
   );
 
@@ -55,7 +56,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
       <Container layout="plain">
         <Alert />
       </Container>
-      <TextBoxComponent variant="write" mutate={mutate} data={data} />
+      {/* <TextBoxComponent variant="write" mutate={mutate} data={data} /> */}
 
       {pages}
 
