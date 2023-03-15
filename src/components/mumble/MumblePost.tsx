@@ -61,9 +61,9 @@ export const MumblePost: React.FC<MumbleProps> = ({
             <ArticleHeader>
               <Link href={`/profile/${creator}`} title={creator} target="_self">
                 <Avatar
-                  key={data ? data.id : ''}
+                  key={creator ? creator : ''}
                   variant="medium"
-                  src={data && data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
+                  src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
                   alt={data ? data.userName : 'username'}
                 />
               </Link>
@@ -74,7 +74,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                     label={data ? data.userName : 'username'}
                     type="username"
                     color="violet"
-                    href={`/profile/${id}`}
+                    href={`/profile/${creator}`}
                     legacyBehavior
                     passHref
                     linkComponent={Link}
@@ -98,9 +98,9 @@ export const MumblePost: React.FC<MumbleProps> = ({
               {type === 'reply' && (
                 <Link href={`/profile/${creator}`} title={creator} target="_self">
                   <Avatar
-                    key={data ? data.id : ''}
+                    key={creator ? creator : ''}
                     variant="small"
-                    src={data && data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
+                    src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
                     alt={data ? data.userName : 'username'}
                   />
                 </Link>
@@ -112,7 +112,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                     label={data ? data.userName : 'username'}
                     type="username"
                     color="violet"
-                    href={`/profile/${id}`}
+                    href={`/profile/${creator}`}
                     legacyBehavior
                     passHref
                     linkComponent={Link}

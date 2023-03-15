@@ -1,18 +1,13 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import {
-  Avatar,
-  IconLink,
-  ImageContainer,
-  Paragraph,
-  User,
-} from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { elapsedTime } from '@/utils';
+import { Avatar, IconLink, ImageContainer, User } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleHeaderProps = {
-  alias: string;
+  user: any;
 };
 
-export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
+export const MumbleHeader = ({ ...user }: MumbleHeaderProps) => {
   const handleImageIconClick = () => {
     console.log('image clicked', { name: 'MumbleHeaderIconClick' });
   };
@@ -27,22 +22,23 @@ export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
         />
       </ImageWrapper>
       <AvatarWrapper>
-        <Avatar variant="xlarge" src="/avatar_default.png/" alt="Username" />
+        <Avatar variant="xlarge" src={user.user.avatarUrl ? user.user.avatarUrl : '/avatar_default.png/'} alt="Username" />
       </AvatarWrapper>
-      <User label={'User Name'} variant="xlarge" />
+      <User label={`${user.user.firstName} ${user.user.lastName}`} variant="xlarge" />
       <InteractionWrapper>
-        <IconLink label={alias} type="username" color="violet" href={'#'} legacyBehavior passHref linkComponent={Link} />
         <IconLink
-          label={'timestamp'}
-          type="timestamp"
-          color="slate"
+          label={`${user.user.userName}`}
+          type="username"
+          color="violet"
           href={'#'}
           legacyBehavior
           passHref
           linkComponent={Link}
         />
+
+        <IconLink color="slate" href="#" label={'Switzerland'} onClick={function noRefCheck() {}} type="location" />
         <IconLink
-          label="Mitglied seit x Wochen"
+          label={elapsedTime(user.user.id)}
           type="joined"
           color="slate"
           href={'#'}
@@ -51,13 +47,11 @@ export const MumbleHeader = ({ alias }: MumbleHeaderProps) => {
           linkComponent={Link}
         />
       </InteractionWrapper>
-
-      <Paragraph text="Schreib was über dich!" color="default" mbSpacing="32" />
     </MumbleHeaderWrapper>
   );
 };
 
 const MumbleHeaderWrapper = tw.div`flex flex-col`;
-const ImageWrapper = tw.div`flex flex-row justify-end items-end z-0 w-full relative top-0 mt-0`;
+const ImageWrapper = tw.div`flex flex-row justify-end items-end z-0 w-full relative top-0 mt-0 h-[340px]`;
 const AvatarWrapper = tw.div`flex flex-row justify-end z-10 relative right-32 -top-108 h-0`;
 const InteractionWrapper = tw.div`flex flex-col sm:(flex-row) mb-16 gap-16`;

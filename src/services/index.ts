@@ -6,3 +6,5 @@ export * from './qwacker';
 export * from './alert.service';
 export * from './likeMumble';
 export * from './dislikeMumble';
+export * from './fetchMyMumbles';
+export * from './fetchMyLikes';
