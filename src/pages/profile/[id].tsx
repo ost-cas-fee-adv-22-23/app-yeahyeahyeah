@@ -29,28 +29,23 @@ export default function Page({ creator }: MumbleHeaderProps) {
   };
 
   const { data: user, isLoading } = useSWR({ url: '/api/user', id: _id, token: session?.accessToken }, fetchUser, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
+    ...swrConfig,
   });
 
   const { data: myMumbles, isLoading: loadingMyMumbles } = useSWR(
-    { url: '/api/posts', limit: 100, offset: 0, creator: _id, token: session?.accessToken },
+    { url: '/api/myMumbles', limit: 100, offset: 0, creator: _id, token: session?.accessToken },
     fetchMyMumbles,
     {
-      ...swrConfig,
-      revalidateIfStale: false,
-      refreshInterval: 30000,
+      refreshInterval: 10000,
       revalidateOnFocus: false,
     }
   );
 
   const { data: myLikes, isLoading: loadingMyLikes } = useSWR(
-    { url: '/api/posts', limit: 100, offset: 0, token: session?.accessToken },
+    { url: '/api/myLikes', limit: 100, offset: 0, token: session?.accessToken },
     fetchMyLikes,
     {
-      ...swrConfig,
-      refreshInterval: 30000,
+      refreshInterval: 10000,
       revalidateOnFocus: false,
     }
   );
