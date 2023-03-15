@@ -56,7 +56,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
       <Container layout="plain">
         <Alert />
       </Container>
-      {/* <TextBoxComponent variant="write" mutate={mutate} data={data} /> */}
+      <TextBoxComponent variant="write" mutate={mutate} data={data} />
 
       {pages}
 
