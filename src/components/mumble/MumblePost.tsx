@@ -63,7 +63,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
             <ArticleHeader>
               <Link href={`/profile/${creator}`} title={creator} target="_self">
                 <Avatar
-                  key={data ? data.id : ''}
+                  key={data ? data.creator : ''}
                   variant="medium"
                   src={data?.avatarUrl !== '' ? data?.avatarUrl : '/avatar_default.png/'}
                   alt={data ? data.userName : 'username'}
@@ -76,7 +76,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
                     label={data ? data.userName : 'username'}
                     type="username"
                     color="violet"
-                    href={`/profile/${id}`}
+                    href={`/profile/${creator}`}
                     legacyBehavior
                     passHref
                     linkComponent={Link}
