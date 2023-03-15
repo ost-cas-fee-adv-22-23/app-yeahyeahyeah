@@ -4,9 +4,7 @@ import useSWR from 'swr';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchUser, fetchMyMumbles, fetchMyLikes } from '@/services';
 import { useSession } from 'next-auth/react';
-import { data as myLikes } from '../../../data/myLikes.json'; // tbd myLikes
-
-import { LoadingSpinner, MumbleHeader, MumblePost } from '@/components';
+import { LoadingSpinner, MumbleHeader, MumblePost, ErrorBox } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleHeaderProps = {
@@ -36,11 +34,12 @@ export default function Page({ creator }: MumbleHeaderProps) {
     revalidateOnReconnect: false,
   });
 
-  const { data: mumbles, isLoading: loadingMyMumbles } = useSWR(
+  const { data: myMumbles, isLoading: loadingMyMumbles } = useSWR(
     { url: '/api/posts', limit: 100, offset: 0, creator: _id, token: session?.accessToken },
     fetchMyMumbles,
     {
       ...swrConfig,
+      revalidateIfStale: false,
       refreshInterval: 30000,
       revalidateOnFocus: false,
     }
@@ -81,7 +80,7 @@ export default function Page({ creator }: MumbleHeaderProps) {
         {loadingMyMumbles && <LoadingSpinner />}
         {selection === 'mumbles' && (
           <>
-            {mumbles?.mumbles.map((data: any, idx: number) => (
+            {myMumbles?.mumbles.map((data: any, idx: number) => (
               <MumblePost
                 key={idx}
                 id={data.id}
@@ -89,12 +88,13 @@ export default function Page({ creator }: MumbleHeaderProps) {
                 text={data.text || ''}
                 mediaUrl={data.mediaUrl || ''}
                 likeCount={data.likeCount || 0}
-                createdTimestamp={123456}
+                createdTimestamp={data.createdTimestamp}
                 likedByUser={data.likedByUser || false}
                 replyCount={data.replyCount || 0}
                 type="post"
               />
             ))}
+            {myMumbles?.mumbles.length === 0 && <ErrorBox message="Die Liste ist leer. Schreib deinen ersten Mumble." />}
           </>
         )}
         {loadingMyLikes && <LoadingSpinner />}
@@ -108,12 +108,13 @@ export default function Page({ creator }: MumbleHeaderProps) {
                 text={data.text || ''}
                 mediaUrl={data.mediaUrl || ''}
                 likeCount={data.likeCount || 0}
-                createdTimestamp={123456}
+                createdTimestamp={data.createdTimestamp}
                 likedByUser={data.likedByUser || false}
                 replyCount={data.replyCount || 0}
                 type="post"
               />
             ))}
+            {myLikes?.mumbles.length === 0 && <ErrorBox message="Du hast noch kein Mumble abgeliked!" />}
           </>
         )}
         {/* End user profile page */}
