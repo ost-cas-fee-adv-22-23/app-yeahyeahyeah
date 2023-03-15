@@ -52,6 +52,6 @@ export const MumbleHeader = ({ ...user }: MumbleHeaderProps) => {
 };
 
 const MumbleHeaderWrapper = tw.div`flex flex-col`;
-const ImageWrapper = tw.div`flex flex-row justify-end items-end z-0 w-full relative top-0 mt-0`;
+const ImageWrapper = tw.div`flex flex-row justify-end items-end z-0 w-full relative top-0 mt-0 h-[340px]`;
 const AvatarWrapper = tw.div`flex flex-row justify-end z-10 relative right-32 -top-108 h-0`;
 const InteractionWrapper = tw.div`flex flex-col sm:(flex-row) mb-16 gap-16`;

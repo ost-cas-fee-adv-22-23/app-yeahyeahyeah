@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import tw from 'twin.macro';
 import useSWR from 'swr';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { fetchUser, fetchMumblesByCreator } from '@/services';
+import { fetchUser, fetchMyMumbles, fetchMyLikes } from '@/services';
 import { useSession } from 'next-auth/react';
 import { fetchSingleMumble } from '@/services/fetchSingleMumble';
 // import { RenderReplies } from '@/components/mumble/RenderReplies';
@@ -46,7 +46,17 @@ export default function Page({ creator }: MumbleHeaderProps) {
 
   const { data: mumbles, isLoading: loadingMyMumbles } = useSWR(
     { url: '/api/posts', limit: 100, offset: 0, creator: _id, token: session?.accessToken },
-    fetchMumblesByCreator,
+    fetchMyMumbles,
+    {
+      ...swrConfig,
+      refreshInterval: 30000,
+      revalidateOnFocus: false,
+    }
+  );
+
+  const { data: myLikes, isLoading: loadingMyLikes } = useSWR(
+    { url: '/api/posts', limit: 100, offset: 0, token: session?.accessToken },
+    fetchMyLikes,
     {
       ...swrConfig,
       refreshInterval: 30000,
@@ -95,9 +105,10 @@ export default function Page({ creator }: MumbleHeaderProps) {
             ))}
           </>
         )}
+        {loadingMyLikes && <LoadingSpinner />}
         {selection === 'likes' && (
           <>
-            {myLikes.map((data: any, idx: number) => (
+            {myLikes?.mumbles.map((data: any, idx: number) => (
               <MumblePost
                 key={idx}
                 id={data.id}
@@ -135,7 +146,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ query: id }:
   const profileID = id?.id;
   console.log('server creator', profileID);
 
-  const fetch = await fetchMumblesByCreator({ limit: 100, offset: 0, creator: { id: id } });
+  const fetch = await fetchMyMumbles({ limit: 100, offset: 0, creator: { id: id } });
 
   console.log(fetch);
 
