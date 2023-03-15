@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
 import tw from 'twin.macro';
 import useSWR from 'swr';
+import { useSession } from 'next-auth/react';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { fetchUser, fetchMyMumbles, fetchMyLikes } from '@/services';
-import { useSession } from 'next-auth/react';
-import { fetchSingleMumble } from '@/services/fetchSingleMumble';
-// import { RenderReplies } from '@/components/mumble/RenderReplies';
-import { fetchReplies } from '@/services/fetchReplies';
-
-import { data as myMumbles } from '../../../data/myMumbles.json';
-import { data as myLikes } from '../../../data/myLikes.json';
-// import { fetchSingleMumble } from '@/services/fetchSingleMumble';
-// import { fetchReplies } from '@/services/fetchReplies';
-import { data as myLikes } from '../../../data/myLikes.json'; // tbd myLikes
-
-import { LoadingSpinner, MumbleHeader, MumblePost } from '@/components';
 import { LoadingSpinner, MumbleHeader, MumblePost, ErrorBox } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
