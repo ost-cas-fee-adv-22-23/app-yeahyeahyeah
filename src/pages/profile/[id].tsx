@@ -127,7 +127,7 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { id } }: GetServerSidePropsContext) => {
-  const quantity = 2;
+  const quantity = 10;
   const _id = id as string;
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
