@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import useSWR from 'swr';
 import tw from 'twin.macro';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
-import { fetchMyMumbles, fetchUser, User } from '@/services';
+import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
 import { MumbleHeader, ErrorBox } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import useOnScreen from '@/hooks/useOnScreen';
@@ -27,6 +28,18 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
   const [isOnScreen] = useOnScreen(ref);
+
+  const { data: likes } = useSWR({ url: '/api/myLikes', token: session?.accessToken }, fetchMyLikes, {
+    refreshInterval: 10000,
+    revalidateOnFocus: false,
+    dedupingInterval: 10000,
+  });
+
+  const { data: mumbles } = useSWR({ url: '/api/myLikes', creator, token: session?.accessToken }, fetchMyMumbles, {
+    refreshInterval: 10000,
+    revalidateOnFocus: false,
+    dedupingInterval: 10000,
+  });
 
   const handleSelection = (value: string) => {
     setSelection(value);
@@ -101,10 +114,12 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
             {selection === 'mumbles' && pagesMumbles}
             {selection === 'likes' && pagesLikes}
 
-            {selection === 'mumbles' && quantityTotal === 0 && (
+            {selection === 'mumbles' && mumbles?.count === 0 && (
               <ErrorBox message="Die Liste ist leer. Schreib deinen ersten Mumble." />
             )}
-            {selection === 'likes' && quantityTotal === 0 && <ErrorBox message="Du hast noch kein Mumble abgeliked!" />}
+            {selection === 'likes' && likes?.mumbles.length === 0 && (
+              <ErrorBox message="Du hast noch kein Mumble abgeliked!" />
+            )}
             {/* End user profile page */}
             {/* Start profile page STRANGER */}
             <div tw="bg-pink-500 p-8 mb-16 rounded-md flex justify-center">
