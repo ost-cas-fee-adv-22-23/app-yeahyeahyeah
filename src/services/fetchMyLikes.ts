@@ -5,7 +5,7 @@ export const fetchMyLikes = async (params?: { limit?: number; offset?: number; t
   const { limit, offset, token } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
-    limit: limit?.toString() || '10',
+    limit: limit?.toString() || '1000',
     offset: offset?.toString() || '0',
   })}`;
 

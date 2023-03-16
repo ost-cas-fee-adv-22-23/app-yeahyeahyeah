@@ -5,7 +5,7 @@ export const fetchMyMumbles = async (params?: { limit?: number; offset?: number;
   const { limit, offset, creator, token } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
-    limit: limit?.toString() || '10',
+    limit: limit?.toString() || '1000',
     offset: offset?.toString() || '0',
     creator: creator || '',
   })}`;

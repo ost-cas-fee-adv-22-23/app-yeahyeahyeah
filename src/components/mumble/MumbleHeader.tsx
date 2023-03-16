@@ -1,53 +1,70 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import { elapsedTime } from '@/utils';
 import { Avatar, IconLink, ImageContainer, User } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import useSWR from 'swr';
+import { fetchUser, User as TUser } from '@/services';
+import { useSession } from 'next-auth/react';
 
 type MumbleHeaderProps = {
-  user: any;
+  creator: any;
+  fallbackUser: { '/api/user': TUser };
 };
 
-export const MumbleHeader = ({ ...user }: MumbleHeaderProps) => {
+const swrConfig = {
+  revalidateIfStale: false,
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false,
+};
+
+export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
+  const { data: session }: any = useSession();
   const handleImageIconClick = () => {
     console.log('image clicked', { name: 'MumbleHeaderIconClick' });
   };
 
-  return (
-    <MumbleHeaderWrapper>
-      <ImageWrapper>
-        <ImageContainer
-          alt="This is a profile picture"
-          onImageIconClick={handleImageIconClick}
-          src="https://picsum.photos/640/360"
-        />
-      </ImageWrapper>
-      <AvatarWrapper>
-        <Avatar variant="xlarge" src={user.user.avatarUrl ? user.user.avatarUrl : '/avatar_default.png/'} alt="Username" />
-      </AvatarWrapper>
-      <User label={`${user.user.firstName} ${user.user.lastName}`} variant="xlarge" />
-      <InteractionWrapper>
-        <IconLink
-          label={`${user.user.userName}`}
-          type="username"
-          color="violet"
-          href={'#'}
-          legacyBehavior
-          passHref
-          linkComponent={Link}
-        />
+  const { data: user } = useSWR({ url: '/api/user', id: creator.id, token: session?.accessToken }, fetchUser, {
+    ...swrConfig,
+    fallbackData: fallbackUser['/api/user'],
+  });
 
-        <IconLink color="slate" href="#" label={'Switzerland'} onClick={function noRefCheck() {}} type="location" />
-        <IconLink
-          label={elapsedTime(user.user.id)}
-          type="joined"
-          color="slate"
-          href={'#'}
-          legacyBehavior
-          passHref
-          linkComponent={Link}
-        />
-      </InteractionWrapper>
-    </MumbleHeaderWrapper>
+  return (
+    <>
+      <MumbleHeaderWrapper>
+        <ImageWrapper>
+          <ImageContainer
+            alt="This is a profile picture"
+            onImageIconClick={handleImageIconClick}
+            src="https://picsum.photos/640/360"
+          />
+        </ImageWrapper>
+        <AvatarWrapper>
+          <Avatar variant="xlarge" src={user?.avatarUrl ? user.avatarUrl : '/avatar_default.png/'} alt="Username" />
+        </AvatarWrapper>
+        <User label={user && `${user.firstName} ${user.lastName}`} variant="xlarge" />
+        <InteractionWrapper>
+          <IconLink
+            label={`${user && user.userName}`}
+            type="username"
+            color="violet"
+            href={'#'}
+            legacyBehavior
+            passHref
+            linkComponent={Link}
+          />
+
+          <IconLink color="slate" href="#" label={'Switzerland'} onClick={function noRefCheck() {}} type="location" />
+          <IconLink
+            label={'a long long time ago...'}
+            type="joined"
+            color="slate"
+            href={'#'}
+            legacyBehavior
+            passHref
+            linkComponent={Link}
+          />
+        </InteractionWrapper>
+      </MumbleHeaderWrapper>
+    </>
   );
 };
 
