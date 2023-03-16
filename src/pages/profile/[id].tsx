@@ -127,15 +127,16 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { id } }: GetServerSidePropsContext) => {
-  const quantity = 10;
+  const quantity = 2;
   const _id = id as string;
+
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const user: User | string = token?.accessToken ? await fetchUser({ id: _id, token: token?.accessToken }) : '';
   const myMumbles: FetchMumbles = await fetchMyMumbles({ creator: _id, token: token?.accessToken });
 
   return {
     props: {
-      creator: id,
+      creator: id && { id: _id },
       quantity,
       fallbackUser: {
         '/api/user': user || {
