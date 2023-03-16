@@ -35,6 +35,7 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
             alt="This is a profile picture"
             onImageIconClick={handleImageIconClick}
             src="https://picsum.photos/640/360"
+            type="banner-view"
           />
         </ImageWrapper>
         <AvatarWrapper>
@@ -69,6 +70,6 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
 };
 
 const MumbleHeaderWrapper = tw.div`flex flex-col`;
-const ImageWrapper = tw.div`flex flex-row justify-end items-end z-0 w-full relative top-0 mt-0`;
-const AvatarWrapper = tw.div`flex flex-row justify-end z-10 relative right-32 -top-108 h-0`;
+const ImageWrapper = tw.div`flex flex-row justify-end items-center z-0 w-full mt-0`;
+const AvatarWrapper = tw.div`flex flex-row justify-end items-end relative top-32 -right-32 z-0 scale-75 transform transition duration-500 h-0 sm:(scale-100 relative top-64 right-32)`;
 const InteractionWrapper = tw.div`flex flex-col sm:(flex-row) mb-16 gap-16`;
