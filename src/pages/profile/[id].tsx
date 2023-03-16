@@ -80,7 +80,7 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
     <Container layout="plain">
       <MumbleHeader creator={creator} fallbackUser={fallbackUser} />
 
-      {session?.accessToken ? (
+      {session?.user.id === creator.id ? (
         <>
           <Switch
             fCallBack={(value) => handleSelection(value)}
