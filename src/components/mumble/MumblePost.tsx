@@ -1,5 +1,6 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
 import useSWR from 'swr';
 import {
@@ -12,9 +13,9 @@ import {
   Cancel,
   Container,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumbleLike } from './MumbleLike';
-import { useSession } from 'next-auth/react';
 import { fetchUser } from '@/services/fetchUser';
+import { MumbleLike } from './MumbleLike';
+import { MumbleShare } from './MumbleShare';
 export interface MumbleProps {
   id: string;
   creator: string;
@@ -142,6 +143,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
           linkComponent={Link}
         />
         <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
+        <MumbleShare id={id} />
       </ArticleInteraction>
     </ArticleMumble>
   );
@@ -152,4 +154,4 @@ const ArticleHeader = tw.div`flex flex-row items-center gap-16 w-full relative -
 const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relative left-0 mb-16 sm:(mb-32)`;
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-col gap-8 sm:(flex-row gap-16)`;
-const ArticleInteraction = tw.div`flex flex-row`;
+const ArticleInteraction = tw.div`flex flex-row flex-wrap`;
