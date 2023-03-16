@@ -35,11 +35,15 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
     dedupingInterval: 10000,
   });
 
-  const { data: mumbles } = useSWR({ url: '/api/myLikes', creator, token: session?.accessToken }, fetchMyMumbles, {
-    refreshInterval: 10000,
-    revalidateOnFocus: false,
-    dedupingInterval: 10000,
-  });
+  const { data: mumbles } = useSWR(
+    { url: '/api/myMumbles', creator: creator.id, token: session?.accessToken },
+    fetchMyMumbles,
+    {
+      refreshInterval: 10000,
+      revalidateOnFocus: false,
+      dedupingInterval: 10000,
+    }
+  );
 
   const handleSelection = (value: string) => {
     setSelection(value);
