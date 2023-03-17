@@ -15,10 +15,9 @@ import { MumbleLike } from './MumbleLike';
 type MumbleSingleProps = {
   mumble: Mumble;
   user: TUser;
-  id: string;
 };
 
-export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user, id }) => {
+export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
   return (
     <ArticleMumble id={mumble.id}>
       <ArticleHeader>
@@ -27,7 +26,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user, id }) 
           variant="medium"
           src={user && user.avatarUrl !== '' ? user.avatarUrl : '/avatar_default.png/'}
           alt={user ? user.userName : 'username'}
-          href={`/profile/${id}`}
+          href={`/profile/${user.id}`}
           legacyBehavior
           passHref
           linkComponent={Link}
@@ -39,7 +38,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user, id }) 
               label={user ? user.userName : 'username'}
               type="username"
               color="violet"
-              href={`/profile/${mumble.id}`}
+              href={`/profile/${user.id}`}
               legacyBehavior
               passHref
               linkComponent={Link}

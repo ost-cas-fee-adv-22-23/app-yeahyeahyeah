@@ -52,7 +52,7 @@ export default function MumblePage({
 
   return (
     <Container layout="box">
-      {mumble && <MumbleDetail mumble={mumble} user={user} id={id} />}
+      {mumble && <MumbleDetail mumble={mumble} user={user} />}
       <Container layout="plain">
         <Alert />
       </Container>

@@ -18,19 +18,27 @@ export const fetchMyMumbles = async (params?: { limit?: number; offset?: number;
     return response;
   });
 
-  const { data, count } = (
-    await instance.get(url, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  ).data as QwackerMumbleResponse;
+  try {
+    const { data, count } = (
+      await instance.get(url, {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+    ).data as QwackerMumbleResponse;
 
-  const mumbles = data.map(transformMumble);
+    if (!data) {
+      throw new Error('Something was not okay.');
+    }
 
-  return {
-    count,
-    mumbles,
-  };
+    const mumbles = data.map(transformMumble);
+
+    return {
+      count,
+      mumbles,
+    };
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : 'Could not fetch my mumbles');
+  }
 };
