@@ -11,6 +11,7 @@ import {
 import { Mumble, User as TUser } from '@/services';
 import { elapsedTime } from '@/utils';
 import { MumbleLike } from './MumbleLike';
+import { MumbleShare } from './MumbleShare';
 
 type MumbleSingleProps = {
   mumble: Mumble;
@@ -68,6 +69,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user, id }) 
           linkComponent={Link}
         />
         <MumbleLike id={mumble.id} favourite={mumble.likedByUser} quantity={mumble.likeCount} />
+        <MumbleShare id={id} path={`http://localhost:3000/mumble/${id}`} />
       </ArticleInteraction>
     </ArticleMumble>
   );

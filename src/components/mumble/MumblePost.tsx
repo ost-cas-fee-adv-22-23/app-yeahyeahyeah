@@ -143,14 +143,14 @@ export const MumblePost: React.FC<MumbleProps> = ({
           linkComponent={Link}
         />
         <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
-        <MumbleShare id={id} />
+        <MumbleShare path={`http://localhost:3000/mumble/${id}`} />
       </ArticleInteraction>
     </ArticleMumble>
   );
 };
 
 const ArticleMumble = tw.article`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48 rounded-lg mb-16`;
-const ArticleHeader = tw.div`flex flex-row items-center gap-16 w-full relative -left-16 sm:-left-[88px] mb-16 sm:(mb-32)`;
+const ArticleHeader = tw.div`flex flex-row items-start sm:(items-center) gap-16 w-full relative -left-16 sm:-left-[88px] mb-16 sm:(mb-32)`;
 const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relative left-0 mb-16 sm:(mb-32)`;
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-col gap-8 sm:(flex-row gap-16)`;
