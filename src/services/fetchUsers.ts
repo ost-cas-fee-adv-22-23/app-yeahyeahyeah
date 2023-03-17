@@ -15,20 +15,28 @@ export const fetchUsers = async (params?: {
     newerThan: newerThanMumbleId || '',
   })}`;
 
-  const { data } = await axios.get(url, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    const { data } = await axios.get(url, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  return [
-    {
-      avatarUrl: data.avatarUrl,
-      firstName: data.firstName,
-      id: data.id,
-      lastName: data.lastName,
-      userName: data.userName,
-    } as User,
-  ];
+    if (!data) {
+      throw new Error('Something was not okay fetching users.');
+    }
+
+    return [
+      {
+        avatarUrl: data.avatarUrl,
+        firstName: data.firstName,
+        id: data.id,
+        lastName: data.lastName,
+        userName: data.userName,
+      } as User,
+    ];
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : 'Could not fetch users');
+  }
 };

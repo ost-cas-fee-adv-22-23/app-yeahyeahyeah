@@ -6,14 +6,22 @@ export const fetchSingleMumble = async (params?: { id: string; token?: string })
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}`;
 
-  const { data } = (await axios.get(url, {
-    headers: {
-      'content-type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  })) as QwackerSingleMumbleResponse;
+  try {
+    const { data } = (await axios.get(url, {
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })) as QwackerSingleMumbleResponse;
 
-  const mumble = transformSingleMumble(data);
+    if (!data) {
+      throw new Error('Something was not okay.');
+    }
 
-  return mumble as Mumble;
+    const mumble = transformSingleMumble(data);
+
+    return mumble as Mumble;
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : 'Could not fetch single mumble');
+  }
 };

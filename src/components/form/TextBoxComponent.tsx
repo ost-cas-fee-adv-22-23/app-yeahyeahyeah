@@ -30,6 +30,11 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     revalidateOnFocus: false,
   });
 
+  const clearFormValues = () => {
+    setInputValue('');
+    setFile(null);
+  };
+
   const addText = async () => {
     if (inputValue === '') {
       setErrorMessage('Bitte füllen Sie das Feld aus.');
@@ -41,21 +46,37 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         autoClose: false,
         keepAfterRouteChange: false,
       });
-      setInputValue('');
-      setFile(null);
+      clearFormValues();
       return;
     }
 
     if (id) {
-      res = await postReply(id, inputValue, file, session?.accessToken);
-      res && mutate({ ...data, replies: [res, ...data?.replies] });
-    } else {
-      res = await postMumble(inputValue, file, session?.accessToken);
-      res && mutate({ ...data, mumbles: [res, ...data?.mumbles] });
-    }
+      try {
+        res = await postReply(id, inputValue, file, session?.accessToken);
+        res && mutate({ ...data, replies: [res, ...data?.replies] });
 
-    setInputValue('');
-    setFile(null);
+        clearFormValues();
+
+        if (!res) {
+          throw new Error('Something was not okay with posting a reply.');
+        }
+      } catch (error) {
+        throw new Error(error instanceof Error ? error.message : 'Could not post a reply.');
+      }
+    } else {
+      try {
+        res = await postMumble(inputValue, file, session?.accessToken);
+        res && mutate({ ...data, mumbles: [res, ...data?.mumbles] });
+
+        clearFormValues();
+
+        if (!res) {
+          throw new Error('Something was not okay with posting a mumble.');
+        }
+      } catch (error) {
+        throw new Error(error instanceof Error ? error.message : 'Could not post a mumble.');
+      }
+    }
   };
 
   const setErrorDebounced = useMemo(

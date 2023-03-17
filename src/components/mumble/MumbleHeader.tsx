@@ -47,7 +47,7 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
             label={`${user && user.userName}`}
             type="username"
             color="violet"
-            href={'#'}
+            href={`/profile/${user.id}`}
             legacyBehavior
             passHref
             linkComponent={Link}

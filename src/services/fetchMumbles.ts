@@ -15,19 +15,27 @@ export const fetchMumbles = async (params?: {
     newerThan: newerThanMumbleId || '',
   })}`;
 
-  const { data, count } = (
-    await axios.get(url, {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  ).data as QwackerMumbleResponse;
+  try {
+    const { data, count } = (
+      await axios.get(url, {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+    ).data as QwackerMumbleResponse;
 
-  const mumbles = data.map(transformMumble);
+    const mumbles = data.map(transformMumble);
 
-  return {
-    count,
-    mumbles,
-  };
+    if (!data) {
+      throw new Error('Something was not okay.');
+    }
+
+    return {
+      count,
+      mumbles,
+    };
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : 'Could not fetch mumbles');
+  }
 };
