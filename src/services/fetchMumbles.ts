@@ -25,11 +25,11 @@ export const fetchMumbles = async (params?: {
       })
     ).data as QwackerMumbleResponse;
 
-    const mumbles = data.map(transformMumble);
-
     if (!data) {
       throw new Error('Something was not okay.');
     }
+
+    const mumbles = data.map(transformMumble);
 
     return {
       count,
