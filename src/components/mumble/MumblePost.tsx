@@ -143,7 +143,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
           linkComponent={Link}
         />
         <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
-        <MumbleShare path={`http://localhost:3000/mumble/${id}`} />
+        <MumbleShare id={id} />
       </ArticleInteraction>
     </ArticleMumble>
   );
