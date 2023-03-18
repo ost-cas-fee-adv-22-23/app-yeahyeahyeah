@@ -69,7 +69,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user, id }) 
           linkComponent={Link}
         />
         <MumbleLike id={mumble.id} favourite={mumble.likedByUser} quantity={mumble.likeCount} />
-        <MumbleShare id={id} />
+        <MumbleShare id={mumble.id} />
       </ArticleInteraction>
     </ArticleMumble>
   );

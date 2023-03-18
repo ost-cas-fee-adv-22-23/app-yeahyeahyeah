@@ -1,7 +1,6 @@
 import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import useSWR from 'swr';
-import tw from 'twin.macro';
 import { Alert, MumbleDetail, TextBoxComponent } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { fetchUser, User } from '@/services';
