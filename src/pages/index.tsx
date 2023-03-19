@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { NextSeo } from 'next-seo';
 import useSWR from 'swr';
 import { GetServerSideProps } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
@@ -51,17 +52,20 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   }
 
   return (
-    <Container layout="plain">
-      <WelcomeText />
+    <>
+      <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
       <Container layout="plain">
-        <Alert />
+        <WelcomeText />
+        <Container layout="plain">
+          <Alert />
+        </Container>
+        <TextBoxComponent variant="write" mutate={mutate} data={data} />
+
+        {pages}
+
+        <div key="last" tw="invisible" ref={ref} />
       </Container>
-      <TextBoxComponent variant="write" mutate={mutate} data={data} />
-
-      {pages}
-
-      <div key="last" tw="invisible" ref={ref} />
-    </Container>
+    </>
   );
 }
 

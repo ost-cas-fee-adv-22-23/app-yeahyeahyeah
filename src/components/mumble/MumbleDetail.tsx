@@ -26,7 +26,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
           variant="medium"
           src={user && user.avatarUrl !== '' ? user.avatarUrl : '/avatar_default.png/'}
           alt={user ? user.userName : 'username'}
-          href={`/profile/${user.id}`}
+          href={`/profile/${user && user.id}`}
           legacyBehavior
           passHref
           linkComponent={Link}
@@ -38,7 +38,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
               label={user ? user.userName : 'username'}
               type="username"
               color="violet"
-              href={`/profile/${user.id}`}
+              href={`/profile/${user && user.id}`}
               legacyBehavior
               passHref
               linkComponent={Link}
