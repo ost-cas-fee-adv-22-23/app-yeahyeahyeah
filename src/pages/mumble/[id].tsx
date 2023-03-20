@@ -1,5 +1,6 @@
 import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { NextSeo } from 'next-seo';
 import useSWR from 'swr';
 import tw from 'twin.macro';
 import { Alert, MumbleDetail, TextBoxComponent } from '@/components';
@@ -51,15 +52,22 @@ export default function MumblePage({
   });
 
   return (
-    <Container layout="box">
-      {mumble && <MumbleDetail mumble={mumble} user={user} />}
-      <Container layout="plain">
-        <Alert />
-      </Container>
-      <TextBoxComponent id={id} variant="inline" mutate={mutate} data={data} />
+    <>
+      <NextSeo
+        title={user && `${user.userName}'s reply`}
+        description={mumble && `${mumble.text}`}
+        canonical="https://mumble-yeahyeahyeah.ch"
+      />
+      <Container layout="box">
+        {mumble && <MumbleDetail mumble={mumble} user={user} />}
+        <Container layout="plain">
+          <Alert />
+        </Container>
+        <TextBoxComponent id={id} variant="inline" mutate={mutate} data={data} />
 
-      <RenderReplies isLoading={isLoading} error={error} mutate={mutate} data={data} />
-    </Container>
+        <RenderReplies isLoading={isLoading} error={error} mutate={mutate} data={data} />
+      </Container>
+    </>
   );
 }
 

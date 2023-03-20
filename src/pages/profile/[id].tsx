@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
+import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
@@ -93,55 +94,65 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
       );
   }
 
+  console.log('session', session);
+
   return (
-    <Container layout="plain">
-      <MumbleHeader creator={creator} fallbackUser={fallbackUser} />
+    <>
+      <NextSeo
+        title={`${session && session.user.firstname} ${session && session.user.lastname}'s mumble profile`}
+        description={`Profile of ${session && session.user.username}`}
+        canonical="https://mumble-yeahyeahyeah.ch"
+      />
 
-      {session?.user.id === creator.id ? (
-        <>
-          <Switch
-            fCallBack={(value) => handleSelection(value)}
-            options={[
-              {
-                label: 'Deine Mumbles',
-                value: 'mumbles',
-              },
-              {
-                label: 'Deine Likes',
-                value: 'likes',
-              },
-            ]}
-            value="mumbles"
-          />
+      <Container layout="plain">
+        <MumbleHeader creator={creator} fallbackUser={fallbackUser} />
 
-          <SelectionWrapper>
-            {selection === 'mumbles' && pagesMumbles}
-            {selection === 'likes' && pagesLikes}
+        {session?.user.id === creator.id ? (
+          <>
+            <Switch
+              fCallBack={(value) => handleSelection(value)}
+              options={[
+                {
+                  label: 'Deine Mumbles',
+                  value: 'mumbles',
+                },
+                {
+                  label: 'Deine Likes',
+                  value: 'likes',
+                },
+              ]}
+              value="mumbles"
+            />
 
-            {selection === 'mumbles' && mumbles?.count === 0 && (
-              <ErrorBox message="Die Liste ist leer. Schreib deinen ersten Mumble." />
-            )}
-            {selection === 'likes' && likes?.mumbles.length === 0 && (
-              <ErrorBox message="Du hast noch kein Mumble abgeliked!" />
-            )}
-            {/* End user profile page */}
-            {/* Start profile page STRANGER */}
-            <div tw="bg-pink-500 p-8 mb-16 rounded-md flex justify-center">
-              <p tw="text-slate-white font-medium">TBD - Profile Page STRANGER - Lists only users mumbles</p>
-            </div>
-            {/* End profile  */}
-            {/* Start profile page STRANGER */}
-            <div tw="bg-violet-500 p-8 mb-16 rounded-md flex justify-center">
-              <p tw="text-slate-white font-medium">TBD - Profile Page NEW USER - Lists recommended mumbles</p>
-            </div>
-            {/* End profile  */}
-          </SelectionWrapper>
-        </>
-      ) : (
-        <SelectionWrapper>{selection === 'mumbles' && pagesMumbles}</SelectionWrapper>
-      )}
-      <div key="last" tw="invisible" ref={ref} />
-    </Container>
+            <SelectionWrapper>
+              {selection === 'mumbles' && pagesMumbles}
+              {selection === 'likes' && pagesLikes}
+
+              {selection === 'mumbles' && mumbles?.count === 0 && (
+                <ErrorBox message="Die Liste ist leer. Schreib deinen ersten Mumble." />
+              )}
+              {selection === 'likes' && likes?.mumbles.length === 0 && (
+                <ErrorBox message="Du hast noch kein Mumble abgeliked!" />
+              )}
+              {/* End user profile page */}
+              {/* Start profile page STRANGER */}
+              <div tw="bg-pink-500 p-8 mb-16 rounded-md flex justify-center">
+                <p tw="text-slate-white font-medium">TBD - Profile Page STRANGER - Lists only users mumbles</p>
+              </div>
+              {/* End profile  */}
+              {/* Start profile page STRANGER */}
+              <div tw="bg-violet-500 p-8 mb-16 rounded-md flex justify-center">
+                <p tw="text-slate-white font-medium">TBD - Profile Page NEW USER - Lists recommended mumbles</p>
+              </div>
+              {/* End profile  */}
+            </SelectionWrapper>
+          </>
+        ) : (
+          <SelectionWrapper>{selection === 'mumbles' && pagesMumbles}</SelectionWrapper>
+        )}
+        <div key="last" tw="invisible" ref={ref} />
+      </Container>
+    </>
   );
 }
 
