@@ -39,12 +39,12 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
           />
         </ImageWrapper>
         <AvatarWrapper>
-          <Avatar variant="xlarge" src={user?.avatarUrl ? user.avatarUrl : '/avatar_default.png/'} alt="Username" />
+          <Avatar variant="xlarge" src={user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'} alt="Username" />
         </AvatarWrapper>
-        <User label={user && `${user.firstName} ${user.lastName}`} variant="xlarge" />
+        <User label={`${user.firstName} ${user.lastName}`} variant="xlarge" />
         <InteractionWrapper>
           <IconLink
-            label={`${user && user.userName}`}
+            label={`${user.userName}`}
             type="username"
             color="violet"
             href={`/profile/${user.id}`}
@@ -70,6 +70,6 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
 };
 
 const MumbleHeaderWrapper = tw.div`flex flex-col`;
-const ImageWrapper = tw.div`flex flex-row justify-end items-center z-0 w-full mt-0`;
+const ImageWrapper = tw.div`flex flex-row justify-end items-center z-0 w-full mt-0 aspect-video`;
 const AvatarWrapper = tw.div`flex flex-row justify-end items-end relative top-32 -right-32 z-0 scale-75 transform transition duration-500 h-0 sm:(scale-100 relative top-64 right-32)`;
 const InteractionWrapper = tw.div`flex flex-col sm:(flex-row) mb-16 gap-16`;
