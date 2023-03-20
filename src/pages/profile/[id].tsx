@@ -52,18 +52,14 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
     setCount(1);
   };
 
-  const handleIntersectionCallback = () => {
+  const handleIntersectionCallbackDebounced = debounce(async () => {
     setOffset((offset) => offset + quantity);
     setCount((count) => count + 1);
-  };
-
-  const handleIntersectionCallbackDebounced = debounce(async () => {
-    handleIntersectionCallback();
   }, 800);
 
   useEffect(() => {
     if (isOnScreen && quantityTotal - quantity >= offset) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, quantity]);
+  });
 
   const pagesMumbles: JSX.Element[] = [];
   const pagesLikes: JSX.Element[] = [];
