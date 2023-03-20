@@ -1,4 +1,5 @@
 import React from 'react';
+import tw from 'twin.macro';
 import { KeyedMutator } from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { MumblePost } from './MumblePost';
@@ -58,19 +59,21 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ data, mutate, erro
       {isLoading && <LoadingSpinner />}
       {data &&
         data.replies.map((mumble: Mumble) => (
-          <MumblePost
-            key={mumble.id}
-            id={mumble.id}
-            creator={mumble.creator}
-            text={mumble.text}
-            mediaUrl={mumble.mediaUrl}
-            createdTimestamp={mumble.createdTimestamp}
-            likeCount={mumble.likeCount}
-            likedByUser={mumble.likedByUser}
-            replyCount={mumble.replyCount}
-            type={mumble.type}
-            handleDeleteCallback={handleDelete}
-          />
+          <div key={mumble.id} tw="border-t-1 border-slate-200 pt-16">
+            <MumblePost
+              key={mumble.id}
+              id={mumble.id}
+              creator={mumble.creator}
+              text={mumble.text}
+              mediaUrl={mumble.mediaUrl}
+              createdTimestamp={mumble.createdTimestamp}
+              likeCount={mumble.likeCount}
+              likedByUser={mumble.likedByUser}
+              replyCount={mumble.replyCount}
+              type={mumble.type}
+              handleDeleteCallback={handleDelete}
+            />
+          </div>
         ))}
     </>
   );

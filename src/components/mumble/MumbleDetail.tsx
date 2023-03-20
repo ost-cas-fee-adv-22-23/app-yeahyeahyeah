@@ -11,6 +11,7 @@ import {
 import { Mumble, User as TUser } from '@/services';
 import { elapsedTime } from '@/utils';
 import { MumbleLike } from './MumbleLike';
+import { MumbleShare } from './MumbleShare';
 
 type MumbleSingleProps = {
   mumble: Mumble;
@@ -67,6 +68,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
           linkComponent={Link}
         />
         <MumbleLike id={mumble.id} favourite={mumble.likedByUser} quantity={mumble.likeCount} />
+        <MumbleShare id={mumble.id} />
       </ArticleInteraction>
     </ArticleMumble>
   );
@@ -76,4 +78,4 @@ const ArticleMumble = tw.article`flex flex-col justify-start items-start w-full 
 const ArticleHeader = tw.div`flex flex-row items-center gap-16 relative left-0 sm:-left-[86px] mb-32`;
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-row gap-16`;
-const ArticleInteraction = tw.div`flex flex-row`;
+const ArticleInteraction = tw.div`flex flex-row flex-wrap justify-start items-start`;
