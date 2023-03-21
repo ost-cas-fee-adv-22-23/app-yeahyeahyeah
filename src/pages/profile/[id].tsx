@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
@@ -52,14 +52,12 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
     setCount(1);
   };
 
-  const handleIntersectionCallback = () => {
-    setOffset((offset) => offset + limit);
-    setCount((count) => count + 1);
-  };
-
-  const handleIntersectionCallbackDebounced = debounce(async () => {
-    handleIntersectionCallback();
-  }, 800);
+  const handleIntersectionCallbackDebounced = useMemo(() => {
+    return debounce(async () => {
+      setOffset((offset) => offset + limit);
+      setCount((count) => count + 1);
+    }, 800);
+  }, [limit]);
 
   useEffect(() => {
     if (isOnScreen && quantityTotal - limit >= offset) handleIntersectionCallbackDebounced();
@@ -93,8 +91,6 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
         />
       );
   }
-
-  console.log('session', session);
 
   return (
     <>

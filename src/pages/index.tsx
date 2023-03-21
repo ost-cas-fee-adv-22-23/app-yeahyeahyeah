@@ -53,7 +53,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
         <Container layout="plain">
           <Alert />
         </Container>
-        <TextBoxComponent variant="write" mutate={mutate} data={data} />
+        <TextBoxComponent variant="write" mutate={mutate} data={data} setOffset={setOffset} setCount={setCount} />
 
         {pages}
 
