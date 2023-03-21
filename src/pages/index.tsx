@@ -10,7 +10,7 @@ import useOnScreen from '@/hooks/useOnScreen';
 import { useSession } from 'next-auth/react';
 import { FetchMumbles } from '@/types/fallback';
 
-export default function Page({ quantity, fallback }: { quantity: number; fallback: { '/api/mumbles': FetchMumbles } }) {
+export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
   const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
@@ -18,15 +18,11 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
   const ref = useRef(null);
   const [isOnScreen] = useOnScreen(ref);
 
-  const { data, mutate } = useSWR(
-    { url: '/api/mumbles', limit: quantity, offset: 0, token: session?.accessToken },
-    fetchMumbles,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      revalidateIfStale: false,
-    }
-  );
+  const { data, mutate } = useSWR({ url: '/api/mumbles', limit, offset: 0, token: session?.accessToken }, fetchMumbles, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    revalidateIfStale: false,
+  });
 
   useEffect(() => {
     data && data.count > 0 && setQuantityTotal(data.count);
@@ -34,19 +30,19 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
 
   const handleIntersectionCallbackDebounced = useMemo(() => {
     return debounce(async () => {
-      setOffset((offset) => offset + quantity);
+      setOffset((offset) => offset + limit);
       setCount((count) => count + 1);
     }, 800);
-  }, [quantity]);
+  }, [limit]);
 
   useEffect(() => {
-    if (isOnScreen && quantityTotal - quantity >= offset) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, quantity]);
+    if (isOnScreen && quantityTotal - limit >= offset) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit]);
 
   const pages: JSX.Element[] = [];
 
   for (let i = 0; i < count; i++) {
-    pages.push(<RenderMumbles key={i} offset={offset} limit={quantity} fallback={fallback} />);
+    pages.push(<RenderMumbles key={i} offset={offset} limit={limit} fallback={fallback} />);
   }
 
   return (
@@ -68,15 +64,15 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async () => {
-  const quantity = 2;
+  const limit = 2;
 
-  const mumbles: FetchMumbles = await fetchMumbles({ limit: quantity, offset: 0 });
+  const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0 });
 
   console.log(mumbles);
 
   return {
     props: {
-      quantity,
+      limit,
       fallback: {
         '/api/mumbles': mumbles,
       },
