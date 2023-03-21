@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { NextSeo } from 'next-seo';
 import useSWR from 'swr';
 import { GetServerSideProps } from 'next';
@@ -32,14 +32,12 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
     data && data.count > 0 && setQuantityTotal(data.count);
   }, [data]);
 
-  const handleIntersectionCallback = () => {
-    setOffset((offset) => offset + quantity);
-    setCount((count) => count + 1);
-  };
-
-  const handleIntersectionCallbackDebounced = debounce(async () => {
-    handleIntersectionCallback();
-  }, 800);
+  const handleIntersectionCallbackDebounced = useMemo(() => {
+    return debounce(async () => {
+      setOffset((offset) => offset + quantity);
+      setCount((count) => count + 1);
+    }, 800);
+  }, [quantity]);
 
   useEffect(() => {
     if (isOnScreen && quantityTotal - quantity >= offset) handleIntersectionCallbackDebounced();
@@ -70,7 +68,7 @@ export default function Page({ quantity, fallback }: { quantity: number; fallbac
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async () => {
-  const quantity = 20;
+  const quantity = 2;
 
   const mumbles: FetchMumbles = await fetchMumbles({ limit: quantity, offset: 0 });
 
