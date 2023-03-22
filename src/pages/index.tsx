@@ -44,6 +44,12 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     return data?.mumbles[0].id && newMumbles && newMumbles.count > 0;
   };
 
+  const quantityNewMumbles = () => {
+    return data?.mumbles[0].id && newMumbles && newMumbles.count === 1
+      ? '1 new mumble'
+      : `${newMumbles && newMumbles.count} new mumbles`;
+  };
+
   const handleRefreshPage = () => {
     router.reload();
     resetWindowScrollPosition();
@@ -76,7 +82,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
       <Container layout="plain">
         {checkForNewMumbles() && (
           <div tw="fixed left-16 mb-16">
-            <Button label="New mumbles!!!" color="slate" onClick={handleRefreshPage} />
+            <Button label={quantityNewMumbles()} color="slate" onClick={handleRefreshPage} />
           </div>
         )}
         <WelcomeText />
