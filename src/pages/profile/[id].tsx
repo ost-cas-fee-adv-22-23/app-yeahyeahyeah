@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
@@ -16,12 +16,12 @@ import { FetchMumbles } from '@/types/fallback';
 
 type MumbleHeaderProps = {
   creator: any;
-  quantity: number;
+  limit: number;
   fallbackUser: { '/api/user': User };
   fallBackMyMumbles: { '/api/myMumbles': FetchMumbles };
 };
 
-export default function Page({ creator, quantity, fallbackUser, fallBackMyMumbles }: MumbleHeaderProps) {
+export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }: MumbleHeaderProps) {
   const { data: session }: any = useSession();
   const [selection, setSelection] = useState('mumbles');
   const [count, setCount] = useState(1);
@@ -52,18 +52,16 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
     setCount(1);
   };
 
-  const handleIntersectionCallback = () => {
-    setOffset((offset) => offset + quantity);
-    setCount((count) => count + 1);
-  };
-
-  const handleIntersectionCallbackDebounced = debounce(async () => {
-    handleIntersectionCallback();
-  }, 800);
+  const handleIntersectionCallbackDebounced = useMemo(() => {
+    return debounce(async () => {
+      setOffset((offset) => offset + limit);
+      setCount((count) => count + 1);
+    }, 800);
+  }, [limit]);
 
   useEffect(() => {
-    if (isOnScreen && quantityTotal - quantity >= offset) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, quantity]);
+    if (isOnScreen && quantityTotal - limit >= offset) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit]);
 
   const pagesMumbles: JSX.Element[] = [];
   const pagesLikes: JSX.Element[] = [];
@@ -74,7 +72,7 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
         <RenderProfileMumbles
           key={i}
           offset={offset}
-          limit={quantity}
+          limit={limit}
           creator={creator.id}
           selection={selection}
           setQuantityTotal={setQuantityTotal}
@@ -86,15 +84,13 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
         <RenderLikesMumbles
           key={i}
           offset={offset}
-          limit={quantity}
+          limit={limit}
           creator={creator.id}
           selection={selection}
           setQuantityTotal={setQuantityTotal}
         />
       );
   }
-
-  console.log('session', session);
 
   return (
     <>
@@ -157,7 +153,7 @@ export default function Page({ creator, quantity, fallbackUser, fallBackMyMumble
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { id } }: GetServerSidePropsContext) => {
-  const quantity = 10;
+  const limit = 10;
   const _id = id as string;
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -167,7 +163,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
   return {
     props: {
       creator: id && { id: _id },
-      quantity,
+      limit,
       fallbackUser: {
         '/api/user': user || {
           userName: 'username',
