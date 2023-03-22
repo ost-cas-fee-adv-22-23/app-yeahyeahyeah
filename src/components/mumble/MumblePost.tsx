@@ -1,17 +1,18 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import Image from 'next/legacy/image';
 import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
 import useSWR from 'swr';
 import {
   Avatar,
   CommentButton,
-  ImageContainer,
   User,
   IconLink,
+  IconButton,
   Paragraph,
   Cancel,
-  Container,
+  Image as TheImage,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { fetchUser } from '@/services/fetchUser';
 import { MumbleLike } from './MumbleLike';
@@ -54,85 +55,94 @@ export const MumblePost: React.FC<MumbleProps> = ({
     handleDeleteCallback && handleDeleteCallback(id);
   };
 
+  const myLoader = (src: any) => {
+    console.log(src.src);
+
+    return `${src.src}`;
+  };
+
   return (
     <ArticleMumble id={id}>
       {type === 'post' ? (
-        <Container layout="plain">
-          <div tw="flex justify-between">
-            <ArticleHeader>
-              <Link href={`/profile/${creator}`} title={creator} target="_self">
-                <Avatar
-                  key={creator ? creator : ''}
-                  variant="medium"
-                  src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
-                  alt={data ? data.userName : 'username'}
-                />
-              </Link>
-              <ArticleHeaderContent>
-                <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
-                <ArticleDatas>
-                  <IconLink
-                    label={data ? data.userName : 'username'}
-                    type="username"
-                    color="violet"
-                    href={`/profile/${creator}`}
-                    legacyBehavior
-                    passHref
-                    linkComponent={Link}
-                  />
-                  <IconLink
-                    label={elapsedTime(createdTimestamp)}
-                    type="timestamp"
-                    color="slate"
-                    onClick={handleClickTimestamp}
-                  />
-                </ArticleDatas>
-              </ArticleHeaderContent>
-            </ArticleHeader>
-            {creator === session?.user?.id && <Cancel tw="fill-slate-300" onClick={() => handleDelete(id)} />}
-          </div>
-        </Container>
+        <ArticleHeader>
+          <Link href={`/profile/${creator}`} title={creator} target="_self">
+            <Avatar
+              key={creator ? creator : ''}
+              variant="medium"
+              src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
+              alt={data ? data.userName : 'username'}
+            />
+          </Link>
+          <ArticleHeaderContent>
+            <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
+
+            <ArticleDatas>
+              <IconLink
+                label={data ? data.userName : 'username'}
+                type="username"
+                color="violet"
+                href={`/profile/${creator}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
+              />
+              <IconLink
+                label={elapsedTime(createdTimestamp)}
+                type="timestamp"
+                color="slate"
+                onClick={handleClickTimestamp}
+              />
+            </ArticleDatas>
+          </ArticleHeaderContent>
+        </ArticleHeader>
       ) : (
-        <Container layout="plain">
-          <div tw="flex justify-between">
-            <ArticleHeaderReply>
-              {type === 'reply' && (
-                <Link href={`/profile/${creator}`} title={creator} target="_self">
-                  <Avatar
-                    key={creator ? creator : ''}
-                    variant="small"
-                    src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
-                    alt={data ? data.userName : 'username'}
-                  />
-                </Link>
-              )}
-              <ArticleHeaderContent>
-                <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
-                <ArticleDatas>
-                  <IconLink
-                    label={data ? data.userName : 'username'}
-                    type="username"
-                    color="violet"
-                    href={`/profile/${creator}`}
-                    legacyBehavior
-                    passHref
-                    linkComponent={Link}
-                  />
-                  <IconLink
-                    label={elapsedTime(createdTimestamp)}
-                    type="timestamp"
-                    color="slate"
-                    onClick={handleClickTimestamp}
-                  />
-                </ArticleDatas>
-              </ArticleHeaderContent>
-            </ArticleHeaderReply>
-            {creator === session?.user?.id && <Cancel tw="fill-slate-300" onClick={() => handleDelete(id)} />}
-          </div>
-        </Container>
+        <ArticleHeaderReply>
+          {type === 'reply' && (
+            <Link href={`/profile/${creator}`} title={creator} target="_self">
+              <Avatar
+                key={creator ? creator : ''}
+                variant="small"
+                src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
+                alt={data ? data.userName : 'username'}
+              />
+            </Link>
+          )}
+          <ArticleHeaderContent>
+            <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
+            <ArticleDatas>
+              <IconLink
+                label={data ? data.userName : 'username'}
+                type="username"
+                color="violet"
+                href={`/profile/${creator}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
+              />
+              <IconLink
+                label={elapsedTime(createdTimestamp)}
+                type="timestamp"
+                color="slate"
+                onClick={handleClickTimestamp}
+              />
+            </ArticleDatas>
+          </ArticleHeaderContent>
+        </ArticleHeaderReply>
       )}
       <Paragraph text={text} mbSpacing="16" />
-      {mediaUrl && <ImageContainer src={mediaUrl} alt={text} />}
+      {mediaUrl && (
+        <ImageWrapper>
+          <TheImage
+            loader={myLoader}
+            src={mediaUrl}
+            alt="Picture of the author"
+            width={594}
+            height={340}
+            objectFit="cover"
+            imageComponent={Image}
+          />
+        </ImageWrapper>
+      )}
       <ArticleInteraction>
         <CommentButton
           type="comment"
@@ -144,6 +154,11 @@ export const MumblePost: React.FC<MumbleProps> = ({
         />
         <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
         <MumbleShare id={id} />
+        <div tw="flex content-end">
+          {creator === session?.user?.id && (
+            <IconButton label="Delete Post" icon="cancel" variant="plain" onClick={() => handleDelete(id)} />
+          )}
+        </div>
       </ArticleInteraction>
     </ArticleMumble>
   );
@@ -154,4 +169,5 @@ const ArticleHeader = tw.div`flex flex-row items-start sm:(items-center) gap-16 
 const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relative left-0 mb-16 sm:(mb-32)`;
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-col gap-8 sm:(flex-row gap-16)`;
-const ArticleInteraction = tw.div`flex flex-row flex-wrap`;
+const ArticleInteraction = tw.div`flex flex-row justify-between items-center flex-wrap mt-16`;
+const ImageWrapper = tw.div`flex rounded-lg overflow-hidden`;

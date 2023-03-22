@@ -5,13 +5,14 @@ const nextConfig = {
   swcMinify: true,
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'cas-fee-advanced-ocvdad.zitadel.cloud' },
       {
         protocol: 'https',
         hostname: 'storage.googleapis.com',
+        port: '',
         pathname: '/qwacker-api-prod-data/**',
       },
     ],
+    minimumCacheTTL: 1500000,
   },
   env: {
     NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
