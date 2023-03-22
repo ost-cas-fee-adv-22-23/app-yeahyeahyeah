@@ -6,13 +6,13 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <div tw="flex flex-row justify-center items-center p-16 w-full">
+    <footer tw="flex flex-row justify-center items-center p-16 w-full">
       <Paragraph
         text={`© ${getCurrentYear()} CAS - Frontend Engineer Advanced`}
         color="light"
         size="default"
         alignment="center"
       />
-    </div>
+    </footer>
   );
 };
