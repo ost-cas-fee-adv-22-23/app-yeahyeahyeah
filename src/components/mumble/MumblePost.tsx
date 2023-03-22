@@ -7,12 +7,11 @@ import useSWR from 'swr';
 import {
   Avatar,
   CommentButton,
-  User,
   IconLink,
   IconButton,
+  ImageContainer,
   Paragraph,
-  Cancel,
-  Image as TheImage,
+  User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { fetchUser } from '@/services/fetchUser';
 import { MumbleLike } from './MumbleLike';
@@ -55,10 +54,8 @@ export const MumblePost: React.FC<MumbleProps> = ({
     handleDeleteCallback && handleDeleteCallback(id);
   };
 
-  const myLoader = (src: any) => {
-    console.log(src.src);
-
-    return `${src.src}`;
+  const myLoader = (params: any) => {
+    return `${params.src}`;
   };
 
   return (
@@ -132,13 +129,16 @@ export const MumblePost: React.FC<MumbleProps> = ({
       <Paragraph text={text} mbSpacing="16" />
       {mediaUrl && (
         <ImageWrapper>
-          <TheImage
+          <ImageContainer
+            type="container"
             loader={myLoader}
             src={mediaUrl}
-            alt="Picture of the author"
-            width={594}
-            height={340}
+            alt={text}
+            width={590}
+            height={320}
             objectFit="cover"
+            loading="lazy"
+            placeholder="empty"
             imageComponent={Image}
           />
         </ImageWrapper>
@@ -154,7 +154,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
         />
         <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
         <MumbleShare id={id} />
-        <div tw="flex content-end">
+        <div tw="flex justify-end items-center grow">
           {creator === session?.user?.id && (
             <IconButton label="Delete Post" icon="cancel" variant="plain" onClick={() => handleDelete(id)} />
           )}
@@ -169,5 +169,5 @@ const ArticleHeader = tw.div`flex flex-row items-start sm:(items-center) gap-16 
 const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relative left-0 mb-16 sm:(mb-32)`;
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-col gap-8 sm:(flex-row gap-16)`;
-const ArticleInteraction = tw.div`flex flex-row justify-between items-center flex-wrap mt-16`;
+const ArticleInteraction = tw.div`flex flex-row justify-start items-center flex-wrap mt-16 w-full`;
 const ImageWrapper = tw.div`flex rounded-lg overflow-hidden`;

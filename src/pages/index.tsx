@@ -50,13 +50,9 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
       <Container layout="plain">
         <WelcomeText />
-        <Container layout="plain">
-          <Alert />
-        </Container>
+        <Alert />
         <TextBoxComponent variant="write" mutate={mutate} data={data} setOffset={setOffset} setCount={setCount} />
-
         {pages}
-
         <div key="last" tw="invisible" ref={ref} />
       </Container>
     </>
