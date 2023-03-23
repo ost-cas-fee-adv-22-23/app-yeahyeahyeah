@@ -46,10 +46,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
     revalidateOnFocus: false,
   });
 
-  const handleClickTimestamp = () => {
-    console.log('Timestamp clicked');
-  };
-
   const handleDelete = (id: string) => {
     handleDeleteCallback && handleDeleteCallback(id);
   };
@@ -87,7 +83,10 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 label={elapsedTime(createdTimestamp)}
                 type="timestamp"
                 color="slate"
-                onClick={handleClickTimestamp}
+                href={`/profile/${creator}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
               />
             </ArticleDatas>
           </ArticleHeaderContent>
@@ -120,7 +119,10 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 label={elapsedTime(createdTimestamp)}
                 type="timestamp"
                 color="slate"
-                onClick={handleClickTimestamp}
+                href={`/profile/${creator}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
               />
             </ArticleDatas>
           </ArticleHeaderContent>
