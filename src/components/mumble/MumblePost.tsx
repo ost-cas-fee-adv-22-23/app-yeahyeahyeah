@@ -139,6 +139,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
             objectFit="cover"
             loading="lazy"
             placeholder="empty"
+            onImageIconClick={() => console.log('ImageContainer clicked')}
             imageComponent={Image}
           />
         </ImageWrapper>
