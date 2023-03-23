@@ -160,7 +160,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
         <ArticleInteractionDelete>
           {creator === session?.user?.id && (
             <Cancel
-              tw="fill-slate-300 cursor-pointer transition ease-in-out delay-100 hover:(fill-pink-900 rotate-180 transform-gpu duration-500)"
+              tw="fill-slate-300 cursor-pointer transition scale-100 ease-in-out delay-100 hover:(fill-pink-900 rotate-180 transform-gpu duration-500 scale-150)"
               onClick={() => handleDelete(id)}
             />
           )}
@@ -175,6 +175,6 @@ const ArticleHeader = tw.div`flex flex-row items-start sm:(items-center) gap-16 
 const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relative left-0 mb-16 sm:(mb-32)`;
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-wrap gap-8 sm:(flex-row gap-16)`;
-const ArticleInteraction = tw.div`flex flex-row justify-start items-center flex-wrap sm:mt-16 w-full`;
-const ArticleInteractionDelete = tw.div`flex justify-end items-center grow pr-16 mb-8`;
+const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:mt-16 w-full`;
+const ArticleInteractionDelete = tw.div`flex justify-end items-center grow pr-4 mb-8`;
 const ImageWrapper = tw.div`flex rounded-lg overflow-hidden`;
