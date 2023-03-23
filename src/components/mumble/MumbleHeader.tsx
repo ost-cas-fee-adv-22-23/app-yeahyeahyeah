@@ -39,12 +39,12 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
           />
         </ImageWrapper>
         <AvatarWrapper>
-          <Avatar variant="xlarge" src={user?.avatarUrl ? user.avatarUrl : '/avatar_default.png/'} alt="Username" />
+          <Avatar variant="xlarge" src={user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'} alt="Username" />
         </AvatarWrapper>
-        <User label={user && `${user.firstName} ${user.lastName}`} variant="xlarge" />
+        <User label={`${user.firstName} ${user.lastName}`} variant="xlarge" />
         <InteractionWrapper>
           <IconLink
-            label={`${user && user.userName}`}
+            label={`${user.userName}`}
             type="username"
             color="violet"
             href={`/profile/${user.id}`}
