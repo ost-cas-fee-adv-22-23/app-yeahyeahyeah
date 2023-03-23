@@ -78,7 +78,7 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
           text={`Hallo! Mein Name ist ${user.firstName} ${user.lastName}. Ich freue mich mit Euch im CAS Frontend Engineering Advanced auszutauschen, Mumbles zu kreieren und zu bewerten. Ich freue mich auf jeden Like meiner Mumbles.`}
           size="medium"
           color="light"
-          mbSpacing="32"
+          mbSpacing="0"
         />
       </UserDataWrapper>
     </>
@@ -86,7 +86,7 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
 };
 
 const MumbleHeaderWrapper = tw.div`flex flex-col`;
-const ImageWrapper = tw.div`flex flex-row justify-end items-center z-0 w-full mt-0`;
-const AvatarWrapper = tw.div`flex flex-row justify-end items-end relative top-32 -right-32 z-0 scale-75 transform transition duration-500 h-0 sm:(scale-100 relative top-64 right-32)`;
+const ImageWrapper = tw.div`flex flex-row justify-end items-center z-0 w-full mt-0 aspect-video`;
+const AvatarWrapper = tw.div`flex flex-row justify-end items-end relative top-16 -right-32 z-0 scale-75 transform transition duration-500 h-0 sm:(scale-100 relative top-40 right-32)`;
 const InteractionWrapper = tw.div`flex flex-wrap sm:(flex-row) mb-16 gap-16`;
-const UserDataWrapper = tw.div`px-8`;
+const UserDataWrapper = tw.div`relative top-0 px-8 sm:-top-24`;

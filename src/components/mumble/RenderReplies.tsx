@@ -1,5 +1,4 @@
 import React from 'react';
-import tw from 'twin.macro';
 import { KeyedMutator } from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { MumblePost } from './MumblePost';

@@ -1,4 +1,4 @@
-import tw from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 import Image from 'next/legacy/image';
 import { useSession } from 'next-auth/react';
@@ -55,80 +55,43 @@ export const MumblePost: React.FC<MumbleProps> = ({
   };
 
   return (
-    <ArticleMumble id={id}>
-      {type === 'post' ? (
-        <ArticleHeader>
-          <Link href={`/profile/${creator}`} title={creator} target="_self">
-            <Avatar
-              key={creator ? creator : ''}
-              variant="medium"
-              src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
-              alt={data ? data.userName : 'username'}
+    <ArticleMumble id={id} type={type}>
+      <ArticleHeader type={type}>
+        <Link href={`/profile/${creator}`} title={creator} target="_self">
+          <Avatar
+            key={creator ? creator : ''}
+            variant={type === 'post' ? 'medium' : 'small'}
+            src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
+            alt={data ? data.userName : 'username'}
+          />
+        </Link>
+        <ArticleHeaderContent>
+          <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
+          <ArticleDatas>
+            <IconLink
+              label={data ? data.userName : 'username'}
+              type="username"
+              color="violet"
+              href={`/profile/${creator}`}
+              legacyBehavior
+              passHref
+              linkComponent={Link}
             />
-          </Link>
-          <ArticleHeaderContent>
-            <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
+            <IconLink
+              label={elapsedTime(createdTimestamp)}
+              type="timestamp"
+              color="slate"
+              href={`/mumble/${id}`}
+              legacyBehavior
+              passHref
+              linkComponent={Link}
+            />
+          </ArticleDatas>
+        </ArticleHeaderContent>
+      </ArticleHeader>
 
-            <ArticleDatas>
-              <IconLink
-                label={data ? data.userName : 'username'}
-                type="username"
-                color="violet"
-                href={`/profile/${creator}`}
-                legacyBehavior
-                passHref
-                linkComponent={Link}
-              />
-              <IconLink
-                label={elapsedTime(createdTimestamp)}
-                type="timestamp"
-                color="slate"
-                href={`/profile/${creator}`}
-                legacyBehavior
-                passHref
-                linkComponent={Link}
-              />
-            </ArticleDatas>
-          </ArticleHeaderContent>
-        </ArticleHeader>
-      ) : (
-        <ArticleHeaderReply>
-          {type === 'reply' && (
-            <Link href={`/profile/${creator}`} title={creator} target="_self">
-              <Avatar
-                key={creator ? creator : ''}
-                variant="small"
-                src={data && data.avatarUrl !== '' ? data.avatarUrl : '/avatar_default.png/'}
-                alt={data ? data.userName : 'username'}
-              />
-            </Link>
-          )}
-          <ArticleHeaderContent>
-            <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
-            <ArticleDatas>
-              <IconLink
-                label={data ? data.userName : 'username'}
-                type="username"
-                color="violet"
-                href={`/profile/${creator}`}
-                legacyBehavior
-                passHref
-                linkComponent={Link}
-              />
-              <IconLink
-                label={elapsedTime(createdTimestamp)}
-                type="timestamp"
-                color="slate"
-                href={`/profile/${creator}`}
-                legacyBehavior
-                passHref
-                linkComponent={Link}
-              />
-            </ArticleDatas>
-          </ArticleHeaderContent>
-        </ArticleHeaderReply>
-      )}
       <Paragraph text={text} mbSpacing="16" />
+
       {mediaUrl && (
         <ImageWrapper>
           <ImageContainer
@@ -170,9 +133,22 @@ export const MumblePost: React.FC<MumbleProps> = ({
   );
 };
 
-const ArticleMumble = tw.article`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48 rounded-lg mb-16`;
-const ArticleHeader = tw.div`flex flex-row items-start sm:(items-center) gap-16 w-full relative -left-16 sm:-left-[88px] mb-16 sm:(mb-32)`;
-const ArticleHeaderReply = tw.div`flex flex-row items-center gap-8 w-full relative left-0 mb-16 sm:(mb-32)`;
+interface ArticleHeaderProps {
+  type: string;
+}
+
+const ArticleMumble = styled.article(({ type }: ArticleHeaderProps) => [
+  tw`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48 rounded-lg`,
+  type === 'reply' && tw`mb-0`,
+  type === 'post' && tw`mb-16`,
+]);
+
+const ArticleHeader = styled.div(({ type }: ArticleHeaderProps) => [
+  tw`flex flex-row items-start sm:(items-center) gap-16 w-full`,
+  type === 'reply' && tw`flex flex-row items-center gap-8 w-full relative left-0 mb-16`,
+  type === 'post' && tw`relative -left-16 sm:-left-[88px] mb-16`,
+]);
+
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-wrap gap-8 sm:(flex-row gap-16)`;
 const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:mt-16 w-full`;
