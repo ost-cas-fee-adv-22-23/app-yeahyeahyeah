@@ -1,6 +1,12 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
-import { Avatar, IconLink, ImageContainer, User } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import {
+  Avatar,
+  IconLink,
+  ImageContainer,
+  Paragraph,
+  User,
+} from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import useSWR from 'swr';
 import { fetchUser, User as TUser } from '@/services';
 import { useSession } from 'next-auth/react';
@@ -65,6 +71,13 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
           />
         </InteractionWrapper>
       </MumbleHeaderWrapper>
+
+      <Paragraph
+        text={`Hallo! Mein Name ist ${user.firstName} ${user.lastName}. Ich freue mich mit Euch im CAS Frontend Engineering Advanced auszutauschen, Mumbles zu kreieren und zu bewerten. Ich freue mich auf jeden Like meiner Mumbles.`}
+        size="medium"
+        color="light"
+        mbSpacing="32"
+      />
     </>
   );
 };
