@@ -1,21 +1,20 @@
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
-import Image from 'next/legacy/image';
 import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
 import useSWR from 'swr';
 import {
   Avatar,
   CommentButton,
-  IconLink,
   Cancel,
-  ImageContainer,
+  IconLink,
   Paragraph,
   User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { fetchUser } from '@/services/fetchUser';
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
+import { MumbleImage } from './MumbleImage';
 export interface MumbleProps {
   id: string;
   creator: string;
@@ -48,10 +47,6 @@ export const MumblePost: React.FC<MumbleProps> = ({
 
   const handleDelete = (id: string) => {
     handleDeleteCallback && handleDeleteCallback(id);
-  };
-
-  const myLoader = (params: any) => {
-    return `${params.src}`;
   };
 
   return (
@@ -92,23 +87,8 @@ export const MumblePost: React.FC<MumbleProps> = ({
 
       <Paragraph text={text} mbSpacing="16" />
 
-      {mediaUrl && (
-        <ImageWrapper>
-          <ImageContainer
-            type="container"
-            loader={myLoader}
-            src={mediaUrl}
-            alt={text}
-            width={590}
-            height={320}
-            objectFit="cover"
-            loading="lazy"
-            placeholder="empty"
-            onImageIconClick={() => console.log('ImageContainer clicked')}
-            imageComponent={Image}
-          />
-        </ImageWrapper>
-      )}
+      {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} />}
+
       <ArticleInteraction>
         <CommentButton
           type="comment"
@@ -151,6 +131,5 @@ const ArticleHeader = styled.div(({ type }: ArticleHeaderProps) => [
 
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-wrap gap-8 sm:(flex-row gap-16)`;
-const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:mt-16 w-full`;
+const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:w-full`;
 const ArticleInteractionDelete = tw.div`flex justify-end items-center grow pr-4 mb-8`;
-const ImageWrapper = tw.div`flex rounded-lg overflow-hidden`;

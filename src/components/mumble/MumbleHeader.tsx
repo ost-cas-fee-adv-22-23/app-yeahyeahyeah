@@ -25,6 +25,7 @@ const swrConfig = {
 export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
   const { data: session }: any = useSession();
   const handleImageIconClick = () => {
+    // TODO: TO BE COMPLETED
     console.log('image clicked', { name: 'MumbleHeaderIconClick' });
   };
 

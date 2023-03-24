@@ -3,15 +3,15 @@ import Link from 'next/link';
 import {
   Avatar,
   CommentButton,
-  ImageContainer,
-  User,
-  IconLink,
   Paragraph,
+  IconLink,
+  User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { Mumble, User as TUser } from '@/services';
 import { elapsedTime } from '@/utils';
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
+import { MumbleImage } from './MumbleImage';
 
 type MumbleSingleProps = {
   mumble: Mumble;
@@ -56,7 +56,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
 
       <Paragraph text={mumble.text} mbSpacing="16" size="large" />
 
-      {mumble.mediaUrl && <ImageContainer src={mumble.mediaUrl} alt={mumble.text} />}
+      {mumble.mediaUrl && <MumbleImage mediaUrl={mumble.mediaUrl} text={mumble.text} />}
 
       <ArticleInteraction>
         <CommentButton

@@ -12,3 +12,4 @@ export * from './navigation/NavigationComponent';
 export * from './alert/Alert';
 export * from './mumble/MumbleLike';
 export * from './mumble/MumbleShare';
+export * from './mumble/MumbleImage';
