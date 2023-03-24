@@ -5,17 +5,19 @@ import { ImageContainer } from '@smartive-education/design-system-component-libr
 type MumbleImageProps = {
   mediaUrl: string;
   text: string;
+  width: number;
+  height: number;
 };
 
-export const MumbleImage = ({ mediaUrl, text }: MumbleImageProps) => {
+export const MumbleImage = ({ mediaUrl, text, width, height }: MumbleImageProps) => {
   return (
     <ImageContainer
       type="container"
       loader={imageLoader}
       src={mediaUrl}
       alt={text}
-      width={585}
-      height={329.06}
+      width={width}
+      height={height}
       objectFit="cover"
       loading="lazy"
       placeholder="empty"

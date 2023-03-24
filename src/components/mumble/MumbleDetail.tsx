@@ -56,7 +56,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
 
       <Paragraph text={mumble.text} mbSpacing="16" size="large" />
 
-      {mumble.mediaUrl && <MumbleImage mediaUrl={mumble.mediaUrl} text={mumble.text} />}
+      {mumble.mediaUrl && <MumbleImage mediaUrl={mumble.mediaUrl} text={mumble.text} width={585} height={329.06} />}
 
       <ArticleInteraction>
         <CommentButton

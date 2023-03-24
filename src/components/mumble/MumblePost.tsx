@@ -87,7 +87,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
 
       <Paragraph text={text} mbSpacing="16" />
 
-      {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} />}
+      {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
 
       <ArticleInteraction>
         <CommentButton
