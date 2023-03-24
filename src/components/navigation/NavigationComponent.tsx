@@ -52,7 +52,7 @@ export const NavigationComponent: React.FC = () => {
               </>
             )}
             {!session && <NaviButton label="Login" variant="default" icon="logout" onClick={() => signIn('zitadel')} />}
-            {!!session && <NaviButton label="Logout" variant="default" icon="heart-filled" onClick={() => signOut()} />}
+            {!!session && <NaviButton label="Logout" variant="default" icon="logout" onClick={() => signOut()} />}
           </NavigationRow>
         </NavigationColumn>
       </Navigation>

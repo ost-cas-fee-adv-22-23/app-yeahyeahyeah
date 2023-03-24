@@ -130,12 +130,7 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
               {selection === 'likes' && likes?.mumbles.length === 0 && (
                 <ErrorBox message="Du hast noch kein Mumble abgeliked!" />
               )}
-              {/* End user profile page */}
-              {/* Start profile page STRANGER */}
-              <div tw="bg-pink-500 p-8 mb-16 rounded-md flex justify-center">
-                <p tw="text-slate-white font-medium">TBD - Profile Page STRANGER - Lists only users mumbles</p>
-              </div>
-              {/* End profile  */}
+
               {/* Start profile page STRANGER */}
               <div tw="bg-violet-500 p-8 mb-16 rounded-md flex justify-center">
                 <p tw="text-slate-white font-medium">TBD - Profile Page NEW USER - Lists recommended mumbles</p>

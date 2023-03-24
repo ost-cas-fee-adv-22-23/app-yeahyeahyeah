@@ -9,6 +9,9 @@ const CustomStyles = createGlobalStyle({
   body: {
     background: theme`colors.slate.200`,
   },
+  a: {
+    cursor: 'pointer',
+  },
 });
 
 const GlobalStyles = () => (

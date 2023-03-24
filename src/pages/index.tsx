@@ -86,13 +86,9 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
           </div>
         )}
         <WelcomeText />
-        <Container layout="plain">
-          <Alert />
-        </Container>
+        <Alert />
         <TextBoxComponent variant="write" mutate={mutate} data={data} setOffset={setOffset} setCount={setCount} />
-
         {pages}
-
         <div key="last" tw="invisible" ref={ref} />
       </Container>
     </>

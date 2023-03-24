@@ -7,7 +7,9 @@ export const DefaultLayout: React.FC<IDefaultLayout> = ({ children }) => {
   return (
     <>
       <LayoutStyles>
-        <NavigationComponent />
+        <NavigationWrapper>
+          <NavigationComponent />
+        </NavigationWrapper>
         {children}
         <Footer />
       </LayoutStyles>
@@ -25,3 +27,5 @@ const LayoutStyles = tw.div`
   p-0
   bg-slate-200
 `;
+
+const NavigationWrapper = tw.div`sticky top-0 w-full z-50`;
