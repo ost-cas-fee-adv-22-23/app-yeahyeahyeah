@@ -39,14 +39,14 @@ export const MumbleImage = ({ mediaUrl, text, width, height }: MumbleImageProps)
         />
       )}
       {open === true && (
-        <Modal label="Mumble Image" isOpen={open} onClose={handleClose} wide={true}>
+        <Modal label="Mumble Image" isOpen={open} onClose={handleClose} wide="full">
           <Image
             loader={imageLoader}
             src={mediaUrl}
             alt={text}
             width="1280"
             height="720"
-            layout="fixed"
+            layout="intrinsic"
             objectFit="contain"
             loading="lazy"
             placeholder="empty"
