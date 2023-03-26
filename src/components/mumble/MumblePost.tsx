@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -8,6 +9,7 @@ import {
   CommentButton,
   Cancel,
   IconLink,
+  Modal,
   Paragraph,
   User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -40,6 +42,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
   type,
   handleDeleteCallback,
 }) => {
+  const [open, setOpen] = useState(false);
   const { data: session }: any = useSession();
   const { data } = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateOnFocus: false,
@@ -107,9 +110,11 @@ export const MumblePost: React.FC<MumbleProps> = ({
               onClick={() => handleDelete(id)}
             />
           )}
-          <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
         </ArticleInteractionDelete>
       </ArticleInteraction>
+      <Modal label={data ? data.userName : 'username'} onClose={() => !open} isOpen={open} wide={true}>
+        {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
+      </Modal>
     </ArticleMumble>
   );
 };
