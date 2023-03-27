@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NextSeo } from 'next-seo';
+import tw from 'twin.macro';
 import useSWR from 'swr';
 import { GetServerSideProps } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
@@ -46,8 +47,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
 
   const quantityNewMumbles = () => {
     return data?.mumbles[0].id && newMumbles && newMumbles.count === 1
-      ? '1 new mumble'
-      : `${newMumbles && newMumbles.count} new mumbles`;
+      ? 'Du hast 1 neuer Mumble'
+      : `${newMumbles && newMumbles.count} Mumbles`;
   };
 
   const handleRefreshPage = () => {
@@ -79,12 +80,12 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   return (
     <>
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
+      {checkForNewMumbles() && (
+        <MumbleMessageBox>
+          <Button label={`${quantityNewMumbles()}`} color="gradient" onClick={handleRefreshPage} size="small" width="full" />
+        </MumbleMessageBox>
+      )}
       <Container layout="plain">
-        {checkForNewMumbles() && (
-          <div tw="fixed left-16 mb-16">
-            <Button label={quantityNewMumbles()} color="slate" onClick={handleRefreshPage} />
-          </div>
-        )}
         <WelcomeText />
         <Alert />
         <TextBoxComponent variant="write" mutate={mutate} data={data} setOffset={setOffset} setCount={setCount} />
@@ -111,3 +112,5 @@ export const getServerSideProps: GetServerSideProps<any> = async () => {
     },
   };
 };
+
+const MumbleMessageBox = tw.div`animate-bounce fixed top-[110px] mx-auto z-50 hover:(animate-none)`;
