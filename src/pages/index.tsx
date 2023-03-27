@@ -52,7 +52,11 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   };
 
   const handleRefreshPage = () => {
-    router.reload();
+    if (newMumbles && data && newMumbles.count <= limit) {
+      mutate({ count: data.count + newMumbles.count, mumbles: [...newMumbles.mumbles, ...data.mumbles] }, true);
+    } else {
+      router.reload();
+    }
     resetWindowScrollPosition();
   };
 
