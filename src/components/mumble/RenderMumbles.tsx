@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import useSWR from 'swr';
 import { Mumble } from '@/services/qwacker';
 import { fetchMumbles } from '@/services/fetchMumbles';
@@ -9,6 +9,7 @@ import { deleteMumble } from '@/services/deleteMumble';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { useSession } from 'next-auth/react';
 import { FetchMumbles } from '@/types/fallback';
+import { useRouter } from 'next/router';
 
 type RenderMumbleProps = {
   offset: number;
@@ -18,8 +19,10 @@ type RenderMumbleProps = {
 
 export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fallback }) => {
   const { data: session }: any = useSession();
-  const _offset = useMemo(() => offset, []);
-  const _limit = useMemo(() => limit, []);
+  let _offset = useMemo(() => offset, []);
+  let _limit = useMemo(() => limit, []);
+  const [deleted, setDeleted] = React.useState(1);
+  const router = useRouter();
 
   const { data, error, isLoading, mutate } = useSWR(
     { url: '/api/mumbles', limit: _limit, offset: _offset, token: session?.accessToken },
@@ -29,6 +32,8 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fall
       revalidateOnFocus: false,
     }
   );
+
+  console.log('data', offset, data);
 
   const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
@@ -43,9 +48,15 @@ export const RenderMumbles: React.FC<RenderMumbleProps> = ({ offset, limit, fall
     // TODO: Is this a magic number ?
     if (res.status === 204) {
       const newData = data?.mumbles.filter((mumble: Mumble) => mumble.id !== id);
+      if (deleted === limit) {
+        router.reload();
+        return;
+      }
+
       if (data) {
         data.mumbles = newData as Mumble[];
         mutate({ ...data });
+        setDeleted((del) => del + 1);
       }
     }
   };
