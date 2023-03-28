@@ -1,13 +1,12 @@
 import tw from 'twin.macro';
 import { Footer, NavigationComponent } from '../components';
 import { useRouter } from 'next/router';
+import { StartScreen } from './StartScreen';
 
-export type IDefaultLayout = React.DOMAttributes<HTMLDivElement>;
+export type DefaultLayout = React.DOMAttributes<HTMLDivElement>;
 
-export const DefaultLayout: React.FC<IDefaultLayout> = ({ children }) => {
+export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
   const route = useRouter();
-
-  console.log(route.pathname);
 
   return (
     <>
@@ -20,7 +19,7 @@ export const DefaultLayout: React.FC<IDefaultLayout> = ({ children }) => {
           <Footer />
         </LayoutStyles>
       )}
-      {children}
+      <StartScreen />
     </>
   );
 };
