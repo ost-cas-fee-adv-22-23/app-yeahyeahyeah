@@ -7,7 +7,6 @@ export * from './loading/LoadingSpinner';
 export * from './mumble/MumbleDetail';
 export * from './mumble/MumbleHeader';
 export * from './mumble/MumblePost';
-export * from './mumble/RenderMumbles';
 export * from './navigation/NavigationComponent';
 export * from './alert/Alert';
 export * from './mumble/MumbleLike';
