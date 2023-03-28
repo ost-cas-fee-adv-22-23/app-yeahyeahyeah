@@ -22,7 +22,7 @@ export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
         </LayoutStyles>
       )}
 
-      {!session && route.pathname === '/' && <StartScreen />}
+      {!session && <StartScreen />}
     </>
   );
 };
