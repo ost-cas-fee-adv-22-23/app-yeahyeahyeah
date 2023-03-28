@@ -34,7 +34,7 @@ export const StartScreen: React.FC<StartScreen> = () => {
         <div tw="mb-32">
           <MumbleLogo alignment="vertical" color="white" isNavigation={false} onLogoClick={function noRefCheck() {}} />
         </div>
-        <div tw="w-full sm:w-1/2">
+        <div tw="w-full sm:w-3/4">
           <h1 tw="text-2xl lg:(text-4xl) font-bold text-pink-300 text-center">
             Find out whats new <br /> in <span tw="text-xl font-bold text-slate-white lg:(text-4xl)">#fashion</span>.
           </h1>
