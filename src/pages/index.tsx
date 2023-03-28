@@ -23,7 +23,6 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const router = useRouter();
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
   let offset = useRef<any>(0);
-  let id = useRef<any>(null);
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.mumbles.length) {
@@ -89,23 +88,18 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
 
     //TODO: Is this a magic number ?
     if (res.status === 204) {
-      const newData = data?.map((obj) => obj.mumbles.filter((mumble: Mumble) => mumble.id !== id));
-      data?.map((obj, i) => (obj.mumbles = (newData && newData[i]) || []));
-
-      console.log('data xxx', data);
-      console.log('newData', newData);
-      mutate(data);
+      mutate();
     }
   };
 
   const quantityNewMumbles = () => {
     return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count === 1
-      ? 'Du hast 1 neuer Mumble'
-      : `${newMumbles && newMumbles.count} Mumbles`;
+      ? '1 neuer Mumble'
+      : `${newMumbles && newMumbles.count} neue Mumbles`;
   };
 
   const handleRefreshPage = () => {
-    router.reload();
+    mutate();
     resetWindowScrollPosition();
   };
 
