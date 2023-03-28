@@ -1,18 +1,26 @@
 import tw from 'twin.macro';
 import { Footer, NavigationComponent } from '../components';
+import { useRouter } from 'next/router';
 
 export type IDefaultLayout = React.DOMAttributes<HTMLDivElement>;
 
 export const DefaultLayout: React.FC<IDefaultLayout> = ({ children }) => {
+  const route = useRouter();
+
+  console.log(route.pathname);
+
   return (
     <>
-      <LayoutStyles>
-        <NavigationWrapper>
-          <NavigationComponent />
-        </NavigationWrapper>
-        {children}
-        <Footer />
-      </LayoutStyles>
+      {route.pathname !== '/landingpage' && (
+        <LayoutStyles>
+          <NavigationWrapper>
+            <NavigationComponent />
+          </NavigationWrapper>
+          {children}
+          <Footer />
+        </LayoutStyles>
+      )}
+      {children}
     </>
   );
 };
