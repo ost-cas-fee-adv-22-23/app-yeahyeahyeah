@@ -1,3 +1,4 @@
+import React from 'react';
 import tw from 'twin.macro';
 import { Footer, NavigationComponent } from '../components';
 import { useRouter } from 'next/router';
@@ -7,12 +8,13 @@ import { StartScreen } from './StartScreen';
 export type DefaultLayout = React.DOMAttributes<HTMLDivElement>;
 
 export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
+  const router = useRouter();
   const { data: session }: any = useSession();
-  const route = useRouter();
+  const notAuthorized: boolean = session === undefined || (session === null && router.pathname === '/profile/[id]');
 
   return (
     <>
-      {session && route.pathname !== '/landingpage' && (
+      {notAuthorized === false && (
         <LayoutStyles>
           <NavigationWrapper>
             <NavigationComponent />
@@ -21,8 +23,7 @@ export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
           <Footer />
         </LayoutStyles>
       )}
-
-      {!session && <StartScreen />}
+      {notAuthorized === true && <StartScreen />}
     </>
   );
 };

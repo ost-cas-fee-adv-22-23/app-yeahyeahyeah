@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import {
@@ -16,11 +15,6 @@ import { FormSettings } from '../form/FormSettings';
 export const NavigationComponent: React.FC = () => {
   const { data: session }: any = useSession();
   const [open, setOpen] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!session) router.push('/landingpage');
-  });
 
   const handleClick = () => {
     setOpen((open) => !open);
