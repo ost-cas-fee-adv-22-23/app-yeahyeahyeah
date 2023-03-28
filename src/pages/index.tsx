@@ -8,11 +8,12 @@ import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner } from '@/components';
+import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox } from '@/components';
 import { useSession } from 'next-auth/react';
 import { FetchMumbles } from '@/types/fallback';
 import { useRouter } from 'next/router';
-import { Mumble } from '@/services';
+import { alertService, Mumble } from '@/services';
+import { deleteMumble } from '@/services/deleteMumble';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
@@ -22,17 +23,17 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const router = useRouter();
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
   let offset = useRef<any>(0);
+  let id = useRef<any>(null);
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.mumbles.length) {
       return null;
     }
     offset.current = pageIndex * limit;
-    console.log('offset', offset);
     return { url: '/api/mumbles', limit, offset: offset.current };
   };
 
-  const { data, mutate, error, isLoading, size, setSize, isValidating } = useSWRInfinite(getKey, fetchMumbles, {
+  const { data, mutate, size, setSize, error, isValidating, isLoading } = useSWRInfinite(getKey, fetchMumbles, {
     fallbackData: [fallback['/api/mumbles']],
     revalidateOnFocus: false,
   });
@@ -40,7 +41,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const { data: newMumbles } = useSWR(
     {
       url: '/api/mumbles',
-      newerThanMumbleId: data && data[0].mumbles[0].id,
+      newerThanMumbleId: data && data[0]?.mumbles[0].id,
       limit,
       offset: 0,
       token: session?.accessTokenk,
@@ -48,29 +49,16 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     fetchMumbles,
     {
       revalidateOnFocus: false,
-      refreshInterval: 5000,
+      refreshInterval: 10000,
     }
   );
 
-  console.log('data', data);
-
-  // useEffect(() => {
-  //   data && data[0].mumbles[0].id && console.log('newMumbles', newMumbles);
-  // }, [newMumbles, data]);
+  useEffect(() => {
+    data && data[0].mumbles[0].id && console.log('newMumbles', newMumbles);
+  }, [newMumbles, data]);
 
   const checkForNewMumbles = () => {
-    return data && data[0].mumbles[0].id && newMumbles && newMumbles.count > 0;
-  };
-
-  const quantityNewMumbles = () => {
-    return data && data[0].mumbles[0].id && newMumbles && newMumbles.count === 1
-      ? 'Du hast 1 neuer Mumble'
-      : `${newMumbles && newMumbles.count} Mumbles`;
-  };
-
-  const handleRefreshPage = () => {
-    router.reload();
-    resetWindowScrollPosition();
+    return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
   };
 
   useEffect(() => {
@@ -89,6 +77,44 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     if (isOnScreen && !isValidating && quantityTotal - limit >= offset.current) handleIntersectionCallbackDebounced();
   }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit, isValidating]);
 
+  const handleDelete = async (id: string) => {
+    if (!session?.accessToken) {
+      alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {
+        autoClose: true,
+        keepAfterRouteChange: false,
+      });
+      return;
+    }
+    const res = await deleteMumble(id, session?.accessToken);
+
+    //TODO: Is this a magic number ?
+    if (res.status === 204) {
+      const newData = data?.map((obj) => obj.mumbles.filter((mumble: Mumble) => mumble.id !== id));
+      data?.map((obj, i) => (obj.mumbles = (newData && newData[i]) || []));
+
+      console.log('data xxx', data);
+      console.log('newData', newData);
+      mutate(data);
+    }
+  };
+
+  const quantityNewMumbles = () => {
+    return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count === 1
+      ? 'Du hast 1 neuer Mumble'
+      : `${newMumbles && newMumbles.count} Mumbles`;
+  };
+
+  const handleRefreshPage = () => {
+    router.reload();
+    resetWindowScrollPosition();
+  };
+
+  const setOffsetToZero = () => {
+    offset.current = 0;
+  };
+
+  if (error) return <ErrorBox message={error} />;
+
   return (
     <>
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
@@ -100,12 +126,11 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
       <Container layout="plain">
         <WelcomeText />
         <Alert />
-        <TextBoxComponent variant="write" mutate={mutate} data={data} />
+        <TextBoxComponent variant="write" mutate={mutate} data={data} setOffsetToZero={setOffsetToZero} />
         {data &&
-          data.map((page, index) => {
-            return page.mumbles.map((mumble: Mumble, i) => (
+          data.map((page) => {
+            return page.mumbles.map((mumble: Mumble) => (
               <MumblePost
-                type="post"
                 key={mumble.id}
                 id={mumble.id}
                 creator={mumble.creator}
@@ -115,12 +140,13 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
                 likeCount={mumble.likeCount}
                 likedByUser={mumble.likedByUser}
                 replyCount={mumble.replyCount}
+                type={mumble.type}
+                handleDeleteCallback={handleDelete}
               />
             ));
           })}
         {isLoading && <LoadingSpinner />}
         <div key="last" tw="invisible" ref={ref} />
-        {/* <Button onClick={() => setSize(size + 1)} disabled={loading} color="violet" label={loading ? '...' : 'Load more'} /> */}
       </Container>
     </>
   );
