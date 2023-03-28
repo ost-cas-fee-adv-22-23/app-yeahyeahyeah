@@ -1,7 +1,7 @@
 import { NextSeo } from 'next-seo';
 import tw, { styled, css } from 'twin.macro';
 import { useRouter } from 'next/router';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { Footer } from '@/components';
 import KeyWords from '@/components/content/KeyWords';
 import { Button, MumbleLogo, Paragraph, TextButton } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -9,7 +9,6 @@ import { Button, MumbleLogo, Paragraph, TextButton } from '@smartive-education/d
 export type StartScreen = React.DOMAttributes<HTMLDivElement>;
 
 export const StartScreen: React.FC<StartScreen> = () => {
-  const { data: session }: any = useSession();
   const router = useRouter();
 
   const handleLogin = () => {
@@ -19,10 +18,6 @@ export const StartScreen: React.FC<StartScreen> = () => {
   const handleSignup = () => {
     router.push('https://cas-fee-advanced-ocvdad.zitadel.cloud/ui/login/loginname');
   };
-
-  if (session) {
-    router.push('/');
-  }
 
   return (
     <>
@@ -34,7 +29,7 @@ export const StartScreen: React.FC<StartScreen> = () => {
       <LayoutWrapper>
         <LeftColumn>
           <div tw="mb-48">
-            <MumbleLogo alignment="vertical" color="white" isNavigation={false} onLogoClick={function noRefCheck() {}} />
+            <MumbleLogo alignment="vertical" color="white" isNavigation={false} />
           </div>
           <div tw="w-full sm:w-3/4">
             <h1 tw="text-2xl lg:(text-4xl) font-bold text-pink-300 text-center">

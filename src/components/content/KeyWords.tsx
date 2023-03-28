@@ -10,9 +10,6 @@ const KeyWords: React.FC = () => {
       <div>
         #Engineer<span>.</span>
       </div>
-      <div>
-        #Advanced<span>.</span>
-      </div>
     </span>
   );
 };

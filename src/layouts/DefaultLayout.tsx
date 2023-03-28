@@ -1,16 +1,18 @@
 import tw from 'twin.macro';
 import { Footer, NavigationComponent } from '../components';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { StartScreen } from './StartScreen';
 
 export type DefaultLayout = React.DOMAttributes<HTMLDivElement>;
 
 export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
+  const { data: session }: any = useSession();
   const route = useRouter();
 
   return (
     <>
-      {route.pathname !== '/landingpage' && (
+      {session && route.pathname !== '/landingpage' && (
         <LayoutStyles>
           <NavigationWrapper>
             <NavigationComponent />
@@ -19,7 +21,8 @@ export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
           <Footer />
         </LayoutStyles>
       )}
-      <StartScreen />
+
+      {!session && route.pathname === '/' && <StartScreen />}
     </>
   );
 };
