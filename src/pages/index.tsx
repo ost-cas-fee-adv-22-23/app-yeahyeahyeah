@@ -11,7 +11,6 @@ import { Button, Container } from '@smartive-education/design-system-component-l
 import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox } from '@/components';
 import { useSession } from 'next-auth/react';
 import { FetchMumbles } from '@/types/fallback';
-import { useRouter } from 'next/router';
 import { alertService, Mumble } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
 
@@ -20,7 +19,6 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
-  const router = useRouter();
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
   let offset = useRef<any>(0);
 
