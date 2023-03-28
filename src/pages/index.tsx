@@ -5,16 +5,17 @@ import useSWR from 'swr';
 import { GetServerSideProps } from 'next';
 import { fetchMumbles } from '@/services/fetchMumbles';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, RenderMumbles, Alert } from '@/components';
+import { WelcomeText, TextBoxComponent, RenderMumbles, Alert, MumblePost } from '@/components';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { useSession } from 'next-auth/react';
 import { FetchMumbles } from '@/types/fallback';
 import { useRouter } from 'next/router';
+import useSWRInfinite from 'swr/infinite';
+import { Mumble } from '@/services';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
-  const [count, setCount] = useState(1);
   const [offset, setOffset] = useState(0);
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
@@ -22,14 +23,36 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const router = useRouter();
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
 
-  const { data, mutate } = useSWR({ url: '/api/mumbles', limit, offset: 0, token: session?.accessToken }, fetchMumbles, {
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    // console.log('previousPageData', previousPageData);
+    // console.log('pageIndex', pageIndex);
+    if (previousPageData && !previousPageData.mumbles.length) {
+      return null;
+    }
+    return { url: '/api/mumbles', limit, offset: pageIndex * 2 };
+  };
+
+  const {
+    data,
+    mutate,
+    error,
+    isLoading: loading,
+    size,
+    setSize,
+    isValidating,
+  } = useSWRInfinite(getKey, fetchMumbles, {
+    fallbackData: [fallback['/api/mumbles']],
     revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    revalidateIfStale: false,
   });
 
   const { data: newMumbles } = useSWR(
-    { url: '/api/mumbles', newerThanMumbleId: data?.mumbles[0].id, limit, offset: 0, token: session?.accessTokenk },
+    {
+      url: '/api/mumbles',
+      newerThanMumbleId: data && data[0].mumbles[0].id,
+      limit,
+      offset: 0,
+      token: session?.accessTokenk,
+    },
     fetchMumbles,
     {
       revalidateOnFocus: false,
@@ -37,50 +60,42 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     }
   );
 
-  useEffect(() => {
-    data?.mumbles[0].id && console.log('newMumbles', newMumbles);
-  }, [newMumbles, data]);
+  console.log('data', data);
+
+  // useEffect(() => {
+  //   data && data[0].mumbles[0].id && console.log('newMumbles', newMumbles);
+  // }, [newMumbles, data]);
 
   const checkForNewMumbles = () => {
-    return data?.mumbles[0].id && newMumbles && newMumbles.count > 0;
+    return data && data[0].mumbles[0].id && newMumbles && newMumbles.count > 0;
   };
 
   const quantityNewMumbles = () => {
-    return data?.mumbles[0].id && newMumbles && newMumbles.count === 1
+    return data && data[0].mumbles[0].id && newMumbles && newMumbles.count === 1
       ? 'Du hast 1 neuer Mumble'
       : `${newMumbles && newMumbles.count} Mumbles`;
   };
 
   const handleRefreshPage = () => {
-    if (newMumbles && data && newMumbles.count <= limit) {
-      mutate({ count: data.count + newMumbles.count, mumbles: [...newMumbles.mumbles, ...data.mumbles] }, true);
-    } else {
-      router.reload();
-    }
+    router.reload();
     resetWindowScrollPosition();
   };
 
   useEffect(() => {
-    data && data.count > 0 && setQuantityTotal(data.count);
-  }, [data]);
+    data && data[0].count > 0 && setQuantityTotal(data[0].count);
+  }, []);
 
   const handleIntersectionCallbackDebounced = useMemo(() => {
+    console.log('handleIntersectionCallbackDebounced');
     return debounce(async () => {
-      setOffset((offset) => offset + limit);
-      setCount((count) => count + 1);
+      //setOffset((offset) => offset + limit);
+      setSize(size + 1);
     }, 800);
-  }, [limit]);
+  }, [setSize, size]);
 
   useEffect(() => {
-    if (isOnScreen && quantityTotal - limit >= offset) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit]);
-
-  const pages: JSX.Element[] = [];
-
-  // TODO: key={`${data && data.count}-${i}`}
-  for (let i = 0; i < count; i++) {
-    pages.push(<RenderMumbles key={i} offset={offset} limit={limit} fallback={fallback} />);
-  }
+    if (isOnScreen && !isValidating && quantityTotal - limit >= offset) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit, isValidating]);
 
   return (
     <>
@@ -93,14 +108,32 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
       <Container layout="plain">
         <WelcomeText />
         <Alert />
-        <TextBoxComponent variant="write" mutate={mutate} data={data} setOffset={setOffset} setCount={setCount} />
-        {pages}
+        <TextBoxComponent variant="write" mutate={mutate} data={data} setOffset={setOffset} />
+        {data &&
+          data.map((page, index) => {
+            return page.mumbles.map((mumble: Mumble, i) => (
+              <>
+                <MumblePost
+                  type="post"
+                  key={mumble.id}
+                  id={mumble.id}
+                  creator={mumble.creator}
+                  text={mumble.text}
+                  mediaUrl={mumble.mediaUrl}
+                  createdTimestamp={mumble.createdTimestamp}
+                  likeCount={mumble.likeCount}
+                  likedByUser={mumble.likedByUser}
+                  replyCount={mumble.replyCount}
+                />
+              </>
+            ));
+          })}
         <div key="last" tw="invisible" ref={ref} />
+        {/* <Button onClick={() => setSize(size + 1)} disabled={loading} color="violet" label={loading ? '...' : 'Load more'} /> */}
       </Container>
     </>
   );
 }
-
 export const getServerSideProps: GetServerSideProps<any> = async () => {
   const limit = 2;
 
