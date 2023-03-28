@@ -1,46 +1,38 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
 import useSWR from 'swr';
-import { GetServerSideProps } from 'next';
-import { fetchMumbles } from '@/services/fetchMumbles';
-import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, RenderMumbles, Alert, MumblePost } from '@/components';
+import useSWRInfinite from 'swr/infinite';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
+import { GetServerSideProps } from 'next';
+import { NextSeo } from 'next-seo';
+import { fetchMumbles } from '@/services/fetchMumbles';
+import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner } from '@/components';
 import { useSession } from 'next-auth/react';
 import { FetchMumbles } from '@/types/fallback';
 import { useRouter } from 'next/router';
-import useSWRInfinite from 'swr/infinite';
 import { Mumble } from '@/services';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
-  const [offset, setOffset] = useState(0);
   const [quantityTotal, setQuantityTotal] = useState(0);
   const ref = useRef(null);
-  const [isOnScreen] = useOnScreen(ref);
+  const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
   const router = useRouter();
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
+  let offset = useRef<any>(0);
 
   const getKey = (pageIndex: number, previousPageData: any) => {
-    // console.log('previousPageData', previousPageData);
-    // console.log('pageIndex', pageIndex);
     if (previousPageData && !previousPageData.mumbles.length) {
       return null;
     }
-    return { url: '/api/mumbles', limit, offset: pageIndex * 2 };
+    offset.current = pageIndex * limit;
+    console.log('offset', offset);
+    return { url: '/api/mumbles', limit, offset: offset.current };
   };
 
-  const {
-    data,
-    mutate,
-    error,
-    isLoading: loading,
-    size,
-    setSize,
-    isValidating,
-  } = useSWRInfinite(getKey, fetchMumbles, {
+  const { data, mutate, error, isLoading, size, setSize, isValidating } = useSWRInfinite(getKey, fetchMumbles, {
     fallbackData: [fallback['/api/mumbles']],
     revalidateOnFocus: false,
   });
@@ -88,13 +80,13 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const handleIntersectionCallbackDebounced = useMemo(() => {
     console.log('handleIntersectionCallbackDebounced');
     return debounce(async () => {
-      //setOffset((offset) => offset + limit);
       setSize(size + 1);
+      setIsOnScreen(false);
     }, 800);
-  }, [setSize, size]);
+  }, [setSize, size, setIsOnScreen]);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && quantityTotal - limit >= offset) handleIntersectionCallbackDebounced();
+    if (isOnScreen && !isValidating && quantityTotal - limit >= offset.current) handleIntersectionCallbackDebounced();
   }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit, isValidating]);
 
   return (
@@ -108,26 +100,25 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
       <Container layout="plain">
         <WelcomeText />
         <Alert />
-        <TextBoxComponent variant="write" mutate={mutate} data={data} setOffset={setOffset} />
+        <TextBoxComponent variant="write" mutate={mutate} data={data} />
         {data &&
           data.map((page, index) => {
             return page.mumbles.map((mumble: Mumble, i) => (
-              <>
-                <MumblePost
-                  type="post"
-                  key={mumble.id}
-                  id={mumble.id}
-                  creator={mumble.creator}
-                  text={mumble.text}
-                  mediaUrl={mumble.mediaUrl}
-                  createdTimestamp={mumble.createdTimestamp}
-                  likeCount={mumble.likeCount}
-                  likedByUser={mumble.likedByUser}
-                  replyCount={mumble.replyCount}
-                />
-              </>
+              <MumblePost
+                type="post"
+                key={mumble.id}
+                id={mumble.id}
+                creator={mumble.creator}
+                text={mumble.text}
+                mediaUrl={mumble.mediaUrl}
+                createdTimestamp={mumble.createdTimestamp}
+                likeCount={mumble.likeCount}
+                likedByUser={mumble.likedByUser}
+                replyCount={mumble.replyCount}
+              />
             ));
           })}
+        {isLoading && <LoadingSpinner />}
         <div key="last" tw="invisible" ref={ref} />
         {/* <Button onClick={() => setSize(size + 1)} disabled={loading} color="violet" label={loading ? '...' : 'Load more'} /> */}
       </Container>
@@ -135,7 +126,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   );
 }
 export const getServerSideProps: GetServerSideProps<any> = async () => {
-  const limit = 2;
+  const limit = 4;
 
   const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0 });
 
