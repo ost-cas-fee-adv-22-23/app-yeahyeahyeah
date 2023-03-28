@@ -27,12 +27,14 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
       return null;
     }
     offset.current = pageIndex * limit;
-    return { url: '/api/mumbles', limit, offset: offset.current };
+    return { url: '/api/mumbles', limit, offset: offset.current, token: session?.accessToken };
   };
 
   const { data, mutate, size, setSize, error, isValidating, isLoading } = useSWRInfinite(getKey, fetchMumbles, {
     fallbackData: [fallback['/api/mumbles']],
     revalidateOnFocus: false,
+    revalidateAll: limit >= 10 ? false : true,
+    refreshInterval: 60000,
   });
 
   const { data: newMumbles } = useSWR(
@@ -41,7 +43,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
       newerThanMumbleId: data && data[0]?.mumbles[0].id,
       limit,
       offset: 0,
-      token: session?.accessTokenk,
+      token: session?.accessToken,
     },
     fetchMumbles,
     {
@@ -144,7 +146,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   );
 }
 export const getServerSideProps: GetServerSideProps<any> = async () => {
-  const limit = 4;
+  const limit = 2;
 
   const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0 });
 
