@@ -1,19 +1,19 @@
 const KeyWords: React.FC = () => {
   return (
-    <div className="slider">
+    <span className="slider">
       <div className="keyword">
         #CAS<span>.</span>
       </div>
-      <div className="slider-text2">
+      <div>
         #Frontend<span>.</span>
       </div>
-      <div className="slider-text3">
+      <div>
         #Engineer<span>.</span>
       </div>
-      <div className="slider-text3">
+      <div>
         #Advanced<span>.</span>
       </div>
-    </div>
+    </span>
   );
 };
 

@@ -29,6 +29,7 @@ export const StartScreen: React.FC<StartScreen> = () => {
       <NextSeo
         title="Mumble - Willkommen auf Mumble."
         description="Are you ready to mumble? Jetzt registrieren und loslegen."
+        canonical="https://mumble-yeahyeahyeah.ch"
       />
       <LayoutWrapper>
         <LeftColumn>
@@ -37,7 +38,8 @@ export const StartScreen: React.FC<StartScreen> = () => {
           </div>
           <div tw="w-full sm:w-3/4">
             <h1 tw="text-2xl lg:(text-4xl) font-bold text-pink-300 text-center">
-              Find out whats new <br /> in <KeyWords />
+              Find out whats new <br />
+              in <KeyWords />{' '}
             </h1>
           </div>
         </LeftColumn>
@@ -69,6 +71,9 @@ const LeftColumn = styled.div(() => [
   tw`flex flex-col justify-center items-center bg-gradient-to-b from-pink-400 to-violet-500 w-full h-1/2 sm:(w-1/2 h-full p-0) `,
   css`
     background: linear-gradient(153.75deg, #ec4899 -75.32%, #7c3aed 100%);
+    h1 {
+      line-height: 32px;
+    }
   `,
 ]);
 

@@ -1,22 +1,26 @@
 .slider {
-  position: relative;
-  top: 20px;
   display: inline-block;
-  height: 70px;
+  position: relative;
+  top: 10px;
+  height: 50px;
   overflow: hidden;
+  line-height: 0;
 }
 
 .slider div {
   color: #fff;
   height: 50px;
   margin-bottom: 50px;
-  padding: 2px 0;
+  padding: 0;
   text-align: left;
   box-sizing: border-box;
+  padding-bottom: 4px;
 }
 
 .slider div span {
   color: #f9a8d4;
+  line-height: 48px;
+  overflow: visible;
 }
 
 .keyword {
