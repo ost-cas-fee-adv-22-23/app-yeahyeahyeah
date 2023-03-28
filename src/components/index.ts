@@ -1,5 +1,6 @@
 export * from './content/Footer';
 export * from './content/WelcomeText';
+export * from './content/KeyWords';
 export * from './error/ErrorBox';
 export * from './form/FormSettings';
 export * from './form/TextBoxComponent';

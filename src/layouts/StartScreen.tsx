@@ -3,6 +3,7 @@ import tw, { styled, css } from 'twin.macro';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
 import { Footer } from '@/components';
+import KeyWords from '@/components/content/KeyWords';
 import { Button, MumbleLogo, Paragraph, TextButton } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 export type StartScreen = React.DOMAttributes<HTMLDivElement>;
@@ -20,7 +21,6 @@ export const StartScreen: React.FC<StartScreen> = () => {
   };
 
   if (session) {
-    console.log('has session');
     router.push('/');
   }
 
@@ -32,12 +32,12 @@ export const StartScreen: React.FC<StartScreen> = () => {
       />
       <LayoutWrapper>
         <LeftColumn>
-          <div tw="mb-32">
+          <div tw="mb-48">
             <MumbleLogo alignment="vertical" color="white" isNavigation={false} onLogoClick={function noRefCheck() {}} />
           </div>
           <div tw="w-full sm:w-3/4">
             <h1 tw="text-2xl lg:(text-4xl) font-bold text-pink-300 text-center">
-              Find out whats new <br /> in <span tw="text-xl font-bold text-slate-white lg:(text-4xl)">#fashion</span>.
+              Find out whats new <br /> in <KeyWords />
             </h1>
           </div>
         </LeftColumn>

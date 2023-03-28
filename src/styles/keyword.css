@@ -1,0 +1,48 @@
+.slider {
+  position: relative;
+  top: 20px;
+  display: inline-block;
+  height: 70px;
+  overflow: hidden;
+}
+
+.slider div {
+  color: #fff;
+  height: 50px;
+  margin-bottom: 50px;
+  padding: 2px 0;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.slider div span {
+  color: #f9a8d4;
+}
+
+.keyword {
+  animation: slide 10s cubic-bezier(0.7, -0.85, 0.5, 1.4) infinite;
+}
+
+@keyframes slide {
+  0% {
+    margin-top: -300px;
+  }
+  5% {
+    margin-top: -200px;
+  }
+  33% {
+    margin-top: -200px;
+  }
+  38% {
+    margin-top: -100px;
+  }
+  66% {
+    margin-top: -100px;
+  }
+  71% {
+    margin-top: 0px;
+  }
+  100% {
+    margin-top: 0px;
+  }
+}
