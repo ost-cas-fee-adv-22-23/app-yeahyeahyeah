@@ -15,11 +15,10 @@ type TextBoxComponentProps = {
   variant: 'write' | 'inline' | 'start';
   mutate: any;
   data: any;
-  setOffset?: React.Dispatch<React.SetStateAction<number>>;
-  setCount?: React.Dispatch<React.SetStateAction<number>>;
+  setOffsetToZero?: () => void;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate, data, setOffset, setCount }) => {
+export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate, data, setOffsetToZero }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
@@ -35,8 +34,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   const clearFormValues = () => {
     setInputValue('');
     setFile(null);
-    setOffset && setOffset(0);
-    setCount && setCount(1);
+    setOffsetToZero && setOffsetToZero();
   };
 
   const addText = async () => {
@@ -70,7 +68,8 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     } else {
       try {
         res = await postMumble(inputValue, file, session?.accessToken);
-        res && mutate({ ...data, mumbles: [res, ...data?.mumbles] });
+        data[0].mumbles.push(res);
+        res && mutate(data);
 
         clearFormValues();
 

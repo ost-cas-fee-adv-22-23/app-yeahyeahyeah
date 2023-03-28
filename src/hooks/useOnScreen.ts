@@ -16,7 +16,7 @@ const useOnScreen = (ref: RefObject<HTMLElement>) => {
     };
   }, [ref]);
 
-  return [isOnScreen, setIsOnScreen];
+  return [isOnScreen, setIsOnScreen] as const;
 };
 
 export default useOnScreen;
