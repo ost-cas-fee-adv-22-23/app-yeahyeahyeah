@@ -10,20 +10,20 @@ export type DefaultLayout = React.DOMAttributes<HTMLDivElement>;
 export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
   const router = useRouter();
   const { data: session }: any = useSession();
-  const notAuthorized: boolean = session === undefined || (session === null && router.pathname === '/profile/[id]');
+
+  if (!session && router.pathname === '/profile/[id]') {
+    return <StartScreen />;
+  }
 
   return (
     <>
-      {notAuthorized === false && (
-        <LayoutStyles>
-          <NavigationWrapper>
-            <NavigationComponent />
-          </NavigationWrapper>
-          {children}
-          <Footer />
-        </LayoutStyles>
-      )}
-      {notAuthorized === true && <StartScreen />}
+      <LayoutStyles>
+        <NavigationWrapper>
+          <NavigationComponent />
+        </NavigationWrapper>
+        {children}
+        <Footer />
+      </LayoutStyles>
     </>
   );
 };
