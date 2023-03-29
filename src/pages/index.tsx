@@ -52,13 +52,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     }
   );
 
-  const checkForNewMumbles = () => {
-    return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
-  };
-
   useEffect(() => {
     if (data && data[0].count > 0) quantityTotal.current = data[0].count;
-    console.log('quantityTotal', quantityTotal.current);
   }, [data]);
 
   const handleIntersectionCallbackDebounced = useMemo(() => {
@@ -72,6 +67,10 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     if (isOnScreen && !isValidating && quantityTotal.current - limit >= offset.current)
       handleIntersectionCallbackDebounced();
   }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit, isValidating]);
+
+  const checkForNewMumbles = () => {
+    return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
+  };
 
   const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
