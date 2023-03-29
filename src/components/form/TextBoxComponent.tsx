@@ -68,8 +68,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     } else {
       try {
         res = await postMumble(inputValue, file, session?.accessToken);
-        data[0].mumbles.push(res);
-        res && mutate(data);
+        res && mutate();
 
         clearFormValues();
 
@@ -96,7 +95,6 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     }, 2000);
 
   const onDropCallBack = (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-    console.log('acceptedFiles, fileRejections', acceptedFiles, fileRejections);
     fileRejections?.length && setFileUploadError(fileRejections[0].errors[0].message);
     setTimerForError();
 
