@@ -155,6 +155,15 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
   const user: User | string = token?.accessToken ? await fetchUser({ id: _id, token: token?.accessToken }) : '';
   const myMumbles: FetchMumbles = await fetchMyMumbles({ creator: _id, token: token?.accessToken });
 
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/landingpage',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       creator: id && { id: _id },
