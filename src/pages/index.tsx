@@ -146,8 +146,6 @@ export const getServerSideProps: GetServerSideProps<any> = async () => {
 
   const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0 });
 
-  console.log(mumbles);
-
   return {
     props: {
       limit,
