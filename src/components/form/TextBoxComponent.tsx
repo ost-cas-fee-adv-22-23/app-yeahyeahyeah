@@ -9,6 +9,7 @@ import { Mumble, UploadImage } from '@/services/qwacker';
 import { postReply } from '@/services/postReply';
 import { alertService, fetchUser } from '@/services';
 import Link from 'next/link';
+import { bytesToMegaBytes } from '@/utils';
 
 type TextBoxComponentProps = {
   id?: string;
@@ -103,6 +104,12 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
       return;
     }
 
+    if (newFile.size > 1024 * 1024 * 5) {
+      const fileSizeBytes: number = newFile.size;
+      const fileSizeMB = (Math.round(fileSizeBytes / 1024) / 1024).toFixed(1);
+      setErrorMessage(`Deine Datei ist ${fileSizeMB}MB gross, sollte aber max. 5MB sein.`);
+    }
+
     setFile(
       Object.assign(newFile, {
         preview: URL.createObjectURL(newFile),
@@ -133,6 +140,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
           avatar: {
             src: user && user.avatarUrl !== '' ? user.avatarUrl : '/avatar_default.png/',
             alt: user ? user.userName : 'username',
+            title: user ? user.userName : 'username',
             href: session?.user?.id ? `/profile/${session?.user?.id}` : '/',
             legacyBehavior: true,
             passHref: true,
