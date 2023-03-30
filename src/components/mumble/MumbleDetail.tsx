@@ -54,7 +54,9 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph text={mumble.text} mbSpacing="16" size="large" />
+      <Paragraph mbSpacing="16" size="large">
+        {mumble.text}
+      </Paragraph>
 
       {mumble.mediaUrl && <MumbleImage mediaUrl={mumble.mediaUrl} text={mumble.text} width={585} height={329.06} />}
 

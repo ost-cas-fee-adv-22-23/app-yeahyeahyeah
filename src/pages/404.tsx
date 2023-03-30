@@ -11,7 +11,9 @@ const PageNotFound: React.FC = () => {
         alignment="center"
         mbSpacing="0"
       />
-      <Paragraph text="Die angeforderte Seite existiert nicht." size="large" alignment="center" />
+      <Paragraph size="large" alignment="center">
+        Die angeforderte Seite existiert nicht.
+      </Paragraph>
     </div>
   );
 };

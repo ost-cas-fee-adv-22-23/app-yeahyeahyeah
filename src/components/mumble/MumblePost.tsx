@@ -85,7 +85,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph text={text} mbSpacing="16" />
+      <Paragraph mbSpacing="16">{text}</Paragraph>
 
       {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
 

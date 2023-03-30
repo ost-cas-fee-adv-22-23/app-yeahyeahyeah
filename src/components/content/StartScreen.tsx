@@ -41,7 +41,9 @@ export const StartScreen: React.FC<StartScreen> = () => {
             <Button label="Let's mumble" icon="logo" size="large" width="full" color="gradient" onClick={handleLogin} />
             <RightColumnContent>
               <div>
-                <Paragraph text="Noch kein Account?" size="default" color="dark" alignment="center" />
+                <Paragraph size="default" color="dark" alignment="center">
+                  Noch kein Account?
+                </Paragraph>
               </div>
               <div>
                 <TextButton onClick={handleSignup} label="Jetzt registrieren" />
