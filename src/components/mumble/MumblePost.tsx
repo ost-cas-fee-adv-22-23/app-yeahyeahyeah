@@ -13,6 +13,7 @@ import {
   TmbSpacing,
   IParagraphProps,
   Hashtag,
+  Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { fetchUser } from '@/services/fetchUser';
 import { MumbleLike } from './MumbleLike';
@@ -157,53 +158,3 @@ const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-wrap gap-8 sm:(flex-row gap-16)`;
 const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:w-full`;
 const ArticleInteractionDelete = tw.div`flex justify-end items-center grow pr-4 mb-8`;
-
-type IParagraphPropsChildren = { children: React.ReactNode };
-
-const Paragraph: React.FC<Pick<IParagraphProps, 'size' | 'color' | 'mbSpacing' | 'alignment'> & IParagraphPropsChildren> = ({
-  size = 'medium',
-  color = 'default',
-  mbSpacing,
-  alignment,
-  children,
-}) => (
-  <ParagraphStyles size={size} color={color} mbSpacing={mbSpacing} alignment={alignment}>
-    {children}
-  </ParagraphStyles>
-);
-
-interface IParagraphStylesProps {
-  size: string;
-  color?: string;
-  mbSpacing?: TmbSpacing;
-  alignment?: string;
-}
-
-const Aligment = ({ alignment }: IParagraphStylesProps) => [
-  tw`
-    text-left
-  `,
-  alignment === 'left' && tw`text-left`,
-  alignment === 'center' && tw`text-center`,
-  alignment === 'right' && tw`text-right`,
-];
-
-const paragraphDefaults = tw`font-medium w-full`;
-const paragraphMedium = tw`text-base font-medium`;
-const paragraphLarge = tw`text-lg font-medium`;
-const paragraphColorDark = tw`text-slate-900`;
-const paragraphColorLight = tw`text-slate-500`;
-const paragraphColorWhite = tw`text-slate-white`;
-const ParagraphStyles = styled.p(({ size, color }: IParagraphStylesProps) => [
-  tw`
-      mb-24
-    `,
-  paragraphDefaults,
-  BottomSpacing,
-  Aligment,
-  size === 'large' && paragraphLarge,
-  size === 'medium' && paragraphMedium,
-  color === 'dark' && paragraphColorDark,
-  color === 'light' && paragraphColorLight,
-  color === 'white' && paragraphColorWhite,
-]);
