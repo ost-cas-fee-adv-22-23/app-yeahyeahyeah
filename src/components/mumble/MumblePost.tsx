@@ -126,7 +126,7 @@ const ArticleMumble = styled.article(({ type }: ArticleHeaderProps) => [
 const ArticleHeader = styled.div(({ type }: ArticleHeaderProps) => [
   tw`flex flex-row items-start sm:(items-center) gap-16 w-full`,
   type === 'reply' && tw`flex flex-row items-center gap-8 w-full relative left-0 mb-16`,
-  type === 'post' && tw`relative -left-16 sm:-left-[88px] mb-16`,
+  type === 'post' && tw`relative -left-16 sm:-left-[84px] mb-16`,
 ]);
 
 const ArticleHeaderContent = tw.div`flex flex-col`;
