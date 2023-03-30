@@ -8,7 +8,7 @@ const KeyWords: React.FC = () => {
         #Frontend<span>.</span>
       </div>
       <div>
-        #Engineer<span>.</span>
+        #Engineering<span>.</span>
       </div>
     </span>
   );

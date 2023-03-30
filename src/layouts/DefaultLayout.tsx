@@ -24,7 +24,7 @@ const LayoutStyles = tw.div`
   m-0
   mx-auto
   p-0
-  bg-slate-200
+  bg-slate-100
 `;
 
 const NavigationWrapper = tw.div`sticky top-0 w-full z-50`;

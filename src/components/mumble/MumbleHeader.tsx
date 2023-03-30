@@ -76,11 +76,10 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
       </MumbleHeaderWrapper>
       <UserDataWrapper>
         <Paragraph
-          text={`Hallo! Mein Name ist ${user.firstName} ${user.lastName}. Ich freue mich mit Euch im CAS Frontend Engineering Advanced auszutauschen, Mumbles zu kreieren und zu bewerten. Ich freue mich auf jeden Like meiner Mumbles.`}
           size="medium"
           color="light"
           mbSpacing="0"
-        />
+        >{`Hallo! Mein Name ist ${user.firstName} ${user.lastName}. Ich freue mich mit Euch im CAS Frontend Engineering Advanced auszutauschen, Mumbles zu kreieren und zu bewerten. Ich freue mich auf jeden Like meiner Mumbles.`}</Paragraph>
       </UserDataWrapper>
     </>
   );

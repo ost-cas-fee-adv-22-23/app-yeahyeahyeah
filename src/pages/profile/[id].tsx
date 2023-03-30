@@ -107,20 +107,22 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
 
         {session?.user.id === creator.id ? (
           <>
-            <Switch
-              fCallBack={(value) => handleSelection(value)}
-              options={[
-                {
-                  label: 'Deine Mumbles',
-                  value: 'mumbles',
-                },
-                {
-                  label: 'Deine Likes',
-                  value: 'likes',
-                },
-              ]}
-              value="mumbles"
-            />
+            <div tw="flex flex-row mt-16 w-full sm:(mt-0)">
+              <Switch
+                fCallBack={(value) => handleSelection(value)}
+                options={[
+                  {
+                    label: 'Deine Mumbles',
+                    value: 'mumbles',
+                  },
+                  {
+                    label: 'Deine Likes',
+                    value: 'likes',
+                  },
+                ]}
+                value="mumbles"
+              />
+            </div>
 
             <SelectionWrapper>
               {selection === 'mumbles' && pagesMumbles}

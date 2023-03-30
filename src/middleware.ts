@@ -9,11 +9,13 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/landingpage', request.url));
     }
   }
+
   if (request.nextUrl.pathname.startsWith('/landingpage')) {
     if (jwt) {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }
+
   return NextResponse.next();
 }
 
