@@ -1,3 +1,4 @@
+import React from 'react';
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -51,12 +52,11 @@ export const MumblePost: React.FC<MumbleProps> = ({
   };
 
   const textWithHashtags = () => {
-    return text.split(' ').map((str) => {
+    return text.split(' ').map((str, i) => {
       if (str.startsWith('#')) {
         return (
-          <>
+          <React.Fragment key={i}>
             <Hashtag
-              key={str}
               label={str.replace('#', '')}
               size="small"
               linkComponent={Link}
@@ -64,7 +64,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
               legacyBehavior
               passHref
             />{' '}
-          </>
+          </React.Fragment>
         );
       }
       return str + ' ';
