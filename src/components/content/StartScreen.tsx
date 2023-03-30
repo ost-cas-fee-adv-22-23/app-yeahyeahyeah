@@ -18,43 +18,41 @@ export const StartScreen: React.FC<StartScreen> = () => {
 
   return (
     <>
-      <>
-        <NextSeo
-          title="Mumble - Willkommen auf Mumble."
-          description="Are you ready to mumble? Jetzt registrieren und loslegen."
-          canonical="https://mumble-yeahyeahyeah.ch"
-        />
-        <LayoutWrapper>
-          <LeftColumn>
-            <div tw="mb-48">
-              <MumbleLogo alignment="vertical" color="white" isNavigation={false} />
-            </div>
-            <div tw="w-full sm:w-3/4">
-              <h1 tw="text-2xl lg:(text-4xl) font-bold text-pink-300 text-center">
-                Find out whats new <br />
-                in <KeyWords />{' '}
-              </h1>
-            </div>
-          </LeftColumn>
-          <RightColumn>
-            <RightColumnContentWrapper>
-              <h2 tw="text-xl sm:text-4xl font-bold text-pink-300 text-center whitespace-nowrap text-slate-900">Anmelden</h2>
-              <Button label="Let's mumble" icon="logo" size="large" width="full" color="gradient" onClick={handleLogin} />
-              <div tw="flex flex-row justify-center items-center w-full gap-8">
-                <div>
-                  <Paragraph text="Noch kein Account?" size="default" color="dark" alignment="center" />
-                </div>
-                <div>
-                  <TextButton onClick={handleSignup} label="Jetzt registrieren" />
-                </div>
+      <NextSeo
+        title="Mumble - Willkommen auf Mumble."
+        description="Are you ready to mumble? Jetzt registrieren und loslegen."
+        canonical="https://mumble-yeahyeahyeah.ch"
+      />
+      <LayoutWrapper>
+        <LeftColumn>
+          <div tw="mb-48">
+            <MumbleLogo alignment="vertical" color="white" isNavigation={false} />
+          </div>
+          <div tw="w-full sm:w-3/4">
+            <h1 tw="text-2xl lg:(text-4xl) font-bold text-pink-300 text-center">
+              Find out whats new <br />
+              in <KeyWords />{' '}
+            </h1>
+          </div>
+        </LeftColumn>
+        <RightColumn>
+          <RightColumnContentWrapper>
+            <h2 tw="text-xl sm:text-4xl font-bold text-pink-300 text-center whitespace-nowrap text-slate-900">Anmelden</h2>
+            <Button label="Let's mumble" icon="logo" size="large" width="full" color="gradient" onClick={handleLogin} />
+            <div tw="flex flex-row justify-center items-center w-full gap-8">
+              <div>
+                <Paragraph text="Noch kein Account?" size="default" color="dark" alignment="center" />
               </div>
-            </RightColumnContentWrapper>
-            <div tw="items-end justify-center">
-              <Footer />
+              <div>
+                <TextButton onClick={handleSignup} label="Jetzt registrieren" />
+              </div>
             </div>
-          </RightColumn>
-        </LayoutWrapper>
-      </>
+          </RightColumnContentWrapper>
+          <div tw="items-end justify-center">
+            <Footer />
+          </div>
+        </RightColumn>
+      </LayoutWrapper>
     </>
   );
 };
