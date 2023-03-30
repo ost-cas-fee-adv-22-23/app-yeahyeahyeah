@@ -13,7 +13,7 @@ export const StartScreen: React.FC<StartScreen> = () => {
   };
 
   const handleSignup = () => {
-    console.log('to be defined');
+    signIn('zitadel');
   };
 
   return (
@@ -28,29 +28,29 @@ export const StartScreen: React.FC<StartScreen> = () => {
           <div tw="mb-48">
             <MumbleLogo alignment="vertical" color="white" isNavigation={false} />
           </div>
-          <div tw="w-full sm:w-3/4">
-            <h1 tw="text-2xl lg:(text-4xl) font-bold text-pink-300 text-center">
+          <div tw="w-full sm:w-4/5">
+            <HeadingH1>
               Find out whats new <br />
-              in <KeyWords />{' '}
-            </h1>
+              in <KeyWords />
+            </HeadingH1>
           </div>
         </LeftColumn>
         <RightColumn>
           <RightColumnContentWrapper>
-            <h2 tw="text-xl sm:text-4xl font-bold text-pink-300 text-center whitespace-nowrap text-slate-900">Anmelden</h2>
+            <HeadingH2>Anmelden</HeadingH2>
             <Button label="Let's mumble" icon="logo" size="large" width="full" color="gradient" onClick={handleLogin} />
-            <div tw="flex flex-row justify-center items-center w-full gap-8">
+            <RightColumnContent>
               <div>
                 <Paragraph text="Noch kein Account?" size="default" color="dark" alignment="center" />
               </div>
               <div>
                 <TextButton onClick={handleSignup} label="Jetzt registrieren" />
               </div>
-            </div>
+            </RightColumnContent>
           </RightColumnContentWrapper>
-          <div tw="items-end justify-center">
+          <FooterWrapper>
             <Footer />
-          </div>
+          </FooterWrapper>
         </RightColumn>
       </LayoutWrapper>
     </>
@@ -58,7 +58,7 @@ export const StartScreen: React.FC<StartScreen> = () => {
 };
 
 const LayoutWrapper = tw.div`flex flex-col justify-between items-start w-full h-screen sm:(flex-row)`;
-const LeftColumn = styled.div(() => [
+const LeftColumn = styled.section(() => [
   tw`flex flex-col justify-center items-center bg-gradient-to-b from-pink-400 to-violet-500 w-full h-1/2 sm:(w-1/2 h-full p-0) `,
   css`
     background: linear-gradient(153.75deg, #ec4899 -75.32%, #7c3aed 100%);
@@ -67,5 +67,9 @@ const LeftColumn = styled.div(() => [
     }
   `,
 ]);
-const RightColumn = tw.div`flex flex-col justify-center items-center bg-slate-white w-full h-1/2 sm:(w-1/2 h-full) `;
+const RightColumn = tw.section`flex flex-col justify-center items-center bg-slate-white w-full h-1/2 sm:(w-1/2 h-full) `;
 const RightColumnContentWrapper = tw.div`flex flex-col justify-center items-center w-full h-full lg:(w-1/2) gap-16 p-16`;
+const RightColumnContent = tw.div`flex flex-row justify-center items-center w-full gap-8`;
+const HeadingH1 = tw.h1`text-xl lg:(text-3xl) xl:(text-4xl) font-bold text-pink-300 text-center leading-3 sm:(!leading-none)`;
+const HeadingH2 = tw.h2`text-xl sm:text-4xl font-bold text-pink-300 text-center whitespace-nowrap text-slate-900`;
+const FooterWrapper = tw.div`items-end justify-center`;
