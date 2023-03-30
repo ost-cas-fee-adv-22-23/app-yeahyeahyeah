@@ -60,7 +60,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
               label={str.replace('#', '')}
               size="small"
               linkComponent={Link}
-              href={`/mumble/${id}`}
+              href={`/search/${str.replace('#', '')}`}
               legacyBehavior
               passHref
             />{' '}
