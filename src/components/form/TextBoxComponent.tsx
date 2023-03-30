@@ -129,7 +129,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         user={{
           label: 'Hey, was läuft?',
           username: user ? user.userName : 'username',
-          href: session?.user?.id ? `/profile/${session?.user?.id}` : '/',
+          href: session?.user?.id || `/landingpage`,
           avatar: {
             src: user && user.avatarUrl !== '' ? user.avatarUrl : '/avatar_default.png/',
             alt: user ? user.userName : 'username',
