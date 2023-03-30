@@ -1,3 +1,4 @@
+import React from 'react';
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -8,8 +9,9 @@ import {
   CommentButton,
   Cancel,
   IconLink,
-  Paragraph,
   User,
+  Hashtag,
+  Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { fetchUser } from '@/services/fetchUser';
 import { MumbleLike } from './MumbleLike';
@@ -49,6 +51,26 @@ export const MumblePost: React.FC<MumbleProps> = ({
     handleDeleteCallback && handleDeleteCallback(id);
   };
 
+  const textWithHashtags = () => {
+    return text.split(' ').map((str, i) => {
+      if (str.startsWith('#')) {
+        return (
+          <React.Fragment key={i}>
+            <Hashtag
+              label={str.replace('#', '')}
+              size="small"
+              linkComponent={Link}
+              href={`/search/${str.replace('#', '')}`}
+              legacyBehavior
+              passHref
+            />{' '}
+          </React.Fragment>
+        );
+      }
+      return str + ' ';
+    });
+  };
+
   return (
     <ArticleMumble id={id} type={type}>
       <ArticleHeader type={type}>
@@ -85,7 +107,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph mbSpacing="16">{text}</Paragraph>
+      <Paragraph mbSpacing="16">{textWithHashtags()}</Paragraph>
 
       {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
 
