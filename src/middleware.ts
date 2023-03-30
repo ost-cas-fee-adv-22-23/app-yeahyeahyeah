@@ -1,17 +1,18 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(req: NextRequest) {
-  const { cookies } = req;
+export function middleware(request: NextRequest) {
+  const { cookies } = request;
   const jwt = cookies.get('next-auth.session-token');
 
-  if (!jwt) {
-    return NextResponse.redirect(new URL('/landingpage', req.url));
+  if (request.nextUrl.pathname.startsWith('/profile')) {
+    if (!jwt) {
+      return NextResponse.redirect(new URL('/landingpage', request.url));
+    }
   }
 
-  return NextResponse.next();
+  if (request.nextUrl.pathname.startsWith('/landingpage')) {
+    if (jwt) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  }
 }
-
-export const config = {
-  matcher: '/profile/:path*',
-};

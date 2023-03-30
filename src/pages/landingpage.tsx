@@ -1,4 +1,4 @@
-import { StartScreen } from '@/layouts';
+import { StartScreen } from '@/components';
 
 const LandingPage: React.FC = () => {
   return <StartScreen />;
