@@ -107,7 +107,7 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
 
         {session?.user.id === creator.id ? (
           <>
-            <div tw="flex flex-row mt-16">
+            <div tw="flex flex-row mt-16 w-full sm:(mt-0)">
               <Switch
                 fCallBack={(value) => handleSelection(value)}
                 options={[
