@@ -9,9 +9,6 @@ import {
   Cancel,
   IconLink,
   User,
-  BottomSpacing,
-  TmbSpacing,
-  IParagraphProps,
   Hashtag,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
