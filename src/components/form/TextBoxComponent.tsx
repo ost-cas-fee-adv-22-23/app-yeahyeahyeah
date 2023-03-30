@@ -9,7 +9,6 @@ import { Mumble, UploadImage } from '@/services/qwacker';
 import { postReply } from '@/services/postReply';
 import { alertService, fetchUser } from '@/services';
 import Link from 'next/link';
-import { bytesToMegaBytes } from '@/utils';
 
 type TextBoxComponentProps = {
   id?: string;
