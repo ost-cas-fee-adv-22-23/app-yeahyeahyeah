@@ -27,6 +27,16 @@
   animation: slide 10s cubic-bezier(0.7, -0.85, 0.5, 1.4) infinite;
 }
 
+@media only screen and (max-width: 1024px) {
+  .slider {
+    top: 18px;
+  }
+
+  h1 {
+    line-height: 0 !important;
+  }
+}
+
 @keyframes slide {
   0% {
     margin-top: -300px;
