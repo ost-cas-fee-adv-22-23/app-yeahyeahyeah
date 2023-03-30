@@ -106,7 +106,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     if (newFile.size > 1024 * 1024 * 5) {
       const fileSizeBytes: number = newFile.size;
       const fileSizeMB = (Math.round(fileSizeBytes / 1024) / 1024).toFixed(1);
-      setErrorMessage(`Deine Datei ist ${fileSizeMB}MB gross, sollte aber max. 5MB sein.`);
+      setErrorMessage(`Deine Datei ist ${fileSizeMB} MB gross, sollte aber max. 5 MB sein.`);
     }
 
     setFile(
