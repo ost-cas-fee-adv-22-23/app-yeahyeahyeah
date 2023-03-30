@@ -16,13 +16,13 @@ import { deleteMumble } from '@/services/deleteMumble';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
-  const [quantityTotal, setQuantityTotal] = useState(0);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
-  let offset = useRef<any>(0);
+  let offset = useRef<number>(0);
+  let quantityTotal = useRef<number>(0);
 
-  const getKey = (pageIndex: number, previousPageData: any) => {
+  const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
       return null;
     }
@@ -33,8 +33,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const { data, mutate, size, setSize, error, isValidating, isLoading } = useSWRInfinite(getKey, fetchMumbles, {
     fallbackData: [fallback['/api/mumbles']],
     revalidateOnFocus: false,
-    revalidateAll: limit >= 10 ? false : true,
     refreshInterval: 60000,
+    parallel: true,
   });
 
   const { data: newMumbles } = useSWR(
@@ -53,19 +53,10 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   );
 
   useEffect(() => {
-    data && data[0].mumbles[0].id && console.log('newMumbles', newMumbles);
-  }, [newMumbles, data]);
-
-  const checkForNewMumbles = () => {
-    return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
-  };
-
-  useEffect(() => {
-    data && data[0].count > 0 && setQuantityTotal(data[0].count);
-  }, []);
+    if (data && data[0].count > 0) quantityTotal.current = data[0].count;
+  }, [data]);
 
   const handleIntersectionCallbackDebounced = useMemo(() => {
-    console.log('handleIntersectionCallbackDebounced');
     return debounce(async () => {
       setSize(size + 1);
       setIsOnScreen(false);
@@ -73,8 +64,13 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   }, [setSize, size, setIsOnScreen]);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && quantityTotal - limit >= offset.current) handleIntersectionCallbackDebounced();
+    if (isOnScreen && !isValidating && quantityTotal.current - limit >= offset.current)
+      handleIntersectionCallbackDebounced();
   }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit, isValidating]);
+
+  const checkForNewMumbles = () => {
+    return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
+  };
 
   const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
@@ -139,8 +135,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
               />
             ));
           })}
-        {isLoading && <LoadingSpinner />}
         <div key="last" tw="invisible" ref={ref} />
+        {(isLoading || isValidating) && <LoadingSpinner />}
       </Container>
     </>
   );
