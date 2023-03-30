@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const { cookies } = request;
-  const jwt = cookies.get('next-auth.session-token');
+  const jwt = cookies.has('next-auth.session-token') || cookies.has('__Secure-next-auth.session-token');
   console.log('request', request);
   console.log('jwt', jwt);
   if (request.nextUrl.pathname.startsWith('/profile')) {
