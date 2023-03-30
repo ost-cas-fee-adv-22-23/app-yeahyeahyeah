@@ -30,6 +30,8 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
   const ref = useRef(null);
   const [isOnScreen] = useOnScreen(ref);
 
+  console.log('session', session);
+
   const { data: likes } = useSWR({ url: '/api/myLikes', token: session?.accessToken }, fetchMyLikes, {
     refreshInterval: 10000,
     revalidateOnFocus: false,
