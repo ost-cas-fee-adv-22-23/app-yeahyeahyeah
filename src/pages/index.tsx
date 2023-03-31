@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import tw from 'twin.macro';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
@@ -21,9 +21,11 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
   let offset = useRef<number>(0);
   let quantityTotal = useRef<number>(0);
+  let finished = useRef<boolean>(false);
 
   const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
+      finished.current = true;
       return null;
     }
     offset.current = pageIndex * limit;
@@ -64,9 +66,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   }, [setSize, size, setIsOnScreen]);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && quantityTotal.current - limit >= offset.current)
-      handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit, isValidating]);
+    if (isOnScreen && !isValidating && !finished.current) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating]);
 
   const checkForNewMumbles = () => {
     return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
@@ -99,10 +100,6 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     resetWindowScrollPosition();
   };
 
-  const setOffsetToZero = () => {
-    offset.current = 0;
-  };
-
   if (error) return <ErrorBox message={error} />;
 
   return (
@@ -116,7 +113,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
       <Container layout="plain">
         <WelcomeText />
         <Alert />
-        <TextBoxComponent variant="write" mutate={mutate} data={data} setOffsetToZero={setOffsetToZero} />
+        <TextBoxComponent variant="write" mutate={mutate} data={data} />
         {data &&
           data.map((page) => {
             return page.mumbles.map((mumble: Mumble) => (

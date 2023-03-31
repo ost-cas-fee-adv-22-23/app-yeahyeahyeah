@@ -15,10 +15,10 @@ type TextBoxComponentProps = {
   variant: 'write' | 'inline' | 'start';
   mutate: any;
   data: any;
-  setOffsetToZero?: () => void;
+  setOffset?: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate, data, setOffsetToZero }) => {
+export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate, data, setOffset }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
@@ -34,7 +34,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   const clearFormValues = () => {
     setInputValue('');
     setFile(null);
-    setOffsetToZero && setOffsetToZero();
+    setOffset && setOffset(0);
   };
 
   const addText = async () => {

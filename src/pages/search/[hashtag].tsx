@@ -1,13 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import tw from 'twin.macro';
-import useSWR from 'swr';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
-import { fetchMumbles } from '@/services/fetchMumbles';
-import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox } from '@/components';
 import { useSession } from 'next-auth/react';
 import { FetchMumbles } from '@/types/fallback';
@@ -27,14 +24,13 @@ export default function Hashtag({
   const { data: session }: any = useSession();
   const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
-  const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
   let offset = useRef<number>(0);
   let quantityTotal = useRef<number>(0);
-
-  console.log('hashtag', hashtag);
+  let finished = useRef<boolean>(false);
 
   const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
+      finished.current = true;
       return null;
     }
     offset.current = pageIndex * limit;
@@ -60,9 +56,8 @@ export default function Hashtag({
   }, [setSize, size, setIsOnScreen]);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && quantityTotal.current - limit >= offset.current)
-      handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit, isValidating]);
+    if (isOnScreen && !isValidating && !finished.current) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating]);
 
   const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
@@ -80,15 +75,6 @@ export default function Hashtag({
     }
   };
 
-  const handleRefreshPage = () => {
-    mutate();
-    resetWindowScrollPosition();
-  };
-
-  const setOffsetToZero = () => {
-    offset.current = 0;
-  };
-
   if (error) return <ErrorBox message={error} />;
 
   return (
@@ -97,7 +83,7 @@ export default function Hashtag({
       <Container layout="plain">
         <WelcomeText />
         <Alert />
-        <TextBoxComponent variant="write" mutate={mutate} data={data} setOffsetToZero={setOffsetToZero} />
+        <TextBoxComponent variant="write" mutate={mutate} data={data} />
         {data &&
           data.map((page) => {
             return page.mumbles.map((mumble: Mumble) => (
@@ -122,10 +108,10 @@ export default function Hashtag({
     </>
   );
 }
-export const getServerSideProps: GetServerSideProps<any> = async ({ query: { hashtag } }) => {
+export const getServerSideProps: GetServerSideProps<any> = async ({ query: { hashtag } }: { query: any }) => {
   const limit = 2;
 
-  const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0 });
+  const mumbles: FetchMumbles = await searchMumbles({ limit: limit, offset: 0, tags: [hashtag] });
 
   return {
     props: {
@@ -137,5 +123,3 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ query: { has
     },
   };
 };
-
-const MumbleMessageBox = tw.div`animate-bounce fixed top-[110px] mx-auto z-50 hover:(animate-none)`;
