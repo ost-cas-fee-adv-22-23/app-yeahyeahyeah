@@ -30,8 +30,6 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
   const ref = useRef(null);
   const [isOnScreen] = useOnScreen(ref);
 
-  console.log('session', session);
-
   const { data: likes } = useSWR({ url: '/api/myLikes', token: session?.accessToken }, fetchMyLikes, {
     refreshInterval: 10000,
     revalidateOnFocus: false,
@@ -99,7 +97,7 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
       <NextSeo
         title={`${session && session.user.firstname} ${session && session.user.lastname}'s mumble profile`}
         description={`Profile of ${session && session.user.username}`}
-        canonical="https://mumble-yeahyeahyeah.ch"
+        canonical={process.env.NEXT_PUBLIC_URL}
       />
 
       <Container layout="plain">

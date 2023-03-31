@@ -55,7 +55,7 @@ export default function MumblePage({
       <NextSeo
         title={user && `${user.userName}'s reply`}
         description={mumble && `${mumble.text}`}
-        canonical="https://mumble-yeahyeahyeah.ch"
+        canonical={process.env.NEXT_PUBLIC_URL}
       />
       <Container layout="box">
         {mumble && <MumbleDetail mumble={mumble} user={user} />}

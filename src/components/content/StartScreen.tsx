@@ -21,7 +21,7 @@ export const StartScreen: React.FC<StartScreen> = () => {
       <NextSeo
         title="Mumble - Willkommen auf Mumble."
         description="Are you ready to mumble? Jetzt registrieren und loslegen."
-        canonical="https://mumble-yeahyeahyeah.ch"
+        canonical={process.env.NEXT_PUBLIC_URL}
       />
       <LayoutWrapper>
         <LeftColumn>
