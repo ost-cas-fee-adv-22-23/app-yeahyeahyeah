@@ -99,7 +99,7 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
       <NextSeo
         title={`${session && session.user.firstname} ${session && session.user.lastname}'s mumble profile`}
         description={`Profile of ${session && session.user.username}`}
-        canonical="https://mumble-yeahyeahyeah.ch"
+        canonical={process.env.NEXT_PUBLIC_URL}
       />
 
       <Container layout="plain">
