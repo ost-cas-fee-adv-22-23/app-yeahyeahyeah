@@ -153,5 +153,5 @@ const ArticleHeader = styled.div(({ type }: ArticleHeaderProps) => [
 
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-wrap gap-8 sm:(flex-row gap-16)`;
-const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:w-full`;
+const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:w-full sm:gap-24`;
 const ArticleInteractionDelete = tw.div`flex justify-end items-center grow pr-4 mb-8`;
