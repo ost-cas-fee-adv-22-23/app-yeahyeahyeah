@@ -19,12 +19,6 @@ import { getToken } from 'next-auth/jwt';
 import useSWR from 'swr';
 import Link from 'next/link';
 
-const swrConfig = {
-  revalidateIfStale: false,
-  revalidateOnFocus: false,
-  revalidateOnReconnect: false,
-};
-
 export default function Hashtag({
   limit,
   fallback,
@@ -61,7 +55,6 @@ export default function Hashtag({
     { url: '/api/mumbles', limit: 10, offset: 0, text: '#', token: session?.accessToken },
     searchMumbles,
     {
-      ...swrConfig,
       refreshInterval: 10000,
     }
   );
