@@ -30,8 +30,6 @@ export default NextAuth({
           })
         ).json();
 
-        console.log('profile', profile);
-
         return {
           id: profile.sub,
           firstname: profile.given_name,

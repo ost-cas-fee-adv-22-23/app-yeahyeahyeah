@@ -82,8 +82,7 @@ export default function Hashtag({
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
       <Container layout="plain">
         <WelcomeText />
-        <Alert />
-        <TextBoxComponent variant="write" mutate={mutate} data={data} />
+
         {data &&
           data.map((page) => {
             return page.mumbles.map((mumble: Mumble) => (
