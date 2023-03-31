@@ -5,14 +5,16 @@ export const searchMumbles = async (params?: {
   limit?: number;
   offset?: number;
   isReply?: boolean;
-  tags: string[];
-  token?: string;
+  tags?: string[];
+  text?: string;
+  token: string;
 }) => {
-  const { limit, offset, isReply, tags, token } = params || {};
+  const { limit, offset, isReply, tags, text, token } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/search`;
 
   const formData = {
+    text,
     tags,
     offset,
     limit,
