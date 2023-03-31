@@ -4,13 +4,26 @@ import debounce from 'lodash.debounce';
 import useOnScreen from '@/hooks/useOnScreen';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
-import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox } from '@/components';
+import {
+  Container,
+  Heading,
+  Hashtag as HashtagComponent,
+} from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { MumblePost, LoadingSpinner, ErrorBox } from '@/components';
 import { useSession } from 'next-auth/react';
 import { FetchMumbles } from '@/types/fallback';
 import { alertService, Mumble } from '@/services';
 import { deleteMumble } from '@/services/deleteMumble';
 import { searchMumbles } from '@/services/searchMumbles';
+import { getToken } from 'next-auth/jwt';
+import useSWR from 'swr';
+import Link from 'next/link';
+
+const swrConfig = {
+  revalidateIfStale: false,
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false,
+};
 
 export default function Hashtag({
   limit,
@@ -30,7 +43,7 @@ export default function Hashtag({
 
   const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
-      finished.current = true;
+      //finished.current = true;
       return null;
     }
     offset.current = pageIndex * limit;
@@ -43,6 +56,15 @@ export default function Hashtag({
     refreshInterval: 60000,
     parallel: true,
   });
+
+  const { data: hashtagData } = useSWR(
+    { url: '/api/mumbles', limit: 10, offset: 0, text: '#', token: session?.accessToken },
+    searchMumbles,
+    {
+      ...swrConfig,
+      refreshInterval: 10000,
+    }
+  );
 
   useEffect(() => {
     if (data && data[0].count > 0) quantityTotal.current = data[0].count;
@@ -75,13 +97,37 @@ export default function Hashtag({
     }
   };
 
+  const renderHashtags = (text: string) => {
+    return text.split(' ').map((str, i) => {
+      if (str.startsWith('#')) {
+        return (
+          <React.Fragment key={i}>
+            <HashtagComponent
+              label={str.replace('#', '')}
+              size="large"
+              linkComponent={Link}
+              href={`/search/${str.replace('#', '')}`}
+              legacyBehavior
+              passHref
+            />{' '}
+          </React.Fragment>
+        );
+      }
+      return ' ';
+    });
+  };
+
   if (error) return <ErrorBox message={error} />;
 
   return (
     <>
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
       <Container layout="plain">
-        <WelcomeText />
+        <div tw="mb-16">
+          <Heading label="Ten Latest Hashtags" color="violet" tag="h2" size="default" mbSpacing="8" />
+          <Heading label="...used by other users" color="light" tag="h4" size="default" mbSpacing="32" />
+          {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
+        </div>
 
         {data &&
           data.map((page) => {
@@ -107,10 +153,16 @@ export default function Hashtag({
     </>
   );
 }
-export const getServerSideProps: GetServerSideProps<any> = async ({ query: { hashtag } }: { query: any }) => {
+export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { hashtag } }: { req: any; query: any }) => {
   const limit = 2;
 
-  const mumbles: FetchMumbles = await searchMumbles({ limit: limit, offset: 0, tags: [hashtag] });
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const mumbles: FetchMumbles = await searchMumbles({
+    limit: limit,
+    offset: 0,
+    tags: [hashtag],
+    token: token?.accessToken || '',
+  });
 
   return {
     props: {
