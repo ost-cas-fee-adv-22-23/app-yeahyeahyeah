@@ -1,5 +1,7 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import useSWR from 'swr';
+import { useSession } from 'next-auth/react';
 import {
   Avatar,
   IconLink,
@@ -7,9 +9,7 @@ import {
   Paragraph,
   User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import useSWR from 'swr';
 import { fetchUser, User as TUser } from '@/services';
-import { useSession } from 'next-auth/react';
 
 type MumbleHeaderProps = {
   creator: any;

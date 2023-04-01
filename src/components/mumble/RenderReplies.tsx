@@ -1,11 +1,9 @@
 import React from 'react';
 import { KeyedMutator } from 'swr';
-import { Mumble } from '@/services/qwacker';
+import { useSession } from 'next-auth/react';
+import { Mumble, alertService, deleteMumble } from '@/services';
 import { MumblePost } from './MumblePost';
 import { ErrorBox } from '../error/ErrorBox';
-import { useSession } from 'next-auth/react';
-import { alertService } from '@/services';
-import { deleteMumble } from '@/services/deleteMumble';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 type RenderRepliesProps = {

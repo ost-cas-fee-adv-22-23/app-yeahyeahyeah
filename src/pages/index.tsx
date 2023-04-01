@@ -1,18 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import tw from 'twin.macro';
-import useSWR from 'swr';
-import useSWRInfinite from 'swr/infinite';
-import debounce from 'lodash.debounce';
-import useOnScreen from '@/hooks/useOnScreen';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
-import { fetchMumbles } from '@/services/fetchMumbles';
+import tw from 'twin.macro';
+import debounce from 'lodash.debounce';
+import { useSession } from 'next-auth/react';
+import useOnScreen from '@/hooks/useOnScreen';
+import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
+import { FetchMumbles } from '@/types/fallback';
+import { fetchMumbles, alertService, Mumble, deleteMumble } from '@/services';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox } from '@/components';
-import { useSession } from 'next-auth/react';
-import { FetchMumbles } from '@/types/fallback';
-import { alertService, Mumble } from '@/services';
-import { deleteMumble } from '@/services/deleteMumble';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
