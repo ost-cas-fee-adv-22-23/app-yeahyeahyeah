@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useSession } from 'next-auth/react';
-import { FetchMumbles } from '@/types/fallback';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
-import useOnScreen from '@/hooks/useOnScreen';
-import debounce from 'lodash.debounce';
 import { getToken } from 'next-auth/jwt';
 import useSWRInfinite from 'swr/infinite';
 import useSWR from 'swr';
+import debounce from 'lodash.debounce';
+import useOnScreen from '@/hooks/useOnScreen';
+import { useSession } from 'next-auth/react';
+import { FetchMumbles } from '@/types/fallback';
 import { alertService, Mumble, deleteMumble, searchMumbles } from '@/services';
 import {
   Container,
