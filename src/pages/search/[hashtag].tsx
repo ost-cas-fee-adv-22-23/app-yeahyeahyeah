@@ -97,7 +97,7 @@ export default function Hashtag({
             <HashtagComponent
               label={str.replace('#', '')}
               size="xlarge"
-              color="slate"
+              color={str.replace('#', '') === hashtag ? 'violet' : 'slate-300'}
               linkComponent={Link}
               href={`/search/${str.replace('#', '')}`}
               legacyBehavior
