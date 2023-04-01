@@ -96,7 +96,8 @@ export default function Hashtag({
           <React.Fragment key={i}>
             <HashtagComponent
               label={str.replace('#', '')}
-              size="large"
+              size="xlarge"
+              color="slate"
               linkComponent={Link}
               href={`/search/${str.replace('#', '')}`}
               legacyBehavior
