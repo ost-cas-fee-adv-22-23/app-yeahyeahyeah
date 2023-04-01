@@ -2,15 +2,12 @@ import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import useSWR from 'swr';
-import { Alert, MumbleDetail, TextBoxComponent } from '@/components';
-import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { fetchUser, User } from '@/services';
 import { useSession } from 'next-auth/react';
-import { fetchSingleMumble } from '@/services/fetchSingleMumble';
-import { RenderReplies } from '@/components/mumble/RenderReplies';
-import { fetchReplies } from '@/services/fetchReplies';
 import { getToken } from 'next-auth/jwt';
+import { fetchUser, User, fetchSingleMumble, fetchReplies } from '@/services';
 import { FetchReplies, FetchSingleMumble } from '@/types/fallback';
+import { Alert, MumbleDetail, TextBoxComponent, RenderReplies } from '@/components';
+import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type Props = {
   id: string;

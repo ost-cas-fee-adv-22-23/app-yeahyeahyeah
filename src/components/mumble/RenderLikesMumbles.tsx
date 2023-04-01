@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 import { MumblePost } from './MumblePost';
 import { ErrorBox } from '../error/ErrorBox';
-import { fetchMyLikes, fetchMyMumbles } from '@/services';
+import { fetchMyLikes } from '@/services';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { useSession } from 'next-auth/react';
 

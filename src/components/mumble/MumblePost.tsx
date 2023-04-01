@@ -1,9 +1,10 @@
 import React from 'react';
-import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
+import tw, { styled } from 'twin.macro';
+import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
-import useSWR from 'swr';
+import { fetchUser } from '@/services';
 import {
   Avatar,
   CommentButton,
@@ -13,7 +14,6 @@ import {
   Hashtag,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { fetchUser } from '@/services/fetchUser';
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';

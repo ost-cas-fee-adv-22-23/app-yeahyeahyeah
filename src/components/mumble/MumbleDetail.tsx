@@ -1,5 +1,7 @@
 import tw from 'twin.macro';
 import Link from 'next/link';
+import { Mumble, User as TUser } from '@/services';
+import { elapsedTime } from '@/utils';
 import {
   Avatar,
   CommentButton,
@@ -7,8 +9,6 @@ import {
   IconLink,
   User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { Mumble, User as TUser } from '@/services';
-import { elapsedTime } from '@/utils';
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';

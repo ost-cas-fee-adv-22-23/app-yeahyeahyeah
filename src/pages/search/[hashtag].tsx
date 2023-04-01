@@ -1,22 +1,21 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import useSWRInfinite from 'swr/infinite';
-import debounce from 'lodash.debounce';
-import useOnScreen from '@/hooks/useOnScreen';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useSession } from 'next-auth/react';
+import { FetchMumbles } from '@/types/fallback';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
+import useOnScreen from '@/hooks/useOnScreen';
+import debounce from 'lodash.debounce';
+import { getToken } from 'next-auth/jwt';
+import useSWRInfinite from 'swr/infinite';
+import useSWR from 'swr';
+import { alertService, Mumble, deleteMumble, searchMumbles } from '@/services';
 import {
   Container,
   Heading,
   Hashtag as HashtagComponent,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { MumblePost, LoadingSpinner, ErrorBox } from '@/components';
-import { useSession } from 'next-auth/react';
-import { FetchMumbles } from '@/types/fallback';
-import { alertService, Mumble } from '@/services';
-import { deleteMumble } from '@/services/deleteMumble';
-import { searchMumbles } from '@/services/searchMumbles';
-import { getToken } from 'next-auth/jwt';
-import useSWR from 'swr';
+
 import Link from 'next/link';
 
 export default function Hashtag({

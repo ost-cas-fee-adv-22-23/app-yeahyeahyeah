@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
-import { LikeButton } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { likeMumble, dislikeMumble } from '@/services';
+import { LikeButton } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleLikeProps = {
   id: string;

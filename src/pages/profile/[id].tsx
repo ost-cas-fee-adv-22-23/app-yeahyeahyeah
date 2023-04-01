@@ -1,18 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import useSWR from 'swr';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import debounce from 'lodash.debounce';
+import useSWR from 'swr';
+import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
 import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
-import { MumbleHeader, ErrorBox } from '@/components';
-import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import useOnScreen from '@/hooks/useOnScreen';
-import debounce from 'lodash.debounce';
-import { RenderProfileMumbles } from '@/components/mumble/RenderProfileMumbles';
-import { RenderLikesMumbles } from '@/components/mumble/RenderLikesMumbles';
-import { getToken } from 'next-auth/jwt';
 import { FetchMumbles } from '@/types/fallback';
+import { RenderProfileMumbles, RenderLikesMumbles, MumbleHeader, ErrorBox } from '@/components';
+import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleHeaderProps = {
   creator: any;

@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import useSWR from 'swr';
+import { FetchMumbles } from '@/types/fallback';
+import { useSession } from 'next-auth/react';
+import { fetchMyMumbles } from '@/services';
 import { MumblePost } from './MumblePost';
 import { ErrorBox } from '../error/ErrorBox';
-import { fetchMyMumbles } from '@/services';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
-import { useSession } from 'next-auth/react';
-import { FetchMumbles } from '@/types/fallback';
 
 type RenderMumbleProps = {
   offset: number;

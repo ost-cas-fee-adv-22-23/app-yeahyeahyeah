@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, InputForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import debounce from 'lodash.debounce';
+import { Button, InputForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 export const FormSettings: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');

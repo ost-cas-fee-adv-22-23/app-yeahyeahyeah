@@ -1,14 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import debounce from 'lodash.debounce';
 import useSWR from 'swr';
 import { FileRejection } from 'react-dropzone';
-import debounce from 'lodash.debounce';
+import { postMumble, Mumble, UploadImage, postReply, alertService, fetchUser } from '@/services';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { postMumble } from '@/services/postMumble';
-import { useSession } from 'next-auth/react';
-import { Mumble, UploadImage } from '@/services/qwacker';
-import { postReply } from '@/services/postReply';
-import { alertService, fetchUser } from '@/services';
-import Link from 'next/link';
 
 type TextBoxComponentProps = {
   id?: string;
