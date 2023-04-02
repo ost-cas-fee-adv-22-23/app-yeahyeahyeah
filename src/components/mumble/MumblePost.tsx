@@ -133,7 +133,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
       {data && mediaUrl ? (
         <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />
       ) : (
-        <>{!data && <>{handleShimmer('image')}</>}</>
+        <>{!data?.userName && mediaUrl && <>{handleShimmer('image')}</>}</>
       )}
 
       <ArticleInteraction>
