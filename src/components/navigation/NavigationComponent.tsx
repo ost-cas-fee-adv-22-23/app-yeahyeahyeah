@@ -13,14 +13,19 @@ import {
   NavigationColumn,
   NavigationRow,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 export const NavigationComponent: React.FC = () => {
   const { data: session }: any = useSession();
   const [open, setOpen] = useState(false);
 
-  const { data: user }: any = useSWR({ url: '/api/user', id: session?.user?.id, token: session?.accessToken }, fetchUser, {
-    revalidateOnFocus: false,
-  });
+  const { data: user, isLoading }: any = useSWR(
+    { url: '/api/user', id: session?.user?.id, token: session?.accessToken },
+    fetchUser,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   const handleClick = () => {
     setOpen((open) => !open);
@@ -37,32 +42,40 @@ export const NavigationComponent: React.FC = () => {
           <Link href="/" title="Startpage" target="_self">
             <MumbleLogo isNavigation={true} color="white" alignment="horizontal" />
           </Link>
-          <NavigationRow>
-            {session && (
-              <>
-                <NaviButton
-                  label="Profile"
-                  variant="profile"
-                  href={user && user.id ? `/profile/${user.id}` : '/landingpage'}
-                  legacyBehavior={true}
-                  passHref={true}
-                  linkComponent={Link}
-                >
-                  <Avatar
-                    alt={user && user.userName ? `${user.userName}` : 'username'}
-                    src={user && user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'}
-                    variant="small"
-                  />
-                </NaviButton>
-                <NaviButton label="Settings" variant="default" icon="settings" onClick={handleClick} />
-              </>
-            )}
-            {user && user.id ? (
-              <NaviButton label="Logout" variant="default" icon="logout" onClick={() => signOut()} />
-            ) : (
-              <NaviButton label="Login" variant="default" icon="logout" onClick={() => signIn('zitadel')} />
-            )}
-          </NavigationRow>
+          {isLoading ? (
+            <>
+              <div tw="flex justify-center items-center w-[144px] h-64 sm:(w-[250px])">
+                <LoadingSpinner fill="#fff" width={24} height={24} />
+              </div>
+            </>
+          ) : (
+            <NavigationRow>
+              {session && (
+                <>
+                  <NaviButton
+                    label="Profile"
+                    variant="profile"
+                    href={user && user.id ? `/profile/${user.id}` : '/landingpage'}
+                    legacyBehavior={true}
+                    passHref={true}
+                    linkComponent={Link}
+                  >
+                    <Avatar
+                      alt={user && user.userName ? `${user.userName}` : 'username'}
+                      src={user && user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'}
+                      variant="small"
+                    />
+                  </NaviButton>
+                  <NaviButton label="Settings" variant="default" icon="settings" onClick={handleClick} />
+                </>
+              )}
+              {user && user.id ? (
+                <NaviButton label="Logout" variant="default" icon="logout" onClick={() => signOut()} />
+              ) : (
+                <NaviButton label="Login" variant="default" icon="logout" onClick={() => signIn('zitadel')} />
+              )}
+            </NavigationRow>
+          )}
         </NavigationColumn>
       </Navigation>
       <Modal label="Settings" isOpen={open} onClose={handleClose} wide="small">
