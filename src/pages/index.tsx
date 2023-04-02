@@ -131,7 +131,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
             ));
           })}
         <div key="last" tw="invisible" ref={ref} />
-        <div tw="h-64">{(isLoading || isValidating) && <LoadingSpinner />}</div>
+        <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>
     </>
   );
