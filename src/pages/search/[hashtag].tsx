@@ -116,9 +116,11 @@ export default function Hashtag({
     <>
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
       <Container layout="plain">
-        <div tw="mb-16">
-          <Heading label="Ten Latest Hashtags" color="violet" tag="h2" size="default" mbSpacing="8" />
-          <Heading label="...used by other users" color="light" tag="h4" size="default" mbSpacing="32" />
+        <div tw="mb-16 mx-16">
+          <Heading label="Ten Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
+          <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
+        </div>
+        <div tw="flex flex-wrap bg-slate-white transform duration-500 hover:(bg-violet-900) rounded-xl p-16 sm:p-32 mb-32 gap-8">
           {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
         </div>
 
