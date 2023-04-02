@@ -87,8 +87,6 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
 
 const MumbleHeaderWrapper = tw.div`flex flex-col`;
 const ImageWrapper = tw.div`flex flex-row justify-end items-center z-0 w-full mt-0 aspect-video`;
-const AvatarWrapper =
-  tw.div`flex flex-row justify-end items-end relative top-16 -right-32 z-0 scale-75 transform transition duration-500 h-0` &&
-  tw.div`sm:(scale-100 top-40 right-32)`;
+const AvatarWrapper = tw.div`flex flex-row justify-end items-end relative top-16 -right-32 z-0 scale-75 transform transition duration-500 h-0 sm:(relative scale-100 top-40 right-32)`;
 const InteractionWrapper = tw.div`flex flex-wrap sm:(flex-row) mb-16 gap-16`;
 const UserDataWrapper = tw.div`relative top-0 px-8 sm:-top-24`;
