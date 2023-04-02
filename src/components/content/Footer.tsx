@@ -6,9 +6,9 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer tw="flex flex-row justify-center items-center p-16 w-full z-0 overflow-hidden bg-slate-100">
+    <footer tw="flex flex-row justify-center items-center p-8 pt-12 w-full z-0 overflow-hidden bg-slate-100">
       <Paragraph color="light" size="default" alignment="center">
-        {`© ${getCurrentYear()} CAS - Frontend Engineer Advanced`}
+        {`© ${getCurrentYear()} CAS - Frontend Engineering Advanced`}
       </Paragraph>
     </footer>
   );
