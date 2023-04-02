@@ -51,6 +51,19 @@ export const MumblePost: React.FC<MumbleProps> = ({
     handleDeleteCallback && handleDeleteCallback(id);
   };
 
+  const handleShimmer = (type: string) => {
+    switch (type) {
+      case 'user':
+        return <div tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>;
+      case 'content':
+        return <div tw="flex flex-row grow w-full h-172 rounded-xl bg-slate-300 animate-pulse mb-16"></div>;
+      case 'image':
+        return <div tw="flex flex-row grow w-full h-[320px] rounded-xl bg-slate-300 animate-pulse mb-16"></div>;
+      default:
+        break;
+    }
+  };
+
   const textWithHashtags = () => {
     return text.split(' ').map((str, i) => {
       if (str.startsWith('#')) {
@@ -85,15 +98,19 @@ export const MumblePost: React.FC<MumbleProps> = ({
         <ArticleHeaderContent>
           <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
           <ArticleDatas>
-            <IconLink
-              label={data ? data.userName : 'username'}
-              type="username"
-              color="violet"
-              href={`/profile/${creator}`}
-              legacyBehavior
-              passHref
-              linkComponent={Link}
-            />
+            {data && data.userName ? (
+              <IconLink
+                label={data.userName}
+                type="username"
+                color="violet"
+                href={`/profile/${creator}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
+              />
+            ) : (
+              <>{handleShimmer('user')}</>
+            )}
             {data && createdTimestamp ? (
               <IconLink
                 label={elapsedTime(createdTimestamp)}
@@ -105,27 +122,39 @@ export const MumblePost: React.FC<MumbleProps> = ({
                 linkComponent={Link}
               />
             ) : (
-              <div tw="w-[120px] rounded-full bg-slate-300 h-[14px] animate-pulse"></div>
+              <>{handleShimmer('user')}</>
             )}
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph mbSpacing="16">{textWithHashtags()}</Paragraph>
+      {data && data.userName ? <Paragraph mbSpacing="16">{textWithHashtags()}</Paragraph> : <>{handleShimmer('content')}</>}
 
-      {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
+      {data && mediaUrl ? (
+        <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />
+      ) : (
+        <>{!data && <>{handleShimmer('image')}</>}</>
+      )}
 
       <ArticleInteraction>
-        <CommentButton
-          type="comment"
-          quantity={replyCount}
-          href={`/mumble/${id}`}
-          legacyBehavior
-          passHref
-          linkComponent={Link}
-        />
-        <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
-        <MumbleShare id={id} />
+        {data && data.userName ? (
+          <CommentButton
+            type="comment"
+            quantity={replyCount}
+            href={`/mumble/${id}`}
+            legacyBehavior
+            passHref
+            linkComponent={Link}
+          />
+        ) : (
+          <>{handleShimmer('user')}</>
+        )}
+        {data && data.userName ? (
+          <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
+        ) : (
+          <>{handleShimmer('user')}</>
+        )}
+        {data && data.userName ? <MumbleShare id={id} /> : <>{handleShimmer('user')}</>}
         <ArticleInteractionDelete>
           {creator === session?.user?.id && (
             <Cancel
