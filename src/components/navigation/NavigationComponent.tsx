@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import useSWR from 'swr';
+import { fetchUser } from '@/services';
+import { FormSettings } from '../form/FormSettings';
 import {
   Avatar,
   Modal,
@@ -10,11 +13,14 @@ import {
   NavigationColumn,
   NavigationRow,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { FormSettings } from '../form/FormSettings';
 
 export const NavigationComponent: React.FC = () => {
   const { data: session }: any = useSession();
   const [open, setOpen] = useState(false);
+
+  const { data: user }: any = useSWR({ url: '/api/user', id: session?.user?.id, token: session?.accessToken }, fetchUser, {
+    revalidateOnFocus: false,
+  });
 
   const handleClick = () => {
     setOpen((open) => !open);
@@ -37,22 +43,25 @@ export const NavigationComponent: React.FC = () => {
                 <NaviButton
                   label="Profile"
                   variant="profile"
-                  href={`/profile/${session.user.id}`}
+                  href={user && user.id ? `/profile/${user.id}` : '/landingpage'}
                   legacyBehavior={true}
                   passHref={true}
                   linkComponent={Link}
                 >
                   <Avatar
-                    alt="Small Avatar"
-                    src={session.user.avatarUrl ? `${session.user.avatarUrl}` : '/avatar_default.png/'}
+                    alt={user && user.userName ? `${user.userName}` : 'username'}
+                    src={user && user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'}
                     variant="small"
                   />
                 </NaviButton>
                 <NaviButton label="Settings" variant="default" icon="settings" onClick={handleClick} />
               </>
             )}
-            {!session && <NaviButton label="Login" variant="default" icon="logout" onClick={() => signIn('zitadel')} />}
-            {!!session && <NaviButton label="Logout" variant="default" icon="logout" onClick={() => signOut()} />}
+            {user && user.id ? (
+              <NaviButton label="Logout" variant="default" icon="logout" onClick={() => signOut()} />
+            ) : (
+              <NaviButton label="Login" variant="default" icon="logout" onClick={() => signIn('zitadel')} />
+            )}
           </NavigationRow>
         </NavigationColumn>
       </Navigation>
