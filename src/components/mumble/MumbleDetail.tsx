@@ -1,3 +1,4 @@
+import React from 'react';
 import tw from 'twin.macro';
 import Link from 'next/link';
 import { Mumble, User as TUser } from '@/services';
@@ -5,6 +6,7 @@ import { elapsedTime } from '@/utils';
 import {
   Avatar,
   CommentButton,
+  Hashtag,
   Paragraph,
   IconLink,
   User,
@@ -19,6 +21,26 @@ type MumbleSingleProps = {
 };
 
 export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
+  const textWithHashtags = () => {
+    return mumble.text.split(' ').map((str, i) => {
+      if (str.startsWith('#')) {
+        return (
+          <React.Fragment key={i}>
+            <Hashtag
+              label={str.replace('#', '')}
+              size="large"
+              linkComponent={Link}
+              href={`/search/${str.replace('#', '')}`}
+              legacyBehavior
+              passHref
+            />{' '}
+          </React.Fragment>
+        );
+      }
+      return str + ' ';
+    });
+  };
+
   return (
     <ArticleMumble id={mumble.id}>
       <ArticleHeader>
@@ -55,7 +77,7 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
       </ArticleHeader>
 
       <Paragraph mbSpacing="16" size="large">
-        {mumble.text}
+        {textWithHashtags()}
       </Paragraph>
 
       {mumble.mediaUrl && <MumbleImage mediaUrl={mumble.mediaUrl} text={mumble.text} width={585} height={329.06} />}
