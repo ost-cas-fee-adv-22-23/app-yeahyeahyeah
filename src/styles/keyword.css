@@ -32,7 +32,7 @@
     top: 18px;
   }
 
-  h1 {
+  .slider h1 {
     line-height: 0 !important;
   }
 }
