@@ -94,15 +94,19 @@ export const MumblePost: React.FC<MumbleProps> = ({
               passHref
               linkComponent={Link}
             />
-            <IconLink
-              label={elapsedTime(createdTimestamp)}
-              type="timestamp"
-              color="slate"
-              href={`/mumble/${id}`}
-              legacyBehavior
-              passHref
-              linkComponent={Link}
-            />
+            {data && createdTimestamp ? (
+              <IconLink
+                label={elapsedTime(createdTimestamp)}
+                type="timestamp"
+                color="slate"
+                href={`/mumble/${id}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
+              />
+            ) : (
+              <div tw="w-[120px] rounded-full bg-slate-300 h-[14px] animate-pulse"></div>
+            )}
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
