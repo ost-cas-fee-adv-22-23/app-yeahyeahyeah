@@ -73,8 +73,9 @@ const HashtagPage = ({
   }, [setSize, size, setIsOnScreen]);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && !finished.current) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating]);
+    if (isOnScreen && !isValidating && data && data?.length * limit <= quantityTotal.current)
+      handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit, quantityTotal]);
 
   const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
@@ -147,7 +148,9 @@ const HashtagPage = ({
             ));
           })}
         {(isValidating || isLoading) &&
-          Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />)}
+          data &&
+          data?.length * limit <= quantityTotal.current &&
+          Array.from(Array(1).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />)}
         <div key="last" tw="invisible" ref={ref} />
         {(isLoading || isValidating) && <LoadingSpinner />}
       </Container>
