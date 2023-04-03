@@ -14,6 +14,7 @@ export * from './alert/Alert';
 export * from './mumble/MumbleLike';
 export * from './mumble/MumbleShare';
 export * from './mumble/MumbleImage';
+export * from './mumble/MumbleShimmer';
 export * from './mumble/RenderProfileMumbles';
 export * from './mumble/RenderLikesMumbles';
 export * from './mumble/RenderReplies';

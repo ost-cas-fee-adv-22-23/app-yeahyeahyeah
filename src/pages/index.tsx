@@ -10,7 +10,7 @@ import useSWRInfinite from 'swr/infinite';
 import { FetchMumbles } from '@/types/fallback';
 import { fetchMumbles, alertService, Mumble, deleteMumble } from '@/services';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox } from '@/components';
+import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox, MumbleShimmer } from '@/components';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
@@ -131,6 +131,9 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
               />
             ));
           })}
+        {isLoading ||
+          (isValidating &&
+            Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />))}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>
