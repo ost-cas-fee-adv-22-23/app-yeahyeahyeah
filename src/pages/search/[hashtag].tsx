@@ -14,8 +14,7 @@ import {
   Heading,
   Hashtag as HashtagComponent,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumblePost, LoadingSpinner, ErrorBox } from '@/components';
-
+import { MumblePost, LoadingSpinner, ErrorBox, MumbleShimmer } from '@/components';
 import Link from 'next/link';
 
 export default function Hashtag({
@@ -50,6 +49,8 @@ export default function Hashtag({
     parallel: true,
   });
 
+  console.log('data', data);
+
   const { data: hashtagData } = useSWR(
     { url: '/api/mumbles', limit: 10, offset: 0, text: '#', token: session?.accessToken },
     searchMumbles,
@@ -57,6 +58,8 @@ export default function Hashtag({
       refreshInterval: 10000,
     }
   );
+
+  console.log('hashtagData', hashtagData);
 
   useEffect(() => {
     if (data && data[0].count > 0) quantityTotal.current = data[0].count;
@@ -142,6 +145,9 @@ export default function Hashtag({
               />
             ));
           })}
+        {isLoading ||
+          (isValidating &&
+            Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />))}
         <div key="last" tw="invisible" ref={ref} />
         {(isLoading || isValidating) && <LoadingSpinner />}
       </Container>
