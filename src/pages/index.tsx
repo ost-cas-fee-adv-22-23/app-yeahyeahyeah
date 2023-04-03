@@ -130,9 +130,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
               />
             ));
           })}
-        {isLoading ||
-          (isValidating &&
-            Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />))}
+        {(isValidating || isLoading) &&
+          Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />)}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>

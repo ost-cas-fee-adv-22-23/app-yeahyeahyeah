@@ -145,9 +145,8 @@ export default function Hashtag({
               />
             ));
           })}
-        {isLoading ||
-          (isValidating &&
-            Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />))}
+        {(isValidating || isLoading) &&
+          Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />)}
         <div key="last" tw="invisible" ref={ref} />
         {(isLoading || isValidating) && <LoadingSpinner />}
       </Container>
