@@ -19,11 +19,9 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
   let offset = useRef<number>(0);
   let quantityTotal = useRef<number>(0);
-  let finished = useRef<boolean>(false);
 
   const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
-      finished.current = true;
       return null;
     }
     offset.current = pageIndex * limit;
@@ -52,6 +50,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     }
   );
 
+  console.log('data', data);
+
   useEffect(() => {
     if (data && data[0].count > 0) quantityTotal.current = data[0].count;
   }, [data]);
@@ -64,8 +64,9 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   }, [setSize, size, setIsOnScreen]);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && !finished.current) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating]);
+    if (isOnScreen && !isValidating && data && data?.length * limit <= quantityTotal.current)
+      handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit, quantityTotal]);
 
   const checkForNewMumbles = () => {
     return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
@@ -131,6 +132,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
             ));
           })}
         {(isValidating || isLoading) &&
+          data &&
+          data?.length * limit <= quantityTotal.current &&
           Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />)}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
