@@ -19,23 +19,20 @@ export const MumbleShimmer: React.FC<MumbleShimmerProps> = ({ id, type }) => {
         <ArticleHeaderContent>
           <User label={'Username'} variant="medium" />
           <ArticleDatas>
-            <div tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
-
-            <div tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
+            {Array.from(Array(2).keys()).map((arr) => (
+              <div key={arr + 'id'} tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
+            ))}
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
 
       <div tw="flex flex-row grow w-full h-172 rounded-xl bg-slate-300 animate-pulse mb-16"></div>
-
       <div tw="flex flex-row grow w-full h-[320px] rounded-xl bg-slate-300 animate-pulse mb-16"></div>
 
       <ArticleInteraction>
-        <div tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
-
-        <div tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
-
-        <div tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
+        {Array.from(Array(3).keys()).map((arr) => (
+          <div key={arr + 'id'} tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
+        ))}
       </ArticleInteraction>
     </ArticleMumble>
   );
