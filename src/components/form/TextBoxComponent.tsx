@@ -132,7 +132,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
           username: user ? user.userName : 'username',
           href: user && user.id ? `/profile/${user.id}` : '/landingpage',
           avatar: {
-            src: user && user.avatarUrl !== '' ? user.avatarUrl : '/avatar_default.png/',
+            src: user && user.avatarUrl !== '' ? user.avatarUrl : '/schielen.jpeg/',
             alt: user ? user.userName : 'username',
             title: user ? user.userName : 'username',
             href: user && user.id ? `/profile/${session?.user?.id}` : '/landingpage',

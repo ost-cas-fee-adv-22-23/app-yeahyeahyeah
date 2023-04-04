@@ -47,7 +47,7 @@ export const MumbleDetail = ({ mumble, user }: MumbleSingleProps) => {
         <Avatar
           key={user?.id}
           variant="medium"
-          src={user?.avatarUrl !== '' ? user.avatarUrl : '/avatar_default.png/'}
+          src={user?.avatarUrl !== '' ? user.avatarUrl : '/schielen.jpeg/'}
           alt={user ? user.userName : 'username'}
           href={`/profile/${user && user.id}`}
           legacyBehavior

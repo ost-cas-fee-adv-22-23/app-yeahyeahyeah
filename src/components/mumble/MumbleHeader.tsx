@@ -46,7 +46,7 @@ export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
           />
         </ImageWrapper>
         <AvatarWrapper>
-          <Avatar variant="xlarge" src={user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'} alt="Username" />
+          <Avatar variant="xlarge" src={user.avatarUrl ? user.avatarUrl : '/schielen.jpeg/'} alt="Username" />
         </AvatarWrapper>
         <UserDataWrapper>
           <User label={`${user.firstName} ${user.lastName}`} variant="xlarge" />

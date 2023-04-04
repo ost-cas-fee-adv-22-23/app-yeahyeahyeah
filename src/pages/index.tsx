@@ -115,7 +115,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
         <TextBoxComponent variant="write" mutate={mutate} data={data} />
         {data && RenderMumbles(data, session, handleDelete)}
         <div key="last" tw="invisible" ref={ref} />
-        <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
+        <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>
     </>
   );
