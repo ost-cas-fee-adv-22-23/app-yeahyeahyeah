@@ -50,8 +50,6 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     }
   );
 
-  console.log('data', data);
-
   useEffect(() => {
     if (data && data[0].count > 0) quantityTotal.current = data[0].count;
   }, [data]);

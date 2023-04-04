@@ -31,11 +31,9 @@ export default function Hashtag({
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
   let offset = useRef<number>(0);
   let quantityTotal = useRef<number>(0);
-  let finished = useRef<boolean>(false);
 
   const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
-      //finished.current = true;
       return null;
     }
     offset.current = pageIndex * limit;
@@ -49,8 +47,6 @@ export default function Hashtag({
     parallel: true,
   });
 
-  console.log('data', data);
-
   const { data: hashtagData } = useSWR(
     { url: '/api/mumbles', limit: 10, offset: 0, text: '#', token: session?.accessToken },
     searchMumbles,
@@ -58,8 +54,6 @@ export default function Hashtag({
       refreshInterval: 10000,
     }
   );
-
-  console.log('hashtagData', hashtagData);
 
   useEffect(() => {
     if (data && data[0].count > 0) quantityTotal.current = data[0].count;
