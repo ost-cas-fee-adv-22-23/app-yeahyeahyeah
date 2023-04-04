@@ -38,6 +38,7 @@ export const RenderMumbles = (data: FetchMumbles[], session: any, handleDelete: 
             likedByUser={mumble.likedByUser}
             replyCount={mumble.replyCount}
             type={mumble.type}
+            mediaType={mumble.mediaType}
             handleDeleteCallback={handleDelete}
           />
         );
