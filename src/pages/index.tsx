@@ -8,18 +8,9 @@ import useOnScreen from '@/hooks/useOnScreen';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { FetchMumbles } from '@/types/fallback';
-import { fetchMumbles, alertService, Mumble, deleteMumble } from '@/services';
+import { fetchMumbles, alertService, deleteMumble } from '@/services';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import {
-  WelcomeText,
-  TextBoxComponent,
-  Alert,
-  MumblePost,
-  MumblePostWithShimmer,
-  LoadingSpinner,
-  ErrorBox,
-  MumbleShimmer,
-} from '@/components';
+import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles } from '@/components';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
@@ -122,44 +113,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
         <WelcomeText />
         <Alert />
         <TextBoxComponent variant="write" mutate={mutate} data={data} />
-        {data &&
-          data.map((page) => {
-            return page.mumbles.map((mumble: Mumble) => {
-              if (session?.accessToken) {
-                return (
-                  <MumblePostWithShimmer
-                    key={mumble.id}
-                    id={mumble.id}
-                    creator={mumble.creator}
-                    text={mumble.text}
-                    mediaUrl={mumble.mediaUrl}
-                    createdTimestamp={mumble.createdTimestamp}
-                    likeCount={mumble.likeCount}
-                    likedByUser={mumble.likedByUser}
-                    replyCount={mumble.replyCount}
-                    type={mumble.type}
-                    mediaType={mumble.mediaType}
-                    handleDeleteCallback={handleDelete}
-                  />
-                );
-              }
-              return (
-                <MumblePost
-                  key={mumble.id}
-                  id={mumble.id}
-                  creator={mumble.creator}
-                  text={mumble.text}
-                  mediaUrl={mumble.mediaUrl}
-                  createdTimestamp={mumble.createdTimestamp}
-                  likeCount={mumble.likeCount}
-                  likedByUser={mumble.likedByUser}
-                  replyCount={mumble.replyCount}
-                  type={mumble.type}
-                  handleDeleteCallback={handleDelete}
-                />
-              );
-            });
-          })}
+        {data && RenderMumbles(data, session, handleDelete)}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>
