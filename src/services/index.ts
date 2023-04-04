@@ -13,4 +13,4 @@ export * from './likeMumble';
 export * from './postMumble';
 export * from './postReply';
 export * from './searchMumbles';
-export * from './qwacker';
+export * from '../types/qwacker';

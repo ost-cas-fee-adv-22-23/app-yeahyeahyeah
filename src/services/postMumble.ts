@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { transformMumble } from './qwacker';
-import { UploadImage } from './qwacker';
+import { transformMumble } from '../types/qwacker';
+import { UploadImage } from '../types/qwacker';
 
 export const postMumble = async (text: string, file: UploadImage | null, accessToken?: string) => {
   if (!accessToken) {
