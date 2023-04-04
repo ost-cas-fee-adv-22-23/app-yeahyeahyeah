@@ -63,6 +63,7 @@ export const RenderReplies: React.FC<RenderRepliesProps> = ({ data, mutate, erro
               creator={mumble.creator}
               text={mumble.text}
               mediaUrl={mumble.mediaUrl}
+              mediaType={mumble.mediaType}
               createdTimestamp={mumble.createdTimestamp}
               likeCount={mumble.likeCount}
               likedByUser={mumble.likedByUser}

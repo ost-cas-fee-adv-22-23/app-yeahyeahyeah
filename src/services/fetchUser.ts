@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User } from './qwacker';
+import { User } from '../types/qwacker';
 
 export const fetchUser = async (params?: { id: string; token: string }) => {
   const { id, token } = params || {};

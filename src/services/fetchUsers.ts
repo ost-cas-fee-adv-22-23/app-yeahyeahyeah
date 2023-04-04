@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User } from './qwacker';
+import { User } from '../types/qwacker';
 
 export const fetchUsers = async (params?: {
   limit?: number;

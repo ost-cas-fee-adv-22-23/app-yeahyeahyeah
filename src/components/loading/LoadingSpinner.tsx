@@ -1,15 +1,28 @@
 import tw, { styled } from 'twin.macro';
 import { Repost } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-export const LoadingSpinner = () => {
+type LoadingSpinnerProps = {
+  fill?: string;
+  width?: number;
+  height?: number;
+};
+
+const defaultProps: LoadingSpinnerProps = {
+  width: 32,
+  height: 32,
+};
+
+export const LoadingSpinner = ({ fill, width, height }: LoadingSpinnerProps) => {
   return (
     <LoadingWrapper>
       <ImageIcon>
-        <Repost width="32" height="32" />
+        <Repost width={width} height={height} fill={fill} />
       </ImageIcon>
     </LoadingWrapper>
   );
 };
+
+LoadingSpinner.defaultProps = defaultProps;
 
 const LoadingWrapper = tw.div`
   flex

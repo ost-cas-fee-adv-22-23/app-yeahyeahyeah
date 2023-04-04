@@ -6,17 +6,17 @@ export type DefaultLayout = React.DOMAttributes<HTMLDivElement>;
 
 export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
   return (
-    <LayoutStyles>
+    <>
       <NavigationWrapper>
         <NavigationComponent />
       </NavigationWrapper>
-      {children}
+      <LayoutStyles>{children}</LayoutStyles>
       <Footer />
-    </LayoutStyles>
+    </>
   );
 };
 
-const LayoutStyles = tw.div`
+const LayoutStyles = tw.main`
   flex
   flex-col
   justify-start
@@ -24,7 +24,6 @@ const LayoutStyles = tw.div`
   m-0
   mx-auto
   p-0
-  bg-slate-100
 `;
 
 const NavigationWrapper = tw.div`sticky top-0 w-full z-50`;

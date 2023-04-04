@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { transformMumble, QwackerMumbleResponse } from './qwacker';
+import { transformMumble, QwackerMumbleResponse } from '../types/qwacker';
 
 export const searchMumbles = async (params?: {
   limit?: number;
@@ -9,7 +9,7 @@ export const searchMumbles = async (params?: {
   text?: string;
   token: string;
 }) => {
-  const { limit, offset, isReply, tags, text, token } = params || {};
+  const { limit, offset, tags, text, token } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/search`;
 

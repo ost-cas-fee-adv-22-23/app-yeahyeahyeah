@@ -121,6 +121,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
                 creator={mumble.creator}
                 text={mumble.text}
                 mediaUrl={mumble.mediaUrl}
+                mediaType={mumble.mediaType}
                 createdTimestamp={mumble.createdTimestamp}
                 likeCount={mumble.likeCount}
                 likedByUser={mumble.likedByUser}
@@ -131,7 +132,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
             ));
           })}
         <div key="last" tw="invisible" ref={ref} />
-        {(isLoading || isValidating) && <LoadingSpinner />}
+        <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>
     </>
   );

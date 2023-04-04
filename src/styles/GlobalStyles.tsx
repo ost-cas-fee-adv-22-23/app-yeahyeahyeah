@@ -7,7 +7,7 @@ import { MumbleStyles } from '@smartive-education/design-system-component-librar
 
 const CustomStyles = createGlobalStyle({
   body: {
-    background: theme`colors.slate.200`,
+    background: theme`colors.slate.100`,
   },
   a: {
     cursor: 'pointer',
