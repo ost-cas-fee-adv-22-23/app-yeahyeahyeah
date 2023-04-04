@@ -14,8 +14,7 @@ import {
   Heading,
   Hashtag as HashtagComponent,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumblePost, LoadingSpinner, ErrorBox } from '@/components';
-
+import { LoadingSpinner, ErrorBox, RenderMumbles } from '@/components';
 import Link from 'next/link';
 
 const HashtagPage = ({
@@ -32,11 +31,9 @@ const HashtagPage = ({
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
   let offset = useRef<number>(0);
   let quantityTotal = useRef<number>(0);
-  let finished = useRef<boolean>(false);
 
   const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
-      //finished.current = true;
       return null;
     }
     offset.current = pageIndex * limit;
@@ -70,8 +67,9 @@ const HashtagPage = ({
   }, [setSize, size, setIsOnScreen]);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && !finished.current) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating]);
+    if (isOnScreen && !isValidating && data && data?.length * limit <= quantityTotal.current)
+      handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit, quantityTotal]);
 
   const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
@@ -117,34 +115,16 @@ const HashtagPage = ({
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
       <Container layout="plain">
         <div tw="mb-16 mx-16">
-          <Heading label="Ten Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
+          <Heading label="Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
           <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
         </div>
-        <div tw="flex flex-wrap bg-slate-white transform duration-500 hover:(bg-slate-100) rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
+        <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
           {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
         </div>
 
-        {data &&
-          data.map((page) => {
-            return page.mumbles.map((mumble: Mumble) => (
-              <MumblePost
-                key={mumble.id}
-                id={mumble.id}
-                creator={mumble.creator}
-                text={mumble.text}
-                mediaUrl={mumble.mediaUrl}
-                mediaType={mumble.mediaType}
-                createdTimestamp={mumble.createdTimestamp}
-                likeCount={mumble.likeCount}
-                likedByUser={mumble.likedByUser}
-                replyCount={mumble.replyCount}
-                type={mumble.type}
-                handleDeleteCallback={handleDelete}
-              />
-            ));
-          })}
+        {data && RenderMumbles(data, session, handleDelete)}
         <div key="last" tw="invisible" ref={ref} />
-        {(isLoading || isValidating) && <LoadingSpinner />}
+        <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>
     </>
   );

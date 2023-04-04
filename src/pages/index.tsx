@@ -8,9 +8,9 @@ import useOnScreen from '@/hooks/useOnScreen';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { FetchMumbles } from '@/types/fallback';
-import { fetchMumbles, alertService, Mumble, deleteMumble } from '@/services';
+import { fetchMumbles, alertService, deleteMumble } from '@/services';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox } from '@/components';
+import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles } from '@/components';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
@@ -19,11 +19,9 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
   let offset = useRef<number>(0);
   let quantityTotal = useRef<number>(0);
-  let finished = useRef<boolean>(false);
 
   const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
-      finished.current = true;
       return null;
     }
     offset.current = pageIndex * limit;
@@ -36,6 +34,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     refreshInterval: 60000,
     parallel: true,
   });
+
+  console.log('data', data);
 
   const { data: newMumbles } = useSWR(
     {
@@ -64,8 +64,9 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   }, [setSize, size, setIsOnScreen]);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && !finished.current) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating]);
+    if (isOnScreen && !isValidating && data && data?.length * limit <= quantityTotal.current)
+      handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit, quantityTotal]);
 
   const checkForNewMumbles = () => {
     return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
@@ -112,27 +113,9 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
         <WelcomeText />
         <Alert />
         <TextBoxComponent variant="write" mutate={mutate} data={data} />
-        {data &&
-          data.map((page) => {
-            return page.mumbles.map((mumble: Mumble) => (
-              <MumblePost
-                key={mumble.id}
-                id={mumble.id}
-                creator={mumble.creator}
-                text={mumble.text}
-                mediaUrl={mumble.mediaUrl}
-                mediaType={mumble.mediaType}
-                createdTimestamp={mumble.createdTimestamp}
-                likeCount={mumble.likeCount}
-                likedByUser={mumble.likedByUser}
-                replyCount={mumble.replyCount}
-                type={mumble.type}
-                handleDeleteCallback={handleDelete}
-              />
-            ));
-          })}
+        {data && RenderMumbles(data, session, handleDelete)}
         <div key="last" tw="invisible" ref={ref} />
-        <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
+        <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>
     </>
   );

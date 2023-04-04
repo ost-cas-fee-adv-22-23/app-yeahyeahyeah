@@ -42,36 +42,34 @@ export const NavigationComponent: React.FC = () => {
           <Link href="/" title="Startpage" target="_self">
             <MumbleLogo isNavigation={true} color="white" alignment="horizontal" />
           </Link>
+
           {isLoading ? (
             <>
-              <div tw="flex justify-center items-center w-[144px] h-64 sm:(w-[250px])">
-                <LoadingSpinner fill="#fff" width={24} height={24} />
-              </div>
+              <div tw="flex justify-center items-center w-[144px] h-64 sm:(w-[250px])" />
             </>
           ) : (
             <NavigationRow>
-              {user && (
+              {session?.accessToken && (
                 <>
                   <NaviButton
                     label="Profile"
                     variant="profile"
-                    href={user.id ? `/profile/${user.id}` : '/landingpage'}
+                    href={user && user.id ? `/profile/${user.id}` : '/landingpage'}
                     legacyBehavior={true}
                     passHref={true}
                     linkComponent={Link}
                   >
                     <Avatar
-                      alt={user.userName ? `${user.userName}` : 'username'}
-                      src={user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'}
+                      alt={user && user.userName ? `${user.userName}` : 'username'}
+                      src={user && user.avatarUrl ? user.avatarUrl : '/schielen.jpeg/'}
                       variant="small"
                     />
                   </NaviButton>
                   <NaviButton label="Settings" variant="default" icon="settings" onClick={handleClick} />
+                  <NaviButton label="Logout" variant="default" icon="logout" onClick={() => signOut()} />
                 </>
               )}
-              {user && user.id ? (
-                <NaviButton label="Logout" variant="default" icon="logout" onClick={() => signOut()} />
-              ) : (
+              {!session?.accessToken && !user && !isLoading && (
                 <NaviButton label="Login" variant="default" icon="logout" onClick={() => signIn('zitadel')} />
               )}
             </NavigationRow>
