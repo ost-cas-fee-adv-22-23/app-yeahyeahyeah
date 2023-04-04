@@ -60,6 +60,7 @@ export const RenderProfileMumbles: React.FC<RenderMumbleProps> = ({
               creator={data.creator}
               text={data.text || ''}
               mediaUrl={data.mediaUrl || ''}
+              mediaType={data.mediaType}
               likeCount={data.likeCount || 0}
               createdTimestamp={data.createdTimestamp}
               likedByUser={data.likedByUser || false}

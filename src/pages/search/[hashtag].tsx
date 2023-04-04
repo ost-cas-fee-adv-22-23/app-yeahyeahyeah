@@ -18,7 +18,7 @@ import { MumblePost, LoadingSpinner, ErrorBox } from '@/components';
 
 import Link from 'next/link';
 
-export const Hashtag = ({
+const HashtagPage = ({
   limit,
   fallback,
   hashtag,
@@ -170,3 +170,5 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
     },
   };
 };
+
+export default HashtagPage;

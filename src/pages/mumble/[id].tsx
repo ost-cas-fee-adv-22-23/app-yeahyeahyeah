@@ -22,7 +22,7 @@ const swrConfig = {
   revalidateOnReconnect: false,
 };
 
-export const MumblePage = ({
+const MumblePage = ({
   id,
   fallback,
   fallbackReplies,
@@ -93,3 +93,5 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
     },
   };
 };
+
+export default MumblePage;
