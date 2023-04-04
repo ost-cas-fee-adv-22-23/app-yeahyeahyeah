@@ -10,7 +10,16 @@ import useSWRInfinite from 'swr/infinite';
 import { FetchMumbles } from '@/types/fallback';
 import { fetchMumbles, alertService, Mumble, deleteMumble } from '@/services';
 import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, MumblePost, LoadingSpinner, ErrorBox, MumbleShimmer } from '@/components';
+import {
+  WelcomeText,
+  TextBoxComponent,
+  Alert,
+  MumblePost,
+  MumblePostWithShimmer,
+  LoadingSpinner,
+  ErrorBox,
+  MumbleShimmer,
+} from '@/components';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
   const { data: session }: any = useSession();
@@ -34,6 +43,8 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     refreshInterval: 60000,
     parallel: true,
   });
+
+  console.log('data', data);
 
   const { data: newMumbles } = useSWR(
     {
@@ -113,27 +124,42 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
         <TextBoxComponent variant="write" mutate={mutate} data={data} />
         {data &&
           data.map((page) => {
-            return page.mumbles.map((mumble: Mumble) => (
-              <MumblePost
-                key={mumble.id}
-                id={mumble.id}
-                creator={mumble.creator}
-                text={mumble.text}
-                mediaUrl={mumble.mediaUrl}
-                mediaType={mumble.mediaType}
-                createdTimestamp={mumble.createdTimestamp}
-                likeCount={mumble.likeCount}
-                likedByUser={mumble.likedByUser}
-                replyCount={mumble.replyCount}
-                type={mumble.type}
-                handleDeleteCallback={handleDelete}
-              />
-            ));
+            return page.mumbles.map((mumble: Mumble) => {
+              if (session?.accessToken) {
+                return (
+                  <MumblePostWithShimmer
+                    key={mumble.id}
+                    id={mumble.id}
+                    creator={mumble.creator}
+                    text={mumble.text}
+                    mediaUrl={mumble.mediaUrl}
+                    createdTimestamp={mumble.createdTimestamp}
+                    likeCount={mumble.likeCount}
+                    likedByUser={mumble.likedByUser}
+                    replyCount={mumble.replyCount}
+                    type={mumble.type}
+                    mediaType={mumble.mediaType}
+                    handleDeleteCallback={handleDelete}
+                  />
+                );
+              }
+              return (
+                <MumblePost
+                  key={mumble.id}
+                  id={mumble.id}
+                  creator={mumble.creator}
+                  text={mumble.text}
+                  mediaUrl={mumble.mediaUrl}
+                  createdTimestamp={mumble.createdTimestamp}
+                  likeCount={mumble.likeCount}
+                  likedByUser={mumble.likedByUser}
+                  replyCount={mumble.replyCount}
+                  type={mumble.type}
+                  handleDeleteCallback={handleDelete}
+                />
+              );
+            });
           })}
-        {(isValidating || isLoading) &&
-          data &&
-          data?.length * limit <= quantityTotal.current &&
-          Array.from(Array(2).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />)}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-64 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </Container>
