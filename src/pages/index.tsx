@@ -121,6 +121,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
                 creator={mumble.creator}
                 text={mumble.text}
                 mediaUrl={mumble.mediaUrl}
+                mediaType={mumble.mediaType}
                 createdTimestamp={mumble.createdTimestamp}
                 likeCount={mumble.likeCount}
                 likedByUser={mumble.likedByUser}

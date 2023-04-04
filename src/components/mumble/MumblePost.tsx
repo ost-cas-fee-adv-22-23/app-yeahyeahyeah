@@ -4,7 +4,7 @@ import tw, { styled } from 'twin.macro';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
-import { fetchUser } from '@/services';
+import { fetchUser, Mumble } from '@/services';
 import {
   Avatar,
   CommentButton,
@@ -17,18 +17,11 @@ import {
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';
-export interface MumbleProps {
-  id: string;
-  creator: string;
-  text: string;
-  mediaUrl: string;
-  createdTimestamp: number;
-  likeCount: number;
-  likedByUser: boolean;
-  replyCount: number;
+
+type MumbleProps = {
   type: string;
   handleDeleteCallback?: (id: string) => void;
-}
+} & Mumble;
 
 export const MumblePost: React.FC<MumbleProps> = ({
   id,
