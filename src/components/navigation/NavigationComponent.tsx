@@ -50,19 +50,19 @@ export const NavigationComponent: React.FC = () => {
             </>
           ) : (
             <NavigationRow>
-              {session && (
+              {user && (
                 <>
                   <NaviButton
                     label="Profile"
                     variant="profile"
-                    href={user && user.id ? `/profile/${user.id}` : '/landingpage'}
+                    href={user.id ? `/profile/${user.id}` : '/landingpage'}
                     legacyBehavior={true}
                     passHref={true}
                     linkComponent={Link}
                   >
                     <Avatar
-                      alt={user && user.userName ? `${user.userName}` : 'username'}
-                      src={user && user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'}
+                      alt={user.userName ? `${user.userName}` : 'username'}
+                      src={user.avatarUrl ? user.avatarUrl : '/avatar_default.png/'}
                       variant="small"
                     />
                   </NaviButton>

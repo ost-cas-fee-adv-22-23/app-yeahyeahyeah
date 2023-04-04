@@ -20,7 +20,7 @@ type MumbleSingleProps = {
   user: TUser;
 };
 
-export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
+export const MumbleDetail = ({ mumble, user }: MumbleSingleProps) => {
   const textWithHashtags = () => {
     return mumble.text.split(' ').map((str, i) => {
       if (str.startsWith('#')) {

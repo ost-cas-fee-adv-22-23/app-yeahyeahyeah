@@ -22,12 +22,12 @@ const swrConfig = {
   revalidateOnReconnect: false,
 };
 
-export default function MumblePage({
+export const MumblePage = ({
   id,
   fallback,
   fallbackReplies,
   fallbackUser,
-}: Props): InferGetServerSidePropsType<typeof getServerSideProps> {
+}: Props): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { data: session }: any = useSession();
 
   const { data: mumble } = useSWR({ url: '/api/singleMumble', id, token: session?.accessToken }, fetchSingleMumble, {
@@ -65,7 +65,7 @@ export default function MumblePage({
       </Container>
     </>
   );
-}
+};
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query: { id } }) => {
   const mumble: FetchSingleMumble = await fetchSingleMumble({ id: id as string });

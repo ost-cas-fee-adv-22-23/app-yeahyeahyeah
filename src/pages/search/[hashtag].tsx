@@ -18,7 +18,7 @@ import { MumblePost, LoadingSpinner, ErrorBox } from '@/components';
 
 import Link from 'next/link';
 
-export default function Hashtag({
+export const Hashtag = ({
   limit,
   fallback,
   hashtag,
@@ -26,7 +26,7 @@ export default function Hashtag({
   limit: number;
   fallback: { '/api/mumbles': FetchMumbles };
   hashtag: string;
-}) {
+}) => {
   const { data: session }: any = useSession();
   const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
@@ -133,6 +133,7 @@ export default function Hashtag({
                 creator={mumble.creator}
                 text={mumble.text}
                 mediaUrl={mumble.mediaUrl}
+                mediaType={mumble.mediaType}
                 createdTimestamp={mumble.createdTimestamp}
                 likeCount={mumble.likeCount}
                 likedByUser={mumble.likedByUser}
@@ -147,7 +148,7 @@ export default function Hashtag({
       </Container>
     </>
   );
-}
+};
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { hashtag } }: { req: any; query: any }) => {
   const limit = 2;
 

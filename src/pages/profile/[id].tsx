@@ -19,7 +19,7 @@ type MumbleHeaderProps = {
   fallBackMyMumbles: { '/api/myMumbles': FetchMumbles };
 };
 
-export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }: MumbleHeaderProps) {
+export const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles }: MumbleHeaderProps) => {
   const { data: session }: any = useSession();
   const [selection, setSelection] = useState('mumbles');
   const [count, setCount] = useState(1);
@@ -145,7 +145,7 @@ export default function Page({ creator, limit, fallbackUser, fallBackMyMumbles }
       </Container>
     </>
   );
-}
+};
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { id } }: GetServerSidePropsContext) => {
   const limit = 10;
