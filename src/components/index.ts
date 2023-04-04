@@ -19,3 +19,4 @@ export * from './mumble/MumbleShimmer';
 export * from './mumble/RenderProfileMumbles';
 export * from './mumble/RenderLikesMumbles';
 export * from './mumble/RenderReplies';
+export * from './mumble/RenderMumbles';

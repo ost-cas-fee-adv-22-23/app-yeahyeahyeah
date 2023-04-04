@@ -14,7 +14,7 @@ import {
   Heading,
   Hashtag as HashtagComponent,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumblePost, LoadingSpinner, ErrorBox, MumbleShimmer, MumblePostWithShimmer } from '@/components';
+import { LoadingSpinner, ErrorBox, RenderMumbles } from '@/components';
 import Link from 'next/link';
 
 const HashtagPage = ({
@@ -122,44 +122,7 @@ const HashtagPage = ({
           {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
         </div>
 
-        {data &&
-          data.map((page) => {
-            return page.mumbles.map((mumble: Mumble) => {
-              if (session?.accessToken) {
-                return (
-                  <MumblePostWithShimmer
-                    key={mumble.id}
-                    id={mumble.id}
-                    creator={mumble.creator}
-                    text={mumble.text}
-                    mediaUrl={mumble.mediaUrl}
-                    createdTimestamp={mumble.createdTimestamp}
-                    likeCount={mumble.likeCount}
-                    likedByUser={mumble.likedByUser}
-                    replyCount={mumble.replyCount}
-                    type={mumble.type}
-                    mediaType={mumble.mediaType}
-                    handleDeleteCallback={handleDelete}
-                  />
-                );
-              }
-              return (
-                <MumblePost
-                  key={mumble.id}
-                  id={mumble.id}
-                  creator={mumble.creator}
-                  text={mumble.text}
-                  mediaUrl={mumble.mediaUrl}
-                  createdTimestamp={mumble.createdTimestamp}
-                  likeCount={mumble.likeCount}
-                  likedByUser={mumble.likedByUser}
-                  replyCount={mumble.replyCount}
-                  type={mumble.type}
-                  handleDeleteCallback={handleDelete}
-                />
-              );
-            });
-          })}
+        {data && RenderMumbles(data, session, handleDelete)}
         <div key="last" tw="invisible" ref={ref} />
         {(isLoading || isValidating) && <LoadingSpinner />}
       </Container>
