@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import tw, { styled } from 'twin.macro';
-
 import { Avatar, User } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 export interface MumbleShimmerProps {

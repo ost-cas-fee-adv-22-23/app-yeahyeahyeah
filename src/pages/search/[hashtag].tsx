@@ -14,7 +14,7 @@ import {
   Heading,
   Hashtag as HashtagComponent,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumblePost, LoadingSpinner, ErrorBox, MumbleShimmer } from '@/components';
+import { MumblePost, LoadingSpinner, ErrorBox, MumbleShimmer, MumblePostWithShimmer } from '@/components';
 import Link from 'next/link';
 
 export default function Hashtag({
@@ -124,26 +124,42 @@ export default function Hashtag({
 
         {data &&
           data.map((page) => {
-            return page.mumbles.map((mumble: Mumble) => (
-              <MumblePost
-                key={mumble.id}
-                id={mumble.id}
-                creator={mumble.creator}
-                text={mumble.text}
-                mediaUrl={mumble.mediaUrl}
-                createdTimestamp={mumble.createdTimestamp}
-                likeCount={mumble.likeCount}
-                likedByUser={mumble.likedByUser}
-                replyCount={mumble.replyCount}
-                type={mumble.type}
-                handleDeleteCallback={handleDelete}
-              />
-            ));
+            return page.mumbles.map((mumble: Mumble) => {
+              if (session?.accessToken) {
+                return (
+                  <MumblePostWithShimmer
+                    key={mumble.id}
+                    id={mumble.id}
+                    creator={mumble.creator}
+                    text={mumble.text}
+                    mediaUrl={mumble.mediaUrl}
+                    createdTimestamp={mumble.createdTimestamp}
+                    likeCount={mumble.likeCount}
+                    likedByUser={mumble.likedByUser}
+                    replyCount={mumble.replyCount}
+                    type={mumble.type}
+                    mediaType={mumble.mediaType}
+                    handleDeleteCallback={handleDelete}
+                  />
+                );
+              }
+              return (
+                <MumblePost
+                  key={mumble.id}
+                  id={mumble.id}
+                  creator={mumble.creator}
+                  text={mumble.text}
+                  mediaUrl={mumble.mediaUrl}
+                  createdTimestamp={mumble.createdTimestamp}
+                  likeCount={mumble.likeCount}
+                  likedByUser={mumble.likedByUser}
+                  replyCount={mumble.replyCount}
+                  type={mumble.type}
+                  handleDeleteCallback={handleDelete}
+                />
+              );
+            });
           })}
-        {(isValidating || isLoading) &&
-          data &&
-          data?.length * limit <= quantityTotal.current &&
-          Array.from(Array(1).keys()).map((arr) => <MumbleShimmer key={arr} id={arr + 'id'} type={'post'} />)}
         <div key="last" tw="invisible" ref={ref} />
         {(isLoading || isValidating) && <LoadingSpinner />}
       </Container>
