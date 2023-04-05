@@ -92,7 +92,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     let quantityTotal = 0;
     if (data && data[0].count > 0) quantityTotal = data[0].count;
     if (isOnScreen && !isValidating && data && data.length * limit <= quantityTotal) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit]);
+  });
 
   const checkForNewMumbles = () => {
     return data && data[0]?.mumbles[0]?.id && newMumbles && newMumbles.count > 0;
