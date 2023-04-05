@@ -7,7 +7,7 @@ export const searchMumbles = async (params?: {
   isReply?: boolean;
   tags?: string[];
   text?: string;
-  token: string;
+  token?: string;
 }) => {
   const { limit, offset, tags, text, token } = params || {};
 

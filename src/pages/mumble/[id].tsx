@@ -9,7 +9,7 @@ import { FetchReplies, FetchSingleMumble } from '@/types/fallback';
 import { Alert, MumbleDetail, TextBoxComponent, RenderReplies } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-type Props = {
+type MumblePageProps = {
   id: string;
   fallback: { '/api/singleMumble': FetchSingleMumble };
   fallbackReplies: { '/api/replies': FetchReplies };
@@ -27,7 +27,7 @@ const MumblePage = ({
   fallback,
   fallbackReplies,
   fallbackUser,
-}: Props): InferGetServerSidePropsType<typeof getServerSideProps> => {
+}: MumblePageProps): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { data: session }: any = useSession();
 
   const { data: mumble } = useSWR({ url: '/api/singleMumble', id, token: session?.accessToken }, fetchSingleMumble, {

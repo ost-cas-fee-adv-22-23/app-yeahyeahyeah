@@ -14,12 +14,21 @@ import Link from 'next/link';
 
 type StreamProps = {
   limit: number;
-  fallback: { '/api/mumbles': FetchMumbles };
-  fetcher: (params: { limit: number; offset: number; newerThanMumbleId: string; token: string }) => Promise<FetchMumbles>;
+  fallback: FetchMumbles;
+  fetcher: (params: {
+    url: string;
+    limit?: number;
+    offset?: number;
+    newerThanMumbleId?: string;
+    token?: any;
+    creator?: string;
+  }) => Promise<FetchMumbles>;
   hashtag?: string;
+  creator?: { id: string };
+  url: string;
 };
 
-export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher }) => {
+export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url }: StreamProps) => {
   const { data: session }: any = useSession();
   const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
@@ -29,11 +38,18 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
       return null;
     }
 
-    return { url: '/api/mumbles', limit, offset: pageIndex * limit, token: session?.accessToken, tags: [hashtag] };
+    return {
+      url,
+      limit,
+      offset: pageIndex * limit,
+      token: session?.accessToken,
+      tags: [hashtag],
+      creator: creator?.id,
+    };
   };
 
   const { data, mutate, size, setSize, error, isValidating, isLoading } = useSWRInfinite(getKey, fetcher, {
-    fallbackData: [fallback['/api/mumbles']],
+    fallbackData: [fallback],
     revalidateOnFocus: false,
     refreshInterval: 60000,
     parallel: true,
@@ -44,7 +60,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   const { data: newMumbles } = useSWR(
     {
       url: '/api/mumbles',
-      newerThanMumbleId: data && data[0]?.mumbles[0].id,
+      newerThanMumbleId: data && data[0]?.mumbles[0]?.id,
       limit,
       offset: 0,
       token: session?.accessToken,
@@ -127,40 +143,59 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     });
   };
 
+  const renderList = () => {
+    return (
+      <>
+        {data && RenderMumbles(data, session, handleDelete)}
+        <div key="last" tw="invisible" ref={ref} />
+        <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
+      </>
+    );
+  };
+
   if (error) return <ErrorBox message={error} />;
 
   return (
     <>
-      <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
-      {!hashtag && checkForNewMumbles() && (
-        <MumbleMessageBox>
-          <Button label={`${quantityNewMumbles()}`} color="gradient" onClick={handleRefreshPage} size="small" width="full" />
-        </MumbleMessageBox>
-      )}
-      <Container layout="plain">
-        {!hashtag && (
-          <>
-            <WelcomeText />
-            <Alert />
-            <TextBoxComponent variant="write" mutate={mutate} data={data} />
-          </>
-        )}
-        {hashtag && (
-          <>
-            <div tw="mb-16 mx-16">
-              <Heading label="Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
-              <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
-            </div>
-            <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
-              {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
-            </div>
-          </>
-        )}
+      {!creator ? (
+        <>
+          {!hashtag && checkForNewMumbles() && (
+            <MumbleMessageBox>
+              <Button
+                label={`${quantityNewMumbles()}`}
+                color="gradient"
+                onClick={handleRefreshPage}
+                size="small"
+                width="full"
+              />
+            </MumbleMessageBox>
+          )}
+          <Container layout="plain">
+            {!hashtag && !creator && (
+              <>
+                <WelcomeText />
+                <Alert />
+                <TextBoxComponent variant="write" mutate={mutate} data={data} />
+              </>
+            )}
+            {hashtag && (
+              <>
+                <div tw="mb-16 mx-16">
+                  <Heading label="Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
+                  <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
+                </div>
+                <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
+                  {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
+                </div>
+              </>
+            )}
 
-        {data && RenderMumbles(data, session, handleDelete)}
-        <div key="last" tw="invisible" ref={ref} />
-        <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
-      </Container>
+            {renderList()}
+          </Container>
+        </>
+      ) : (
+        <>{renderList()}</>
+      )}
     </>
   );
 };

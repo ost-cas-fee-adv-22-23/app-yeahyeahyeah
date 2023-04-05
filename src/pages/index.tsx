@@ -3,9 +3,15 @@ import { GetServerSideProps } from 'next';
 import { FetchMumbles } from '@/types/fallback';
 import { fetchMumbles } from '@/services';
 import { Stream } from '@/components/stream/Stream';
+import { NextSeo } from 'next-seo';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
-  return <Stream limit={limit} fallback={fallback} fetcher={fetchMumbles} />;
+  return (
+    <>
+      <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
+      <Stream url="/api/mumbles" limit={limit} fallback={fallback['/api/mumbles']} fetcher={fetchMumbles} />
+    </>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps<any> = async () => {
