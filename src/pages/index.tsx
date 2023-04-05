@@ -1,6 +1,5 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-import tw from 'twin.macro';
 import { FetchMumbles } from '@/types/fallback';
 import { fetchMumbles } from '@/services';
 import { Stream } from '@/components/stream/Stream';
@@ -23,5 +22,3 @@ export const getServerSideProps: GetServerSideProps<any> = async () => {
     },
   };
 };
-
-const MumbleMessageBox = tw.div`animate-bounce fixed top-[110px] mx-auto z-50 hover:(animate-none)`;

@@ -8,9 +8,10 @@ import useOnScreen from '@/hooks/useOnScreen';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { FetchMumbles } from '@/types/fallback';
-import { alertService, deleteMumble } from '@/services';
-import { Button, Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Mumble, alertService, deleteMumble, searchMumbles } from '@/services';
+import { Button, Container, Hashtag, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles } from '@/components';
+import Link from 'next/link';
 
 type StreamProps = {
   limit: number;
@@ -52,6 +53,14 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     fetcher,
     {
       revalidateOnFocus: false,
+      refreshInterval: 10000,
+    }
+  );
+
+  const { data: hashtagData } = useSWR(
+    { url: '/api/mumbles', limit: 10, offset: 0, text: '#', token: session?.accessToken },
+    searchMumbles,
+    {
       refreshInterval: 10000,
     }
   );
@@ -98,6 +107,27 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     window.scrollTo(0, 0);
   };
 
+  const renderHashtags = (text: string) => {
+    return text.split(' ').map((str, i) => {
+      if (str.startsWith('#')) {
+        return (
+          <React.Fragment key={i}>
+            <Hashtag
+              label={str.replace('#', '')}
+              size="xlarge"
+              color={str.replace('#', '') === hashtag ? 'violet' : 'slate-300'}
+              linkComponent={Link}
+              href={`/search/${str.replace('#', '')}`}
+              legacyBehavior
+              passHref
+            />{' '}
+          </React.Fragment>
+        );
+      }
+      return ' ';
+    });
+  };
+
   if (error) return <ErrorBox message={error} />;
 
   return (
@@ -109,9 +139,25 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
         </MumbleMessageBox>
       )}
       <Container layout="plain">
-        <WelcomeText />
-        <Alert />
-        <TextBoxComponent variant="write" mutate={mutate} data={data} />
+        {!hashtag && (
+          <>
+            <WelcomeText />
+            <Alert />
+            <TextBoxComponent variant="write" mutate={mutate} data={data} />
+          </>
+        )}
+        {hashtag && (
+          <>
+            <div tw="mb-16 mx-16">
+              <Heading label="Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
+              <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
+            </div>
+            <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
+              {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
+            </div>
+          </>
+        )}
+
         {data && RenderMumbles(data, session, handleDelete)}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
