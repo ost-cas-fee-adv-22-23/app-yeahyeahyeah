@@ -16,16 +16,13 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
   const { data: session }: any = useSession();
   const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
-  const resetWindowScrollPosition = useCallback(() => window.scrollTo(0, 0), []);
-  let offset = useRef<number>(0);
-  let quantityTotal = useRef<number>(0);
 
   const getKey = (pageIndex: number, previousPageData: FetchMumbles) => {
     if (previousPageData && !previousPageData.mumbles.length) {
       return null;
     }
-    offset.current = pageIndex * limit;
-    return { url: '/api/mumbles', limit, offset: offset.current, token: session?.accessToken };
+
+    return { url: '/api/mumbles', limit, offset: pageIndex * limit, token: session?.accessToken };
   };
 
   const { data, mutate, size, setSize, error, isValidating, isLoading } = useSWRInfinite(getKey, fetchMumbles, {
@@ -52,21 +49,16 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
     }
   );
 
-  useEffect(() => {
-    if (data && data[0].count > 0) quantityTotal.current = data[0].count;
-  }, [data]);
-
-  const handleIntersectionCallbackDebounced = useMemo(() => {
-    return debounce(async () => {
-      setSize(size + 1);
-      setIsOnScreen(false);
-    }, 800);
-  }, [setSize, size, setIsOnScreen]);
+  const handleIntersectionCallbackDebounced = debounce(async () => {
+    setSize(size + 1);
+    setIsOnScreen(false);
+  }, 800);
 
   useEffect(() => {
-    if (isOnScreen && !isValidating && data && data?.length * limit <= quantityTotal.current)
-      handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit, quantityTotal]);
+    let quantityTotal = 0;
+    if (data && data[0].count > 0) quantityTotal = data[0].count;
+    if (isOnScreen && !isValidating && data && data?.length * limit <= quantityTotal) handleIntersectionCallbackDebounced();
+  }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit]);
 
   const checkForNewMumbles = () => {
     return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
@@ -96,7 +88,7 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
 
   const handleRefreshPage = () => {
     mutate();
-    resetWindowScrollPosition();
+    window.scrollTo(0, 0);
   };
 
   if (error) return <ErrorBox message={error} />;

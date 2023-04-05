@@ -71,7 +71,7 @@ export const MumblePost = ({
           <Avatar
             key={creator ? creator : ''}
             variant={type === 'post' ? 'medium' : 'small'}
-            src={data && data.avatarUrl !== '' ? data.avatarUrl : '/schielen.jpeg/'}
+            src={data && data.avatarUrl !== '' ? data.avatarUrl : '/schielen.jpeg'}
             alt={data ? data.userName : 'username'}
           />
         </Link>
