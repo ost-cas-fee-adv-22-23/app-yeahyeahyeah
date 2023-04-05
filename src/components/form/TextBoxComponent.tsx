@@ -50,7 +50,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     if (id) {
       try {
         res = await postReply(id, inputValue, file, session?.accessToken);
-        res && mutate({ ...data, replies: [res, ...data?.replies] });
+        res && mutate();
 
         clearFormValues();
 

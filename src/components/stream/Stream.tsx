@@ -13,22 +13,25 @@ import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderM
 import Link from 'next/link';
 
 type StreamProps = {
+  url: string;
   limit: number;
   fallback: FetchMumbles;
   fetcher: (params: {
     url: string;
+    id?: string;
     limit?: number;
     offset?: number;
     newerThanMumbleId?: string;
     token?: any;
     creator?: string;
+    hashtag?: string;
   }) => Promise<FetchMumbles>;
+  id?: string;
   hashtag?: string;
   creator?: { id: string };
-  url: string;
 };
 
-export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url }: StreamProps) => {
+export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }: StreamProps) => {
   const { data: session }: any = useSession();
   const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
@@ -39,6 +42,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     }
 
     return {
+      id,
       url,
       limit,
       offset: pageIndex * limit,
@@ -92,7 +96,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit]);
 
   const checkForNewMumbles = () => {
-    return data && data[0]?.mumbles[0].id && newMumbles && newMumbles.count > 0;
+    return data && data[0]?.mumbles[0]?.id && newMumbles && newMumbles.count > 0;
   };
 
   const handleDelete = async (id: string) => {
@@ -157,7 +161,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
 
   return (
     <>
-      {!creator ? (
+      {!creator && !id ? (
         <>
           {!hashtag && checkForNewMumbles() && (
             <MumbleMessageBox>
@@ -194,7 +198,10 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
           </Container>
         </>
       ) : (
-        <>{renderList()}</>
+        <>
+          {id && <TextBoxComponent id={id} variant="write" mutate={mutate} data={data} />}
+          {renderList()}
+        </>
       )}
     </>
   );
