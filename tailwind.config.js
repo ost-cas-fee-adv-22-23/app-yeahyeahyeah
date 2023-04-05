@@ -38,6 +38,20 @@ module.exports = {
         gradient70: 'linear-gradient(90deg, var(--color-gradient-pink) 0%, var(--color-gradient-violet) 70%)',
         gradient80: 'linear-gradient(90deg, var(--color-gradient-pink) 0%, var(--color-gradient-violet) 40%)',
       },
+      keyframes: {
+        slide: {
+          '0%': { marginTop: '-300px' },
+          '5%': { marginTop: '-200px' },
+          '33%': { marginTop: '-200px' },
+          '38%': { marginTop: '-100px' },
+          '66%': { marginTop: '-100px' },
+          '71%': { marginTop: '0px' },
+          '100%': { marginTop: '0px' },
+        },
+      },
+      animation: {
+        keyword: 'slide 15s cubic-bezier(0.7, -0.85, 0.5, 1.4) infinite',
+      },
     },
     fontWeight: {
       normal: '300',
