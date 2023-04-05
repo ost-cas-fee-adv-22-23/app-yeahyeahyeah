@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+import tw, { styled } from 'twin.macro';
 import { useRouter } from 'next/router';
-import { alertService, AlertType } from '../../services/alert.service';
+import { alertService } from '../../services/alert.service';
+import { Cancel } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 export type AlertProps = {
   id?: string;
@@ -24,103 +26,71 @@ export const Alert: React.FC<AlertProps> = ({ id = 'default-alert', fade = true 
 
   useEffect(() => {
     mounted.current = true;
-
-    // subscribe to new alert notifications
     const subscription = alertService.onAlert(id).subscribe((alert) => {
-      // clear alerts when an empty alert is received
       if (!alert.message) {
         setAlerts((alerts: Alerts[]) => {
-          // filter out alerts without 'keepAfterRouteChange' flag
           const filteredAlerts = alerts.filter((x) => x.keepAfterRouteChange);
-
-          // remove 'keepAfterRouteChange' flag on the rest
           return omit(filteredAlerts, 'keepAfterRouteChange');
         });
       } else {
-        // add alert to array with unique id
         alert.itemId = Math.random();
         setAlerts((alerts: Alerts[]) => [...alerts, alert]);
 
-        // auto close alert if required
         if (alert.autoClose) {
           setTimeout(() => removeAlert(alert), 3000);
         }
       }
     });
 
-    // clear alerts on location change
     const clearAlerts = () => alertService.clear(id);
     router.events.on('routeChangeStart', clearAlerts);
 
-    // clean up function that runs when the component unmounts
     return () => {
       mounted.current = false;
-
-      // unsubscribe to avoid memory leaks
       subscription.unsubscribe();
       router.events.off('routeChangeStart', clearAlerts);
     };
+  });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function omit(arr: any, key: string) {
+  const omit = (arr: any, key: string) => {
     return arr.map((obj: any) => {
       const { [key]: omitted, ...rest } = obj;
       return rest;
     });
-  }
+  };
 
-  function removeAlert(alert: Alerts) {
+  const removeAlert = (alert: Alerts) => {
     if (!mounted.current) return;
-
-    if (fade) {
-      // fade out alert
-      setAlerts((alerts: Alerts[]) => alerts.map((x) => (x.itemId === alert.itemId ? { ...x, fade: true } : x)));
-
-      // remove alert after faded out
-      setTimeout(() => {
-        setAlerts((alerts: Alerts[]) => alerts.filter((x) => x.itemId !== alert.itemId));
-      }, 250);
-    } else {
-      // remove alert
-      setAlerts((alerts: Alerts[]) => alerts.filter((x) => x.itemId !== alert.itemId));
-    }
-  }
-
-  function cssClasses(alert: Alerts) {
-    if (!alert) return;
-
-    const classes = ['alert', 'alert-dismissable'];
-
-    const alertTypeClass = {
-      [AlertType.Success]: 'alert-success',
-      [AlertType.Error]: 'alert-danger',
-      [AlertType.Info]: 'alert-info',
-      [AlertType.Warning]: 'alert-warning',
-    };
-
-    classes.push(alertTypeClass[alert.type]);
-
-    if (alert.fade) {
-      classes.push('fade');
-    }
-
-    return classes.join(' ');
-  }
+    setAlerts((alerts: Alerts[]) => alerts.filter((x) => x.itemId !== alert.itemId));
+  };
 
   if (!alerts.length) return null;
 
   return (
-    <div>
+    <>
       {alerts.map((alert: Alerts, index: number) => (
-        <div key={index} className={cssClasses(alert)}>
-          <a className="close" onClick={() => removeAlert(alert)}>
-            &times;
-          </a>
-          <span dangerouslySetInnerHTML={{ __html: alert.message }}></span>
-        </div>
+        <AlertWrapper key={index} id={id}>
+          <span tw="grow" dangerouslySetInnerHTML={{ __html: alert.message }}></span>
+          <Cancel
+            tw="text-slate-white !opacity-75 fill-pink-50 cursor-pointer transition scale-100 ease-in-out delay-100 hover:(fill-slate-white rotate-180 transform-gpu duration-500 scale-150 !opacity-100)"
+            onClick={() => removeAlert(alert)}
+          />
+        </AlertWrapper>
       ))}
-    </div>
+    </>
   );
 };
+
+interface AlertWrapperProps {
+  id: string;
+}
+
+const AlertDefaults = tw`rounded-md p-16 mb-32 flex justify-start items-center w-full`;
+
+const AlertWrapper = styled.div(({ id }: AlertWrapperProps) => [
+  id === 'default-alert' && tw`bg-pink-600 text-slate-white`,
+  id === 'alert-success' && tw`bg-slate-white text-violet-900`,
+  id === 'alert-error' && tw`bg-pink-900 text-violet-900`,
+  id === 'alert-warning' && tw`bg-slate-white text-violet-900`,
+  AlertDefaults,
+]);
