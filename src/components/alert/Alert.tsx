@@ -66,6 +66,10 @@ export const Alert: React.FC<AlertProps> = ({ id = 'default-alert', fade = true 
 
   if (!alerts.length) return null;
 
+  setTimeout(() => {
+    setAlerts([]);
+  }, 5000);
+
   return (
     <>
       {alerts.map((alert: Alerts, index: number) => (
