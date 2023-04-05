@@ -74,11 +74,8 @@ export const Alert: React.FC<AlertProps> = ({ id = 'default-alert', fade = true 
     <>
       {alerts.map((alert: Alerts, index: number) => (
         <AlertWrapper key={index} id={id}>
-          <span tw="grow" dangerouslySetInnerHTML={{ __html: alert.message }}></span>
-          <Cancel
-            tw="text-slate-white !opacity-75 fill-pink-50 cursor-pointer transition scale-100 ease-in-out delay-100 hover:(fill-slate-white rotate-180 transform-gpu duration-500 scale-150 !opacity-100)"
-            onClick={() => removeAlert(alert)}
-          />
+          <span css={AlertContent.span()} dangerouslySetInnerHTML={{ __html: alert.message }}></span>
+          <Cancel css={Close.svg()} onClick={() => removeAlert(alert)} />
         </AlertWrapper>
       ))}
     </>
@@ -90,7 +87,6 @@ interface AlertWrapperProps {
 }
 
 const AlertDefaults = tw`rounded-md p-16 mb-32 flex justify-start items-center w-full`;
-
 const AlertWrapper = styled.div(({ id }: AlertWrapperProps) => [
   id === 'default-alert' && tw`bg-pink-600 text-slate-white`,
   id === 'alert-success' && tw`bg-slate-white text-violet-900`,
@@ -98,3 +94,12 @@ const AlertWrapper = styled.div(({ id }: AlertWrapperProps) => [
   id === 'alert-warning' && tw`bg-slate-white text-violet-900`,
   AlertDefaults,
 ]);
+const Close = {
+  svg: () => [
+    tw`text-slate-white !opacity-75 fill-pink-50 cursor-pointer transition scale-100 ease-in-out delay-100`,
+    tw`hover:(fill-slate-white rotate-180 transform-gpu duration-500 scale-150 !opacity-100)`,
+  ],
+};
+const AlertContent = {
+  span: () => [tw`grow`],
+};
