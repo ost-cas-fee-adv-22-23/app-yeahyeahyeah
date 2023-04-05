@@ -1,9 +1,0 @@
-@media only screen and (max-width: 1024px) {
-  .slider {
-    top: 18px;
-  }
-
-  .slider h1 {
-    line-height: 0 !important;
-  }
-}
