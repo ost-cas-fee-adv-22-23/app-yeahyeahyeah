@@ -75,13 +75,6 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                   creator={creator}
                 />
               )}
-
-              {/* {selection === 'mumbles' && mumbles?.count === 0 && (
-                <ErrorBox message="Die Liste ist leer. Schreib deinen ersten Mumble." />
-              )}
-              {selection === 'likes' && likes?.mumbles.length === 0 && (
-                <ErrorBox message="Du hast noch kein Mumble abgeliked!" />
-              )} */}
             </SelectionWrapper>
           </>
         ) : (
@@ -103,6 +96,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
 };
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { id } }: GetServerSidePropsContext) => {
+  // TODO: if limit is only 2, the stream is not loading more items - why?
   const limit = 10;
   const _id = id as string;
 

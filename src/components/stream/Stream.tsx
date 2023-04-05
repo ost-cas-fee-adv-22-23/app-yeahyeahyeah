@@ -91,7 +91,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   useEffect(() => {
     let quantityTotal = 0;
     if (data && data[0].count > 0) quantityTotal = data[0].count;
-    if (isOnScreen && !isValidating && data && data?.length * limit <= quantityTotal) handleIntersectionCallbackDebounced();
+    if (isOnScreen && !isValidating && data && data.length * limit <= quantityTotal) handleIntersectionCallbackDebounced();
   }, [handleIntersectionCallbackDebounced, isOnScreen, isValidating, data, limit]);
 
   const checkForNewMumbles = () => {
@@ -146,21 +146,23 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     });
   };
 
-  const renderList = (isReply?: boolean) => {
+  const renderMumbles = (isReply?: boolean) => {
     return (
       <>
-        {data && RenderMumbles(data, session, handleDelete, isReply)}
+        {data && <RenderMumbles data={data} handleDelete={handleDelete} isReply={isReply} />}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </>
     );
   };
 
+  const renderTimeline = () => !creator && !id;
+
   if (error) return <ErrorBox message={error} />;
 
   return (
     <>
-      {!creator && !id ? (
+      {renderTimeline() ? (
         <>
           {!hashtag && checkForNewMumbles() && (
             <MumbleMessageBox>
@@ -193,13 +195,19 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
               </>
             )}
 
-            {renderList()}
+            {renderMumbles()}
           </Container>
         </>
       ) : (
         <>
-          <TextBoxComponent id={id} variant="write" mutate={mutate} data={data} />
-          {id ? renderList(true) : renderList()}
+          {id ? (
+            <>
+              <TextBoxComponent id={id} variant="write" mutate={mutate} data={data} />
+              {renderMumbles(true)}
+            </>
+          ) : (
+            renderMumbles()
+          )}
         </>
       )}
     </>
