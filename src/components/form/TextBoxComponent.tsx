@@ -50,7 +50,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     if (id) {
       try {
         res = await postReply(id, inputValue, file, session?.accessToken);
-        res && mutate({ ...data, replies: [res, ...data?.replies] });
+        res && mutate();
 
         clearFormValues();
 
@@ -132,7 +132,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
           username: user ? user.userName : 'username',
           href: user && user.id ? `/profile/${user.id}` : '/landingpage',
           avatar: {
-            src: user && user.avatarUrl !== '' ? user.avatarUrl : '/schielen.jpeg/',
+            src: user && user.avatarUrl !== '' ? user.avatarUrl : '/schielen.jpeg',
             alt: user ? user.userName : 'username',
             title: user ? user.userName : 'username',
             href: user && user.id ? `/profile/${session?.user?.id}` : '/landingpage',

@@ -1,94 +1,30 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
-import debounce from 'lodash.debounce';
-import useSWR from 'swr';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
 import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
-import useOnScreen from '@/hooks/useOnScreen';
 import { FetchMumbles } from '@/types/fallback';
-import { RenderProfileMumbles, RenderLikesMumbles, MumbleHeader, ErrorBox } from '@/components';
+import { MumbleHeader } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Stream } from '@/components/stream/Stream';
 
 type MumbleHeaderProps = {
   creator: any;
   limit: number;
   fallbackUser: { '/api/user': User };
   fallBackMyMumbles: { '/api/myMumbles': FetchMumbles };
+  fallBackMyLikes: { '/api/myLikes': FetchMumbles };
 };
 
-const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles }: MumbleHeaderProps) => {
+const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBackMyLikes }: MumbleHeaderProps) => {
   const { data: session }: any = useSession();
   const [selection, setSelection] = useState('mumbles');
-  const [count, setCount] = useState(1);
-  const [offset, setOffset] = useState(0);
-  const [quantityTotal, setQuantityTotal] = useState(0);
-  const ref = useRef(null);
-  const [isOnScreen] = useOnScreen(ref);
-
-  const { data: likes } = useSWR({ url: '/api/myLikes', token: session?.accessToken }, fetchMyLikes, {
-    refreshInterval: 10000,
-    revalidateOnFocus: false,
-    dedupingInterval: 10000,
-  });
-
-  const { data: mumbles } = useSWR(
-    { url: '/api/myMumbles', creator: creator.id, token: session?.accessToken },
-    fetchMyMumbles,
-    {
-      refreshInterval: 10000,
-      revalidateOnFocus: false,
-      dedupingInterval: 10000,
-    }
-  );
 
   const handleSelection = (value: string) => {
     setSelection(value);
-    setOffset(0);
-    setCount(1);
   };
-
-  const handleIntersectionCallbackDebounced = useMemo(() => {
-    return debounce(async () => {
-      setOffset((offset) => offset + limit);
-      setCount((count) => count + 1);
-    }, 800);
-  }, [limit]);
-
-  useEffect(() => {
-    if (isOnScreen && quantityTotal - limit >= offset) handleIntersectionCallbackDebounced();
-  }, [handleIntersectionCallbackDebounced, isOnScreen, quantityTotal, offset, limit]);
-
-  const pagesMumbles: JSX.Element[] = [];
-  const pagesLikes: JSX.Element[] = [];
-
-  for (let i = 0; i < count; i++) {
-    selection === 'mumbles' &&
-      pagesMumbles.push(
-        <RenderProfileMumbles
-          key={i}
-          offset={offset}
-          limit={limit}
-          creator={creator.id}
-          selection={selection}
-          setQuantityTotal={setQuantityTotal}
-          fallBackMyMumbles={fallBackMyMumbles}
-        />
-      );
-    selection === 'likes' &&
-      pagesLikes.push(
-        <RenderLikesMumbles
-          key={i}
-          offset={offset}
-          limit={limit}
-          creator={creator.id}
-          selection={selection}
-          setQuantityTotal={setQuantityTotal}
-        />
-      );
-  }
 
   return (
     <>
@@ -121,39 +57,53 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles }: Mumble
             </div>
 
             <SelectionWrapper>
-              {selection === 'mumbles' && pagesMumbles}
-              {selection === 'likes' && pagesLikes}
-
-              {selection === 'mumbles' && mumbles?.count === 0 && (
-                <ErrorBox message="Die Liste ist leer. Schreib deinen ersten Mumble." />
+              {selection === 'mumbles' && (
+                <Stream
+                  url="/api/myMumbles"
+                  limit={limit}
+                  fallback={fallBackMyMumbles['/api/myMumbles']}
+                  fetcher={fetchMyMumbles}
+                  creator={creator}
+                />
               )}
-              {selection === 'likes' && likes?.mumbles.length === 0 && (
-                <ErrorBox message="Du hast noch kein Mumble abgeliked!" />
+              {selection === 'likes' && (
+                <Stream
+                  url="/api/myLikes"
+                  limit={limit}
+                  fallback={fallBackMyLikes['/api/myLikes']}
+                  fetcher={fetchMyLikes}
+                  creator={creator}
+                />
               )}
-
-              {/* Start profile page STRANGER */}
-              <div tw="bg-violet-500 p-8 mb-16 rounded-md flex justify-center">
-                <p tw="text-slate-white font-medium">TBD - Profile Page NEW USER - Lists recommended mumbles</p>
-              </div>
-              {/* End profile  */}
             </SelectionWrapper>
           </>
         ) : (
-          <SelectionWrapper>{selection === 'mumbles' && pagesMumbles}</SelectionWrapper>
+          <SelectionWrapper>
+            {selection === 'mumbles' && (
+              <Stream
+                url="/api/myMumbles"
+                limit={limit}
+                fallback={fallBackMyMumbles['/api/myMumbles']}
+                fetcher={fetchMyMumbles}
+                creator={creator}
+              />
+            )}
+          </SelectionWrapper>
         )}
-        <div key="last" tw="invisible" ref={ref} />
       </Container>
     </>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { id } }: GetServerSidePropsContext) => {
+  // TODO: if limit is only 2, the stream is not loading more items - why?
   const limit = 10;
   const _id = id as string;
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const user: User | string = token?.accessToken ? await fetchUser({ id: _id, token: token?.accessToken }) : '';
   const myMumbles: FetchMumbles = await fetchMyMumbles({ creator: _id, token: token?.accessToken });
+  const myLikes: FetchMumbles = await fetchMyLikes({ token: token?.accessToken });
 
   return {
     props: {
@@ -169,6 +119,9 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
       },
       fallBackMyMumbles: {
         '/api/myMumbles': myMumbles,
+      },
+      fallBackMyLikes: {
+        '/api/myLikes': myLikes,
       },
     },
   };

@@ -61,7 +61,7 @@ export const NavigationComponent: React.FC = () => {
                   >
                     <Avatar
                       alt={user && user.userName ? `${user.userName}` : 'username'}
-                      src={user && user.avatarUrl ? user.avatarUrl : '/schielen.jpeg/'}
+                      src={user && user.avatarUrl ? user.avatarUrl : '/schielen.jpeg'}
                       variant="small"
                     />
                   </NaviButton>

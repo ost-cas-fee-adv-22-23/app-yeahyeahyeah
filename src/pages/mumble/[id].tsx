@@ -5,15 +5,17 @@ import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { getToken } from 'next-auth/jwt';
 import { fetchUser, User, fetchSingleMumble, fetchReplies } from '@/services';
-import { FetchReplies, FetchSingleMumble } from '@/types/fallback';
-import { Alert, MumbleDetail, TextBoxComponent, RenderReplies } from '@/components';
+import { FetchMumbles, FetchSingleMumble } from '@/types/fallback';
+import { Alert, MumbleDetail } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Stream } from '@/components/stream/Stream';
 
-type Props = {
+type MumblePageProps = {
+  limit: number;
   id: string;
-  fallback: { '/api/singleMumble': FetchSingleMumble };
-  fallbackReplies: { '/api/replies': FetchReplies };
-  fallbackUser: { '/api/user': User };
+  fallback: FetchSingleMumble;
+  fallbackReplies: FetchMumbles;
+  fallbackUser: User;
 };
 
 const swrConfig = {
@@ -23,28 +25,23 @@ const swrConfig = {
 };
 
 const MumblePage = ({
+  limit,
   id,
   fallback,
   fallbackReplies,
   fallbackUser,
-}: Props): InferGetServerSidePropsType<typeof getServerSideProps> => {
+}: MumblePageProps): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { data: session }: any = useSession();
 
   const { data: mumble } = useSWR({ url: '/api/singleMumble', id, token: session?.accessToken }, fetchSingleMumble, {
     ...swrConfig,
-    fallbackData: fallback['/api/singleMumble'],
+    fallbackData: fallback,
     refreshInterval: 10000,
   });
 
   const { data: user }: any = useSWR({ url: '/api/user', id: mumble?.creator, token: session?.accessToken }, fetchUser, {
     ...swrConfig,
-    fallbackData: fallbackUser['/api/user'],
-  });
-
-  const { data, error, mutate, isLoading } = useSWR({ url: '/api/replies', id, token: session?.accessToken }, fetchReplies, {
-    fallbackData: fallbackReplies['/api/replies'],
-    revalidateOnFocus: false,
-    refreshInterval: 10000,
+    fallbackData: fallbackUser,
   });
 
   return (
@@ -59,9 +56,7 @@ const MumblePage = ({
         <Container layout="plain">
           <Alert />
         </Container>
-        <TextBoxComponent id={id} variant="inline" mutate={mutate} data={data} />
-
-        <RenderReplies isLoading={isLoading} error={error} mutate={mutate} data={data} />
+        <Stream url="/api/replies" id={id} limit={limit} fallback={fallbackReplies} fetcher={fetchReplies} />
       </Container>
     </>
   );
@@ -69,26 +64,21 @@ const MumblePage = ({
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query: { id } }) => {
   const mumble: FetchSingleMumble = await fetchSingleMumble({ id: id as string });
-  const replies: FetchReplies = await fetchReplies({ id: id as string });
+  const mumbles: FetchMumbles = await fetchReplies({ id: id as string });
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const user: User | string = token?.accessToken ? await fetchUser({ id: mumble.creator, token: token?.accessToken }) : '';
 
   return {
     props: {
+      limit: 1000,
       id,
-      fallback: {
-        '/api/singleMumble': mumble,
-      },
-      fallbackReplies: {
-        '/api/replies': replies,
-      },
-      fallbackUser: {
-        '/api/user': user || {
-          userName: 'username',
-          firstName: 'Unknown',
-          lastName: 'User',
-          avatarUrl: '',
-        },
+      fallback: mumble,
+      fallbackReplies: mumbles,
+      fallbackUser: user || {
+        userName: 'username',
+        firstName: 'Unknown',
+        lastName: 'User',
+        avatarUrl: '',
       },
     },
   };

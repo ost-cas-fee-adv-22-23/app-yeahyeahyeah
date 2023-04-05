@@ -13,7 +13,7 @@ export const MumbleShimmer: React.FC<MumbleShimmerProps> = ({ id, type }) => {
     <ArticleMumble id={id} type={type}>
       <ArticleHeader type={type}>
         <Link href={`/profile/profile`} title={'title'} target="_self">
-          <Avatar key={id} variant={type === 'post' ? 'medium' : 'small'} src={'/schielen.jpeg/'} alt={'username'} />
+          <Avatar key={id} variant={type === 'post' ? 'medium' : 'small'} src={'/schielen.jpeg'} alt={'username'} />
         </Link>
         <ArticleHeaderContent>
           <User label={'Username'} variant="medium" />
