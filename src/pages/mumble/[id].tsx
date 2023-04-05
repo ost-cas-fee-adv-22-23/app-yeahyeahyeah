@@ -70,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
 
   return {
     props: {
-      limit: 10,
+      limit: 1000,
       id,
       fallback: mumble,
       fallbackReplies: mumbles,

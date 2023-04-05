@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
 import debounce from 'lodash.debounce';
 import { useSession } from 'next-auth/react';
@@ -147,10 +146,10 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     });
   };
 
-  const renderList = () => {
+  const renderList = (isReply?: boolean) => {
     return (
       <>
-        {data && RenderMumbles(data, session, handleDelete)}
+        {data && RenderMumbles(data, session, handleDelete, isReply)}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </>
@@ -199,8 +198,8 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
         </>
       ) : (
         <>
-          {id && <TextBoxComponent id={id} variant="write" mutate={mutate} data={data} />}
-          {renderList()}
+          <TextBoxComponent id={id} variant="write" mutate={mutate} data={data} />
+          {id ? renderList(true) : renderList()}
         </>
       )}
     </>
