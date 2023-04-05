@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
 import debounce from 'lodash.debounce';
@@ -133,7 +132,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   return (
     <>
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
-      {checkForNewMumbles() && (
+      {!hashtag && checkForNewMumbles() && (
         <MumbleMessageBox>
           <Button label={`${quantityNewMumbles()}`} color="gradient" onClick={handleRefreshPage} size="small" width="full" />
         </MumbleMessageBox>

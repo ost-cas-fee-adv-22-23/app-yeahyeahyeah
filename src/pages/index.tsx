@@ -10,7 +10,6 @@ export default function Page({ limit, fallback }: { limit: number; fallback: { '
 
 export const getServerSideProps: GetServerSideProps<any> = async () => {
   const limit = 2;
-
   const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0 });
 
   return {
