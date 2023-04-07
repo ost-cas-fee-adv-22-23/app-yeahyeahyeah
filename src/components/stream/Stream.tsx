@@ -6,10 +6,9 @@ import useOnScreen from '@/hooks/useOnScreen';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { FetchMumbles } from '@/types/fallback';
-import { Mumble, alertService, deleteMumble, searchMumbles } from '@/services';
-import { Button, Container, Hashtag, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles } from '@/components';
-import Link from 'next/link';
+import { alertService, deleteMumble } from '@/services';
+import { Button, Container, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles, MumbleHashtag } from '@/components';
 
 type StreamProps = {
   url: string;
@@ -30,7 +29,7 @@ type StreamProps = {
   creator?: { id: string };
 };
 
-export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }: StreamProps) => {
+export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }) => {
   const { data: session }: any = useSession();
   const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
@@ -58,8 +57,6 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     parallel: true,
   });
 
-  console.log('data', data);
-
   const { data: newMumbles } = useSWR(
     {
       url: '/api/mumbles',
@@ -75,23 +72,15 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     }
   );
 
-  const { data: hashtagData } = useSWR(
-    { url: '/api/mumbles', limit: 10, offset: 0, text: '#', token: session?.accessToken },
-    searchMumbles,
-    {
-      refreshInterval: 10000,
-    }
-  );
-
   const handleIntersectionCallbackDebounced = debounce(async () => {
     setSize(size + 1);
     setIsOnScreen(false);
   }, 800);
 
   useEffect(() => {
-    let quantityTotal = 0;
-    if (data && data[0].count > 0) quantityTotal = data[0].count;
-    if (isOnScreen && !isValidating && data && data.length * limit <= quantityTotal) handleIntersectionCallbackDebounced();
+    // TODO: id is needed on profile page, because there is no possibility for setting offset and limit on endpoint
+    if (!id && isOnScreen && !isValidating && data && data.length * limit <= data[0].count)
+      handleIntersectionCallbackDebounced();
   });
 
   const checkForNewMumbles = () => {
@@ -125,27 +114,6 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     window.scrollTo(0, 0);
   };
 
-  const renderHashtags = (text: string) => {
-    return text.split(' ').map((str, i) => {
-      if (str.startsWith('#')) {
-        return (
-          <React.Fragment key={i}>
-            <Hashtag
-              label={str.replace('#', '')}
-              size="xlarge"
-              color={str.replace('#', '') === hashtag ? 'violet' : 'slate-300'}
-              linkComponent={Link}
-              href={`/search/${str.replace('#', '')}`}
-              legacyBehavior
-              passHref
-            />{' '}
-          </React.Fragment>
-        );
-      }
-      return ' ';
-    });
-  };
-
   const renderMumbles = (isReply?: boolean) => {
     return (
       <>
@@ -166,13 +134,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
         <>
           {!hashtag && checkForNewMumbles() && (
             <MumbleMessageBox>
-              <Button
-                label={`${quantityNewMumbles()}`}
-                color="gradient"
-                onClick={handleRefreshPage}
-                size="small"
-                width="full"
-              />
+              <Button label={quantityNewMumbles()} color="gradient" onClick={handleRefreshPage} size="small" width="full" />
             </MumbleMessageBox>
           )}
           <Container layout="plain">
@@ -190,7 +152,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
                   <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
                 </div>
                 <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
-                  {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
+                  <MumbleHashtag size="xlarge" hashtag={hashtag} />
                 </div>
               </>
             )}

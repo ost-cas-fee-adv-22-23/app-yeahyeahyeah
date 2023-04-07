@@ -69,7 +69,8 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
               {selection === 'likes' && (
                 <Stream
                   url="/api/myLikes"
-                  limit={limit}
+                  // TODO: limit is set to 20 because we have to intercept the data in the fetcher function
+                  limit={20}
                   fallback={fallBackMyLikes['/api/myLikes']}
                   fetcher={fetchMyLikes}
                   creator={creator}
@@ -97,7 +98,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { id } }: GetServerSidePropsContext) => {
   // TODO: if limit is only 2, the stream is not loading more items - why?
-  const limit = 10;
+  const limit = 2;
   const _id = id as string;
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });

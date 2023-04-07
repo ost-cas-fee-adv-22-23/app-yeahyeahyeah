@@ -4,7 +4,7 @@ type ErrorBoxProps = {
   message: string;
 };
 
-export const ErrorBox = ({ message }: ErrorBoxProps) => {
+export const ErrorBox: React.FC<ErrorBoxProps> = ({ message }) => {
   return (
     <ErrorBoxWrapper>
       <MessageStyles>{message}</MessageStyles>

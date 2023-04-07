@@ -10,7 +10,7 @@ type MumbleImageProps = {
   height: number;
 };
 
-export const MumbleImage = ({ mediaUrl, text, width, height }: MumbleImageProps) => {
+export const MumbleImage: React.FC<MumbleImageProps> = ({ mediaUrl, text, width, height }) => {
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {

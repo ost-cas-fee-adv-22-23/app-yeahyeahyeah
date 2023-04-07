@@ -10,6 +10,7 @@ export * from './mumble/MumbleDetail';
 export * from './mumble/MumbleHeader';
 export * from './mumble/MumblePost';
 export * from './mumble/MumblePostWithShimmer';
+export * from './mumble/MumbleHashtag';
 export * from './navigation/NavigationComponent';
 export * from './alert/Alert';
 export * from './mumble/MumbleLike';

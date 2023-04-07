@@ -70,7 +70,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
 
   return {
     props: {
-      limit: 1000,
+      // TODO: There is no limit and offset for replies yet (missing in the API)
+      limit: 100,
       id,
       fallback: mumble,
       fallbackReplies: mumbles,

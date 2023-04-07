@@ -11,19 +11,19 @@ import {
   Cancel,
   IconLink,
   User,
-  Hashtag,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';
+import { renderHashtags } from '@/components/mumble/MumbleHashtag';
 
 type MumbleProps = {
   type: string;
   handleDeleteCallback?: (id: string) => void;
 } & Mumble;
 
-export const MumblePost = ({
+export const MumblePost: React.FC<MumbleProps> = ({
   id,
   creator,
   text,
@@ -34,7 +34,7 @@ export const MumblePost = ({
   replyCount,
   type,
   handleDeleteCallback,
-}: MumbleProps) => {
+}) => {
   const { data: session }: any = useSession();
   const { data } = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateOnFocus: false,
@@ -42,26 +42,6 @@ export const MumblePost = ({
 
   const handleDelete = (id: string) => {
     handleDeleteCallback && handleDeleteCallback(id);
-  };
-
-  const textWithHashtags = () => {
-    return text.split(' ').map((str, i) => {
-      if (str.startsWith('#')) {
-        return (
-          <React.Fragment key={i}>
-            <Hashtag
-              label={str.replace('#', '')}
-              size="small"
-              linkComponent={Link}
-              href={`/search/${str.replace('#', '')}`}
-              legacyBehavior
-              passHref
-            />{' '}
-          </React.Fragment>
-        );
-      }
-      return str + ' ';
-    });
   };
 
   return (
@@ -100,7 +80,7 @@ export const MumblePost = ({
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph mbSpacing="16">{textWithHashtags()}</Paragraph>
+      <Paragraph mbSpacing="16">{renderHashtags(text, 'small')}</Paragraph>
 
       {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
 
