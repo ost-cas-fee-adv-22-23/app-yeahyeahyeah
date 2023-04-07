@@ -17,6 +17,7 @@ import {
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';
+import { renderHashtags } from './MumbleHashtag';
 
 type MumblePostWithShimmerProps = {
   type: string;
@@ -35,6 +36,8 @@ export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
   type,
   handleDeleteCallback,
 }) => {
+  console.log('MumblePostWithShimmer');
+
   const { data: session }: any = useSession();
   const { data } = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateOnFocus: false,
@@ -55,26 +58,6 @@ export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
       default:
         break;
     }
-  };
-
-  const textWithHashtags = () => {
-    return text.split(' ').map((str, i) => {
-      if (str.startsWith('#')) {
-        return (
-          <React.Fragment key={i}>
-            <Hashtag
-              label={str.replace('#', '')}
-              size="small"
-              linkComponent={Link}
-              href={`/search/${str.replace('#', '')}`}
-              legacyBehavior
-              passHref
-            />{' '}
-          </React.Fragment>
-        );
-      }
-      return str + ' ';
-    });
   };
 
   return (
@@ -121,7 +104,11 @@ export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      {data && data.userName ? <Paragraph mbSpacing="16">{textWithHashtags()}</Paragraph> : <>{handleShimmer('content')}</>}
+      {data && data.userName ? (
+        <Paragraph mbSpacing="16">{renderHashtags(text, 'small')}</Paragraph>
+      ) : (
+        <>{handleShimmer('content')}</>
+      )}
 
       {data && mediaUrl ? (
         <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />

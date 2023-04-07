@@ -16,7 +16,7 @@ import {
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';
-import { MumbleHashtag } from '@/components/mumble/MumbleHashtag';
+import { renderHashtags } from '@/components/mumble/MumbleHashtag';
 
 type MumbleProps = {
   type: string;
@@ -80,9 +80,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph mbSpacing="16">
-        <MumbleHashtag text={text} size="small" />
-      </Paragraph>
+      <Paragraph mbSpacing="16">{renderHashtags(text, 'small')}</Paragraph>
 
       {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
 

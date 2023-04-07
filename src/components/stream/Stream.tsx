@@ -6,7 +6,7 @@ import useOnScreen from '@/hooks/useOnScreen';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { FetchMumbles } from '@/types/fallback';
-import { Mumble, alertService, deleteMumble, searchMumbles } from '@/services';
+import { alertService, deleteMumble } from '@/services';
 import { Button, Container, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles, MumbleHashtag } from '@/components';
 
@@ -68,14 +68,6 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     fetcher,
     {
       revalidateOnFocus: false,
-      refreshInterval: 10000,
-    }
-  );
-
-  const { data: hashtagData } = useSWR(
-    { url: '/api/mumbles', limit: 10, offset: 0, text: '#', token: session?.accessToken },
-    searchMumbles,
-    {
       refreshInterval: 10000,
     }
   );
@@ -160,10 +152,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
                   <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
                 </div>
                 <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
-                  {hashtagData &&
-                    hashtagData.mumbles.map((mumble: Mumble, index) => (
-                      <MumbleHashtag key={index} text={mumble.text} size="xlarge" hashtag={hashtag} />
-                    ))}
+                  <MumbleHashtag size="xlarge" hashtag={hashtag} />
                 </div>
               </>
             )}
