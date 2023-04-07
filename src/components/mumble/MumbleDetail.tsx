@@ -6,7 +6,6 @@ import { elapsedTime } from '@/utils';
 import {
   Avatar,
   CommentButton,
-  Hashtag,
   Paragraph,
   IconLink,
   User,
@@ -14,6 +13,7 @@ import {
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';
+import { MumbleHashtag } from './MumbleHashtag';
 
 type MumbleSingleProps = {
   mumble: Mumble;
@@ -21,26 +21,6 @@ type MumbleSingleProps = {
 };
 
 export const MumbleDetail = ({ mumble, user }: MumbleSingleProps) => {
-  const textWithHashtags = () => {
-    return mumble.text.split(' ').map((str, i) => {
-      if (str.startsWith('#')) {
-        return (
-          <React.Fragment key={i}>
-            <Hashtag
-              label={str.replace('#', '')}
-              size="large"
-              linkComponent={Link}
-              href={`/search/${str.replace('#', '')}`}
-              legacyBehavior
-              passHref
-            />{' '}
-          </React.Fragment>
-        );
-      }
-      return str + ' ';
-    });
-  };
-
   return (
     <ArticleMumble id={mumble.id}>
       <ArticleHeader>
@@ -77,7 +57,7 @@ export const MumbleDetail = ({ mumble, user }: MumbleSingleProps) => {
       </ArticleHeader>
 
       <Paragraph mbSpacing="16" size="large">
-        {textWithHashtags()}
+        <MumbleHashtag text={mumble.text} size="large" />
       </Paragraph>
 
       {mumble.mediaUrl && <MumbleImage mediaUrl={mumble.mediaUrl} text={mumble.text} width={585} height={329.06} />}

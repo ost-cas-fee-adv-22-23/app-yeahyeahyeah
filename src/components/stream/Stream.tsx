@@ -7,9 +7,8 @@ import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { FetchMumbles } from '@/types/fallback';
 import { Mumble, alertService, deleteMumble, searchMumbles } from '@/services';
-import { Button, Container, Hashtag, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles } from '@/components';
-import Link from 'next/link';
+import { Button, Container, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles, MumbleHashtag } from '@/components';
 
 type StreamProps = {
   url: string;
@@ -58,8 +57,6 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     parallel: true,
   });
 
-  console.log('data', data);
-
   const { data: newMumbles } = useSWR(
     {
       url: '/api/mumbles',
@@ -89,8 +86,6 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   }, 800);
 
   useEffect(() => {
-    console.log('data.length * limit', data && data.length * limit);
-    console.log('data[0].count', data && data[0].count);
     // TODO: id is needed on profile page, because there is no possibility for setting offset and limit on endpoint
     if (!id && isOnScreen && !isValidating && data && data.length * limit <= data[0].count)
       handleIntersectionCallbackDebounced();
@@ -127,27 +122,6 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     window.scrollTo(0, 0);
   };
 
-  const renderHashtags = (text: string) => {
-    return text.split(' ').map((str, i) => {
-      if (str.startsWith('#')) {
-        return (
-          <React.Fragment key={i}>
-            <Hashtag
-              label={str.replace('#', '')}
-              size="xlarge"
-              color={str.replace('#', '') === hashtag ? 'violet' : 'slate-300'}
-              linkComponent={Link}
-              href={`/search/${str.replace('#', '')}`}
-              legacyBehavior
-              passHref
-            />{' '}
-          </React.Fragment>
-        );
-      }
-      return ' ';
-    });
-  };
-
   const renderMumbles = (isReply?: boolean) => {
     return (
       <>
@@ -168,13 +142,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
         <>
           {!hashtag && checkForNewMumbles() && (
             <MumbleMessageBox>
-              <Button
-                label={`${quantityNewMumbles()}`}
-                color="gradient"
-                onClick={handleRefreshPage}
-                size="small"
-                width="full"
-              />
+              <Button label={quantityNewMumbles()} color="gradient" onClick={handleRefreshPage} size="small" width="full" />
             </MumbleMessageBox>
           )}
           <Container layout="plain">
@@ -192,7 +160,10 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
                   <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
                 </div>
                 <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
-                  {hashtagData && hashtagData.mumbles.map((mumble: Mumble) => renderHashtags(mumble.text))}
+                  {hashtagData &&
+                    hashtagData.mumbles.map((mumble: Mumble, index) => (
+                      <MumbleHashtag key={index} text={mumble.text} size="xlarge" hashtag={hashtag} />
+                    ))}
                 </div>
               </>
             )}

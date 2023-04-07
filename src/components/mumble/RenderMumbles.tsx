@@ -13,7 +13,6 @@ type RenderMumblesProps = {
 
 export const RenderMumbles: React.FC<RenderMumblesProps> = ({ data, handleDelete, isReply = false }: RenderMumblesProps) => {
   const { data: session }: any = useSession();
-  console.log('isReply', isReply);
 
   return (
     <>
