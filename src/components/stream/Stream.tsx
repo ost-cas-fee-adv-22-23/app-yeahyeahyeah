@@ -29,7 +29,7 @@ type StreamProps = {
   creator?: { id: string };
 };
 
-export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }: StreamProps) => {
+export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }) => {
   const { data: session }: any = useSession();
   const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);

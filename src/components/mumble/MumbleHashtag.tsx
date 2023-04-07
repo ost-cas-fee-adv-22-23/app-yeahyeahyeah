@@ -8,7 +8,7 @@ type MumbleHashtagProps = {
   hashtag?: string;
 };
 
-export const MumbleHashtag: React.FC<MumbleHashtagProps> = ({ text, size, hashtag }: MumbleHashtagProps) => {
+export const MumbleHashtag: React.FC<MumbleHashtagProps> = ({ text, size, hashtag }) => {
   const color = (str: string) => {
     if (hashtag) return str.replace('#', '') === hashtag ? 'violet' : 'slate-300';
     return 'violet';

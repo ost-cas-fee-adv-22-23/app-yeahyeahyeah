@@ -11,7 +11,7 @@ type RenderMumblesProps = {
   isReply?: boolean;
 };
 
-export const RenderMumbles: React.FC<RenderMumblesProps> = ({ data, handleDelete, isReply = false }: RenderMumblesProps) => {
+export const RenderMumbles: React.FC<RenderMumblesProps> = ({ data, handleDelete, isReply = false }) => {
   const { data: session }: any = useSession();
 
   return (
