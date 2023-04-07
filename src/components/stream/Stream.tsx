@@ -89,9 +89,11 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   }, 800);
 
   useEffect(() => {
-    let quantityTotal = 0;
-    if (data && data[0].count > 0) quantityTotal = data[0].count;
-    if (isOnScreen && !isValidating && data && data.length * limit <= quantityTotal) handleIntersectionCallbackDebounced();
+    console.log('data.length * limit', data && data.length * limit);
+    console.log('data[0].count', data && data[0].count);
+    // TODO: id is needed on profile page, because there is no possibility for setting offset and limit on endpoint
+    if (!id && isOnScreen && !isValidating && data && data.length * limit <= data[0].count)
+      handleIntersectionCallbackDebounced();
   });
 
   const checkForNewMumbles = () => {
