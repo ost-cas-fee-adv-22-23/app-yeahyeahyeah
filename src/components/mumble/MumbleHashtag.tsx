@@ -1,6 +1,6 @@
-import { Hashtag } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import Link from 'next/link';
 import React from 'react';
+import Link from 'next/link';
+import { Hashtag } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 type MumbleHashtagProps = {
   text: string;
