@@ -66,7 +66,8 @@ const MumblePage = ({
 export const getServerSideProps: GetServerSideProps = async ({ req, query: { id } }) => {
   const mumble: FetchSingleMumble = await fetchSingleMumble({ id: id as string });
   const mumbles: FetchMumbles = await fetchReplies({ id: id as string });
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req });
+
   const user: User | string = token?.accessToken ? await fetchUser({ id: mumble.creator, token: token?.accessToken }) : '';
 
   return {
