@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { NextSeo } from 'next-seo';
 import tw from 'twin.macro';
+import Message from '../../../data/content.json';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
 import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
@@ -46,11 +47,11 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                 fCallBack={(value) => handleSelection(value)}
                 options={[
                   {
-                    label: 'Deine Mumbles',
+                    label: `${Message.contents.switch.mumbles}`,
                     value: 'mumbles',
                   },
                   {
-                    label: 'Deine Likes',
+                    label: `${Message.contents.switch.mumbles}`,
                     value: 'likes',
                   },
                 ]}

@@ -145,7 +145,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         form={{
           name: 'textbox-mumble',
           errorMessage: errorMessage,
-          placeholder: `${Message.contents.form.placeholder}`,
+          placeholder: `${Message.contents.form.placeholder_1}`,
         }}
         setInputValue={setInputValue}
         inputValue={inputValue}

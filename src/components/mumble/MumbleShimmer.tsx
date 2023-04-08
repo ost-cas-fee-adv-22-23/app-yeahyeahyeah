@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Message from '../../../data/content.json';
 import tw, { styled } from 'twin.macro';
 import { Avatar, User } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
@@ -13,7 +14,12 @@ export const MumbleShimmer: React.FC<MumbleShimmerProps> = ({ id, type }) => {
     <ArticleMumble id={id} type={type}>
       <ArticleHeader type={type}>
         <Link href={`/profile/profile`} title={'title'} target="_self">
-          <Avatar key={id} variant={type === 'post' ? 'medium' : 'small'} src={'/schielen.jpeg'} alt={'username'} />
+          <Avatar
+            key={id}
+            variant={type === 'post' ? 'medium' : 'small'}
+            src={`${Message.contents.defaultAvatar.image}`}
+            alt={`${Message.contents.userName.text}`}
+          />
         </Link>
         <ArticleHeaderContent>
           <User label={'Username'} variant="medium" />

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import tw, { styled } from 'twin.macro';
+import Message from '../../../data/content.json';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
@@ -51,15 +52,15 @@ export const MumblePost: React.FC<MumbleProps> = ({
           <Avatar
             key={creator ? creator : ''}
             variant={type === 'post' ? 'medium' : 'small'}
-            src={data && data.avatarUrl !== '' ? data.avatarUrl : '/schielen.jpeg'}
-            alt={data ? data.userName : 'username'}
+            src={data && data.avatarUrl !== '' ? data.avatarUrl : `${Message.contents.defaultAvatar.image}`}
+            alt={data ? data.userName : `${Message.contents.userName.text}`}
           />
         </Link>
         <ArticleHeaderContent>
-          <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
+          <User label={data ? `${data.firstName} ${data.lastName}` : `${Message.contents.userName.text}`} variant="medium" />
           <ArticleDatas>
             <IconLink
-              label={data ? data.userName : 'username'}
+              label={data ? data.userName : `${Message.contents.userName.text}`}
               type="username"
               color="violet"
               href={`/profile/${creator}`}

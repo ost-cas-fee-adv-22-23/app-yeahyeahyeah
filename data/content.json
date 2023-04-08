@@ -23,6 +23,12 @@
     },
     "fileError": {
       "text": "Die Datei ist zu gross. Die Datei darf nur max. 5 MB gross sein."
+    },
+    "dislikeError": {
+      "text": "Could not dislike mumble"
+    },
+    "likeError": {
+      "text": "Could not like mumble"
     }
   },
   "contents": {
@@ -36,7 +42,12 @@
       "image": "/schielen.jpeg"
     },
     "form": {
-      "placeholder": "Deine Meinung zählt..."
+      "placeholder_1": "Deine Meinung zählt...",
+      "placeholder_2": "Bitte gibt sie einen Text ein"
+    },
+    "switch": {
+      "mumbles": "Deine Mumbles",
+      "likes": "Deine Likes"
     }
   }
 }
