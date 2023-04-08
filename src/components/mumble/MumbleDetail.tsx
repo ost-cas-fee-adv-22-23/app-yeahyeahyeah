@@ -13,7 +13,7 @@ import {
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';
-import { MumbleHashtag, renderHashtags } from './MumbleHashtag';
+import { renderHashtags } from './MumbleHashtag';
 
 type MumbleSingleProps = {
   mumble: Mumble;
