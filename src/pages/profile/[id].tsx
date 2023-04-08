@@ -104,7 +104,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
   const limit = 2;
   const _id = id as string;
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req });
   const user: User | string = token?.accessToken ? await fetchUser({ id: _id, token: token?.accessToken }) : '';
   const myMumbles: FetchMumbles = await fetchMyMumbles({ creator: _id, token: token?.accessToken });
   const myLikes: FetchMumbles = await fetchMyLikes({ token: token?.accessToken });
