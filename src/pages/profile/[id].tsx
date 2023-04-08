@@ -30,7 +30,9 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
     <>
       <NextSeo
         title={`${session && session.user.firstname} ${session && session.user.lastname}'s mumble profile`}
-        description={`Profile of ${session && session.user.username}`}
+        description={`Das Mumble-Profile von ${
+          session && session.user.username
+        }. Mumble, die Chat-App des CAS Frontend Engineer Advanced 2023.`}
         canonical={process.env.NEXT_PUBLIC_URL}
       />
 
@@ -39,7 +41,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
 
         {session?.user.id === creator.id ? (
           <>
-            <div tw="flex flex-row mt-16 w-full sm:(mt-0)">
+            <SwitchContentWrapper>
               <Switch
                 fCallBack={(value) => handleSelection(value)}
                 options={[
@@ -54,7 +56,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                 ]}
                 value="mumbles"
               />
-            </div>
+            </SwitchContentWrapper>
 
             <SelectionWrapper>
               {selection === 'mumbles' && (
@@ -130,4 +132,5 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
 
 export default ProfilePage;
 
+const SwitchContentWrapper = tw.div`flex flex-row mt-16 w-full sm:(mt-0)`;
 const SelectionWrapper = tw.div`mt-16 mb-16`;
