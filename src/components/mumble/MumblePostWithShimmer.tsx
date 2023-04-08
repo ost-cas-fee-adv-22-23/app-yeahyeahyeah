@@ -36,8 +36,6 @@ export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
   type,
   handleDeleteCallback,
 }) => {
-  console.log('MumblePostWithShimmer');
-
   const { data: session }: any = useSession();
   const { data } = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateOnFocus: false,
