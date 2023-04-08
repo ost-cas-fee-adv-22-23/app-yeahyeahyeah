@@ -74,7 +74,10 @@ export const Alert: React.FC<AlertProps> = ({ id = 'default-alert', fade = true 
     <>
       {alerts.map((alert: Alerts, index: number) => (
         <AlertWrapper key={index} id={id}>
-          <span css={AlertContent.span()} dangerouslySetInnerHTML={{ __html: alert.message }}></span>
+          <AlertContentWrapper
+            css={AlertContent.span()}
+            dangerouslySetInnerHTML={{ __html: alert.message }}
+          ></AlertContentWrapper>
           <Cancel css={Close.svg()} onClick={() => removeAlert(alert)} />
         </AlertWrapper>
       ))}
@@ -100,6 +103,7 @@ const Close = {
     tw`hover:(fill-slate-white rotate-180 transform-gpu duration-500 scale-150 !opacity-100)`,
   ],
 };
+const AlertContentWrapper = tw.span`flex`;
 const AlertContent = {
   span: () => [tw`grow`],
 };
