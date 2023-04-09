@@ -49,7 +49,7 @@ export const MumbleHeader: React.FC<MumbleHeaderProps> = ({ creator, fallbackUse
         <AvatarWrapper>
           <Avatar
             variant="xlarge"
-            src={user.avatarUrl ? user.avatarUrl : `${Message.contents.userName.text}`}
+            src={user.avatarUrl ? user.avatarUrl : `${Message.contents.defaultAvatar.image}`}
             alt={user.userName}
           />
         </AvatarWrapper>
