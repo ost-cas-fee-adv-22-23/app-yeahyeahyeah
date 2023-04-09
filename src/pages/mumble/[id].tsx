@@ -39,10 +39,14 @@ const MumblePage = ({
     refreshInterval: 10000,
   });
 
-  const { data: user }: any = useSWR({ url: '/api/user', id: mumble?.creator, token: session?.accessToken }, fetchUser, {
-    ...swrConfig,
-    fallbackData: fallbackUser,
-  });
+  const { data: user }: any = useSWR(
+    session?.accessToken ? { url: '/api/user', id: mumble?.creator, token: session?.accessToken } : null,
+    fetchUser,
+    {
+      ...swrConfig,
+      fallbackData: fallbackUser,
+    }
+  );
 
   return (
     <>

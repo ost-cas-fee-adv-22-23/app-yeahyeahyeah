@@ -58,13 +58,15 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   });
 
   const { data: newMumbles } = useSWR(
-    {
-      url: '/api/mumbles',
-      newerThanMumbleId: data && data[0]?.mumbles[0]?.id,
-      limit,
-      offset: 0,
-      token: session?.accessToken,
-    },
+    id || hashtag || creator
+      ? null
+      : {
+          url: '/api/mumbles',
+          newerThanMumbleId: data && data[0]?.mumbles[0]?.id,
+          limit,
+          offset: 0,
+          token: session?.accessToken,
+        },
     fetcher,
     {
       revalidateOnFocus: false,

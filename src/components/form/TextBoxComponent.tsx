@@ -24,9 +24,13 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   const [file, setFile] = useState<UploadImage | null>(null);
   let res: Mumble | null = null;
 
-  const { data: user }: any = useSWR({ url: '/api/user', id: session?.user?.id, token: session?.accessToken }, fetchUser, {
-    revalidateOnFocus: false,
-  });
+  const { data: user }: any = useSWR(
+    session?.accessToken ? { url: '/api/user', id: session?.user?.id, token: session?.accessToken } : null,
+    fetchUser,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   const clearFormValues = () => {
     setInputValue('');
