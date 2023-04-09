@@ -38,8 +38,6 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
     token: token?.accessToken || '',
   });
 
-  console.log('mumbles', mumbles);
-
   return {
     props: {
       limit,
