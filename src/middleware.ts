@@ -1,21 +1,19 @@
+import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  const { cookies } = request;
-  const jwt = cookies.has('next-auth.session-token') || cookies.has('__Secure-next-auth.session-token');
+export async function middleware(req: NextRequest, res: NextResponse) {
+  const token = await getToken({ req });
 
-  if (request.nextUrl.pathname.startsWith('/profile') || request.nextUrl.pathname.startsWith('/mumble')) {
-    if (!jwt) {
-      return NextResponse.redirect(new URL('/landingpage', request.url));
+  if (req.nextUrl.pathname.startsWith('/profile') || req.nextUrl.pathname.startsWith('/mumble')) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/landingpage', req.url));
     }
   }
-
-  if (request.nextUrl.pathname.startsWith('/landingpage')) {
-    if (jwt) {
-      return NextResponse.redirect(new URL('/', request.url));
+  if (req.nextUrl.pathname.startsWith('/landingpage')) {
+    if (token) {
+      return NextResponse.redirect(new URL('/', req.url));
     }
   }
-
   return NextResponse.next();
 }
 

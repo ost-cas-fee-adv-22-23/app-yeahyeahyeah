@@ -5,28 +5,28 @@ import { fetchMumbles } from '@/services';
 import { Stream } from '@/components/stream/Stream';
 import { NextSeo } from 'next-seo';
 import Content from '../../data/content.json';
+import { getToken } from 'next-auth/jwt';
 
-export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
+export default function Page({ limit, fallback }: { limit: number; fallback: FetchMumbles }) {
   console.log(Content.seo.home.title);
 
   return (
     <>
       <NextSeo title={`${Content.seo.home.title}`} description={`${Content.seo.home.description}`} />
-      <Stream url="/api/mumbles" limit={limit} fallback={fallback['/api/mumbles']} fetcher={fetchMumbles} />
+      <Stream url="/api/mumbles" limit={limit} fallback={fallback} fetcher={fetchMumbles} />
     </>
   );
 }
 
-export const getServerSideProps: GetServerSideProps<any> = async () => {
+export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
   const limit = 2;
-  const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0 });
+  const token = await getToken({ req });
+  const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0, token: token?.accessToken || '' });
 
   return {
     props: {
       limit,
-      fallback: {
-        '/api/mumbles': mumbles,
-      },
+      fallback: mumbles,
     },
   };
 };
