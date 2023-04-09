@@ -5,6 +5,7 @@ import { FetchMumbles } from '@/types/fallback';
 import { searchMumbles } from '@/services';
 import { Stream } from '@/components/stream/Stream';
 import { NextSeo } from 'next-seo';
+import { IncomingMessage } from 'http';
 
 const HashtagPage = ({ limit, fallback, hashtag }: { limit: number; fallback: FetchMumbles; hashtag: string }) => {
   return (
@@ -14,7 +15,17 @@ const HashtagPage = ({ limit, fallback, hashtag }: { limit: number; fallback: Fe
     </>
   );
 };
-export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { hashtag } }: { req: any; query: any }) => {
+export const getServerSideProps: GetServerSideProps<any> = async ({
+  req,
+  query: { hashtag },
+}: {
+  req: IncomingMessage & {
+    cookies: Partial<{
+      [key: string]: string;
+    }>;
+  };
+  query: any;
+}) => {
   const limit = 2;
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const mumbles: FetchMumbles = await searchMumbles({
