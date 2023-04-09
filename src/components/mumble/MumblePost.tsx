@@ -37,9 +37,13 @@ export const MumblePost: React.FC<MumbleProps> = ({
   handleDeleteCallback,
 }) => {
   const { data: session }: any = useSession();
-  const { data } = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
-    revalidateOnFocus: false,
-  });
+  const { data } = useSWR(
+    session?.accessToken ? { url: '/api/user', id: creator, token: session?.accessToken } : null,
+    fetchUser,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   const handleDelete = (id: string) => {
     handleDeleteCallback && handleDeleteCallback(id);

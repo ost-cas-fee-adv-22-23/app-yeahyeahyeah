@@ -20,7 +20,7 @@ export const NavigationComponent: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const { data: user, isLoading }: any = useSWR(
-    { url: '/api/user', id: session?.user?.id, token: session?.accessToken },
+    session?.accessToken ? { url: '/api/user', id: session?.user?.id, token: session?.accessToken } : null,
     fetchUser,
     {
       revalidateOnFocus: false,

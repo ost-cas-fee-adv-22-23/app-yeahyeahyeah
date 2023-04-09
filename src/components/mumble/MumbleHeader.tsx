@@ -30,10 +30,14 @@ export const MumbleHeader: React.FC<MumbleHeaderProps> = ({ creator, fallbackUse
     console.log('image clicked', { name: 'MumbleHeaderIconClick' });
   };
 
-  const { data: user } = useSWR({ url: '/api/user', id: creator.id, token: session?.accessToken }, fetchUser, {
-    ...swrConfig,
-    fallbackData: fallbackUser,
-  });
+  const { data: user } = useSWR(
+    session?.accessToken ? { url: '/api/user', id: creator.id, token: session?.accessToken } : null,
+    fetchUser,
+    {
+      ...swrConfig,
+      fallbackData: fallbackUser,
+    }
+  );
 
   return (
     <>

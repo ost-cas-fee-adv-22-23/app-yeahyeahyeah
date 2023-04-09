@@ -8,8 +8,6 @@ import Content from '../../data/content.json';
 import { getToken } from 'next-auth/jwt';
 
 export default function Page({ limit, fallback }: { limit: number; fallback: FetchMumbles }) {
-  console.log(Content.seo.home.title);
-
   return (
     <>
       <NextSeo title={`${Content.seo.home.title}`} description={`${Content.seo.home.description}`} />
