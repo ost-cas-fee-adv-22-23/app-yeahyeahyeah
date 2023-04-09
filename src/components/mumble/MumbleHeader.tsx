@@ -1,6 +1,7 @@
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 import useSWR from 'swr';
+import Message from '../../../data/content.json';
 import { useSession } from 'next-auth/react';
 import {
   Avatar,
@@ -46,7 +47,11 @@ export const MumbleHeader: React.FC<MumbleHeaderProps> = ({ creator, fallbackUse
           />
         </ImageWrapper>
         <AvatarWrapper>
-          <Avatar variant="xlarge" src={user.avatarUrl ? user.avatarUrl : '/schielen.jpeg'} alt="Username" />
+          <Avatar
+            variant="xlarge"
+            src={user.avatarUrl ? user.avatarUrl : `${Message.contents.userName.text}`}
+            alt={user.userName}
+          />
         </AvatarWrapper>
         <UserDataWrapper>
           <User label={`${user.firstName} ${user.lastName}`} variant="xlarge" />

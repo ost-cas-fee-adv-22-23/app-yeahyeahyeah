@@ -51,11 +51,12 @@ const MumblePage = ({
         description={mumble && `${mumble.text}`}
         canonical={process.env.NEXT_PUBLIC_URL}
       />
+      <Container layout="plain">
+        <Alert />
+      </Container>
       <Container layout="box">
         {mumble && <MumbleDetail mumble={mumble} user={user} />}
-        <Container layout="plain">
-          <Alert />
-        </Container>
+        <Container layout="plain"></Container>
         <Stream url="/api/replies" id={id} limit={limit} fallback={fallbackReplies} fetcher={fetchReplies} />
       </Container>
     </>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
+import Message from '../../../data/content.json';
 import { likeMumble, dislikeMumble } from '@/services';
 import { LikeButton } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
@@ -17,13 +18,13 @@ export const MumbleLike: React.FC<MumbleLikeProps> = ({ id, favourite, quantity 
       try {
         await dislikeMumble({ id: id, token: session?.accessToken });
       } catch (error) {
-        throw new Error(error instanceof Error ? error.message : 'Could not dislike mumble');
+        throw new Error(error instanceof Error ? error.message : `${Message.alerts.dislikeError.text}`);
       }
     } else {
       try {
         await likeMumble({ id: id, token: session?.accessToken });
       } catch (error) {
-        throw new Error(error instanceof Error ? error.message : 'Could not like mumble');
+        throw new Error(error instanceof Error ? error.message : `${Message.alerts.likeError.text}`);
       }
     }
   };

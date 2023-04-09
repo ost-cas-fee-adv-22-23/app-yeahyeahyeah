@@ -1,6 +1,7 @@
 import React from 'react';
 import tw from 'twin.macro';
 import Link from 'next/link';
+import Message from '../../../data/content.json';
 import { Mumble, User as TUser } from '@/services';
 import { elapsedTime } from '@/utils';
 import {
@@ -13,7 +14,7 @@ import {
 import { MumbleLike } from './MumbleLike';
 import { MumbleShare } from './MumbleShare';
 import { MumbleImage } from './MumbleImage';
-import { MumbleHashtag, renderHashtags } from './MumbleHashtag';
+import { renderHashtags } from './MumbleHashtag';
 
 type MumbleSingleProps = {
   mumble: Mumble;
@@ -27,18 +28,18 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
         <Avatar
           key={user?.id}
           variant="medium"
-          src={user?.avatarUrl !== '' ? user.avatarUrl : '/schielen.jpeg'}
-          alt={user ? user.userName : 'username'}
+          src={user?.avatarUrl !== '' ? user.avatarUrl : `${Message.contents.defaultAvatar.image}`}
+          alt={user ? user.userName : `${Message.contents.userName.text}`}
           href={`/profile/${user && user.id}`}
           legacyBehavior
           passHref
           linkComponent={Link}
         />
         <ArticleHeaderContent>
-          <User label={user ? `${user.firstName} ${user.lastName}` : 'Username'} variant="large" />
+          <User label={user ? `${user.firstName} ${user.lastName}` : `${Message.contents.userName.text}`} variant="large" />
           <ArticleDatas>
             <IconLink
-              label={user ? user.userName : 'username'}
+              label={user ? user.userName : `${Message.contents.userName.text}`}
               type="username"
               color="violet"
               href={`/profile/${user && user.id}`}

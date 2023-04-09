@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import debounce from 'lodash.debounce';
 import useSWR from 'swr';
 import { FileRejection } from 'react-dropzone';
+import Message from '../../../data/content.json';
 import { postMumble, Mumble, UploadImage, postReply, alertService, fetchUser } from '@/services';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
@@ -34,12 +35,12 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
 
   const addText = async () => {
     if (inputValue === '') {
-      setErrorMessage('Bitte füllen Sie das Feld aus.');
+      setErrorMessage(Message.alerts.error.text);
       return;
     }
 
     if (!session?.accessToken) {
-      alertService.error('Bitte melde dich an, sonst kannst du nicht posten!!', {
+      alertService.error(`${Message.alerts.textBox.text}`, {
         autoClose: false,
         keepAfterRouteChange: false,
       });
@@ -55,10 +56,10 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         clearFormValues();
 
         if (!res) {
-          throw new Error('Something was not okay with posting a reply.');
+          throw new Error(Message.alerts.postError.text);
         }
       } catch (error) {
-        throw new Error(error instanceof Error ? error.message : 'Could not post a reply.');
+        throw new Error(error instanceof Error ? error.message : Message.alerts.catchError.text);
       }
     } else {
       try {
@@ -68,10 +69,10 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         clearFormValues();
 
         if (!res) {
-          throw new Error('Something was not okay with posting a mumble.');
+          throw new Error(Message.alerts.postError.text);
         }
       } catch (error) {
-        throw new Error(error instanceof Error ? error.message : 'Could not post a mumble.');
+        throw new Error(error instanceof Error ? error.message : Message.alerts.postMumbleError.text);
       }
     }
   };
@@ -101,7 +102,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     if (newFile.size > 1024 * 1024 * 5) {
       const fileSizeBytes: number = newFile.size;
       const fileSizeMB = (Math.round(fileSizeBytes / 1024) / 1024).toFixed(1);
-      setErrorMessage(`Deine Datei ist ${fileSizeMB} MB gross, sollte aber max. 5 MB sein.`);
+      setErrorMessage(`${fileSizeMB}: ${Message.alerts.fileError.text}`);
     }
 
     setFile(
@@ -128,13 +129,13 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
       <TextBox
         variant={variant}
         user={{
-          label: 'Hey, was läuft?',
-          username: user ? user.userName : 'username',
+          label: `${Message.contents.textBox.text}`,
+          username: user ? user.userName : `${Message.contents.userName.text}`,
           href: user && user.id ? `/profile/${user.id}` : '/landingpage',
           avatar: {
-            src: user && user.avatarUrl !== '' ? user.avatarUrl : '/schielen.jpeg',
-            alt: user ? user.userName : 'username',
-            title: user ? user.userName : 'username',
+            src: user && user.avatarUrl !== '' ? user.avatarUrl : `${Message.contents.defaultAvatar.image}`,
+            alt: user ? user.userName : `${Message.contents.userName.text}`,
+            title: user ? user.userName : `${Message.contents.userName.text}`,
             href: user && user.id ? `/profile/${session?.user?.id}` : '/landingpage',
             legacyBehavior: true,
             passHref: true,
@@ -144,7 +145,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         form={{
           name: 'textbox-mumble',
           errorMessage: errorMessage,
-          placeholder: 'Deine Meinung zählt ...',
+          placeholder: `${Message.contents.form.placeholder_1}`,
         }}
         setInputValue={setInputValue}
         inputValue={inputValue}

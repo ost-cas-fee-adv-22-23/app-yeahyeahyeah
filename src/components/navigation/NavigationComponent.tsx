@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { fetchUser } from '@/services';
+import Message from '../../../data/content.json';
 import { FormSettings } from '../form/FormSettings';
 import {
   Avatar,
@@ -13,7 +14,6 @@ import {
   NavigationColumn,
   NavigationRow,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 export const NavigationComponent: React.FC = () => {
   const { data: session }: any = useSession();
@@ -60,8 +60,8 @@ export const NavigationComponent: React.FC = () => {
                     linkComponent={Link}
                   >
                     <Avatar
-                      alt={user && user.userName ? `${user.userName}` : 'username'}
-                      src={user && user.avatarUrl ? user.avatarUrl : '/schielen.jpeg'}
+                      alt={user && user.userName ? `${user.userName}` : `${Message.contents.userName.text}`}
+                      src={user && user.avatarUrl ? user.avatarUrl : `${Message.contents.defaultAvatar.image}`}
                       variant="small"
                     />
                   </NaviButton>
@@ -69,7 +69,7 @@ export const NavigationComponent: React.FC = () => {
                   <NaviButton label="Logout" variant="default" icon="logout" onClick={() => signOut()} />
                 </>
               )}
-              {!session?.accessToken && !user && !isLoading && (
+              {!session?.accessToken && !user && (
                 <NaviButton label="Login" variant="default" icon="logout" onClick={() => signIn('zitadel')} />
               )}
             </NavigationRow>

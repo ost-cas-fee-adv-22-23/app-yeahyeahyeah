@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import tw, { styled } from 'twin.macro';
+import Message from '../../../data/content.json';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
@@ -11,7 +12,6 @@ import {
   Cancel,
   IconLink,
   User,
-  Hashtag,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { MumbleLike } from './MumbleLike';
@@ -36,8 +36,6 @@ export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
   type,
   handleDeleteCallback,
 }) => {
-  console.log('MumblePostWithShimmer');
-
   const { data: session }: any = useSession();
   const { data } = useSWR({ url: '/api/user', id: creator, token: session?.accessToken }, fetchUser, {
     revalidateOnFocus: false,
@@ -67,12 +65,12 @@ export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
           <Avatar
             key={creator ? creator : ''}
             variant={type === 'post' ? 'medium' : 'small'}
-            src={data && data.avatarUrl !== '' ? data.avatarUrl : '/schielen.jpeg'}
-            alt={data ? data.userName : 'username'}
+            src={data && data.avatarUrl !== '' ? data.avatarUrl : `${Message.contents.defaultAvatar.image}`}
+            alt={data ? data.userName : `${Message.contents.userName.text}`}
           />
         </Link>
         <ArticleHeaderContent>
-          <User label={data ? `${data.firstName} ${data.lastName}` : 'Username'} variant="medium" />
+          <User label={data ? `${data.firstName} ${data.lastName}` : `${Message.contents.userName.text}`} variant="medium" />
           <ArticleDatas>
             {data && data.userName ? (
               <IconLink

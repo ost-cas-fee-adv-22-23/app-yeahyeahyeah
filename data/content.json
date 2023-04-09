@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "home": {
+      "title": "Mumble - Willkommen auf Mumble",
+      "description": "Die Chat-App des CAS Frontend Engineers Advanced 2023"
+    }
+  },
+  "alerts": {
+    "textBox": {
+      "text": "Du musst angemeldet sein, um Mumbles zu posten!"
+    },
+    "error": {
+      "text": "Das Textfeld darf nicht leer sein."
+    },
+    "postError": {
+      "text": "Something was not okay with posting a reply."
+    },
+    "catchError": {
+      "text": "Could not post a reply."
+    },
+    "postMumbleError": {
+      "text": "Could not post mumble."
+    },
+    "fileError": {
+      "text": "Die Datei ist zu gross. Die Datei darf nur max. 5 MB gross sein."
+    },
+    "dislikeError": {
+      "text": "Could not dislike mumble"
+    },
+    "likeError": {
+      "text": "Could not like mumble"
+    }
+  },
+  "contents": {
+    "textBox": {
+      "text": "Hey, was läuft?"
+    },
+    "userName": {
+      "text": "username"
+    },
+    "defaultAvatar": {
+      "image": "/schielen.jpeg"
+    },
+    "form": {
+      "placeholder_1": "Deine Meinung zählt...",
+      "placeholder_2": "Bitte gibt sie einen Text ein"
+    },
+    "switch": {
+      "mumbles": "Deine Mumbles",
+      "likes": "Deine Likes"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import debounce from 'lodash.debounce';
+import Message from '../../../data/content.json';
 import { Button, InputForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 export const FormSettings: React.FC = () => {
@@ -8,7 +9,7 @@ export const FormSettings: React.FC = () => {
 
   const handlePressEnter = () => {
     if (inputValue === '') {
-      setErrorMessage('Bitte füllen Sie das Formular aus.');
+      setErrorMessage(`${Message.alerts.error.text}`);
       return;
     }
     setInputValue('');
@@ -35,7 +36,7 @@ export const FormSettings: React.FC = () => {
         key={'settings-firstname'}
         label="Name und Vorname"
         editType={'input'}
-        placeholder={'Bitte geben sie einen Text ein '}
+        placeholder={`${Message.contents.form.placeholder_2}`}
         required={true}
         autoComplete={'off'}
         setInputValue={setInputValue}
@@ -49,7 +50,7 @@ export const FormSettings: React.FC = () => {
         key={'settings-email'}
         label="E-Mail"
         editType={'input'}
-        placeholder={'Bitte geben sie einen Text ein '}
+        placeholder={`${Message.contents.form.placeholder_2}`}
         required={true}
         autoComplete={'off'}
         setInputValue={setInputValue}
@@ -64,7 +65,7 @@ export const FormSettings: React.FC = () => {
           icon="cancel"
           color="slate"
           width="full"
-          onClick={() => console.log('close modal clicked')}
+          onClick={() => console.log('close modal clicked')} // Todo: remove function or do something with it!
         />
         <Button label="Speichern" icon="send" color="violet" width="full" />
       </div>
