@@ -7,7 +7,7 @@ import { NextSeo } from 'next-seo';
 import Content from '../../data/content.json';
 import { getToken } from 'next-auth/jwt';
 
-export default function Page({ limit, fallback }: { limit: number; fallback: { '/api/mumbles': FetchMumbles } }) {
+export default function Page({ limit, fallback }: { limit: number; fallback: FetchMumbles }) {
   console.log(Content.seo.home.title);
 
   return (
