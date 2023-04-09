@@ -4,13 +4,14 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function middleware(req: NextRequest, res: NextResponse) {
   const token = await getToken({ req });
 
-  if (req.nextUrl.pathname.startsWith('/profile') || req.nextUrl.pathname.startsWith('/mumble')) {
-    if (!token) {
+  if (!token) {
+    if (req.nextUrl.pathname.startsWith('/profile') || req.nextUrl.pathname.startsWith('/mumble')) {
       return NextResponse.redirect(new URL('/landingpage', req.url));
     }
   }
-  if (req.nextUrl.pathname.startsWith('/landingpage')) {
-    if (token) {
+
+  if (token) {
+    if (req.nextUrl.pathname.startsWith('/landingpage')) {
       return NextResponse.redirect(new URL('/', req.url));
     }
   }
