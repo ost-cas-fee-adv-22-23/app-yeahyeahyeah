@@ -14,9 +14,9 @@ import { Stream } from '@/components/stream/Stream';
 type MumbleHeaderProps = {
   creator: any;
   limit: number;
-  fallbackUser: { '/api/user': User };
-  fallBackMyMumbles: { '/api/myMumbles': FetchMumbles };
-  fallBackMyLikes: { '/api/myLikes': FetchMumbles };
+  fallbackUser: User;
+  fallBackMyMumbles: FetchMumbles;
+  fallBackMyLikes: FetchMumbles;
 };
 
 const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBackMyLikes }: MumbleHeaderProps) => {
@@ -64,7 +64,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                 <Stream
                   url="/api/myMumbles"
                   limit={limit}
-                  fallback={fallBackMyMumbles['/api/myMumbles']}
+                  fallback={fallBackMyMumbles}
                   fetcher={fetchMyMumbles}
                   creator={creator}
                 />
@@ -74,7 +74,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                   url="/api/myLikes"
                   // TODO: limit is set to 20 because we have to intercept the data in the fetcher function
                   limit={20}
-                  fallback={fallBackMyLikes['/api/myLikes']}
+                  fallback={fallBackMyLikes}
                   fetcher={fetchMyLikes}
                   creator={creator}
                 />
@@ -87,7 +87,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
               <Stream
                 url="/api/myMumbles"
                 limit={limit}
-                fallback={fallBackMyMumbles['/api/myMumbles']}
+                fallback={fallBackMyMumbles}
                 fetcher={fetchMyMumbles}
                 creator={creator}
               />
@@ -106,27 +106,21 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
 
   const token = await getToken({ req });
   const user: User | string = token?.accessToken ? await fetchUser({ id: _id, token: token?.accessToken }) : '';
-  const myMumbles: FetchMumbles = await fetchMyMumbles({ creator: _id, token: token?.accessToken });
+  const myMumbles: FetchMumbles = await fetchMyMumbles({ creator: _id, limit, token: token?.accessToken });
   const myLikes: FetchMumbles = await fetchMyLikes({ token: token?.accessToken });
 
   return {
     props: {
       creator: id && { id: _id },
       limit,
-      fallbackUser: {
-        '/api/user': user || {
-          userName: 'username',
-          firstName: 'Unknown',
-          lastName: 'User',
-          avatarUrl: '',
-        },
+      fallbackUser: user || {
+        userName: 'username',
+        firstName: 'Unknown',
+        lastName: 'User',
+        avatarUrl: '',
       },
-      fallBackMyMumbles: {
-        '/api/myMumbles': myMumbles,
-      },
-      fallBackMyLikes: {
-        '/api/myLikes': myLikes,
-      },
+      fallBackMyMumbles: myMumbles,
+      fallBackMyLikes: myLikes,
     },
   };
 };

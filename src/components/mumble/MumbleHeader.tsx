@@ -14,7 +14,7 @@ import { fetchUser, User as TUser } from '@/services';
 
 type MumbleHeaderProps = {
   creator: any;
-  fallbackUser: { '/api/user': TUser };
+  fallbackUser: TUser;
 };
 
 const swrConfig = {
@@ -32,7 +32,7 @@ export const MumbleHeader: React.FC<MumbleHeaderProps> = ({ creator, fallbackUse
 
   const { data: user } = useSWR({ url: '/api/user', id: creator.id, token: session?.accessToken }, fetchUser, {
     ...swrConfig,
-    fallbackData: fallbackUser['/api/user'],
+    fallbackData: fallbackUser,
   });
 
   return (
