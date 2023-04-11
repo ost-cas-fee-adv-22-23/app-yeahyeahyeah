@@ -7,9 +7,8 @@ import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
 import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
-import { Header } from '@/components';
+import { Header, Stream } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { Stream } from '@/components/stream/Stream';
 
 type HeaderProps = {
   creator: any;

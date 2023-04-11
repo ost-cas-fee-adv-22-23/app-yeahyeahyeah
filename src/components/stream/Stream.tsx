@@ -1,10 +1,12 @@
 import React from 'react';
-import tw from 'twin.macro';
 import { FetchMumbles } from '@/types/fallback';
-import { Button, Container, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, Listing, Hashtag } from '@/components';
 import { useStream } from '@/hooks';
 import { MumbleFetcher } from '@/types/swr';
+import { Listing } from '../mumble/Listing';
+import { LoadingSpinner } from '../loading/LoadingSpinner';
+import { ErrorBox } from '../error/ErrorBox';
+import { Timeline } from '../mumble/Timeline';
+import { TextBoxComponent } from '../form/TextBoxComponent';
 
 type StreamProps = {
   url: string;
@@ -46,35 +48,16 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   return (
     <>
       {renderTimeline ? (
-        <>
-          {!hashtag && checkForNewMumbles && (
-            <MumbleMessageBox>
-              <Button label={quantityNewMumbles} color="gradient" onClick={handleRefreshPage} size="small" width="full" />
-            </MumbleMessageBox>
-          )}
-          <Container layout="plain">
-            {!hashtag && !creator && (
-              <>
-                <WelcomeText />
-                <Alert />
-                <TextBoxComponent variant="write" mutate={mutate} data={data} />
-              </>
-            )}
-            {hashtag && (
-              <>
-                <div tw="mb-16 mx-16">
-                  <Heading label="Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
-                  <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
-                </div>
-                <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
-                  <Hashtag size="xlarge" hashtag={hashtag} />
-                </div>
-              </>
-            )}
-
-            {renderMumbles()}
-          </Container>
-        </>
+        <Timeline
+          data={data}
+          mutate={mutate}
+          checkForNewMumbles={checkForNewMumbles}
+          quantityNewMumbles={quantityNewMumbles}
+          handleRefreshPage={handleRefreshPage}
+          renderMumbles={renderMumbles}
+          hashtag={hashtag}
+          creator={creator}
+        />
       ) : (
         <>
           {id ? (
@@ -90,5 +73,3 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     </>
   );
 };
-
-const MumbleMessageBox = tw.div`animate-bounce fixed top-[110px] mx-auto z-50 hover:(animate-none)`;

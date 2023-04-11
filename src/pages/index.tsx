@@ -2,7 +2,7 @@ import React from 'react';
 import { GetServerSideProps } from 'next';
 import { FetchMumbles } from '@/types/fallback';
 import { fetchMumbles } from '@/services';
-import { Stream } from '@/components/stream/Stream';
+import { Stream } from '@/components';
 import { NextSeo } from 'next-seo';
 import Content from '../../data/content.json';
 import { getToken } from 'next-auth/jwt';

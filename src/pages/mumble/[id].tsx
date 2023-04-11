@@ -6,9 +6,8 @@ import { useSession } from 'next-auth/react';
 import { getToken } from 'next-auth/jwt';
 import { fetchUser, User, fetchSingleMumble, fetchReplies } from '@/services';
 import { FetchMumbles, FetchSingleMumble } from '@/types/fallback';
-import { Alert, Detail } from '@/components';
+import { Alert, Detail, Stream } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { Stream } from '@/components/stream/Stream';
 import { swrConfig } from '@/config';
 
 type MumblePageProps = {

@@ -16,3 +16,4 @@ export * from './mumble/Like';
 export * from './mumble/Share';
 export * from './mumble/Picture';
 export * from './mumble/Listing';
+export * from './stream/Stream';
