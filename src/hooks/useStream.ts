@@ -74,6 +74,13 @@ export function useStream(
 
   const checkForNewMumbles = data && data[0]?.mumbles[0]?.id && newMumbles && newMumbles.count > 0;
 
+  const quantityNewMumbles =
+    data && data[0]?.mumbles[0]?.id && newMumbles && newMumbles.count === 1
+      ? '1 neuer Mumble'
+      : `${newMumbles && newMumbles.count} neue Mumbles`;
+
+  const renderTimeline = !creator && !id;
+
   const handleDelete = async (id: string) => {
     if (!session?.accessToken) {
       alertService.error('Bitte melde dich an, sonst kannst du nicht löschen!!', {
@@ -89,13 +96,6 @@ export function useStream(
       mutate();
     }
   };
-
-  const quantityNewMumbles =
-    data && data[0]?.mumbles[0]?.id && newMumbles && newMumbles.count === 1
-      ? '1 neuer Mumble'
-      : `${newMumbles && newMumbles.count} neue Mumbles`;
-
-  const renderTimeline = !creator && !id;
 
   const handleRefreshPage = () => {
     mutate();
