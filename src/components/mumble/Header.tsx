@@ -93,7 +93,7 @@ export const Header: React.FC<HeaderProps> = ({ creator, fallbackUser }) => {
 
             <IconLink color="slate" href="#" label={'Switzerland'} onClick={function noRefCheck() {}} type="location" />
             <IconLink
-              label={'a long long time ago...'}
+              label={'A long long time ago...'}
               type="joined"
               color="slate"
               href={'#'}
