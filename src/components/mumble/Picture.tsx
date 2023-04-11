@@ -51,6 +51,7 @@ export const Picture: React.FC<PictureProps> = ({ mediaUrl, text, width, height 
             objectFit="contain"
             placeholder="empty"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+            quality={60}
           />
         </Modal>
       )}

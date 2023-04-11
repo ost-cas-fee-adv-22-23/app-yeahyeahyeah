@@ -1,3 +1,5 @@
-export const imageLoader = (params: any) => {
-  return `${params.src}`;
+import { ImageLoaderProps } from 'next/image';
+
+export const imageLoader = ({ src }: ImageLoaderProps) => {
+  return `${src}`;
 };
