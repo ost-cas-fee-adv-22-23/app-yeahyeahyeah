@@ -7,6 +7,10 @@
     "startScreen": {
       "title": "Mumble - Willkommen auf der Mumble App des CAS Frontend Engineer's Advanced",
       "description": "Are you ready to mumble! Jetzt registrieren und mumblen."
+    },
+    "search": {
+      "title": "Search - Mumble Hashtags",
+      "description": "Finde alle Mumbles mit dem gleichen Hashtag."
     }
   },
   "alerts": {
@@ -58,12 +62,22 @@
       "text": "Die angeforderte Seite existiert nicht."
     },
     "startScreen": {
+      "text": "Noch kein Account?",
       "registerButton": "Jetzt registrieren"
     },
     "keyword": {
       "word_1": "#Engineer",
       "word_2": "#Frontend",
       "word_3": "#CAS"
+    },
+    "defaultImage": {
+      "src": "https://picsum.photos/640/360"
+    },
+    "profileHeader": {
+      "text": "Ich freue mich mit Euch im CAS Frontend Engineering Advanced auszutauschen, Mumbles zu kreieren und zu bewerten. Ich freue mich auf jeden Like meiner Mumbles."
+    },
+    "footer": {
+      "text": "© 2023 CAS - Frontend Engineering Advanced"
     }
   }
 }

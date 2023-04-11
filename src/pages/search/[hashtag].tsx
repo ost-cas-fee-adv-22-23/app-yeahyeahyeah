@@ -1,5 +1,6 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
+import Message from '../../../data/content.json';
 import { getToken } from 'next-auth/jwt';
 import { FetchMumbles } from '@/types/fallback';
 import { searchMumbles } from '@/services';
@@ -10,7 +11,7 @@ import { IncomingMessage } from 'http';
 const HashtagPage = ({ limit, fallback, hashtag }: { limit: number; fallback: FetchMumbles; hashtag: string }) => {
   return (
     <>
-      <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
+      <NextSeo title={`${Message.seo.search.title}`} description={`${Message.seo.search.description}`} />
       <Stream url="/api/mumbles" limit={limit} fallback={fallback} hashtag={hashtag} fetcher={searchMumbles} />
     </>
   );

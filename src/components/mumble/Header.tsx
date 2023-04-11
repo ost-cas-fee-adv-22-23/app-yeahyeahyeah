@@ -1,12 +1,16 @@
+import React, { useState } from 'react';
+import Image from 'next/legacy/image';
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 import useSWR from 'swr';
+import { imageLoader } from '@/utils';
 import Message from '../../../data/content.json';
 import { useSession } from 'next-auth/react';
 import {
   Avatar,
   IconLink,
   ImageContainer,
+  Modal,
   Paragraph,
   User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -20,9 +24,14 @@ type HeaderProps = {
 
 export const Header: React.FC<HeaderProps> = ({ creator, fallbackUser }) => {
   const { data: session }: any = useSession();
-  const handleImageIconClick = () => {
-    // TODO: TO BE COMPLETED
-    console.log('image clicked', { name: 'HeaderIconClick' });
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
+  const handleClose = () => {
+    setOpen(!open);
   };
 
   const { data: user } = useSWR(
@@ -40,11 +49,26 @@ export const Header: React.FC<HeaderProps> = ({ creator, fallbackUser }) => {
         <ImageWrapper>
           <ImageContainer
             alt="This is a profile picture"
-            onImageIconClick={handleImageIconClick}
-            src="https://picsum.photos/640/360"
+            src={`${Message.contents.defaultImage.src}`}
             type="banner-view"
+            onImageIconClick={() => handleClick()}
           />
         </ImageWrapper>
+        <Modal label="Mumble" isOpen={open} onClose={handleClose} wide="full">
+          <Image
+            loader={imageLoader}
+            src={`${Message.contents.defaultImage.src}`}
+            alt="This is a profile picture"
+            width="600"
+            height="600"
+            layout="intrinsic"
+            priority
+            objectFit="contain"
+            placeholder="empty"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+            quality={60}
+          />
+        </Modal>
         <AvatarWrapper>
           <Avatar
             variant="xlarge"
@@ -67,7 +91,7 @@ export const Header: React.FC<HeaderProps> = ({ creator, fallbackUser }) => {
 
             <IconLink color="slate" href="#" label={'Switzerland'} onClick={function noRefCheck() {}} type="location" />
             <IconLink
-              label={'a long long time ago...'}
+              label={'A long long time ago...'}
               type="joined"
               color="slate"
               href={'#'}
@@ -83,7 +107,7 @@ export const Header: React.FC<HeaderProps> = ({ creator, fallbackUser }) => {
           size="medium"
           color="light"
           mbSpacing="0"
-        >{`Hallo! Mein Name ist ${user.firstName} ${user.lastName}. Ich freue mich mit Euch im CAS Frontend Engineering Advanced auszutauschen, Mumbles zu kreieren und zu bewerten. Ich freue mich auf jeden Like meiner Mumbles.`}</Paragraph>
+        >{`Hallo! Mein Name ist ${user.firstName} ${user.lastName}. ${Message.contents.profileHeader.text}`}</Paragraph>
       </UserDataWrapper>
     </>
   );
