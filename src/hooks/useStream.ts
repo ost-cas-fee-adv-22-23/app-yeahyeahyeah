@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 import debounce from 'lodash.debounce';
 import { useSession } from 'next-auth/react';
 import useOnScreen from '@/hooks/useOnScreen';
-import useSWR, { Fetcher } from 'swr';
+import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { alertService, deleteMumble } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
-import { MumbleFetcher } from '@/types/swr';
+import { MumbleFetcher, StreamHook } from '@/types/swr';
 
 export function useStream(
   url: string,
@@ -109,10 +109,10 @@ export function useStream(
     isValidating,
     isLoading,
     checkForNewMumbles,
-    handleDelete,
     quantityNewMumbles,
+    renderTimeline,
+    handleDelete,
     handleRefreshPage,
     ref,
-    renderTimeline,
-  ];
+  ] as StreamHook;
 }

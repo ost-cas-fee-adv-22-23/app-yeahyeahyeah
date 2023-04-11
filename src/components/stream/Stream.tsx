@@ -24,11 +24,11 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     isValidating,
     isLoading,
     checkForNewMumbles,
-    handleDelete,
     quantityNewMumbles,
+    renderTimeline,
+    handleDelete,
     handleRefreshPage,
     ref,
-    renderTimeline,
   ] = useStream(url, limit, fallback, fetcher, id, hashtag, creator);
 
   const renderMumbles = (isReply?: boolean) => {

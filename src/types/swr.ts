@@ -1,3 +1,4 @@
+import { KeyedMutator } from 'swr';
 import { FetchMumbles } from './fallback';
 
 export type MumbleFetcher = (params: {
@@ -10,3 +11,17 @@ export type MumbleFetcher = (params: {
   creator?: string;
   hashtag?: string;
 }) => Promise<FetchMumbles>;
+
+export type StreamHook = [
+  data: FetchMumbles[],
+  mutate: KeyedMutator<FetchMumbles[]>,
+  error: any,
+  isValidating: boolean,
+  isLoading: boolean,
+  checkForNewMumbles: boolean,
+  quantityNewMumbles: string,
+  renderTimeline: boolean,
+  handleDelete: (id: string) => Promise<void>,
+  handleRefreshPage: () => void,
+  ref: React.RefObject<HTMLDivElement>
+];
