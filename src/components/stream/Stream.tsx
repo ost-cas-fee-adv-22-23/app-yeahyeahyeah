@@ -15,10 +15,9 @@ type StreamProps = {
   id?: string;
   hashtag?: string;
   creator?: { id: string };
-  message: string;
 };
 
-export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id, message }) => {
+export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }) => {
   const [
     data,
     mutate,
