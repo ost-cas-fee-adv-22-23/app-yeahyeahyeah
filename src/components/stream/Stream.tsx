@@ -16,7 +16,7 @@ type StreamProps = {
   creator?: { id: string };
 };
 
-export const RenderStream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }) => {
+export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }) => {
   const [
     data,
     mutate,

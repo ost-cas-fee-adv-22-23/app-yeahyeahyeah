@@ -77,7 +77,7 @@ export const NavigationComponent: React.FC = () => {
         </NavigationColumn>
       </Navigation>
       <Modal label="Settings" isOpen={open} onClose={handleClose} wide="small">
-        <FormSettings />
+        <FormSettings handleClose={handleClose} />
       </Modal>
     </>
   );

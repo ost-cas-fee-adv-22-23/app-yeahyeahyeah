@@ -9,7 +9,7 @@ import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
 import { MumbleHeader } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { RenderStream } from '@/components/stream/RenderStream';
+import { Stream } from '@/components/stream/Stream';
 
 type MumbleHeaderProps = {
   creator: any;
@@ -61,7 +61,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
 
             <SelectionWrapper>
               {selection === 'mumbles' && (
-                <RenderStream
+                <Stream
                   url="/api/myMumbles"
                   limit={limit}
                   fallback={fallBackMyMumbles}
@@ -70,7 +70,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                 />
               )}
               {selection === 'likes' && (
-                <RenderStream
+                <Stream
                   url="/api/myLikes"
                   // TODO: limit is set to 20 because we have to intercept the data in the fetcher function
                   limit={20}
@@ -84,7 +84,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
         ) : (
           <SelectionWrapper>
             {selection === 'mumbles' && (
-              <RenderStream
+              <Stream
                 url="/api/myMumbles"
                 limit={limit}
                 fallback={fallBackMyMumbles}
