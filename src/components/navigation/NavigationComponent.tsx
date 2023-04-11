@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import tw from 'twin.macro';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import useSWR from 'swr';
@@ -45,7 +46,7 @@ export const NavigationComponent: React.FC = () => {
 
           {isLoading ? (
             <>
-              <div tw="flex justify-center items-center w-[144px] h-64 sm:(w-[250px])" />
+              <LoadingWrapper />
             </>
           ) : (
             <NavigationRow>
@@ -82,3 +83,5 @@ export const NavigationComponent: React.FC = () => {
     </>
   );
 };
+
+const LoadingWrapper = tw.div`flex justify-center items-center w-[144px] h-64 sm:(w-[250px])`;

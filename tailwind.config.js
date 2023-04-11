@@ -37,6 +37,7 @@ module.exports = {
       backgroundImage: {
         gradient70: 'linear-gradient(90deg, var(--color-gradient-pink) 0%, var(--color-gradient-violet) 70%)',
         gradient80: 'linear-gradient(90deg, var(--color-gradient-pink) 0%, var(--color-gradient-violet) 40%)',
+        mumbleGradient: `linear-gradient(153.75deg, ${colors.pink[500]} -75.32%, ${colors.violet[700]} 100%)`,
       },
       keyframes: {
         slide: {

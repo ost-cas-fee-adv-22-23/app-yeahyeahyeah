@@ -2,9 +2,9 @@ import React from 'react';
 import tw from 'twin.macro';
 import { Footer, NavigationComponent } from '../components';
 
-export type DefaultLayout = React.DOMAttributes<HTMLDivElement>;
+export type DefaultLayoutProps = React.DOMAttributes<HTMLDivElement>;
 
-export const DefaultLayout: React.FC<DefaultLayout> = ({ children }) => {
+export const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   return (
     <>
       <NavigationWrapper>

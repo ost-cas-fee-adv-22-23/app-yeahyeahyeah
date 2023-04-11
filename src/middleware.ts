@@ -18,6 +18,7 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
+// Decision: Redirect all pages to landingpage, except timeline stream on index.tsx
 export const config = {
   matcher: ['/profile/:path*', '/landingpage/:path*', '/mumble/:path*'],
 };

@@ -3,6 +3,10 @@
     "home": {
       "title": "Mumble - Willkommen auf Mumble",
       "description": "Die Chat-App des CAS Frontend Engineers Advanced 2023"
+    },
+    "startScreen": {
+      "title": "Mumble - Willkommen auf der Mumble App des CAS Frontend Engineer's Advanced",
+      "description": "Are you ready to mumble! Jetzt registrieren und mumblen."
     }
   },
   "alerts": {
@@ -48,6 +52,18 @@
     "switch": {
       "mumbles": "Deine Mumbles",
       "likes": "Deine Likes"
+    },
+    "pageNotFound": {
+      "label": "Upps... Seite nicht gefunden.",
+      "text": "Die angeforderte Seite existiert nicht."
+    },
+    "startScreen": {
+      "registerButton": "Jetzt registrieren"
+    },
+    "keyword": {
+      "word_1": "#Engineer",
+      "word_2": "#Frontend",
+      "word_3": "#CAS"
     }
   }
 }

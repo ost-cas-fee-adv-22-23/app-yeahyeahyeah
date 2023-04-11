@@ -19,7 +19,7 @@ export type Alerts = {
   fade?: boolean;
 };
 
-export const Alert: React.FC<AlertProps> = ({ id = 'default-alert', fade = true }) => {
+export const Alert: React.FC<AlertProps> = ({ id = 'default-alert' }) => {
   const mounted = useRef(false);
   const router = useRouter();
   const [alerts, setAlerts] = useState<any>([]);

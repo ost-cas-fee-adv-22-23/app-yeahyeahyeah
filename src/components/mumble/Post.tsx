@@ -101,12 +101,7 @@ export const Post: React.FC<MumbleProps> = ({
         <Like id={id} favourite={likedByUser} quantity={likeCount} />
         <Share id={id} />
         <ArticleInteractionDelete>
-          {creator === session?.user?.id && (
-            <Cancel
-              tw="fill-slate-300 cursor-pointer transition scale-100 ease-in-out delay-100 hover:(fill-pink-900 rotate-180 transform-gpu duration-500 scale-150)"
-              onClick={() => handleDelete(id)}
-            />
-          )}
+          {creator === session?.user?.id && <Cancel css={Delete.svg()} onClick={() => handleDelete(id)} />}
         </ArticleInteractionDelete>
       </ArticleInteraction>
     </ArticleMumble>
@@ -133,3 +128,8 @@ const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-wrap gap-8 sm:(flex-row gap-16)`;
 const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:w-full sm:gap-24`;
 const ArticleInteractionDelete = tw.div`flex justify-end items-center grow pr-4 mb-8`;
+const Delete = {
+  svg: () => [
+    tw`fill-slate-300 cursor-pointer transition scale-100 ease-in-out delay-100 hover:(fill-pink-900 rotate-180 transform-gpu duration-500 scale-150)`,
+  ],
+};
