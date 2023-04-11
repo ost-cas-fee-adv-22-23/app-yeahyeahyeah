@@ -36,6 +36,7 @@ export const MumbleImage = ({ mediaUrl, text, width, height }: MumbleImageProps)
           placeholder="empty"
           onImageIconClick={() => handleClick()}
           imageComponent={Image}
+          quality={75}
         />
       )}
       {open === true && (
