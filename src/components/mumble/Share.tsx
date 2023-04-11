@@ -2,11 +2,11 @@ import React from 'react';
 import process from 'process';
 import { ShareButton } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-type MumbleShareProps = {
+type ShareProps = {
   id: string;
 };
 
-export const MumbleShare: React.FC<MumbleShareProps> = ({ id }) => {
+export const Share: React.FC<ShareProps> = ({ id }) => {
   const host = process.env.NEXT_PUBLIC_URL;
   const directory = 'mumble';
 

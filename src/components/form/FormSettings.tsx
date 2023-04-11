@@ -3,7 +3,11 @@ import debounce from 'lodash.debounce';
 import Message from '../../../data/content.json';
 import { Button, InputForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-export const FormSettings: React.FC = () => {
+type FormSettingsProps = {
+  handleClose: () => void;
+};
+
+export const FormSettings: React.FC<FormSettingsProps> = ({ handleClose }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -60,14 +64,8 @@ export const FormSettings: React.FC = () => {
         data-testid={'email'}
       />
       <div tw="flex flex-col sm:flex-row justify-between items-center gap-16">
-        <Button
-          label="Abbrechen"
-          icon="cancel"
-          color="slate"
-          width="full"
-          onClick={() => console.log('close modal clicked')} // Todo: remove function or do something with it!
-        />
-        <Button label="Speichern" icon="send" color="violet" width="full" />
+        <Button label="Abbrechen" icon="cancel" color="slate" width="full" onClick={handleClose} />
+        <Button label="Speichern" icon="send" color="violet" width="full" onClick={() => console.log('save settings')} />
       </div>
     </form>
   );

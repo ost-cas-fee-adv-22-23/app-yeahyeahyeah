@@ -1,18 +1,18 @@
 import React from 'react';
 import Link from 'next/link';
 import useSWR from 'swr';
-import { Hashtag } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Hashtag as HashtagComponent } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { Mumble, searchMumbles } from '@/services';
 import { useSession } from 'next-auth/react';
 
 type HashtagSize = 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge';
 
-type MumbleHashtagProps = {
+type HashtagProps = {
   size: HashtagSize;
   hashtag: string;
 };
 
-export const MumbleHashtag: React.FC<MumbleHashtagProps> = ({ size, hashtag }) => {
+export const Hashtag: React.FC<HashtagProps> = ({ size, hashtag }) => {
   const { data: session }: any = useSession();
 
   const { data: hashtagData } = useSWR(
@@ -36,7 +36,7 @@ export const renderHashtags = (text: string, size: HashtagSize, hashtag?: string
     if (str.startsWith('#')) {
       return (
         <React.Fragment key={i}>
-          <Hashtag
+          <HashtagComponent
             label={str.replace('#', '')}
             size={size}
             color={color(str)}

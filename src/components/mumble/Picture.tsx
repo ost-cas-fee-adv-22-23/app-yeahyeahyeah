@@ -3,14 +3,14 @@ import Image from 'next/legacy/image';
 import { imageLoader } from '@/utils';
 import { ImageContainer, Modal } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-type MumbleImageProps = {
+type PictureProps = {
   mediaUrl: string;
   text: string;
   width: number;
   height: number;
 };
 
-export const MumbleImage: React.FC<MumbleImageProps> = ({ mediaUrl, text, width, height }) => {
+export const Picture: React.FC<PictureProps> = ({ mediaUrl, text, width, height }) => {
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {

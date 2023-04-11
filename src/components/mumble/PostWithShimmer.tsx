@@ -14,17 +14,17 @@ import {
   User,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumbleLike } from './MumbleLike';
-import { MumbleShare } from './MumbleShare';
-import { MumbleImage } from './MumbleImage';
-import { renderHashtags } from '@/components/mumble/MumbleHashtag';
+import { Like } from './Like';
+import { Share } from './Share';
+import { Picture } from './Picture';
+import { renderHashtags } from './Hashtag';
 
-type MumbleProps = {
+type PostWithShimmerProps = {
   type: string;
   handleDeleteCallback?: (id: string) => void;
 } & Mumble;
 
-export const MumblePost: React.FC<MumbleProps> = ({
+export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
   id,
   creator,
   text,
@@ -49,6 +49,19 @@ export const MumblePost: React.FC<MumbleProps> = ({
     handleDeleteCallback && handleDeleteCallback(id);
   };
 
+  const handleShimmer = (type: string) => {
+    switch (type) {
+      case 'user':
+        return <div tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>;
+      case 'content':
+        return <div tw="flex flex-row grow w-full h-172 rounded-xl bg-slate-300 animate-pulse mb-16"></div>;
+      case 'image':
+        return <div tw="flex flex-row grow w-full h-[320px] rounded-xl bg-slate-300 animate-pulse mb-16"></div>;
+      default:
+        break;
+    }
+  };
+
   return (
     <ArticleMumble id={id} type={type}>
       <ArticleHeader type={type}>
@@ -63,43 +76,67 @@ export const MumblePost: React.FC<MumbleProps> = ({
         <ArticleHeaderContent>
           <User label={data ? `${data.firstName} ${data.lastName}` : `${Message.contents.userName.text}`} variant="medium" />
           <ArticleDatas>
-            <IconLink
-              label={data ? data.userName : `${Message.contents.userName.text}`}
-              type="username"
-              color="violet"
-              href={`/profile/${creator}`}
-              legacyBehavior
-              passHref
-              linkComponent={Link}
-            />
-            <IconLink
-              label={elapsedTime(createdTimestamp)}
-              type="timestamp"
-              color="slate"
-              href={`/mumble/${id}`}
-              legacyBehavior
-              passHref
-              linkComponent={Link}
-            />
+            {data && data.userName ? (
+              <IconLink
+                label={data.userName}
+                type="username"
+                color="violet"
+                href={`/profile/${creator}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
+              />
+            ) : (
+              <>{handleShimmer('user')}</>
+            )}
+            {data && createdTimestamp ? (
+              <IconLink
+                label={elapsedTime(createdTimestamp)}
+                type="timestamp"
+                color="slate"
+                href={`/mumble/${id}`}
+                legacyBehavior
+                passHref
+                linkComponent={Link}
+              />
+            ) : (
+              <>{handleShimmer('user')}</>
+            )}
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <Paragraph mbSpacing="16">{renderHashtags(text, 'small')}</Paragraph>
+      {data && data.userName ? (
+        <Paragraph mbSpacing="16">{renderHashtags(text, 'small')}</Paragraph>
+      ) : (
+        <>{handleShimmer('content')}</>
+      )}
 
-      {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
+      {data && mediaUrl ? (
+        <Picture mediaUrl={mediaUrl} text={text} width={585} height={329.06} />
+      ) : (
+        <>{!data?.userName && mediaUrl && <>{handleShimmer('image')}</>}</>
+      )}
 
       <ArticleInteraction>
-        <CommentButton
-          type="comment"
-          quantity={replyCount}
-          href={`/mumble/${id}`}
-          legacyBehavior
-          passHref
-          linkComponent={Link}
-        />
-        <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
-        <MumbleShare id={id} />
+        {data && data.userName ? (
+          <CommentButton
+            type="comment"
+            quantity={replyCount}
+            href={`/mumble/${id}`}
+            legacyBehavior
+            passHref
+            linkComponent={Link}
+          />
+        ) : (
+          <>{handleShimmer('user')}</>
+        )}
+        {data && data.userName ? (
+          <Like id={id} favourite={likedByUser} quantity={likeCount} />
+        ) : (
+          <>{handleShimmer('user')}</>
+        )}
+        {data && data.userName ? <Share id={id} /> : <>{handleShimmer('user')}</>}
         <ArticleInteractionDelete>
           {creator === session?.user?.id && (
             <Cancel

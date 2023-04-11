@@ -4,13 +4,13 @@ import Message from '../../../data/content.json';
 import { likeMumble, dislikeMumble } from '@/services';
 import { LikeButton } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-type MumbleLikeProps = {
+type LikeProps = {
   id: string;
   favourite: boolean;
   quantity: number;
 };
 
-export const MumbleLike: React.FC<MumbleLikeProps> = ({ id, favourite, quantity }) => {
+export const Like: React.FC<LikeProps> = ({ id, favourite, quantity }) => {
   const { data: session }: any = useSession();
 
   const handleLike = async (id: string) => {

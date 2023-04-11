@@ -6,9 +6,10 @@ import { useSession } from 'next-auth/react';
 import { getToken } from 'next-auth/jwt';
 import { fetchUser, User, fetchSingleMumble, fetchReplies } from '@/services';
 import { FetchMumbles, FetchSingleMumble } from '@/types/fallback';
-import { Alert, MumbleDetail } from '@/components';
+import { Alert, Detail } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { Stream } from '@/components/stream/Stream';
+import { swrConfig } from '@/config';
 
 type MumblePageProps = {
   limit: number;
@@ -16,12 +17,6 @@ type MumblePageProps = {
   fallback: FetchSingleMumble;
   fallbackReplies: FetchMumbles;
   fallbackUser: User;
-};
-
-const swrConfig = {
-  revalidateIfStale: false,
-  revalidateOnFocus: false,
-  revalidateOnReconnect: false,
 };
 
 const MumblePage = ({
@@ -59,7 +54,7 @@ const MumblePage = ({
         <Alert />
       </Container>
       <Container layout="box">
-        {mumble && <MumbleDetail mumble={mumble} user={user} />}
+        {mumble && <Detail mumble={mumble} user={user} />}
         <Container layout="plain"></Container>
         <Stream url="/api/replies" id={id} limit={limit} fallback={fallbackReplies} fetcher={fetchReplies} />
       </Container>
