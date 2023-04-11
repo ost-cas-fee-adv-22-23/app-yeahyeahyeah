@@ -12,7 +12,7 @@ const defaultProps: LoadingSpinnerProps = {
   height: 32,
 };
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ fill, width, height }) => {
+export const LoadingSpinner = ({ fill, width, height }: LoadingSpinnerProps) => {
   return (
     <LoadingWrapper>
       <ImageIcon>
