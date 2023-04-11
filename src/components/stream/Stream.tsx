@@ -2,7 +2,7 @@ import React from 'react';
 import tw from 'twin.macro';
 import { FetchMumbles } from '@/types/fallback';
 import { Button, Container, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, MumbleList, Hashtag } from '@/components';
+import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, Listing, Hashtag } from '@/components';
 import { useStream } from '@/hooks/useStream';
 import { MumbleFetcher } from '@/types/swr';
 
@@ -34,7 +34,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   const renderMumbles = (isReply?: boolean) => {
     return (
       <>
-        {data && <MumbleList data={data} handleDelete={handleDelete} isReply={isReply} />}
+        {data && <Listing data={data} handleDelete={handleDelete} isReply={isReply} />}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </>

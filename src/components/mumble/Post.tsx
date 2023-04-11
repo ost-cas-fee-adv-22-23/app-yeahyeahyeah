@@ -16,7 +16,7 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { Like } from './Like';
 import { Share } from './Share';
-import { MumbleImage } from './MumbleImage';
+import { Picture } from './Picture';
 import { renderHashtags } from '@/components/mumble/Hashtag';
 
 type MumbleProps = {
@@ -87,7 +87,7 @@ export const Post: React.FC<MumbleProps> = ({
 
       <Paragraph mbSpacing="16">{renderHashtags(text, 'small')}</Paragraph>
 
-      {mediaUrl && <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
+      {mediaUrl && <Picture mediaUrl={mediaUrl} text={text} width={585} height={329.06} />}
 
       <ArticleInteraction>
         <CommentButton

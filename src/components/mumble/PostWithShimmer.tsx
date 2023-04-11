@@ -16,7 +16,7 @@ import {
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { Like } from './Like';
 import { Share } from './Share';
-import { MumbleImage } from './MumbleImage';
+import { Picture } from './Picture';
 import { renderHashtags } from './Hashtag';
 
 type PostWithShimmerProps = {
@@ -113,7 +113,7 @@ export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
       )}
 
       {data && mediaUrl ? (
-        <MumbleImage mediaUrl={mediaUrl} text={text} width={585} height={329.06} />
+        <Picture mediaUrl={mediaUrl} text={text} width={585} height={329.06} />
       ) : (
         <>{!data?.userName && mediaUrl && <>{handleShimmer('image')}</>}</>
       )}

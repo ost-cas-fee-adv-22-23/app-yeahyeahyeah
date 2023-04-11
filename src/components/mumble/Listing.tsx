@@ -5,13 +5,13 @@ import { Post } from './Post';
 import tw from 'twin.macro';
 import { useSession } from 'next-auth/react';
 
-type MumbleListProps = {
+type ListingProps = {
   data: FetchMumbles[];
   handleDelete: (id: string) => Promise<void>;
   isReply?: boolean;
 };
 
-export const MumbleList: React.FC<MumbleListProps> = ({ data, handleDelete, isReply = false }) => {
+export const Listing: React.FC<ListingProps> = ({ data, handleDelete, isReply = false }) => {
   const { data: session }: any = useSession();
 
   return (

@@ -15,5 +15,5 @@ export * from './navigation/NavigationComponent';
 export * from './alert/Alert';
 export * from './mumble/Like';
 export * from './mumble/Share';
-export * from './mumble/MumbleImage';
-export * from './mumble/MumbleList';
+export * from './mumble/Picture';
+export * from './mumble/Listing';
