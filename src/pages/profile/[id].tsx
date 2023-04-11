@@ -9,7 +9,7 @@ import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
 import { MumbleHeader } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { Stream } from '@/components/stream/Stream';
+import { RenderStream } from '@/components/stream/RenderStream';
 
 type MumbleHeaderProps = {
   creator: any;
@@ -51,7 +51,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                     value: 'mumbles',
                   },
                   {
-                    label: `${Message.contents.switch.mumbles}`,
+                    label: `${Message.contents.switch.likes}`,
                     value: 'likes',
                   },
                 ]}
@@ -61,7 +61,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
 
             <SelectionWrapper>
               {selection === 'mumbles' && (
-                <Stream
+                <RenderStream
                   url="/api/myMumbles"
                   limit={limit}
                   fallback={fallBackMyMumbles}
@@ -70,7 +70,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                 />
               )}
               {selection === 'likes' && (
-                <Stream
+                <RenderStream
                   url="/api/myLikes"
                   // TODO: limit is set to 20 because we have to intercept the data in the fetcher function
                   limit={20}
@@ -84,7 +84,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
         ) : (
           <SelectionWrapper>
             {selection === 'mumbles' && (
-              <Stream
+              <RenderStream
                 url="/api/myMumbles"
                 limit={limit}
                 fallback={fallBackMyMumbles}
@@ -100,7 +100,6 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
 };
 
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { id } }: GetServerSidePropsContext) => {
-  // TODO: if limit is only 2, the stream is not loading more items - why?
   const limit = 2;
   const _id = id as string;
 

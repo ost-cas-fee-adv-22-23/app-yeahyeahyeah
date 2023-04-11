@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { FetchMumbles } from '@/types/fallback';
 import { searchMumbles } from '@/services';
-import { Stream } from '@/components/stream/Stream';
+import { RenderStream } from '@/components/stream/RenderStream';
 import { NextSeo } from 'next-seo';
 import { IncomingMessage } from 'http';
 
@@ -11,7 +11,7 @@ const HashtagPage = ({ limit, fallback, hashtag }: { limit: number; fallback: Fe
   return (
     <>
       <NextSeo title="Mumble - Willkommen auf Mumble" description="A short description goes here." />
-      <Stream url="/api/mumbles" limit={limit} fallback={fallback} hashtag={hashtag} fetcher={searchMumbles} />
+      <RenderStream url="/api/mumbles" limit={limit} fallback={fallback} hashtag={hashtag} fetcher={searchMumbles} />
     </>
   );
 };

@@ -8,7 +8,7 @@ import { fetchUser, User, fetchSingleMumble, fetchReplies } from '@/services';
 import { FetchMumbles, FetchSingleMumble } from '@/types/fallback';
 import { Alert, MumbleDetail } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { Stream } from '@/components/stream/Stream';
+import { RenderStream } from '@/components/stream/RenderStream';
 
 type MumblePageProps = {
   limit: number;
@@ -61,7 +61,7 @@ const MumblePage = ({
       <Container layout="box">
         {mumble && <MumbleDetail mumble={mumble} user={user} />}
         <Container layout="plain"></Container>
-        <Stream url="/api/replies" id={id} limit={limit} fallback={fallbackReplies} fetcher={fetchReplies} />
+        <RenderStream url="/api/replies" id={id} limit={limit} fallback={fallbackReplies} fetcher={fetchReplies} />
       </Container>
     </>
   );
