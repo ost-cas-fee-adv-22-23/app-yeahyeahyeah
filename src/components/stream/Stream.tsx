@@ -3,7 +3,7 @@ import tw from 'twin.macro';
 import { FetchMumbles } from '@/types/fallback';
 import { Button, Container, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, Listing, Hashtag } from '@/components';
-import { useStream } from '@/hooks/useStream';
+import { useStream } from '@/hooks';
 import { MumbleFetcher } from '@/types/swr';
 
 type StreamProps = {
