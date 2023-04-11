@@ -70,6 +70,9 @@
       "word_2": "#Frontend",
       "word_3": "#CAS"
     },
+    "defaultImage": {
+      "src": "https://picsum.photos/640/360"
+    },
     "profileHeader": {
       "text": "Ich freue mich mit Euch im CAS Frontend Engineering Advanced auszutauschen, Mumbles zu kreieren und zu bewerten. Ich freue mich auf jeden Like meiner Mumbles."
     },

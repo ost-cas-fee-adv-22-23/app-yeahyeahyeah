@@ -26,8 +26,6 @@ export const Header: React.FC<HeaderProps> = ({ creator, fallbackUser }) => {
   const { data: session }: any = useSession();
   const [open, setOpen] = useState(false);
 
-  const imageSource = 'https://picsum.photos/640/360';
-
   const handleClick = () => {
     setOpen(!open);
   };
@@ -51,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ creator, fallbackUser }) => {
         <ImageWrapper>
           <ImageContainer
             alt="This is a profile picture"
-            src={imageSource}
+            src={`${Message.contents.defaultImage.src}`}
             type="banner-view"
             onImageIconClick={() => handleClick()}
           />
@@ -59,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ creator, fallbackUser }) => {
         <Modal label="Mumble" isOpen={open} onClose={handleClose} wide="full">
           <Image
             loader={imageLoader}
-            src={imageSource}
+            src={`${Message.contents.defaultImage.src}`}
             alt="This is a profile picture"
             width="600"
             height="600"
