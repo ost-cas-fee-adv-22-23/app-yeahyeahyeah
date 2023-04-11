@@ -11,16 +11,11 @@ import {
   User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { fetchUser, User as TUser } from '@/services';
+import { swrConfig } from '@/config';
 
 type MumbleHeaderProps = {
   creator: any;
   fallbackUser: TUser;
-};
-
-const swrConfig = {
-  revalidateIfStale: false,
-  revalidateOnFocus: false,
-  revalidateOnReconnect: false,
 };
 
 export const MumbleHeader: React.FC<MumbleHeaderProps> = ({ creator, fallbackUser }) => {
