@@ -9,7 +9,7 @@ export interface MumbleShimmerProps {
   type: string;
 }
 
-export const MumbleShimmer: React.FC<MumbleShimmerProps> = ({ id, type }) => {
+export const MumbleShimmer = ({ id, type }: MumbleShimmerProps) => {
   return (
     <ArticleMumble id={id} type={type}>
       <ArticleHeader type={type}>
@@ -25,18 +25,18 @@ export const MumbleShimmer: React.FC<MumbleShimmerProps> = ({ id, type }) => {
           <User label={'Username'} variant="medium" />
           <ArticleDatas>
             {Array.from(Array(2).keys()).map((arr) => (
-              <div key={arr + 'id'} tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
+              <div key={arr + 'id'} css={ArticleDatasShimmer.div()}></div>
             ))}
           </ArticleDatas>
         </ArticleHeaderContent>
       </ArticleHeader>
 
-      <div tw="flex flex-row grow w-full h-172 rounded-xl bg-slate-300 animate-pulse mb-16"></div>
-      <div tw="flex flex-row grow w-full h-[320px] rounded-xl bg-slate-300 animate-pulse mb-16"></div>
+      <ArticleTextBoxShimmer></ArticleTextBoxShimmer>
+      <ArticleImageBoxShimmer></ArticleImageBoxShimmer>
 
       <ArticleInteraction>
         {Array.from(Array(3).keys()).map((arr) => (
-          <div key={arr + 'id'} tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>
+          <div key={arr + 'id'} css={ArticleDatasShimmer.div()}></div>
         ))}
       </ArticleInteraction>
     </ArticleMumble>
@@ -61,4 +61,9 @@ const ArticleHeader = styled.div(({ type }: ArticleHeaderProps) => [
 
 const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-wrap gap-8 sm:(flex-row gap-16)`;
+const ArticleDatasShimmer = {
+  div: () => [tw`flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse`],
+};
+const ArticleTextBoxShimmer = tw.div`flex flex-row grow w-full h-172 rounded-xl bg-slate-300 animate-pulse mb-16`;
+const ArticleImageBoxShimmer = tw.div`flex flex-row grow w-full h-[320px] rounded-xl bg-slate-300 animate-pulse mb-16`;
 const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:w-full sm:gap-24`;

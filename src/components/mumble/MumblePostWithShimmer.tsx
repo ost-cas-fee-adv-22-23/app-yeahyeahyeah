@@ -24,7 +24,7 @@ type MumblePostWithShimmerProps = {
   handleDeleteCallback?: (id: string) => void;
 } & Mumble;
 
-export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
+export const MumblePostWithShimmer = ({
   id,
   creator,
   text,
@@ -35,7 +35,7 @@ export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
   replyCount,
   type,
   handleDeleteCallback,
-}) => {
+}: MumblePostWithShimmerProps) => {
   const { data: session }: any = useSession();
   const { data } = useSWR(
     session?.accessToken ? { url: '/api/user', id: creator, token: session?.accessToken } : null,

@@ -1,7 +1,7 @@
 import tw from 'twin.macro';
 import Keyword from '../../../data/content.json';
 
-const KeyWords: React.FC = () => {
+const KeyWords = () => {
   return (
     <SliderWrapper>
       <KeywordWrapper tw="animate-keyword flex justify-start">

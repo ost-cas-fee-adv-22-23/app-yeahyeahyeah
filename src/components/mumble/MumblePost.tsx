@@ -24,7 +24,7 @@ type MumbleProps = {
   handleDeleteCallback?: (id: string) => void;
 } & Mumble;
 
-export const MumblePost: React.FC<MumbleProps> = ({
+export const MumblePost = ({
   id,
   creator,
   text,
@@ -35,7 +35,7 @@ export const MumblePost: React.FC<MumbleProps> = ({
   replyCount,
   type,
   handleDeleteCallback,
-}) => {
+}: MumbleProps) => {
   const { data: session }: any = useSession();
   const { data } = useSWR(
     session?.accessToken ? { url: '/api/user', id: creator, token: session?.accessToken } : null,

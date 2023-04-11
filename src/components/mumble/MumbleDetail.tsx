@@ -21,7 +21,7 @@ type MumbleSingleProps = {
   user: TUser;
 };
 
-export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
+export const MumbleDetail = ({ mumble, user }: MumbleSingleProps) => {
   return (
     <ArticleMumble id={mumble.id}>
       <ArticleHeader>

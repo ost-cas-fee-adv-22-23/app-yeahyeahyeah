@@ -15,7 +15,7 @@ import {
   NavigationRow,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-export const NavigationComponent: React.FC = () => {
+export const NavigationComponent = () => {
   const { data: session }: any = useSession();
   const [open, setOpen] = useState(false);
 

@@ -23,7 +23,7 @@ const swrConfig = {
   revalidateOnReconnect: false,
 };
 
-export const MumbleHeader: React.FC<MumbleHeaderProps> = ({ creator, fallbackUser }) => {
+export const MumbleHeader = ({ creator, fallbackUser }: MumbleHeaderProps) => {
   const { data: session }: any = useSession();
   const handleImageIconClick = () => {
     // TODO: TO BE COMPLETED

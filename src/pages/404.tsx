@@ -2,7 +2,7 @@ import tw from 'twin.macro';
 import Message from '../../data/content.json';
 import { Heading, Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-const PageNotFound: React.FC = () => {
+const PageNotFound = () => {
   return (
     <ContentWrapper>
       <Heading

@@ -6,7 +6,7 @@ type MumbleShareProps = {
   id: string;
 };
 
-export const MumbleShare: React.FC<MumbleShareProps> = ({ id }) => {
+export const MumbleShare = ({ id }: MumbleShareProps) => {
   const host = process.env.NEXT_PUBLIC_URL;
   const directory = 'mumble';
 

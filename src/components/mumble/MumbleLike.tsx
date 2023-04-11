@@ -10,7 +10,7 @@ type MumbleLikeProps = {
   quantity: number;
 };
 
-export const MumbleLike: React.FC<MumbleLikeProps> = ({ id, favourite, quantity }) => {
+export const MumbleLike = ({ id, favourite, quantity }: MumbleLikeProps) => {
   const { data: session }: any = useSession();
 
   const handleLike = async (id: string) => {

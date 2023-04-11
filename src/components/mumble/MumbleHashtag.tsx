@@ -12,7 +12,7 @@ type MumbleHashtagProps = {
   hashtag: string;
 };
 
-export const MumbleHashtag: React.FC<MumbleHashtagProps> = ({ size, hashtag }) => {
+export const MumbleHashtag = ({ size, hashtag }: MumbleHashtagProps) => {
   const { data: session }: any = useSession();
 
   const { data: hashtagData } = useSWR(
