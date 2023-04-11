@@ -59,6 +59,11 @@
     },
     "startScreen": {
       "registerButton": "Jetzt registrieren"
+    },
+    "keyword": {
+      "word_1": "#Engenieer",
+      "word_2": "#Frontend",
+      "word_3": "#CAS"
     }
   }
 }

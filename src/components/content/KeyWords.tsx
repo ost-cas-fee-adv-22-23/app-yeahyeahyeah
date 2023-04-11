@@ -1,16 +1,20 @@
 import tw from 'twin.macro';
+import Keyword from '../../../data/content.json';
 
 const KeyWords: React.FC = () => {
   return (
     <SliderWrapper>
       <KeywordWrapper tw="animate-keyword flex justify-start">
-        #CAS<span tw="text-pink-300">.</span>
+        {`${Keyword.contents.keyword.word_1}`}
+        <span tw="text-pink-300">.</span>
       </KeywordWrapper>
       <KeywordWrapper>
-        #Frontend<span tw="text-pink-300">.</span>
+        {`${Keyword.contents.keyword.word_2}`}
+        <span tw="text-pink-300">.</span>
       </KeywordWrapper>
       <KeywordWrapper>
-        #Engineering<span tw="text-pink-300">.</span>
+        {`${Keyword.contents.keyword.word_3}`}
+        <span tw="text-pink-300">.</span>
       </KeywordWrapper>
     </SliderWrapper>
   );
