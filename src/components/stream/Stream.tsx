@@ -2,7 +2,7 @@ import React from 'react';
 import tw from 'twin.macro';
 import { FetchMumbles } from '@/types/fallback';
 import { Button, Container, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, RenderMumbles, MumbleHashtag } from '@/components';
+import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, MumbleList, Hashtag } from '@/components';
 import { useStream } from '@/hooks/useStream';
 import { MumbleFetcher } from '@/types/swr';
 
@@ -34,7 +34,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   const renderMumbles = (isReply?: boolean) => {
     return (
       <>
-        {data && <RenderMumbles data={data} handleDelete={handleDelete} isReply={isReply} />}
+        {data && <MumbleList data={data} handleDelete={handleDelete} isReply={isReply} />}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </>
@@ -67,7 +67,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
                   <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
                 </div>
                 <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
-                  <MumbleHashtag size="xlarge" hashtag={hashtag} />
+                  <Hashtag size="xlarge" hashtag={hashtag} />
                 </div>
               </>
             )}

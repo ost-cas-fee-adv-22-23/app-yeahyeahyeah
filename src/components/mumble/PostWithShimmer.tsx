@@ -14,17 +14,17 @@ import {
   User,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumbleLike } from './MumbleLike';
-import { MumbleShare } from './MumbleShare';
+import { Like } from './Like';
+import { Share } from './Share';
 import { MumbleImage } from './MumbleImage';
-import { renderHashtags } from './MumbleHashtag';
+import { renderHashtags } from './Hashtag';
 
-type MumblePostWithShimmerProps = {
+type PostWithShimmerProps = {
   type: string;
   handleDeleteCallback?: (id: string) => void;
 } & Mumble;
 
-export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
+export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
   id,
   creator,
   text,
@@ -132,11 +132,11 @@ export const MumblePostWithShimmer: React.FC<MumblePostWithShimmerProps> = ({
           <>{handleShimmer('user')}</>
         )}
         {data && data.userName ? (
-          <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
+          <Like id={id} favourite={likedByUser} quantity={likeCount} />
         ) : (
           <>{handleShimmer('user')}</>
         )}
-        {data && data.userName ? <MumbleShare id={id} /> : <>{handleShimmer('user')}</>}
+        {data && data.userName ? <Share id={id} /> : <>{handleShimmer('user')}</>}
         <ArticleInteractionDelete>
           {creator === session?.user?.id && (
             <Cancel

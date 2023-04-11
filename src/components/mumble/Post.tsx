@@ -14,17 +14,17 @@ import {
   User,
   Paragraph,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumbleLike } from './MumbleLike';
-import { MumbleShare } from './MumbleShare';
+import { Like } from './Like';
+import { Share } from './Share';
 import { MumbleImage } from './MumbleImage';
-import { renderHashtags } from '@/components/mumble/MumbleHashtag';
+import { renderHashtags } from '@/components/mumble/Hashtag';
 
 type MumbleProps = {
   type: string;
   handleDeleteCallback?: (id: string) => void;
 } & Mumble;
 
-export const MumblePost: React.FC<MumbleProps> = ({
+export const Post: React.FC<MumbleProps> = ({
   id,
   creator,
   text,
@@ -98,8 +98,8 @@ export const MumblePost: React.FC<MumbleProps> = ({
           passHref
           linkComponent={Link}
         />
-        <MumbleLike id={id} favourite={likedByUser} quantity={likeCount} />
-        <MumbleShare id={id} />
+        <Like id={id} favourite={likedByUser} quantity={likeCount} />
+        <Share id={id} />
         <ArticleInteractionDelete>
           {creator === session?.user?.id && (
             <Cancel

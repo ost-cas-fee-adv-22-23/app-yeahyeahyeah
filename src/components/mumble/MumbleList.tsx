@@ -1,17 +1,17 @@
 import { Mumble } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
-import { MumblePostWithShimmer } from './MumblePostWithShimmer';
-import { MumblePost } from './MumblePost';
+import { PostWithShimmer } from './PostWithShimmer';
+import { Post } from './Post';
 import tw from 'twin.macro';
 import { useSession } from 'next-auth/react';
 
-type RenderMumblesProps = {
+type MumbleListProps = {
   data: FetchMumbles[];
   handleDelete: (id: string) => Promise<void>;
   isReply?: boolean;
 };
 
-export const RenderMumbles: React.FC<RenderMumblesProps> = ({ data, handleDelete, isReply = false }) => {
+export const MumbleList: React.FC<MumbleListProps> = ({ data, handleDelete, isReply = false }) => {
   const { data: session }: any = useSession();
 
   return (
@@ -22,7 +22,7 @@ export const RenderMumbles: React.FC<RenderMumblesProps> = ({ data, handleDelete
             if (session?.accessToken) {
               return (
                 <div key={mumble.id} css={[isReply && tw`border-t-1 border-slate-200 pt-16`]}>
-                  <MumblePostWithShimmer
+                  <PostWithShimmer
                     key={mumble.id}
                     id={mumble.id}
                     creator={mumble.creator}
@@ -41,7 +41,7 @@ export const RenderMumbles: React.FC<RenderMumblesProps> = ({ data, handleDelete
             }
             return (
               <div key={mumble.id} css={[isReply && tw`border-t-1 border-slate-200 pt-16`]}>
-                <MumblePost
+                <Post
                   key={mumble.id}
                   id={mumble.id}
                   creator={mumble.creator}

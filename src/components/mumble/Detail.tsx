@@ -11,17 +11,17 @@ import {
   IconLink,
   User,
 } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { MumbleLike } from './MumbleLike';
-import { MumbleShare } from './MumbleShare';
+import { Like } from './Like';
+import { Share } from './Share';
 import { MumbleImage } from './MumbleImage';
-import { renderHashtags } from './MumbleHashtag';
+import { renderHashtags } from './Hashtag';
 
 type MumbleSingleProps = {
   mumble: Mumble;
   user: TUser;
 };
 
-export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
+export const Detail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
   return (
     <ArticleMumble id={mumble.id}>
       <ArticleHeader>
@@ -72,8 +72,8 @@ export const MumbleDetail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
           passHref
           linkComponent={Link}
         />
-        <MumbleLike id={mumble.id} favourite={mumble.likedByUser} quantity={mumble.likeCount} />
-        <MumbleShare id={mumble.id} />
+        <Like id={mumble.id} favourite={mumble.likedByUser} quantity={mumble.likeCount} />
+        <Share id={mumble.id} />
       </ArticleInteraction>
     </ArticleMumble>
   );

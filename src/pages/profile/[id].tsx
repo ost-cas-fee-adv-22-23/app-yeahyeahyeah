@@ -7,11 +7,11 @@ import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
 import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
-import { MumbleHeader } from '@/components';
+import { Header } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { Stream } from '@/components/stream/Stream';
 
-type MumbleHeaderProps = {
+type HeaderProps = {
   creator: any;
   limit: number;
   fallbackUser: User;
@@ -19,7 +19,7 @@ type MumbleHeaderProps = {
   fallBackMyLikes: FetchMumbles;
 };
 
-const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBackMyLikes }: MumbleHeaderProps) => {
+const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBackMyLikes }: HeaderProps) => {
   const { data: session }: any = useSession();
   const [selection, setSelection] = useState('mumbles');
 
@@ -38,7 +38,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
       />
 
       <Container layout="plain">
-        <MumbleHeader creator={creator} fallbackUser={fallbackUser} />
+        <Header creator={creator} fallbackUser={fallbackUser} />
 
         {session?.user.id === creator.id ? (
           <>
