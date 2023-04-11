@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import tw from 'twin.macro';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import debounce from 'lodash.debounce';
@@ -128,7 +129,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   }, [inputValue, setErrorDebounced]);
 
   return (
-    <div tw="mb-16">
+    <TextBoxWrapper>
       <TextBox
         variant={variant}
         user={{
@@ -161,6 +162,8 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         setShowModal={setShowModal}
         fileUploadError={fileUploadError}
       />
-    </div>
+    </TextBoxWrapper>
   );
 };
+
+const TextBoxWrapper = tw.div`mb-16`;

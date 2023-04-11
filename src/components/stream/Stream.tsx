@@ -2,7 +2,8 @@ import React from 'react';
 import tw from 'twin.macro';
 import { FetchMumbles } from '@/types/fallback';
 import { Button, Container, Heading } from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, ErrorBox, Listing, Hashtag } from '@/components';
+import { alertService } from '@/services';
+import { WelcomeText, TextBoxComponent, Alert, LoadingSpinner, Listing, Hashtag } from '@/components';
 import { useStream } from '@/hooks';
 import { MumbleFetcher } from '@/types/swr';
 
@@ -14,9 +15,10 @@ type StreamProps = {
   id?: string;
   hashtag?: string;
   creator?: { id: string };
+  message: string;
 };
 
-export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }) => {
+export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id, message }) => {
   const [
     data,
     mutate,
@@ -41,7 +43,13 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     );
   };
 
-  if (error) return <ErrorBox message={error} />;
+  if (error) {
+    alertService.error(`${error}`, {
+      autoClose: false,
+      keepAfterRouteChange: false,
+    });
+    return <Alert />;
+  }
 
   return (
     <>

@@ -52,11 +52,11 @@ export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
   const handleShimmer = (type: string) => {
     switch (type) {
       case 'user':
-        return <div tw="flex flex-row grow w-96 h-[14px] rounded-full bg-slate-300 animate-pulse"></div>;
+        return <UserWrapper></UserWrapper>;
       case 'content':
-        return <div tw="flex flex-row grow w-full h-172 rounded-xl bg-slate-300 animate-pulse mb-16"></div>;
+        return <ContentWrapper></ContentWrapper>;
       case 'image':
-        return <div tw="flex flex-row grow w-full h-[320px] rounded-xl bg-slate-300 animate-pulse mb-16"></div>;
+        return <ImageWrapper></ImageWrapper>;
       default:
         break;
     }
@@ -138,12 +138,7 @@ export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
         )}
         {data && data.userName ? <Share id={id} /> : <>{handleShimmer('user')}</>}
         <ArticleInteractionDelete>
-          {creator === session?.user?.id && (
-            <Cancel
-              tw="fill-slate-300 cursor-pointer transition scale-100 ease-in-out delay-100 hover:(fill-pink-900 rotate-180 transform-gpu duration-500 scale-150)"
-              onClick={() => handleDelete(id)}
-            />
-          )}
+          {creator === session?.user?.id && <Cancel css={Delete.svg()} onClick={() => handleDelete(id)} />}
         </ArticleInteractionDelete>
       </ArticleInteraction>
     </ArticleMumble>
@@ -170,3 +165,11 @@ const ArticleHeaderContent = tw.div`flex flex-col`;
 const ArticleDatas = tw.div`flex flex-wrap gap-8 sm:(flex-row gap-16)`;
 const ArticleInteraction = tw.div`relative -left-8 flex flex-row justify-start items-center flex-wrap sm:w-full sm:gap-24`;
 const ArticleInteractionDelete = tw.div`flex justify-end items-center grow pr-4 mb-8`;
+const Delete = {
+  svg: () => [
+    tw`fill-slate-300 cursor-pointer transition scale-100 ease-in-out delay-100 hover:(fill-pink-900 rotate-180 transform-gpu duration-500 scale-150)`,
+  ],
+};
+const UserWrapper = tw.div`fill-slate-300 cursor-pointer transition scale-100 ease-in-out delay-100 hover:(fill-pink-900 rotate-180 transform-gpu duration-500 scale-150)`;
+const ContentWrapper = tw.div`flex flex-row grow w-full h-24 rounded-xl bg-slate-300 animate-pulse mb-16`;
+const ImageWrapper = tw.div`flex flex-row grow w-full h-[320px] rounded-xl bg-slate-300 animate-pulse mb-16`;
