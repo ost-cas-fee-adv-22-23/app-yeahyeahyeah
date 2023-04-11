@@ -50,9 +50,9 @@ export const Timeline: React.FC<TimelineProps> = ({
               <Heading label="Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
               <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
             </div>
-            <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
+            <HashtagWrapper>
               <Hashtag size="xlarge" hashtag={hashtag} />
-            </div>
+            </HashtagWrapper>
           </>
         )}
 
@@ -63,3 +63,4 @@ export const Timeline: React.FC<TimelineProps> = ({
 };
 
 const MumbleMessageBox = tw.div`animate-bounce fixed top-[110px] mx-auto z-50 hover:(animate-none)`;
+const HashtagWrapper = tw.div`flex flex-wrap bg-slate-white transform duration-500 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]`;

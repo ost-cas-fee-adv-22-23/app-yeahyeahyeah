@@ -46,11 +46,11 @@ export const StartScreen: React.FC<StartScreen> = () => {
             <RightColumnContent>
               <div>
                 <Paragraph size="default" color="dark" alignment="center">
-                  Noch kein Account?
+                  {`${Message.contents.startScreen.text}`}
                 </Paragraph>
               </div>
               <div>
-                <TextButton onClick={handleSignup} label="Jetzt registrieren" />
+                <TextButton onClick={handleSignup} label={`${Message.contents.startScreen.registerButton}`} />
               </div>
             </RightColumnContent>
           </RightColumnContentWrapper>
