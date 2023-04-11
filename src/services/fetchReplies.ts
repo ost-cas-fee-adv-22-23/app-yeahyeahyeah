@@ -5,8 +5,6 @@ export const fetchReplies = async (params?: { id?: string; token?: string }) => 
   const { id, token } = params || {};
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}/replies`;
 
-  console.log('params', params);
-
   try {
     const { data } = (await axios.get(url, {
       headers: {
