@@ -36,7 +36,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
       <>
         {data && <Listing data={data} handleDelete={handleDelete} isReply={isReply} />}
         <div key="last" tw="invisible" ref={ref} />
-        <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
+        <LoadingSpinnerWrapper>{(isLoading || isValidating) && <LoadingSpinner />}</LoadingSpinnerWrapper>
       </>
     );
   };
@@ -57,7 +57,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
               <>
                 <WelcomeText />
                 <Alert />
-                <TextBoxComponent variant="write" mutate={mutate} data={data} />
+                <TextBoxComponent variant="write" mutate={mutate} />
               </>
             )}
             {hashtag && (
@@ -66,9 +66,9 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
                   <Heading label="Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
                   <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
                 </div>
-                <div tw="flex flex-wrap bg-slate-white transform duration-500 bg-slate-100 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]">
+                <HashTagWrapper>
                   <Hashtag size="xlarge" hashtag={hashtag} />
-                </div>
+                </HashTagWrapper>
               </>
             )}
 
@@ -79,7 +79,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
         <>
           {id ? (
             <>
-              <TextBoxComponent id={id} variant="write" mutate={mutate} data={data} />
+              <TextBoxComponent id={id} variant="write" mutate={mutate} />
               {renderMumbles(true)}
             </>
           ) : (
@@ -91,4 +91,6 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   );
 };
 
+const LoadingSpinnerWrapper = tw.div`h-16 mb-32`;
 const MumbleMessageBox = tw.div`animate-bounce fixed top-[110px] mx-auto z-50 hover:(animate-none)`;
+const HashTagWrapper = tw.div`flex flex-wrap transform duration-500 bg-slate-white rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px] overflow-hidden`;
