@@ -56,6 +56,9 @@
     "pageNotFound": {
       "label": "Upps... Seite nicht gefunden.",
       "text": "Die angeforderte Seite existiert nicht."
+    },
+    "startScreen": {
+      "registerButton": "Jetzt registrieren"
     }
   }
 }
