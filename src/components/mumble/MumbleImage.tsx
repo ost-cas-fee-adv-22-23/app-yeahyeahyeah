@@ -51,7 +51,7 @@ export const MumbleImage = ({ mediaUrl, text, width, height }: MumbleImageProps)
             priority
             objectFit="contain"
             placeholder="empty"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 75vw, 100vw"
           />
         </Modal>
       )}
