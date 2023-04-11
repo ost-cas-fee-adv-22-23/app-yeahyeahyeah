@@ -1,3 +1,4 @@
+//@ts-check
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';

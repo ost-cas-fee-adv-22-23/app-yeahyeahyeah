@@ -1,5 +1,6 @@
 import { NextSeo } from 'next-seo';
 import tw, { styled, css } from 'twin.macro';
+import Message from '../../../data/content.json';
 import { signIn } from 'next-auth/react';
 import { Footer } from './Footer';
 import KeyWords from '@/components/content/KeyWords';
@@ -19,8 +20,8 @@ export const StartScreen: React.FC<StartScreen> = () => {
   return (
     <>
       <NextSeo
-        title="Mumble - Willkommen auf Mumble."
-        description="Are you ready to mumble? Jetzt registrieren und loslegen."
+        title={`${Message.seo.startScreen.title}`}
+        description={`${Message.seo.startScreen.description}`}
         canonical={process.env.NEXT_PUBLIC_URL}
       />
       <LayoutWrapper>
