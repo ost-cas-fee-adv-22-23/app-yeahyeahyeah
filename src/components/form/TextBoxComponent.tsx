@@ -13,9 +13,10 @@ type TextBoxComponentProps = {
   id?: string;
   variant: 'write' | 'inline' | 'start';
   mutate: any;
+  data: any;
 };
 
-export const TextBoxComponent = ({ id, variant, mutate }: TextBoxComponentProps) => {
+export const TextBoxComponent = ({ id, variant, mutate, data }: TextBoxComponentProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
