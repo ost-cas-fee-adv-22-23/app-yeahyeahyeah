@@ -4,9 +4,10 @@ import { useStream } from '@/hooks';
 import { MumbleFetcher } from '@/types/swr';
 import { Listing } from '../mumble/Listing';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
-import { ErrorBox } from '../error/ErrorBox';
 import { Timeline } from '../mumble/Timeline';
 import { TextBoxComponent } from '../form/TextBoxComponent';
+import { Alert } from '../alert/Alert';
+import { alertService } from '@/services';
 
 type StreamProps = {
   url: string;
@@ -43,7 +44,13 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
     );
   };
 
-  if (error) return <ErrorBox message={error} />;
+  if (error) {
+    alertService.error(`${error}`, {
+      autoClose: false,
+      keepAfterRouteChange: false,
+    });
+    return <Alert />;
+  }
 
   return (
     <>
