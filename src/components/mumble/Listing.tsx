@@ -23,7 +23,7 @@ export const Listing: React.FC<ListingProps> = ({ data, handleDelete, isReply = 
                 <PostWithShimmer
                   key={mumble.id}
                   id={mumble.id}
-                  isReply={isReply}
+                  $isReply={isReply}
                   creator={mumble.creator}
                   text={mumble.text}
                   mediaUrl={mumble.mediaUrl}
@@ -41,7 +41,7 @@ export const Listing: React.FC<ListingProps> = ({ data, handleDelete, isReply = 
               <Post
                 key={mumble.id}
                 id={mumble.id}
-                isReply={isReply}
+                $isReply={isReply}
                 creator={mumble.creator}
                 text={mumble.text}
                 mediaUrl={mumble.mediaUrl}
