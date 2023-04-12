@@ -1,10 +1,12 @@
+import tw from 'twin.macro';
+import Message from '../../data/content.json';
 import { Heading, Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 const InternalServerError: React.FC = () => {
   return (
-    <div tw="flex flex-col justify-center items-center w-full h-full px-16">
+    <Container>
       <Heading
-        label="Upps... Internal Server Error 500."
+        label={`${Message.alerts.internalServerError.title}`}
         size="default"
         color="pink"
         tag="h3"
@@ -12,10 +14,12 @@ const InternalServerError: React.FC = () => {
         mbSpacing="0"
       />
       <Paragraph size="large" alignment="center">
-        Da ist etwas schief gelaufen.
+        {`${Message.alerts.internalServerError.text}`}
       </Paragraph>
-    </div>
+    </Container>
   );
 };
 
 export default InternalServerError;
+
+const Container = tw.div`flex flex-col justify-center items-center w-full h-full px-16 container`;

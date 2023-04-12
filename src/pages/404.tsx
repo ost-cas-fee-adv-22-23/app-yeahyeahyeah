@@ -1,10 +1,12 @@
+import tw from 'twin.macro';
+import Message from '../../data/content.json';
 import { Heading, Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 const PageNotFound: React.FC = () => {
   return (
-    <div tw="flex flex-col justify-center items-center w-full h-full px-16">
+    <Container>
       <Heading
-        label="Upps... Seite nicht gefunden."
+        label={`${Message.alerts.pageNotFound.title}`}
         size="default"
         color="violet"
         tag="h3"
@@ -12,10 +14,12 @@ const PageNotFound: React.FC = () => {
         mbSpacing="0"
       />
       <Paragraph size="large" alignment="center">
-        Die angeforderte Seite existiert nicht.
+        {`${Message.alerts.pageNotFound.text}`}
       </Paragraph>
-    </div>
+    </Container>
   );
 };
 
 export default PageNotFound;
+
+const Container = tw.div`flex flex-col justify-center items-center w-full h-full px-16 container`;
