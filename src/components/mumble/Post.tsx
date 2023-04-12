@@ -46,7 +46,7 @@ export const Post: React.FC<MumbleProps> = ({
     fetchUser,
     {
       revalidateOnFocus: false,
-      fallbackData: fallbackUsers?.data.find((x) => x.id === creator),
+      fallbackData: fallbackUsers?.data?.find((x) => x.id === creator),
     }
   );
 
