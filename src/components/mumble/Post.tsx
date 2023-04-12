@@ -17,7 +17,7 @@ import {
 import { Like } from './Like';
 import { Share } from './Share';
 import { Picture } from './Picture';
-import { renderHashtags } from '@/components/mumble/Hashtag';
+import { renderHashtags } from './Hashtag';
 
 type MumbleProps = {
   type: string;

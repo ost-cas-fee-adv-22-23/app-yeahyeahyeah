@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import debounce from 'lodash.debounce';
 import { useSession } from 'next-auth/react';
 import useOnScreen from '@/hooks/useOnScreen';
 import useSWR from 'swr';
