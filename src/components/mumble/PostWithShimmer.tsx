@@ -21,6 +21,7 @@ import { renderHashtags } from './Hashtag';
 
 type PostWithShimmerProps = {
   type: string;
+  isReply: boolean;
   handleDeleteCallback?: (id: string) => void;
 } & Mumble;
 
@@ -34,6 +35,7 @@ export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
   likedByUser,
   replyCount,
   type,
+  isReply,
   handleDeleteCallback,
 }) => {
   const { data: session }: any = useSession();
@@ -63,8 +65,8 @@ export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
   };
 
   return (
-    <ArticleMumble id={id} type={type}>
-      <ArticleHeader type={type}>
+    <ArticleMumble id={id} type={type} isReply={isReply}>
+      <ArticleHeader type={type} isReply>
         <Link href={`/profile/${creator}`} title={creator} target="_self">
           <Avatar
             key={creator ? creator : ''}
@@ -147,12 +149,15 @@ export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
 
 interface ArticleHeaderProps {
   type: string;
+  isReply: boolean;
 }
 
-const ArticleMumble = styled.article(({ type }: ArticleHeaderProps) => [
-  tw`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48 rounded-lg`,
+const ArticleMumble = styled.article(({ type, isReply }: ArticleHeaderProps) => [
+  tw`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48`,
   type === 'reply' && tw`mb-0`,
   type === 'post' && tw`mb-16`,
+  isReply === true && tw`border-t-1 border-slate-200 pt-16`,
+  isReply === false && tw`rounded-lg`,
 ]);
 
 const ArticleHeader = styled.div(({ type }: ArticleHeaderProps) => [
