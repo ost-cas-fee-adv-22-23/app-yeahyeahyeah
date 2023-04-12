@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import debounce from 'lodash.debounce';
 import { useSession } from 'next-auth/react';
 import useOnScreen from '@/hooks/useOnScreen';
 import useSWR from 'swr';
@@ -61,15 +60,12 @@ export function useStream(
     }
   );
 
-  const handleIntersectionCallbackDebounced = debounce(async () => {
-    setSize(size + 1);
-    setIsOnScreen(false);
-  }, 800);
-
   useEffect(() => {
     // TODO: id is needed on profile page, because there is no possibility for setting offset and limit on endpoint
-    if (!id && isOnScreen && !isValidating && data && data.length * limit <= data[0].count)
-      handleIntersectionCallbackDebounced();
+    if (!id && isOnScreen && !isValidating && data && data.length * limit <= data[0].count) {
+      setSize(size + 1);
+      setIsOnScreen(false);
+    }
   });
 
   const checkForNewMumbles = data && data[0]?.mumbles[0]?.id && newMumbles && newMumbles.count > 0;

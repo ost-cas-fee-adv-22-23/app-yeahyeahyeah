@@ -5,7 +5,7 @@ import Message from '../../../data/content.json';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
-import { fetchUser, Mumble } from '@/services';
+import { fetchUser, Mumble, QwackerUserResponse } from '@/services';
 import {
   Avatar,
   CommentButton,
@@ -23,6 +23,7 @@ type PostWithShimmerProps = {
   type: string;
   $isReply?: boolean;
   handleDeleteCallback?: (id: string) => void;
+  fallbackUsers?: QwackerUserResponse;
 } & Mumble;
 
 export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
@@ -37,13 +38,16 @@ export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
   type,
   $isReply,
   handleDeleteCallback,
+  fallbackUsers,
 }) => {
   const { data: session }: any = useSession();
+
   const { data } = useSWR(
     session?.accessToken ? { url: '/api/user', id: creator, token: session?.accessToken } : null,
     fetchUser,
     {
       revalidateOnFocus: false,
+      fallbackData: fallbackUsers?.data.find((x) => x.id === creator),
     }
   );
 

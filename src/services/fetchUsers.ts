@@ -1,18 +1,12 @@
 import axios from 'axios';
 import { User } from '../types/qwacker';
 
-export const fetchUsers = async (params?: {
-  limit?: number;
-  offset?: number;
-  newerThanMumbleId?: string;
-  token: string;
-}) => {
-  const { limit, offset, newerThanMumbleId, token } = params || {};
+export const fetchUsers = async (params?: { limit?: number; offset?: number; token: string }) => {
+  const { limit, offset, token } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/users?${new URLSearchParams({
     limit: limit?.toString() || '10',
     offset: offset?.toString() || '0',
-    newerThan: newerThanMumbleId || '',
   })}`;
 
   try {
@@ -27,15 +21,7 @@ export const fetchUsers = async (params?: {
       throw new Error('Something was not okay fetching users.');
     }
 
-    return [
-      {
-        avatarUrl: data.avatarUrl,
-        firstName: data.firstName,
-        id: data.id,
-        lastName: data.lastName,
-        userName: data.userName,
-      } as User,
-    ];
+    return data;
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : 'Could not fetch users');
   }
