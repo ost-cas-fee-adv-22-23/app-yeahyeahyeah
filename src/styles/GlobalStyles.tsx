@@ -11,6 +11,10 @@ const CustomStyles = createGlobalStyle({
   },
   a: {
     cursor: 'pointer',
+    hyphens: 'auto',
+  },
+  p: {
+    hyphens: 'auto',
   },
 });
 
