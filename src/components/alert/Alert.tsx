@@ -89,7 +89,7 @@ interface AlertWrapperProps {
   id: string;
 }
 
-const AlertDefaults = tw`rounded-md p-16 mb-32 flex justify-start items-center w-full`;
+const AlertDefaults = tw`rounded-md p-16 mb-32 flex justify-start items-center w-full container`;
 const AlertWrapper = styled.div(({ id }: AlertWrapperProps) => [
   id === 'default-alert' && tw`bg-pink-600 text-slate-white`,
   id === 'alert-success' && tw`bg-slate-white text-violet-900`,
