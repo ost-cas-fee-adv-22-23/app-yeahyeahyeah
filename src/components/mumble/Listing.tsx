@@ -54,6 +54,7 @@ export const Listing: React.FC<ListingProps> = ({ data, handleDelete, isReply = 
                 type={mumble.type}
                 mediaType={mumble.mediaType}
                 handleDeleteCallback={handleDelete}
+                fallbackUsers={fallbackUsers}
               />
             );
           });

@@ -41,14 +41,13 @@ export const PostWithShimmer: React.FC<PostWithShimmerProps> = ({
   fallbackUsers,
 }) => {
   const { data: session }: any = useSession();
-  const fallbackUser = fallbackUsers?.data.find((x) => x.id === creator);
 
   const { data } = useSWR(
     session?.accessToken ? { url: '/api/user', id: creator, token: session?.accessToken } : null,
     fetchUser,
     {
       revalidateOnFocus: false,
-      fallbackData: fallbackUser,
+      fallbackData: fallbackUsers?.data.find((x) => x.id === creator),
     }
   );
 

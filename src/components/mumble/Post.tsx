@@ -5,7 +5,7 @@ import Message from '../../../data/content.json';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { elapsedTime } from '@/utils/timeConverter';
-import { fetchUser, Mumble } from '@/services';
+import { fetchUser, Mumble, QwackerUserResponse } from '@/services';
 import {
   Avatar,
   CommentButton,
@@ -23,6 +23,7 @@ type MumbleProps = {
   type: string;
   $isReply?: boolean;
   handleDeleteCallback?: (id: string) => void;
+  fallbackUsers?: QwackerUserResponse;
 } & Mumble;
 
 export const Post: React.FC<MumbleProps> = ({
@@ -37,6 +38,7 @@ export const Post: React.FC<MumbleProps> = ({
   type,
   $isReply,
   handleDeleteCallback,
+  fallbackUsers,
 }) => {
   const { data: session }: any = useSession();
   const { data } = useSWR(
@@ -44,6 +46,7 @@ export const Post: React.FC<MumbleProps> = ({
     fetchUser,
     {
       revalidateOnFocus: false,
+      fallbackData: fallbackUsers?.data.find((x) => x.id === creator),
     }
   );
 
