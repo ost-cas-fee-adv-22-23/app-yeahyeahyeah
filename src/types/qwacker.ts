@@ -34,6 +34,11 @@ export type QwackerSingleMumbleResponse = {
   data: RawMumble;
 };
 
+export type QwackerUserResponse = {
+  count: number;
+  data: User[];
+};
+
 export const transformMumble = (mumble: RawMumble) => ({
   ...mumble,
   createdTimestamp: decodeTime(mumble.id),

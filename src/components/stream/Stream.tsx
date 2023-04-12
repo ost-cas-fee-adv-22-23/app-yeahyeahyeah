@@ -7,19 +7,20 @@ import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { Timeline } from '../mumble/Timeline';
 import { TextBoxComponent } from '../form/TextBoxComponent';
 import { Alert } from '../alert/Alert';
-import { alertService } from '@/services';
+import { QwackerUserResponse, alertService } from '@/services';
 
 type StreamProps = {
   url: string;
   limit: number;
   fallback: FetchMumbles;
+  fallbackUsers?: QwackerUserResponse;
   fetcher: MumbleFetcher;
   id?: string;
   hashtag?: string;
   creator?: { id: string };
 };
 
-export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id }) => {
+export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetcher, creator, url, id, fallbackUsers }) => {
   const [
     data,
     mutate,
@@ -37,7 +38,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
   const renderMumbles = (isReply?: boolean) => {
     return (
       <>
-        {data && <Listing data={data} handleDelete={handleDelete} isReply={isReply} />}
+        {data && <Listing data={data} handleDelete={handleDelete} isReply={isReply} fallbackUsers={fallbackUsers} />}
         <div key="last" tw="invisible" ref={ref} />
         <div tw="h-16 mb-32">{(isLoading || isValidating) && <LoadingSpinner />}</div>
       </>

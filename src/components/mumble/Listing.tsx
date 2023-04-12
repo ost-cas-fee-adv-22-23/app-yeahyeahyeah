@@ -1,4 +1,4 @@
-import { Mumble } from '@/services';
+import { Mumble, QwackerUserResponse } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
 import { PostWithShimmer } from './PostWithShimmer';
 import { Post } from './Post';
@@ -8,9 +8,10 @@ type ListingProps = {
   data: FetchMumbles[];
   handleDelete: (id: string) => Promise<void>;
   isReply?: boolean;
+  fallbackUsers?: QwackerUserResponse;
 };
 
-export const Listing: React.FC<ListingProps> = ({ data, handleDelete, isReply = false }) => {
+export const Listing: React.FC<ListingProps> = ({ data, handleDelete, isReply = false, fallbackUsers }) => {
   const { data: session }: any = useSession();
 
   return (
@@ -34,6 +35,7 @@ export const Listing: React.FC<ListingProps> = ({ data, handleDelete, isReply = 
                   type={mumble.type}
                   mediaType={mumble.mediaType}
                   handleDeleteCallback={handleDelete}
+                  fallbackUsers={fallbackUsers}
                 />
               );
             }
