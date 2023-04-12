@@ -37,6 +37,14 @@
     },
     "likeError": {
       "text": "Could not like mumble"
+    },
+    "pageNotFound": {
+      "title": "Upps... Seite nicht gefunden.",
+      "text": "Die angeforderte Seite existiert nicht."
+    },
+    "internalServerError": {
+      "title": "Upps... Internal Server Error!",
+      "text": "Da ist etwas schief gelaufen. Versuche etwas anderes."
     }
   },
   "contents": {
@@ -56,10 +64,6 @@
     "switch": {
       "mumbles": "Deine Mumbles",
       "likes": "Deine Likes"
-    },
-    "pageNotFound": {
-      "label": "Upps... Seite nicht gefunden.",
-      "text": "Die angeforderte Seite existiert nicht."
     },
     "startScreen": {
       "text": "Noch kein Account?",
