@@ -4,7 +4,7 @@ import { NextSeo } from 'next-seo';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { getToken } from 'next-auth/jwt';
-import { fetchUser, User, fetchSingleMumble, fetchReplies } from '@/services';
+import { fetchUser, User, fetchSingleMumble, fetchReplies, QwackerUserResponse, fetchUsers } from '@/services';
 import { FetchMumbles, FetchSingleMumble } from '@/types/fallback';
 import { Alert, Detail, Stream } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -16,6 +16,7 @@ type MumblePageProps = {
   fallback: FetchSingleMumble;
   fallbackReplies: FetchMumbles;
   fallbackUser: User;
+  fallbackUsers: QwackerUserResponse;
 };
 
 const MumblePage = ({
@@ -24,6 +25,7 @@ const MumblePage = ({
   fallback,
   fallbackReplies,
   fallbackUser,
+  fallbackUsers,
 }: MumblePageProps): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { data: session }: any = useSession();
 
@@ -52,7 +54,14 @@ const MumblePage = ({
       <Container layout="box">
         <Alert />
         {mumble && <Detail mumble={mumble} user={user} />}
-        <Stream url="/api/replies" id={id} limit={limit} fallback={fallbackReplies} fetcher={fetchReplies} />
+        <Stream
+          url="/api/replies"
+          id={id}
+          limit={limit}
+          fallback={fallbackReplies}
+          fetcher={fetchReplies}
+          fallbackUsers={fallbackUsers}
+        />
       </Container>
     </>
   );
@@ -64,6 +73,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
   const mumbles: FetchMumbles = await fetchReplies({ id: id as string, token: token?.accessToken });
 
   const user: User | string = token?.accessToken ? await fetchUser({ id: mumble.creator, token: token?.accessToken }) : '';
+  const users: QwackerUserResponse =
+    (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
 
   return {
     props: {
@@ -78,6 +89,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
         lastName: 'User',
         avatarUrl: '',
       },
+      fallbackUsers: users,
     },
   };
 };

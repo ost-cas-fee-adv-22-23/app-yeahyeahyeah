@@ -5,7 +5,7 @@ import tw from 'twin.macro';
 import Message from '../../../data/content.json';
 import { getToken } from 'next-auth/jwt';
 import { useSession } from 'next-auth/react';
-import { fetchMyLikes, fetchMyMumbles, fetchUser, User } from '@/services';
+import { fetchMyLikes, fetchMyMumbles, fetchUser, fetchUsers, QwackerUserResponse, User } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
 import { Header, Stream } from '@/components';
 import { Container, Switch } from '@smartive-education/design-system-component-library-yeahyeahyeah';
@@ -14,11 +14,12 @@ type HeaderProps = {
   creator: any;
   limit: number;
   fallbackUser: User;
+  fallbackUsers: QwackerUserResponse;
   fallBackMyMumbles: FetchMumbles;
   fallBackMyLikes: FetchMumbles;
 };
 
-const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBackMyLikes }: HeaderProps) => {
+const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBackMyLikes, fallbackUsers }: HeaderProps) => {
   const { data: session }: any = useSession();
   const [selection, setSelection] = useState('mumbles');
 
@@ -64,6 +65,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                   url="/api/myMumbles"
                   limit={limit}
                   fallback={fallBackMyMumbles}
+                  fallbackUsers={fallbackUsers}
                   fetcher={fetchMyMumbles}
                   creator={creator}
                 />
@@ -74,6 +76,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                   // TODO: limit is set to 20 because we have to intercept the data in the fetcher function
                   limit={20}
                   fallback={fallBackMyLikes}
+                  fallbackUsers={fallbackUsers}
                   fetcher={fetchMyLikes}
                   creator={creator}
                 />
@@ -87,6 +90,7 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
                 url="/api/myMumbles"
                 limit={limit}
                 fallback={fallBackMyMumbles}
+                fallbackUsers={fallbackUsers}
                 fetcher={fetchMyMumbles}
                 creator={creator}
               />
@@ -106,6 +110,8 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
   const user: User | string = token?.accessToken ? await fetchUser({ id: _id, token: token?.accessToken }) : '';
   const myMumbles: FetchMumbles = await fetchMyMumbles({ creator: _id, limit, token: token?.accessToken });
   const myLikes: FetchMumbles = await fetchMyLikes({ token: token?.accessToken });
+  const users: QwackerUserResponse =
+    (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
 
   return {
     props: {
@@ -117,6 +123,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: 
         lastName: 'User',
         avatarUrl: '',
       },
+      fallbackUsers: users,
       fallBackMyMumbles: myMumbles,
       fallBackMyLikes: myLikes,
     },

@@ -31,8 +31,6 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
   const users: QwackerUserResponse =
     (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
 
-  console.log('users', users);
-
   return {
     props: {
       limit,
