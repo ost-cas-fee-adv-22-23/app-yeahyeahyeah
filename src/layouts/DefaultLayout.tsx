@@ -9,13 +9,14 @@ interface DefaultLayoutProps {
 }
 
 export const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
-  const route = useRouter();
+  const router = useRouter();
+
   return (
     <>
       <NavigationWrapper>
         <NavigationComponent />
       </NavigationWrapper>
-      <LayoutStyles>{route.pathname === '/' ? <PageTransition>{children}</PageTransition> : <>{children}</>}</LayoutStyles>
+      <LayoutStyles>{router.pathname === '/' ? <PageTransition>{children}</PageTransition> : <>{children}</>}</LayoutStyles>
       <Footer />
     </>
   );
