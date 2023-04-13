@@ -33,8 +33,6 @@ export const PageTransition: React.FC<PageWithTransitionProps> = ({ children }) 
     );
   };
 
-  console.log(transitioning);
-
   if (transitioning) {
     return <Loading />;
   }
