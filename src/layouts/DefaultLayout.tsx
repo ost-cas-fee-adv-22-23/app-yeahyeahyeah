@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import tw from 'twin.macro';
 import { Footer, NavigationComponent } from '../components';
+import { PageTransition } from '@/components';
+import { useRouter } from 'next/router';
 
-export type DefaultLayoutProps = React.DOMAttributes<HTMLDivElement>;
+interface DefaultLayoutProps {
+  children: ReactNode;
+}
 
 export const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
+  const router = useRouter();
+
   return (
     <>
       <NavigationWrapper>
         <NavigationComponent />
       </NavigationWrapper>
-      <LayoutStyles>{children}</LayoutStyles>
+      <LayoutStyles>{router.pathname === '/' ? <PageTransition>{children}</PageTransition> : <>{children}</>}</LayoutStyles>
       <Footer />
     </>
   );

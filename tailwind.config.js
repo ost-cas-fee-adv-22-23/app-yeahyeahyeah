@@ -49,9 +49,20 @@ module.exports = {
           '71%': { marginTop: '0px' },
           '100%': { marginTop: '0px' },
         },
+        fadeOut: {
+          '0%': {
+            backgroundColor: `${colors.slate[100]}`,
+            transform: 'scale(0)',
+          },
+          '100%': {
+            backgroundColor: `${colors.transparent}`,
+            transform: 'scale(5)',
+          },
+        },
       },
       animation: {
         keyword: 'slide 15s cubic-bezier(0.7, -0.85, 0.5, 1.4) infinite',
+        fade: 'fadeOut 1.2s ease-in-out',
       },
     },
     fontWeight: {
