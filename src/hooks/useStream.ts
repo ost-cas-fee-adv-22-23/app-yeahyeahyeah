@@ -6,6 +6,7 @@ import useSWRInfinite from 'swr/infinite';
 import { alertService, deleteMumble } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
 import { MumbleFetcher, StreamHook } from '@/types/swr';
+import debounce from 'lodash.debounce';
 
 export function useStream(
   url: string,
@@ -60,12 +61,15 @@ export function useStream(
     }
   );
 
+  const handleIntersectionCallbackDebounced = debounce(async () => {
+    setSize(size + 1);
+    setIsOnScreen(false);
+  }, 200);
+
   useEffect(() => {
     // TODO: id is needed on profile page, because there is no possibility for setting offset and limit on endpoint
-    if (!id && isOnScreen && !isValidating && data && data.length * limit <= data[0].count) {
-      setSize(size + 1);
-      setIsOnScreen(false);
-    }
+    if (!id && isOnScreen && !isValidating && data && data.length * limit <= data[0].count)
+      handleIntersectionCallbackDebounced();
   });
 
   const checkForNewMumbles = data && data[0]?.mumbles[0]?.id && newMumbles && newMumbles.count > 0;

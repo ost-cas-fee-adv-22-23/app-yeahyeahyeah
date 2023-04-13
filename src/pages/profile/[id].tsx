@@ -73,8 +73,8 @@ const ProfilePage = ({ creator, limit, fallbackUser, fallBackMyMumbles, fallBack
               {selection === 'likes' && (
                 <Stream
                   url="/api/myLikes"
-                  // TODO: limit is set to 20 because we have to intercept the data in the fetcher function
-                  limit={20}
+                  // TODO: limit is set to 100 because we have to intercept the data in the fetcher function
+                  limit={100}
                   fallback={fallBackMyLikes}
                   fallbackUsers={fallbackUsers}
                   fetcher={fetchMyLikes}
