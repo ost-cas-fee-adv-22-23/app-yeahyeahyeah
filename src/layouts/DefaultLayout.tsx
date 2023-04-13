@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import tw from 'twin.macro';
 import { Footer, NavigationComponent } from '../components';
+import { PageTransition } from '@/components';
 
-export type DefaultLayoutProps = React.DOMAttributes<HTMLDivElement>;
+interface DefaultLayoutProps {
+  children: ReactNode;
+}
 
 export const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
   return (
@@ -10,7 +13,9 @@ export const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
       <NavigationWrapper>
         <NavigationComponent />
       </NavigationWrapper>
-      <LayoutStyles>{children}</LayoutStyles>
+      <LayoutStyles>
+        <PageTransition>{children}</PageTransition>
+      </LayoutStyles>
       <Footer />
     </>
   );
