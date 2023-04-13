@@ -52,11 +52,11 @@ module.exports = {
         fadeOut: {
           '0%': {
             backgroundColor: `${colors.slate[100]}`,
-            transform: 'scale(1)',
+            transform: 'scale(0)',
           },
           '100%': {
             backgroundColor: `${colors.transparent}`,
-            transform: 'scale(0)',
+            transform: 'scale(5)',
           },
         },
       },

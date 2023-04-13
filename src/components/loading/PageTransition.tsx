@@ -15,7 +15,7 @@ export const PageTransition: React.FC<PageWithTransitionProps> = ({ children }) 
       setTransitioning(true);
       setTimeout(() => {
         setTransitioning(false);
-      }, 1000);
+      }, 500);
     };
     router.events.on('routeChangeComplete', handler);
     return () => {
