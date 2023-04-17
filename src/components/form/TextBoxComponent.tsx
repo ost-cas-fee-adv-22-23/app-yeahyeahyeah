@@ -1,27 +1,25 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import debounce from 'lodash.debounce';
 import useSWR from 'swr';
 import { FileRejection } from 'react-dropzone';
 import Message from '../../../data/content.json';
 import { postMumble, Mumble, UploadImage, postReply, alertService, fetchUser } from '@/services';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { reducer } from '@/reducer/textbox-reducer';
 
 type TextBoxComponentProps = {
   id?: string;
   variant: 'write' | 'inline' | 'start';
   mutate: any;
-  data: any;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate, data }) => {
-  const [inputValue, setInputValue] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [showModal, setShowModal] = useState(false);
-  const [fileUploadError, setFileUploadError] = useState('');
+export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate }) => {
   const { data: session }: any = useSession();
-  const [file, setFile] = useState<UploadImage | null>(null);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [showModal, setShowModal] = useState(false);
+  const [state, dispatch] = useReducer(reducer, { errorMessage: '', fileUploadError: '', file: null });
+
   let res: Mumble | null = null;
 
   const { data: user }: any = useSWR(
@@ -34,12 +32,12 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
 
   const clearFormValues = () => {
     setInputValue('');
-    setFile(null);
+    dispatch({ type: 'clear_file' });
   };
 
   const addText = async () => {
     if (inputValue === '') {
-      setErrorMessage(Message.alerts.error.text);
+      dispatch({ type: 'set_error_message', payload: Message.alerts.textBox.text });
       return;
     }
 
@@ -54,7 +52,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
 
     if (id) {
       try {
-        res = await postReply(id, inputValue, file, session?.accessToken);
+        res = await postReply(id, inputValue, state.file, session?.accessToken);
         res && mutate();
 
         clearFormValues();
@@ -67,7 +65,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
       }
     } else {
       try {
-        res = await postMumble(inputValue, file, session?.accessToken);
+        res = await postMumble(inputValue, state.file, session?.accessToken);
         res && mutate();
 
         clearFormValues();
@@ -81,21 +79,13 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     }
   };
 
-  const setErrorDebounced = useMemo(
-    () =>
-      debounce(() => {
-        setErrorMessage('');
-      }, 100),
-    []
-  );
-
   const setTimerForError = () =>
     setTimeout(() => {
-      setFileUploadError('');
+      dispatch({ type: 'clear_file_upload_error', payload: '' });
     }, 2000);
 
   const onDropCallBack = (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-    fileRejections?.length && setFileUploadError(fileRejections[0].errors[0].message);
+    fileRejections?.length && dispatch({ type: 'set_file_upload_error', payload: Message.alerts.fileError.text });
     setTimerForError();
 
     const newFile = acceptedFiles[0];
@@ -106,14 +96,15 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     if (newFile.size > 1024 * 1024 * 5) {
       const fileSizeBytes: number = newFile.size;
       const fileSizeMB = (Math.round(fileSizeBytes / 1024) / 1024).toFixed(1);
-      setErrorMessage(`${fileSizeMB}: ${Message.alerts.fileError.text}`);
+      dispatch({ type: 'set_error_message', payload: `${fileSizeMB}: ${Message.alerts.fileError.text}` });
     }
 
-    setFile(
-      Object.assign(newFile, {
+    dispatch({
+      type: 'set_file',
+      payload: Object.assign(newFile, {
         preview: URL.createObjectURL(newFile),
-      })
-    );
+      }),
+    });
 
     showModal && setShowModal(false);
   };
@@ -123,10 +114,8 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   };
 
   useEffect(() => {
-    if (inputValue !== '') {
-      setErrorDebounced();
-    }
-  }, [inputValue, setErrorDebounced]);
+    inputValue !== '' && state.errorMessage !== '' && dispatch({ type: 'clear_error_message' });
+  }, [inputValue, dispatch, state.errorMessage]);
 
   return (
     <div tw="mb-16">
@@ -148,7 +137,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         }}
         form={{
           name: 'textbox-mumble',
-          errorMessage: errorMessage,
+          errorMessage: state.errorMessage,
           placeholder: `${Message.contents.form.placeholder_1}`,
         }}
         setInputValue={setInputValue}
@@ -160,7 +149,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         onDropCallBack={onDropCallBack}
         showModal={showModal}
         setShowModal={setShowModal}
-        fileUploadError={fileUploadError}
+        fileUploadError={state.fileUploadError}
       />
     </div>
   );
