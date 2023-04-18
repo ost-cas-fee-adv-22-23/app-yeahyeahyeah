@@ -32,6 +32,9 @@
     "fileError": {
       "text": "Die Datei ist zu gross. Die Datei darf nur max. 5 MB gross sein."
     },
+    "fileTypeError": {
+      "text": "Die Datei muss vom Typ jpg, jpeg, png oder gif sein."
+    },
     "dislikeError": {
       "text": "Could not dislike mumble"
     },

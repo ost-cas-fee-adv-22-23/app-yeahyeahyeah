@@ -16,9 +16,13 @@ type TextBoxComponentProps = {
 
 export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate }) => {
   const { data: session }: any = useSession();
-  const [inputValue, setInputValue] = useState<string>('');
-  const [showModal, setShowModal] = useState(false);
-  const [state, dispatch] = useReducer(reducer, { errorMessage: '', fileUploadError: '', file: null });
+  const [state, dispatch] = useReducer(reducer, {
+    errorMessage: '',
+    fileUploadError: '',
+    file: null,
+    showModal: false,
+    inputValue: '',
+  });
 
   let res: Mumble | null = null;
 
@@ -31,13 +35,13 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   );
 
   const clearFormValues = () => {
-    setInputValue('');
-    dispatch({ type: 'clear_file' });
+    dispatch({ type: 'CLEAR_INPUT_VALUE' });
+    dispatch({ type: 'CLEAR_FILE' });
   };
 
   const addText = async () => {
-    if (inputValue === '') {
-      dispatch({ type: 'set_error_message', payload: Message.alerts.textBox.text });
+    if (state.inputValue === '') {
+      dispatch({ type: 'SET_ERROR_MESSAGE', payload: Message.alerts.textBox.text });
       return;
     }
 
@@ -52,7 +56,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
 
     if (id) {
       try {
-        res = await postReply(id, inputValue, state.file, session?.accessToken);
+        res = await postReply(id, state.inputValue, state.file, session?.accessToken);
         res && mutate();
 
         clearFormValues();
@@ -65,7 +69,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
       }
     } else {
       try {
-        res = await postMumble(inputValue, state.file, session?.accessToken);
+        res = await postMumble(state.inputValue, state.file, session?.accessToken);
         res && mutate();
 
         clearFormValues();
@@ -81,11 +85,11 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
 
   const setTimerForError = () =>
     setTimeout(() => {
-      dispatch({ type: 'clear_file_upload_error', payload: '' });
+      dispatch({ type: 'CLEAR_FILE_UPLOAD_ERROR', payload: '' });
     }, 2000);
 
   const onDropCallBack = (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-    fileRejections?.length && dispatch({ type: 'set_file_upload_error', payload: Message.alerts.fileError.text });
+    fileRejections?.length && dispatch({ type: 'SET_FILE_UPLOAD_ERROR', payload: Message.alerts.fileTypeError.text });
     setTimerForError();
 
     const newFile = acceptedFiles[0];
@@ -96,26 +100,26 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     if (newFile.size > 1024 * 1024 * 5) {
       const fileSizeBytes: number = newFile.size;
       const fileSizeMB = (Math.round(fileSizeBytes / 1024) / 1024).toFixed(1);
-      dispatch({ type: 'set_error_message', payload: `${fileSizeMB}: ${Message.alerts.fileError.text}` });
+      dispatch({ type: 'SET_ERROR_MESSAGE', payload: `${fileSizeMB}: ${Message.alerts.fileError.text}` });
     }
 
     dispatch({
-      type: 'set_file',
+      type: 'SET_FILE',
       payload: Object.assign(newFile, {
         preview: URL.createObjectURL(newFile),
       }),
     });
 
-    showModal && setShowModal(false);
+    dispatch({ type: 'CLOSE_MODAL' });
   };
 
   const handleUpload = () => {
-    setShowModal(true);
+    dispatch({ type: 'SHOW_MODAL' });
   };
 
   useEffect(() => {
-    inputValue !== '' && state.errorMessage !== '' && dispatch({ type: 'clear_error_message' });
-  }, [inputValue, dispatch, state.errorMessage]);
+    state.inputValue !== '' && state.errorMessage !== '' && dispatch({ type: 'CLEAR_ERROR_MESSAGE' });
+  }, [state.inputValue, dispatch, state.errorMessage]);
 
   return (
     <div tw="mb-16">
@@ -140,15 +144,16 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
           errorMessage: state.errorMessage,
           placeholder: `${Message.contents.form.placeholder_1}`,
         }}
-        setInputValue={setInputValue}
-        inputValue={inputValue}
+        setInputValue={() => {}}
+        dispatch={dispatch}
+        inputValue={state.inputValue}
         sendCallback={addText}
         uploadCallback={handleUpload}
       />
       <UploadForm
         onDropCallBack={onDropCallBack}
-        showModal={showModal}
-        setShowModal={setShowModal}
+        showModal={state.showModal}
+        dispatch={dispatch}
         fileUploadError={state.fileUploadError}
       />
     </div>
