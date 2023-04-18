@@ -144,7 +144,6 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
           errorMessage: state.errorMessage,
           placeholder: `${Message.contents.form.placeholder_1}`,
         }}
-        setInputValue={() => {}}
         dispatch={dispatch}
         inputValue={state.inputValue}
         sendCallback={addText}
