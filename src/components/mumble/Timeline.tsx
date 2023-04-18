@@ -41,7 +41,7 @@ export const Timeline: React.FC<TimelineProps> = ({
           <>
             <WelcomeText />
             <Alert />
-            <TextBoxComponent variant="write" mutate={mutate} data={data} />
+            <TextBoxComponent variant="write" mutate={mutate} />
           </>
         )}
         {hashtag && (
