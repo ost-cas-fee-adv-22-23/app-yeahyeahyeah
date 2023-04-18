@@ -70,7 +70,7 @@ export const Stream: React.FC<StreamProps> = ({ limit, fallback, hashtag, fetche
         <>
           {id ? (
             <>
-              <TextBoxComponent id={id} variant="write" mutate={mutate} data={data} />
+              <TextBoxComponent id={id} variant="write" mutate={mutate} />
               {renderMumbles(true)}
             </>
           ) : (
