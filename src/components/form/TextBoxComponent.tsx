@@ -1,10 +1,10 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { FileRejection } from 'react-dropzone';
 import Message from '../../../data/content.json';
-import { postMumble, Mumble, UploadImage, postReply, alertService, fetchUser } from '@/services';
+import { postMumble, Mumble, postReply, alertService, fetchUser } from '@/services';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { reducer } from '@/reducer/textbox-reducer';
 
@@ -34,11 +34,6 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     }
   );
 
-  const clearFormValues = () => {
-    dispatch({ type: 'CLEAR_INPUT_VALUE' });
-    dispatch({ type: 'CLEAR_FILE' });
-  };
-
   const addText = async () => {
     if (state.inputValue === '') {
       dispatch({ type: 'SET_ERROR_MESSAGE', payload: Message.alerts.textBox.text });
@@ -50,7 +45,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         autoClose: false,
         keepAfterRouteChange: false,
       });
-      clearFormValues();
+      dispatch({ type: 'CLEAR_FORM_VALUES' });
       return;
     }
 
@@ -59,7 +54,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         res = await postReply(id, state.inputValue, state.file, session?.accessToken);
         res && mutate();
 
-        clearFormValues();
+        dispatch({ type: 'CLEAR_FORM_VALUES' });
 
         if (!res) {
           throw new Error(Message.alerts.postError.text);
@@ -72,7 +67,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
         res = await postMumble(state.inputValue, state.file, session?.accessToken);
         res && mutate();
 
-        clearFormValues();
+        dispatch({ type: 'CLEAR_FORM_VALUES' });
 
         if (!res) {
           throw new Error(Message.alerts.postError.text);

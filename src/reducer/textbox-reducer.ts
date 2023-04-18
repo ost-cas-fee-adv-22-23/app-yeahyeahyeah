@@ -45,12 +45,6 @@ export function reducer(state: TextBoxState, action: TextBoxAction): TextBoxStat
         file: action.payload as UploadImage,
       };
     }
-    case 'CLEAR_FILE': {
-      return {
-        ...state,
-        file: null,
-      };
-    }
     case 'SHOW_MODAL': {
       return {
         ...state,
@@ -72,6 +66,13 @@ export function reducer(state: TextBoxState, action: TextBoxAction): TextBoxStat
     case 'CLEAR_INPUT_VALUE': {
       return {
         ...state,
+        inputValue: '',
+      };
+    }
+    case 'CLEAR_FORM_VALUES': {
+      return {
+        ...state,
+        file: null,
         inputValue: '',
       };
     }
