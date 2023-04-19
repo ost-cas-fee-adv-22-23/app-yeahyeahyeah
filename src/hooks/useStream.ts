@@ -41,6 +41,7 @@ export function useStream(
     fallbackData: [fallback],
     revalidateOnFocus: false,
     refreshInterval: 60000,
+    revalidateAll: true,
     parallel: true,
   });
 

@@ -9,11 +9,14 @@ export const fetchMumbles = async (params?: {
 }) => {
   const { limit, offset, newerThanMumbleId, token } = params || {};
 
-  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
+  const searchParams = new URLSearchParams({
     limit: limit?.toString() || '10',
     offset: offset?.toString() || '0',
-    newerThan: newerThanMumbleId || '',
-  })}`;
+  });
+
+  if (newerThanMumbleId) searchParams.append('newerThan', newerThanMumbleId);
+
+  const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${searchParams}`;
 
   try {
     const { data, count } = (
