@@ -1,4 +1,4 @@
-export * from './alert.service';
+export * from './alert';
 export * from './dislikeMumble';
 export * from './deleteMumble';
 export * from './dislikeMumble';

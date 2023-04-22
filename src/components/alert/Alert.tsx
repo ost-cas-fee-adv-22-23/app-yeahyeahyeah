@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useRouter } from 'next/router';
-import { alertService } from '../../services/alert.service';
+import { alertService } from '../../services/alert';
 import { Cancel } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 export type AlertProps = {

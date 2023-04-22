@@ -10,6 +10,18 @@ export type MumbleFetcher = (params: {
   token?: any;
   creator?: string;
   hashtag?: string;
+  isReply?: boolean;
+  tags?: string[];
+  text?: string;
+}) => Promise<FetchMumbles>;
+
+export type SearchMumblesFetcher = (params: {
+  limit: number;
+  offset: number;
+  isReply?: boolean;
+  tags?: string[];
+  text?: string;
+  token: string;
 }) => Promise<FetchMumbles>;
 
 export type StreamHook = [

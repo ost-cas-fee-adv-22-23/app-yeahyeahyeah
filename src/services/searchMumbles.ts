@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { transformMumble, QwackerMumbleResponse } from '../types/qwacker';
 
-export const searchMumbles = async (params?: {
-  limit?: number;
-  offset?: number;
+export const searchMumbles = async (params: {
+  limit: number;
+  offset: number;
   isReply?: boolean;
   tags?: string[];
   text?: string;
-  token?: string;
+  token: string;
 }) => {
   const { limit, offset, tags, text, token } = params || {};
 
