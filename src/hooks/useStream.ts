@@ -42,7 +42,7 @@ export function useStream(
     revalidateOnFocus: false,
     refreshInterval: 60000,
     // Hint: For better user experience, set this to true (more requests especially if small limit is set)
-    revalidateAll: true,
+    revalidateAll: false,
     parallel: true,
   });
 
