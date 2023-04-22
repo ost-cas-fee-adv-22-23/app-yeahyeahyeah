@@ -22,7 +22,7 @@ export const fetchMyLikes = async (params: { limit?: number; offset?: number; to
       await instance.get(url, {
         headers: {
           'content-type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: token ? `Bearer ${token}` : null,
         },
       })
     ).data as QwackerMumbleResponse;

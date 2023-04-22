@@ -9,7 +9,7 @@ export const dislikeMumble = async (params: { id: string; token: string }) => {
     const response = await axios.delete(url, {
       headers: {
         'content-type': '*/*',
-        Authorization: `Bearer ${token}`,
+        Authorization: token ? `Bearer ${token}` : null,
       },
     });
 

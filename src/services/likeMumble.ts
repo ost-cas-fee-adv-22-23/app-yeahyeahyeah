@@ -12,7 +12,7 @@ export const likeMumble = async (params: { id: string; token: string }) => {
       {
         headers: {
           'content-type': '*/*',
-          Authorization: `Bearer ${token}`,
+          Authorization: token ? `Bearer ${token}` : null,
         },
       }
     );

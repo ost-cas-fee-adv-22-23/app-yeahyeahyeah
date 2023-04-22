@@ -9,7 +9,7 @@ export const fetchReplies = async (params: { id?: string; token?: string }) => {
     const { data } = (await axios.get(url, {
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: token ? `Bearer ${token}` : null,
       },
     })) as QwackerMumbleResponse;
 

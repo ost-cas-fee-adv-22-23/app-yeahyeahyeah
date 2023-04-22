@@ -3,10 +3,6 @@ import { transformMumble } from '../types/qwacker';
 import { UploadImage } from '../types/qwacker';
 
 export const postMumble = async (text: string, file: UploadImage | null, accessToken?: string) => {
-  if (!accessToken) {
-    throw new Error('No access token');
-  }
-
   const formData = new FormData();
   formData.append('text', text);
   if (file) {
@@ -16,7 +12,7 @@ export const postMumble = async (text: string, file: UploadImage | null, accessT
   try {
     const response = await axios.post(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts`, formData, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: accessToken ? `Bearer ${accessToken}` : null,
       },
     });
 

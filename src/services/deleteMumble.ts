@@ -1,14 +1,10 @@
 import axios from 'axios';
 
 export const deleteMumble = async (id: string, accessToken?: string) => {
-  if (!accessToken) {
-    throw new Error('No access token');
-  }
-
   try {
     const response = await axios.delete(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/${id}`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: accessToken ? `Bearer ${accessToken}` : null,
       },
     });
 

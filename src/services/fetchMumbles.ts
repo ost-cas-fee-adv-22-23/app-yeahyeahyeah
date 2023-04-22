@@ -9,12 +9,15 @@ export const fetchMumbles = async (params: {
 }) => {
   const { limit, offset, newerThanMumbleId, token } = params || {};
 
-  const searchParams = new URLSearchParams({
+  let searchParams = new URLSearchParams({
     limit: limit?.toString() || '10',
     offset: offset?.toString() || '0',
   });
 
-  if (newerThanMumbleId) searchParams.append('newerThan', newerThanMumbleId);
+  if (newerThanMumbleId)
+    searchParams = new URLSearchParams({
+      newerThan: newerThanMumbleId,
+    });
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${searchParams}`;
 
@@ -23,7 +26,7 @@ export const fetchMumbles = async (params: {
       await axios.get(url, {
         headers: {
           'content-type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: token ? `Bearer ${token}` : null,
         },
       })
     ).data as QwackerMumbleResponse;

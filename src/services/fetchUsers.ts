@@ -12,7 +12,7 @@ export const fetchUsers = async (params: { limit?: number; offset?: number; toke
     const { data } = await axios.get(url, {
       headers: {
         'content-type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: token ? `Bearer ${token}` : null,
       },
     });
 

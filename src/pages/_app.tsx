@@ -1,5 +1,5 @@
 // pages/_app.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
 import GlobalStyles from '@/styles/GlobalStyles';
@@ -8,6 +8,10 @@ import { useRouter } from 'next/router';
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const router = useRouter();
+
+  useEffect(() => {
+    window.history.scrollRestoration = 'manual';
+  }, []);
 
   return (
     <SessionProvider session={session}>

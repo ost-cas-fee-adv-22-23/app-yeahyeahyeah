@@ -23,7 +23,7 @@ export const fetchMyMumbles = async (params: { limit?: number; offset?: number; 
       await instance.get(url, {
         headers: {
           'content-type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: token ? `Bearer ${token}` : null,
         },
       })
     ).data as QwackerMumbleResponse;

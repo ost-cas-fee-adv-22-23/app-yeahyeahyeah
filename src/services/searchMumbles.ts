@@ -25,7 +25,7 @@ export const searchMumbles = async (params: {
       await axios.post(url, formData, {
         headers: {
           'content-type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: token ? `Bearer ${token}` : null,
         },
       })
     ).data as QwackerMumbleResponse;
