@@ -1,7 +1,7 @@
 import React from 'react';
 import { FetchMumbles } from '@/types/fallback';
 import { useStream } from '@/hooks';
-import { MumbleFetcher } from '@/types/swr';
+import { MumbleFetcher, SearchMumblesFetcher } from '@/types/swr';
 import { Listing } from '../mumble/Listing';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 import { Timeline } from '../mumble/Timeline';
@@ -14,7 +14,7 @@ type StreamProps = {
   limit: number;
   fallback: FetchMumbles;
   fallbackUsers?: QwackerUserResponse;
-  fetcher: MumbleFetcher;
+  fetcher: MumbleFetcher | SearchMumblesFetcher;
   id?: string;
   hashtag?: string;
   creator?: { id: string };

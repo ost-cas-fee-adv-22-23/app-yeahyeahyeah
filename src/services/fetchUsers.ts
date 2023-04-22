@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { User } from '../types/qwacker';
 
-export const fetchUsers = async (params?: { limit?: number; offset?: number; token: string }) => {
+export const fetchUsers = async (params: { limit?: number; offset?: number; token: string }) => {
   const { limit, offset, token } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/users?${new URLSearchParams({

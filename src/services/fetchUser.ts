@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { User } from '../types/qwacker';
 
-export const fetchUser = async (params?: { id: string; token: string }) => {
+export const fetchUser = async (params: { id: string; token: string }) => {
   const { id, token } = params || {};
   const idParams = id ? `${id}` : '';
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/users/${idParams}`;

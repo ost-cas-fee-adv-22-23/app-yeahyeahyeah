@@ -5,14 +5,14 @@ import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { alertService, deleteMumble } from '@/services';
 import { FetchMumbles } from '@/types/fallback';
-import { MumbleFetcher, StreamHook } from '@/types/swr';
+import { MumbleFetcher, SearchMumblesFetcher, StreamHook } from '@/types/swr';
 import debounce from 'lodash.debounce';
 
 export function useStream(
   url: string,
   limit: number,
   fallback: FetchMumbles,
-  fetcher: MumbleFetcher,
+  fetcher: MumbleFetcher | SearchMumblesFetcher,
   id?: string,
   hashtag?: string,
   creator?: { id: string }

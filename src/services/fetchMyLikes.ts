@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { transformMumble, QwackerMumbleResponse, Mumble } from '../types/qwacker';
 
-export const fetchMyLikes = async (params?: { limit?: number; offset?: number; token?: string }) => {
+export const fetchMyLikes = async (params: { limit?: number; offset?: number; token?: string }) => {
   const { limit, offset, token } = params || {};
 
   const url = `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?${new URLSearchParams({
