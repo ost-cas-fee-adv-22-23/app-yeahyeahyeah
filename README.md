@@ -1,9 +1,17 @@
+![Mumble Theme](https://raw.githubusercontent.com/smartive-education/design-system-component-library-yeahyeahyeah/master/packages/design-system-component-library-yeahyeahyeah/stories/assets/mumble-logo.svg?style=for-the-badge)
+
 # Mumble Chat App
+
+## Introduction
+
+This is the 2nd part of the new **Frontend Engineering Advanced** course of the **University Ost** in Rapperswil.
+
+A **chat app** based on [NextJS](https://nextjs.org) in **Mumble Design** according to the specification of [Mumble-Figma-Design](https://www.figma.com/file/nsXR2h0KwciWpuwKRD58FX/Mumble?node-id=437-1018).
 
 ## Table of contents
 
 - [Getting started](#getting-started)
-- [Use credentials](#use-credentials)
+- [Add Credentials](#add-credentials)
 - [Add .env vars](#add-env-vars)
 - [Install dependencies](#install-dependencies)
 - [Resources](#resources)
@@ -12,7 +20,17 @@
 
 In the next steps you will setup the mumble chat app.
 
-## Use credentials
+### Prerequisites
+
+#### NODE
+
+Please use node version **16.17.0**. If you use _nvm_ you can use the following command.
+
+```shell
+nvm use 16.17.0
+```
+
+## Add credentials
 
 We need a github token and a .npmrc to get access to the [mumble npm package](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/pkgs/npm/design-system-component-library-yeahyeahyeah) at [smartive education](https://github.com/smartive-education) on github.
 
@@ -26,21 +44,58 @@ To authenticate by adding your personal access token (classic) to your ~/.npmrc 
 //npm.pkg.github.com/:_authToken=TOKEN
 ```
 
-Create .npmrc and add following line
+Create .npmrc in the project folder, where you wanna add your npm package and add following line
 
 ```bash
 @smartive-education:registry=https://npm.pkg.github.com
 ```
 
-## Add .env vars
+## Clone repository and installation
 
-I have sent you an email with the .env vars. Please copy them to the .env file in the root folder of the project.
+Execute the following commands in sequence:
 
-## Install dependencies
+```bash
+git clone https://github.com/smartive-education/app-yeahyeahyeah.git
 
-Now we can install the dependencies.
+cd app-yeahyeahyeah
 
-From within the new folder, run `npm install`, then `npm run dev` to start the dev server.
+npm install
+```
+
+### Add .env vars
+
+Create a new _.env_ file in the root directory. I have sent you an email with the _.env_ vars. Please copy them into the newly created _.env_ file.
+
+Now, you should be able to start the application.
+
+### Development mode
+
+```bash
+npm run dev
+```
+
+### Production mode
+
+```bash
+npm run build
+
+npm start
+```
+
+## Features
+
+The application is equipped with the following features.
+
+- Real-time display of the latest news.
+- Write messages (mumble) with text and an image (optional).
+- Write messages with #hashtags.
+- Rate messages with a like.
+- Comment on existing messages.
+- Delete your own messages as needed.
+
+## Live Demo
+
+You can view a live demo at [www.mumble-yeahyeahyeah.ch](www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
 
 ## Resources
 
@@ -50,3 +105,21 @@ From within the new folder, run `npm install`, then `npm run dev` to start the d
 - [styled-components](https://styled-components.com/)
 - [Twin](https://github.com/ben-rogerson/twin.macro)
 - [Github](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-packages-from-other-organizations)
+
+## Project status
+
+![GitHub pull requests](https://img.shields.io/github/issues-pr/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+
+![GitHub closed issues](https://img.shields.io/github/issues-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+
+## Design System Component Library Version
+
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/smartive-education/design-system-component-library-yeahyeahyeah?style=for-the-badge)
+
+### Contributors
+
+<a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
+</a>
