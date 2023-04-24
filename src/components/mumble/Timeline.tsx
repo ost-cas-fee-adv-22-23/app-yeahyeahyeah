@@ -63,4 +63,4 @@ export const Timeline: React.FC<TimelineProps> = ({
 };
 
 const MumbleMessageBox = tw.div`animate-bounce fixed top-[110px] mx-auto z-50 hover:(animate-none)`;
-const HashtagWrapper = tw.div`flex flex-wrap bg-slate-white transform duration-500 rounded-xl p-16 sm:p-32 mb-32 gap-8 min-h-[280px]`;
+const HashtagWrapper = tw.div`flex flex-wrap bg-slate-white transform duration-500 rounded-xl p-16 sm:(p-32 mb-32 gap-8)`;
