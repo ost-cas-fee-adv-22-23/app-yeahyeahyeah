@@ -32,7 +32,7 @@ nvm use 16.17.0
 
 ## Add credentials
 
-We need a github token and a _.npmrc_ to get access to the [mumble npm package](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/pkgs/npm/design-system-component-library-yeahyeahyeah) at [smartive education](https://github.com/smartive-education) on github.
+We need a github token and a .npmrc to get access to the [mumble npm package](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/pkgs/npm/design-system-component-library-yeahyeahyeah) at [smartive education](https://github.com/smartive-education) on github.
 
 Create github token and add to .npmrc
 
@@ -42,6 +42,12 @@ To authenticate by adding your personal access token (classic) to your ~/.npmrc 
 
 ```bash
 //npm.pkg.github.com/:_authToken=TOKEN
+```
+
+Create .npmrc in the project folder, where you wanna add your npm package and add following line
+
+```bash
+@smartive-education:registry=https://npm.pkg.github.com
 ```
 
 ## Clone repository and installation
@@ -54,14 +60,6 @@ git clone https://github.com/smartive-education/app-yeahyeahyeah.git
 cd app-yeahyeahyeah
 
 npm install
-```
-
-### NPMRC
-
-Create a _.npmrc_ file in the root directory and add the following entry:
-
-```bash
-@smartive-education:registry=https://npm.pkg.github.com
 ```
 
 ### Add .env vars
