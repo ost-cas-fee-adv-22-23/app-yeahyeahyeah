@@ -157,8 +157,8 @@ interface ArticleHeaderProps {
 }
 
 const ArticleMumble = styled.article(({ type, $isReply }: ArticleHeaderProps) => [
-  tw`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:px-48`,
-  type === 'reply' && tw`mb-0`,
+  tw`flex flex-col justify-start items-start w-full bg-slate-white py-32 pt-16 px-16 sm:(px-48 pt-32)`,
+  type === 'reply' && tw`mb-16`,
   type === 'post' && tw`mb-16`,
   $isReply === true && tw`border-t-1 border-slate-200 pt-16`,
   $isReply === false && tw`rounded-lg`,
