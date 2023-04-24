@@ -50,7 +50,7 @@ cd app-yeahyeahyeah
 npm install
 ```
 
-### Github token
+### NPMRC
 
 Create a _.npmrc_ file in the root directory and add the following entry:
 
