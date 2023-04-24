@@ -1,15 +1,17 @@
+![Mumble Theme](https://raw.githubusercontent.com/smartive-education/design-system-component-library-yeahyeahyeah/master/packages/design-system-component-library-yeahyeahyeah/stories/assets/mumble-logo.svg?style=for-the-badge)
+
 # Mumble Chat App
 
 ## Introduction
 
 This is the 2nd part of the new **Frontend Engineering Advanced** course of the **University Ost** in Rapperswil.
 
-A **chat app** in **Mumble Design** according to the specification of [Mumble-Figma-Design](https://www.figma.com/file/nsXR2h0KwciWpuwKRD58FX/Mumble?node-id=437-1018).
+A **chat app** based on [NextJS](https://nextjs.org) in **Mumble Design** according to the specification of [Mumble-Figma-Design](https://www.figma.com/file/nsXR2h0KwciWpuwKRD58FX/Mumble?node-id=437-1018).
 
 ## Table of contents
 
 - [Getting started](#getting-started)
-- [Credentials](#credentials)
+- [Add Credentials](#add-credentials)
 - [Add .env vars](#add-env-vars)
 - [Install dependencies](#install-dependencies)
 - [Resources](#resources)
@@ -28,11 +30,15 @@ Please use node version **16.17.0**. If you use _nvm_ you can use the following 
 nvm use 16.17.0
 ```
 
-#### Credentials
+## Add credentials
 
-We need a github token and a .npmrc to get access to the [mumble npm package](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/pkgs/npm/design-system-component-library-yeahyeahyeah) at [smartive education](https://github.com/smartive-education) on github. [Create a classic github token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic) and add to .npmrc.
+We need a github token and a _.npmrc_ to get access to the [mumble npm package](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/pkgs/npm/design-system-component-library-yeahyeahyeah) at [smartive education](https://github.com/smartive-education) on github.
 
-To **authenticate** by adding your personal access token (classic) to your _~/.npmrc_ file, edit the _~/.npmrc_ file for your project to include the following line, replacing TOKEN with your personal access token. Create a new _~/.npmrc_ file if one doesn’t exist.
+Create github token and add to .npmrc
+
+[Create a classic github token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic)
+
+To authenticate by adding your personal access token (classic) to your ~/.npmrc file, edit the ~/.npmrc file for your project to include the following line, replacing TOKEN with your personal access token. Create a new ~/.npmrc file if one doesn’t exist.
 
 ```bash
 //npm.pkg.github.com/:_authToken=TOKEN
