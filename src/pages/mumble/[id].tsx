@@ -2,7 +2,7 @@ import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import useSWR from 'swr';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { getToken } from 'next-auth/jwt';
 import { fetchUser, User, fetchSingleMumble, fetchReplies, QwackerUserResponse, fetchUsers } from '@/services';
 import { FetchMumbles, FetchSingleMumble } from '@/types/fallback';
@@ -17,6 +17,7 @@ type MumblePageProps = {
   fallbackReplies: FetchMumbles;
   fallbackUser: User;
   fallbackUsers: QwackerUserResponse;
+  fallbackUserLoggedIn: User;
 };
 
 const MumblePage = ({
@@ -26,6 +27,7 @@ const MumblePage = ({
   fallbackReplies,
   fallbackUser,
   fallbackUsers,
+  fallbackUserLoggedIn,
 }: MumblePageProps): InferGetServerSidePropsType<typeof getServerSideProps> => {
   const { data: session }: any = useSession();
 
@@ -61,6 +63,7 @@ const MumblePage = ({
           fallback={fallbackReplies}
           fetcher={fetchReplies}
           fallbackUsers={fallbackUsers}
+          fallbackUserLoggedIn={fallbackUserLoggedIn}
         />
       </Container>
     </>
@@ -76,6 +79,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
   const users: QwackerUserResponse =
     (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
 
+  const session: any = await getSession({ req });
+  const fallbackUserLoggedIn = users.data.find((x) => x.id === session.user.id);
+
   return {
     props: {
       // TODO: There is no limit and offset for replies yet (missing in the API)
@@ -90,6 +96,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
         avatarUrl: '',
       },
       fallbackUsers: users,
+      fallbackUserLoggedIn,
     },
   };
 };
