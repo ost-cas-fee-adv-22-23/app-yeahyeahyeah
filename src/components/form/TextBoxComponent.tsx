@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 import { FileRejection } from 'react-dropzone';
 import Message from '../../../data/content.json';
-import { postMumble, Mumble, postReply, alertService, fetchUser } from '@/services';
+import { postMumble, Mumble, postReply, alertService, fetchUser, User } from '@/services';
 import { TextBox, UploadForm } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { reducer } from '@/reducer/textbox-reducer';
 
@@ -12,9 +12,10 @@ type TextBoxComponentProps = {
   id?: string;
   variant: 'write' | 'inline' | 'start';
   mutate: any;
+  fallbackUserLoggedIn?: User;
 };
 
-export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate }) => {
+export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant, mutate, fallbackUserLoggedIn }) => {
   const { data: session }: any = useSession();
   const [state, dispatch] = useReducer(reducer, {
     errorMessage: '',
@@ -31,6 +32,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     fetchUser,
     {
       revalidateOnFocus: false,
+      fallbackData: fallbackUserLoggedIn,
     }
   );
 

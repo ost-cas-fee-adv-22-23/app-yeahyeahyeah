@@ -7,9 +7,9 @@ import { WelcomeText } from '../content/WelcomeText';
 import { Alert } from '../alert/Alert';
 import { TextBoxComponent } from '../form/TextBoxComponent';
 import { Hashtag } from './Hashtag';
+import { User } from '@/services';
 
 type TimelineProps = {
-  data: FetchMumbles[];
   mutate: KeyedMutator<FetchMumbles[]>;
   checkForNewMumbles: boolean;
   quantityNewMumbles: string;
@@ -17,10 +17,10 @@ type TimelineProps = {
   renderMumbles: () => JSX.Element;
   hashtag?: string;
   creator?: { id: string };
+  fallbackUserLoggedIn?: User;
 };
 
 export const Timeline: React.FC<TimelineProps> = ({
-  data,
   mutate,
   checkForNewMumbles,
   quantityNewMumbles,
@@ -28,6 +28,7 @@ export const Timeline: React.FC<TimelineProps> = ({
   renderMumbles,
   hashtag,
   creator,
+  fallbackUserLoggedIn,
 }) => {
   return (
     <>
@@ -41,7 +42,7 @@ export const Timeline: React.FC<TimelineProps> = ({
           <>
             <WelcomeText />
             <Alert />
-            <TextBoxComponent variant="write" mutate={mutate} />
+            <TextBoxComponent variant="write" mutate={mutate} fallbackUserLoggedIn={fallbackUserLoggedIn} />
           </>
         )}
         {hashtag && (
