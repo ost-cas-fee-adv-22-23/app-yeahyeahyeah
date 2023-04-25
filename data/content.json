@@ -58,7 +58,7 @@
       "text": "username"
     },
     "defaultAvatar": {
-      "image": "/schielen.jpeg"
+      "image": "/avatar_default.png"
     },
     "form": {
       "placeholder_1": "Deine Meinung zählt...",
