@@ -95,7 +95,7 @@ The application is equipped with the following features.
 
 ## Live Demo
 
-You can view a live demo at [www.mumble-yeahyeahyeah.ch](www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
+You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
 
 ## Resources
 
