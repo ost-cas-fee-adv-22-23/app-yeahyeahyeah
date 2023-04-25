@@ -88,7 +88,7 @@ The application is equipped with the following features.
 
 - Almost real-time feeling, thanks to SWR. :)
 - Write messages (mumble) with text and an image (optional).
-- Write messages with #hashtags.
+- Search detail page, where you can navigate through #hashtags.
 - Rate messages with a like.
 - Comment on existing messages.
 - Delete your own messages as needed.
