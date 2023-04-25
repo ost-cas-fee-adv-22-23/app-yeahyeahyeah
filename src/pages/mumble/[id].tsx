@@ -81,8 +81,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
 
   return {
     props: {
-      // TODO: There is no limit and offset for replies yet (missing in the API)
-      limit: 100,
+      // TODO: We want later endless scrolling - there is no limit and offset for replies yet (missing in the API)
+      limit: 0,
       id,
       fallback: mumble,
       fallbackReplies: mumbles,
