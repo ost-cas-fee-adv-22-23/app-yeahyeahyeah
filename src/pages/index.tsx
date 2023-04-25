@@ -6,7 +6,6 @@ import { Stream } from '@/components';
 import { NextSeo } from 'next-seo';
 import Content from '../../data/content.json';
 import { getToken } from 'next-auth/jwt';
-import { getSession } from 'next-auth/react';
 
 export default function Page({
   limit,
@@ -40,9 +39,7 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
   const mumbles: FetchMumbles = await fetchMumbles({ limit: limit, offset: 0, token: token?.accessToken || '' });
   const users: QwackerUserResponse =
     (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
-
-  const session: any = await getSession({ req });
-  const fallbackUserLoggedIn = users.data.find((x) => x.id === session.user.id);
+  const fallbackUserLoggedIn = (token?.accessToken && users.data.find((x) => x.id === token.user?.id)) || null;
 
   return {
     props: {

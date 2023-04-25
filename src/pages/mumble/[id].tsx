@@ -2,7 +2,7 @@ import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { NextSeo } from 'next-seo';
 import useSWR from 'swr';
-import { getSession, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { getToken } from 'next-auth/jwt';
 import { fetchUser, User, fetchSingleMumble, fetchReplies, QwackerUserResponse, fetchUsers } from '@/services';
 import { FetchMumbles, FetchSingleMumble } from '@/types/fallback';
@@ -74,18 +74,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
   const token = await getToken({ req });
   const mumble: FetchSingleMumble = await fetchSingleMumble({ id: id as string, token: token?.accessToken });
   const mumbles: FetchMumbles = await fetchReplies({ id: id as string, token: token?.accessToken });
-
   const user: User | string = token?.accessToken ? await fetchUser({ id: mumble.creator, token: token?.accessToken }) : '';
   const users: QwackerUserResponse =
     (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
-
-  const session: any = await getSession({ req });
-  const fallbackUserLoggedIn = users.data.find((x) => x.id === session.user.id);
+  const fallbackUserLoggedIn = (token?.accessToken && users.data.find((x) => x.id === token.user?.id)) || null;
 
   return {
     props: {
-      // TODO: There is no limit and offset for replies yet (missing in the API)
-      limit: 100,
+      // TODO: We want later endless scrolling - there is no limit and offset for replies yet (missing in the API)
+      limit: 0,
       id,
       fallback: mumble,
       fallbackReplies: mumbles,

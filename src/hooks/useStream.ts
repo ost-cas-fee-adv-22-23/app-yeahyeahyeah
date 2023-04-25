@@ -93,7 +93,7 @@ export function useStream(
     }
     const res = await deleteMumble(id, session?.accessToken);
 
-    //TODO: Is this a magic number ?
+    //TODO: Is this a magic number, i don't think so.
     if (res.status === 204) {
       mutate();
     }
