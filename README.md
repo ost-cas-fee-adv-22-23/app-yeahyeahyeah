@@ -4,9 +4,9 @@
 
 ## Introduction
 
-This is the 2nd part of the new **Frontend Engineering Advanced** course of the **University Ost** in Rapperswil.
+This is the final project for the 2nd part of the **Frontend Engineering Advanced** course, offered by the **University Ost** in Rapperswil.
 
-A **chat app** based on [NextJS](https://nextjs.org) in **Mumble Design** according to the specification of [Mumble-Figma-Design](https://www.figma.com/file/nsXR2h0KwciWpuwKRD58FX/Mumble?node-id=437-1018).
+We had to develop a **Chat App** based on [NextJS](https://nextjs.org) in a given **Mumble Design** according to the specification of [Mumble-Figma-Design](https://www.figma.com/file/nsXR2h0KwciWpuwKRD58FX/Mumble?node-id=437-1018). We had the requirement to use our previously developed [Component Library](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah) for our **Chat App**.
 
 ## Table of contents
 
@@ -18,16 +18,16 @@ A **chat app** based on [NextJS](https://nextjs.org) in **Mumble Design** accord
 
 ## Getting started
 
-In the next steps you will setup the mumble chat app.
+In the next steps you will setup the chat app.
 
 ### Prerequisites
 
 #### NODE
 
-Please use node version **16.17.0**. If you use _nvm_ you can use the following command.
+Please use node version **16.19.1**. If you use _nvm_ you can use the following command.
 
 ```shell
-nvm use 16.17.0
+nvm use 16.19.1
 ```
 
 ## Add credentials
@@ -50,9 +50,13 @@ Create .npmrc in the project folder, where you wanna add your npm package and ad
 @smartive-education:registry=https://npm.pkg.github.com
 ```
 
-## Clone repository and installation
+## Add .env vars
 
-Execute the following commands in sequence:
+Create a new _.env_ file in the root directory. I have sent you an email with the _.env_ vars. Please copy them into the newly created _.env_ file.
+
+Now, you should be able to start the application.
+
+## Installation
 
 ```bash
 git clone https://github.com/smartive-education/app-yeahyeahyeah.git
@@ -62,11 +66,7 @@ cd app-yeahyeahyeah
 npm install
 ```
 
-### Add .env vars
-
-Create a new _.env_ file in the root directory. I have sent you an email with the _.env_ vars. Please copy them into the newly created _.env_ file.
-
-Now, you should be able to start the application.
+## Start the app
 
 ### Development mode
 
@@ -86,9 +86,9 @@ npm start
 
 The application is equipped with the following features.
 
-- Real-time display of the latest news.
+- Almost real-time feeling, thanks to SWR. :)
 - Write messages (mumble) with text and an image (optional).
-- Write messages with #hashtags.
+- Search detail page, where you can navigate through #hashtags.
 - Rate messages with a like.
 - Comment on existing messages.
 - Delete your own messages as needed.
