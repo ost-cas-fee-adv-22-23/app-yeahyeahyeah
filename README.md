@@ -86,7 +86,7 @@ npm start
 
 The application is equipped with the following features.
 
-- Real-time feeling for displaying the latest posts.
+- Almost real-time feeling, thanks to SWR. :)
 - Write messages (mumble) with text and an image (optional).
 - Write messages with #hashtags.
 - Rate messages with a like.
