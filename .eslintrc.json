@@ -1,3 +1,14 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@typescript-eslint/parser",
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["@/src/components", "@/src/services"]
+      }
+    ],
+    "import/no-cycle": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
 }

@@ -1,34 +1,125 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Mumble Theme](https://raw.githubusercontent.com/smartive-education/design-system-component-library-yeahyeahyeah/master/packages/design-system-component-library-yeahyeahyeah/stories/assets/mumble-logo.svg?style=for-the-badge)
 
-## Getting Started
+# Mumble Chat App
 
-First, run the development server:
+## Introduction
+
+This is the final project for the 2nd part of the **Frontend Engineering Advanced** course, offered by the **University Ost** in Rapperswil.
+
+We had to develop a **Chat App** based on [NextJS](https://nextjs.org) in a given **Mumble Design** according to the specification of [Mumble-Figma-Design](https://www.figma.com/file/nsXR2h0KwciWpuwKRD58FX/Mumble?node-id=437-1018). We had the requirement to use our previously developed [Component Library](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah) for our **Chat App**.
+
+## Table of contents
+
+- [Getting started](#getting-started)
+- [Add Credentials](#add-credentials)
+- [Add .env vars](#add-env-vars)
+- [Install dependencies](#install-dependencies)
+- [Resources](#resources)
+
+## Getting started
+
+In the next steps you will setup the chat app.
+
+### Prerequisites
+
+#### NODE
+
+Please use node version **16.19.1**. If you use _nvm_ you can use the following command.
+
+```shell
+nvm use 16.19.1
+```
+
+## Add credentials
+
+We need a github token and a .npmrc to get access to the [mumble npm package](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/pkgs/npm/design-system-component-library-yeahyeahyeah) at [smartive education](https://github.com/smartive-education) on github.
+
+Create github token and add to .npmrc
+
+[Create a classic github token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic)
+
+To authenticate by adding your personal access token (classic) to your ~/.npmrc file, edit the ~/.npmrc file for your project to include the following line, replacing TOKEN with your personal access token. Create a new ~/.npmrc file if one doesn’t exist.
+
+```bash
+//npm.pkg.github.com/:_authToken=TOKEN
+```
+
+Create .npmrc in the project folder, where you wanna add your npm package and add following line
+
+```bash
+@smartive-education:registry=https://npm.pkg.github.com
+```
+
+## Add .env vars
+
+Create a new _.env_ file in the root directory. I have sent you an email with the _.env_ vars. Please copy them into the newly created _.env_ file.
+
+Now, you should be able to start the application.
+
+## Installation
+
+```bash
+git clone https://github.com/smartive-education/app-yeahyeahyeah.git
+
+cd app-yeahyeahyeah
+
+npm install
+```
+
+## Start the app
+
+### Development mode
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Production mode
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+npm start
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Features
 
-## Learn More
+The application is equipped with the following features.
 
-To learn more about Next.js, take a look at the following resources:
+- Almost real-time feeling, thanks to SWR. :)
+- Write messages (mumble) with text and an image (optional).
+- Search detail page, where you can navigate through #hashtags.
+- Rate messages with a like.
+- Comment on existing messages.
+- Delete your own messages as needed.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Live Demo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
 
-## Deploy on Vercel
+## Resources
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Mumble Component Library Development](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah)
+- [Typescript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/)
+- [styled-components](https://styled-components.com/)
+- [Twin](https://github.com/ben-rogerson/twin.macro)
+- [Github](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-packages-from-other-organizations)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Project status
+
+![GitHub pull requests](https://img.shields.io/github/issues-pr/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+
+![GitHub closed issues](https://img.shields.io/github/issues-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+
+## Design System Component Library Version
+
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/smartive-education/design-system-component-library-yeahyeahyeah?style=for-the-badge)
+
+### Contributors
+
+<a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
+</a>

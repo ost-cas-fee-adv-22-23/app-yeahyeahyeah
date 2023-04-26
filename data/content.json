@@ -1,0 +1,90 @@
+{
+  "seo": {
+    "home": {
+      "title": "Mumble - Willkommen auf Mumble",
+      "description": "Die Chat-App des CAS Frontend Engineers Advanced 2023"
+    },
+    "startScreen": {
+      "title": "Mumble - Willkommen auf der Mumble App des CAS Frontend Engineer's Advanced",
+      "description": "Are you ready to mumble! Jetzt registrieren und mumblen."
+    },
+    "search": {
+      "title": "Search - Mumble Hashtags",
+      "description": "Finde alle Mumbles mit dem gleichen Hashtag."
+    }
+  },
+  "alerts": {
+    "textBox": {
+      "text": "Du musst angemeldet sein, um Mumbles zu posten!"
+    },
+    "error": {
+      "text": "Das Textfeld darf nicht leer sein."
+    },
+    "postError": {
+      "text": "Something was not okay with posting a reply."
+    },
+    "catchError": {
+      "text": "Could not post a reply."
+    },
+    "postMumbleError": {
+      "text": "Could not post mumble."
+    },
+    "fileError": {
+      "text": "Die Datei ist zu gross. Die Datei darf nur max. 5 MB gross sein."
+    },
+    "fileTypeError": {
+      "text": "Die Datei muss vom Typ jpg, jpeg, png oder gif sein."
+    },
+    "dislikeError": {
+      "text": "Could not dislike mumble"
+    },
+    "likeError": {
+      "text": "Could not like mumble"
+    },
+    "pageNotFound": {
+      "title": "Upps... Seite nicht gefunden.",
+      "text": "Die angeforderte Seite existiert nicht."
+    },
+    "internalServerError": {
+      "title": "Upps... Internal Server Error!",
+      "text": "Da ist etwas schief gelaufen. Versuche etwas anderes."
+    }
+  },
+  "contents": {
+    "textBox": {
+      "text": "Hey, was läuft?"
+    },
+    "userName": {
+      "text": "username"
+    },
+    "defaultAvatar": {
+      "image": "/avatar_default.png"
+    },
+    "form": {
+      "placeholder_1": "Deine Meinung zählt...",
+      "placeholder_2": "Bitte gibt sie einen Text ein"
+    },
+    "switch": {
+      "mumbles": "Deine Mumbles",
+      "likes": "Deine Likes"
+    },
+    "startScreen": {
+      "text": "Noch kein Account?",
+      "registerButton": "Jetzt registrieren"
+    },
+    "keyword": {
+      "word_1": "#Engineer",
+      "word_2": "#Frontend",
+      "word_3": "#CAS"
+    },
+    "defaultImage": {
+      "src": "https://picsum.photos/640/360"
+    },
+    "profileHeader": {
+      "text": "Ich freue mich mit Euch im CAS Frontend Engineering Advanced auszutauschen, Mumbles zu kreieren und zu bewerten. Ich freue mich auf jeden Like meiner Mumbles."
+    },
+    "footer": {
+      "text": "© 2023 CAS - Frontend Engineering Advanced"
+    }
+  }
+}

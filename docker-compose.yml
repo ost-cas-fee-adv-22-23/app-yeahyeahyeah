@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app-yeahyeahyeah:
+    image: 'ghcr.io/smartive-education/app-yeahyeahyeah:latest'
+    container_name: app-yeahyeahyeah
+    restart: unless-stopped
+    networks:
+      - app-network
+    ports:
+      - '3000:3000'
+    volumes:
+      - .env:/usr/src/app/.env
+
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d
+    depends_on:
+      - app-yeahyeahyeah
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
