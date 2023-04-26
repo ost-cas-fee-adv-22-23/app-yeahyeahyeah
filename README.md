@@ -11,10 +11,20 @@ We had to develop a **Chat App** based on [NextJS](https://nextjs.org) in a give
 ## Table of contents
 
 - [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+    - [NODE](#node)
 - [Add Credentials](#add-credentials)
 - [Add .env vars](#add-env-vars)
-- [Install dependencies](#install-dependencies)
+- [Installation](#installation)
+- [Start the App](#start-the-app)
+  - [Development Mode](#development-mode)
+  - [Production Mode](#production-mode)
+- [Features](#features)
+- [Live Demo](#live-demo)
 - [Resources](#resources)
+- [Project Status](#project-status)
+- [Design System Component Library Version](#design-system-component-library-version)
+- [Contributors](#contributors)
 
 ## Getting started
 
@@ -118,7 +128,7 @@ You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeah
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/smartive-education/design-system-component-library-yeahyeahyeah?style=for-the-badge)
 
-### Contributors
+## Contributors
 
 <a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
