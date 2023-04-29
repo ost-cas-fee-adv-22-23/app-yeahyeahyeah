@@ -38,7 +38,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
 
   const addText = async () => {
     if (state.inputValue === '') {
-      dispatch({ type: 'SET_ERROR_MESSAGE', payload: Message.alerts.textBox.text });
+      dispatch({ type: 'SET_ERROR_MESSAGE', payload: Message.alerts.error.text });
       return;
     }
 
