@@ -27,7 +27,7 @@ describe('useOnScreen', () => {
   });
 
   it('should return initial values', () => {
-    const ref = { current: document.createElement('div') };
+    const { result: ref }: any = renderHook(() => useRef<HTMLDivElement>(null));
     const { result } = renderHook(() => useOnScreen(ref));
     const [isOnScreen] = result.current;
 
@@ -35,16 +35,16 @@ describe('useOnScreen', () => {
     expect(typeof isOnScreen).toBe('boolean');
   });
 
-  it('should update isOnScreen state when element is intersecting', () => {
-    const ref = { current: document.createElement('div') };
+  it('should return initial value', () => {
+    const { result: ref }: any = renderHook(() => useRef<HTMLDivElement>(null));
     const { result } = renderHook(() => useOnScreen(ref));
     const [isOnScreen] = result.current;
-
     expect(isOnScreen).toBe(false);
   });
 
   it('should update isOnScreen state when element is intersecting', () => {
-    const ref = { current: document.createElement('div') };
+    const { result: ref }: any = renderHook(() => useRef<HTMLDivElement>(null));
+    ref.current = document.createElement('div');
     const { result } = renderHook(() => useOnScreen(ref));
     const [, setIsOnScreen] = result.current;
 
