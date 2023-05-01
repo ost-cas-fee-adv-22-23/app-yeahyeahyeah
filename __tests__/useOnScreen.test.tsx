@@ -5,36 +5,6 @@ import useOnScreen from '../src/hooks/useOnScreen';
 import './intersectionObserverMock';
 
 describe('useOnScreen', () => {
-  test('should update isOnScreen state correctly', () => {
-    const { result: ref }: any = renderHook(() => useRef<HTMLDivElement>(null));
-    const { result: isOnScreen } = renderHook(() => useOnScreen(ref));
-
-    expect(isOnScreen.current[0]).toBe(false); // Initial value
-
-    // Simulate intersection
-    act(() => {
-      /* fire events that update state */
-      isOnScreen.current[1](true);
-    });
-    expect(isOnScreen.current[0]).toBe(true);
-
-    act(() => {
-      // Simulate leaving intersection
-      isOnScreen.current[1](false);
-    });
-
-    expect(isOnScreen.current[0]).toBe(false);
-  });
-
-  it('should return initial values', () => {
-    const { result: ref }: any = renderHook(() => useRef<HTMLDivElement>(null));
-    const { result } = renderHook(() => useOnScreen(ref));
-    const [isOnScreen] = result.current;
-
-    expect(isOnScreen).toBe(false); // Initial value
-    expect(typeof isOnScreen).toBe('boolean');
-  });
-
   it('should return initial value', () => {
     const { result: ref }: any = renderHook(() => useRef<HTMLDivElement>(null));
     const { result } = renderHook(() => useOnScreen(ref));

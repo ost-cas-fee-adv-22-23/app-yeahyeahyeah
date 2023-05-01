@@ -1,9 +1,13 @@
 import tw from 'twin.macro';
+import Message from '../../../data/content.json';
+import { Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
 export const Footer: React.FC = () => {
   return (
     <FooterWrapper>
-      <div className="test">abc</div>
+      <Paragraph color="light" size="default" alignment="center">
+        {`${Message.contents.footer.text}`}
+      </Paragraph>
     </FooterWrapper>
   );
 };
