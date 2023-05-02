@@ -3,7 +3,12 @@ name: Jest tests
 on:
   push:
     branches:
-      - feature/jest
+      - main
+      - feature/**
+  pull_request:
+    branches:
+      - main
+      - feature/**
   workflow_dispatch:
 
 jobs:
