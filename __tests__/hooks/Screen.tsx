@@ -1,4 +1,4 @@
-import useOnScreen from '../src/hooks/useOnScreen';
+import useOnScreen from '@/hooks/useOnScreen';
 import { useRef } from 'react';
 
 export const Screen: React.FC = () => {

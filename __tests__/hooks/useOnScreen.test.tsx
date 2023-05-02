@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { useRef } from 'react';
 import { act } from 'react-dom/test-utils';
-import useOnScreen from '../src/hooks/useOnScreen';
+import useOnScreen from '@/hooks/useOnScreen';
 import './intersectionObserverMock';
 
 describe('useOnScreen', () => {

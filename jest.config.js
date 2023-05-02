@@ -13,7 +13,9 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
     '^@/pages/(.*)$': '<rootDir>/src/pages/$1',
-    '^@/test/(.*)$': '<rootDir>/src/test/$1',
+    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@/reducer/(.*)$': '<rootDir>/src/reducer/$1',
+    '^@/services/(.*)$': '<rootDir>/src/services/$1',
   },
   transform: {
     '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', babelConfigStyledComponents],
