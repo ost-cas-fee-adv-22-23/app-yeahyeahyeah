@@ -1,13 +1,21 @@
 import { render } from '@testing-library/react';
 import { Footer } from '@/components/content/Footer';
 import { Screen } from './Screen';
-import './intersectionObserverMock';
 import { Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { setupIntersectionObserverMock } from './intersectionObserverMock';
+
+beforeEach(() => {
+  setupIntersectionObserverMock();
+});
+
+/* We need to mock the components we need from the component library, 
+   because it is not available in the test environment, and should be 
+   tested in the component library itself. */
 
 describe('Paragraph Mock', () => {
   it('renders a mocked Paragraph component', () => {
-    const { container } = render(<Paragraph> © 2023 CAS - Frontend Engineering Advanced</Paragraph>);
-    expect(container.textContent).toBe(' © 2023 CAS - Frontend Engineering Advanced');
+    const { container } = render(<Paragraph>© 2023 CAS - Frontend Engineering Advanced</Paragraph>);
+    expect(container.textContent).toBe('© 2023 CAS - Frontend Engineering Advanced');
   });
 });
 

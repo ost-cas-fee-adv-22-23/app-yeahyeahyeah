@@ -2,7 +2,11 @@ import { renderHook } from '@testing-library/react';
 import { useRef } from 'react';
 import { act } from 'react-dom/test-utils';
 import useOnScreen from '@/hooks/useOnScreen';
-import './intersectionObserverMock';
+import { setupIntersectionObserverMock } from './intersectionObserverMock';
+
+beforeEach(() => {
+  setupIntersectionObserverMock();
+});
 
 describe('useOnScreen', () => {
   it('should return initial value', () => {
