@@ -1,19 +1,18 @@
 name: Jest tests
-on: [pull_request, push]
 
-# on:
-#   push:
-#     branches:
-#       - main
-#       - feature/**
-#   pull_request:
-#     branches:
-#       - main
-#       - feature/**
-#   workflow_dispatch:
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+    branches:
+      - main
+      - feature/**
+  workflow_dispatch:
 
 jobs:
-  testing:
+  testing-with-jest:
     name: Run test cases with jest
     runs-on: ubuntu-latest
     steps:
@@ -28,4 +27,4 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Run tests
-        run: npm run test
+        run: npm run test:ci
