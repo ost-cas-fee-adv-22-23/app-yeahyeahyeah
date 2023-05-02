@@ -4,20 +4,25 @@ import { Screen } from './Screen';
 import './intersectionObserverMock';
 import { Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-describe('Home', () => {
-  it('renders a footer component', () => {
-    const { container } = render(<Paragraph> © 2023 CAS - Frontend Engineering Advanced test</Paragraph>);
-    const { container: cont } = render(<Footer />);
-    console.log('container', container.innerHTML);
-    const footer = container.getElementsByClassName('test');
-    //expect(footer.length).toBe(0);
+describe('Paragraph Mock', () => {
+  it('renders a mocked Paragraph component', () => {
+    const { container } = render(<Paragraph> © 2023 CAS - Frontend Engineering Advanced</Paragraph>);
+    expect(container.textContent).toBe(' © 2023 CAS - Frontend Engineering Advanced');
   });
 });
 
-describe('Hook', () => {
+describe('Footer Component', () => {
+  it('renders a footer component', () => {
+    const { container } = render(<Footer />);
+    expect(container.textContent).toBe('© 2023 CAS - Frontend Engineering Advanced');
+  });
+});
+
+describe('useOnScreen Hook', () => {
   it('renders a hook', () => {
     const { container } = render(<Screen />);
-    const footer = container.getElementsByClassName('test');
-    expect(footer.length).toBe(1);
+    const element = container.getElementsByClassName('is_on_screen');
+    expect(element.length).toBe(1);
+    expect(element[0].textContent).toBe('false');
   });
 });
