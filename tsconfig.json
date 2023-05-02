@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -20,13 +20,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "node_modules/@smartive-education/**/*.[jt]s?(x)]"
-  ],
+  "include": ["**/*.d.ts", "**/*.ts", "**/*.tsx", "src/**/*.js"],
   "exclude": ["node_modules"]
 }

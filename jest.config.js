@@ -2,7 +2,7 @@ const nextJest = require('next/jest');
 
 const babelConfigStyledComponents = {
   presets: [['next/babel', { 'preset-react': { runtime: 'automatic' } }, '@babel/preset-typescript']],
-  plugins: ['babel-plugin-macros', ['babel-plugin-styled-components', { ssr: true }]],
+  plugins: ['babel-plugin-twin', 'babel-plugin-macros', ['babel-plugin-styled-components', { ssr: true }]],
 };
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
@@ -30,6 +30,7 @@ const customJestConfig = {
   },
   modulePaths: ['<rootDir>', '<rootDir>/node_modules/@smartive-education/design-system-component-library-yeahyeahyeah'],
   moduleDirectories: ['node_modules'],
+  rootDir: '.',
 
   // Module file extensions for importing
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],

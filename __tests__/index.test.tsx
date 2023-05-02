@@ -1,10 +1,29 @@
 import React from 'react';
+import tw from 'twin.macro';
 import { render } from '@testing-library/react';
 import { Footer } from '../src/components/content/Footer';
 import { Screen } from './Screen';
 import './intersectionObserverMock';
-import * as CL from '@smartive-education/design-system-component-library-yeahyeahyeah';
-import { Paragraph as ParagraphComponent } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+import { Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
+
+jest.mock('@smartive-education/design-system-component-library-yeahyeahyeah', () => {
+  return {
+    Paragraph: ({ size = 'medium', color = 'default', mbSpacing, children, alignment }: any) => (
+      <p color="light" className="Paragraph__ParagraphStyles-sc-cyal1j-0 eEqKQR">
+        © 2023 CAS - Frontend Engineering Advanced test
+      </p>
+    ),
+  };
+});
+
+// jest.mock('twin.macro', () => {
+//   return {
+//     tw: {
+//       footer: ({ children }: any) => <footer>{children}</footer>,
+//       default: ({ children }: any) => <footer>{children}</footer>,
+//     },
+//   };
+// });
 
 // const ParagraphComponent = ({ name }: any) => (
 //   <CL.Paragraph>
@@ -24,21 +43,28 @@ import { Paragraph as ParagraphComponent } from '@smartive-education/design-syst
 //   };
 // });
 
-const Paragraph = ({ name }: any) => {
-  return (
-    <>
-      <div>
-        <p color="light" className="Paragraph__ParagraphStyles-sc-cyal1j-0 eEqKQR">
-          © 2023 CAS - Frontend Engineering Advanced
-        </p>
-      </div>
-    </>
-  );
-};
+// const DS: any = jest.genMockFromModule('@smartive-education/design-system-component-library-yeahyeahyeah');
+
+// console.log('DS', DS);
+
+// const ParagraphComponent: React.FC = () => {
+//   return (
+//     <>
+//       <Paragraph>
+//         <p color="light" className="Paragraph__ParagraphStyles-sc-cyal1j-0 eEqKQR">
+//           © 2023 CAS - Frontend Engineering Advanced
+//         </p>
+//       </Paragraph>
+//     </>
+//   );
+// };
+
+//jest.mock('@smartive-education/design-system-component-library-yeahyeahyeah');
 
 describe('Home', () => {
   it('renders a footer component', () => {
-    const { container } = render((<Paragraph />) as any);
+    const { container } = render(<Paragraph>test</Paragraph>);
+    console.log('container', container);
     const footer = container.getElementsByClassName('test');
     //expect(footer.length).toBe(0);
   });
