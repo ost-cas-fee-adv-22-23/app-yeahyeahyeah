@@ -1,28 +1,20 @@
-import React from 'react';
-import tw from 'twin.macro';
 import { render } from '@testing-library/react';
-import { Footer } from '../src/components/content/Footer';
+import { Footer } from 'src/components/content/Footer';
 import { Screen } from './Screen';
 import './intersectionObserverMock';
 import { Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
-jest.mock('@smartive-education/design-system-component-library-yeahyeahyeah', () => {
-  return {
-    Paragraph: ({ size = 'medium', color = 'default', mbSpacing, children, alignment }: any) => (
-      <p color="light" className="Paragraph__ParagraphStyles-sc-cyal1j-0 eEqKQR">
-        © 2023 CAS - Frontend Engineering Advanced test
-      </p>
-    ),
-  };
-});
+jest.mock('@smartive-education/design-system-component-library-yeahyeahyeah');
 
 // jest.mock('twin.macro', () => {
 //   return {
 //     tw: {
-//       footer: ({ children }: any) => <footer>{children}</footer>,
-//       default: ({ children }: any) => <footer>{children}</footer>,
+//       footer: jest.fn,
+//       default: jest.fn,
+//       _twinMacro: { default: { footer: jest.fn } },
 //     },
-//   };
+//     _twinMacro: { default: { footer: jest.fn } },
+//   } as any;
 // });
 
 // const ParagraphComponent = ({ name }: any) => (
@@ -63,8 +55,9 @@ jest.mock('@smartive-education/design-system-component-library-yeahyeahyeah', ()
 
 describe('Home', () => {
   it('renders a footer component', () => {
-    const { container } = render(<Paragraph>test</Paragraph>);
-    console.log('container', container);
+    const { container } = render(<Paragraph> © 2023 CAS - Frontend Engineering Advanced mocked</Paragraph>);
+    //const { container: cont } = render(<Footer />);
+    console.log('container', container.innerHTML);
     const footer = container.getElementsByClassName('test');
     //expect(footer.length).toBe(0);
   });
