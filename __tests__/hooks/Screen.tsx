@@ -1,8 +1,21 @@
 import useOnScreen from '@/hooks/useOnScreen';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-export const Screen: React.FC = () => {
+type ScreenProps = {
+  setTo?: boolean;
+};
+
+export const Screen: React.FC<ScreenProps> = ({ setTo }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isOnScreen, setIsOnScreen] = useOnScreen(ref);
-  return <div className="is_on_screen">{isOnScreen ? 'true' : 'false'}</div>;
+
+  useEffect(() => {
+    setTo && setIsOnScreen(setTo);
+  }, [setIsOnScreen, setTo]);
+
+  return (
+    <div ref={ref} className="is_on_screen">
+      {isOnScreen ? 'true' : 'false'}
+    </div>
+  );
 };

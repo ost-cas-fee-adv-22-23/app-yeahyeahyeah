@@ -18,9 +18,27 @@ describe('Footer Component', () => {
   });
 });
 
-describe('useOnScreen Hook', () => {
-  it('renders a hook', () => {
+describe('useOnScreen Hook initial value', () => {
+  it('renders useOnScreen hook with initial value false', () => {
     const { container } = render(<Screen />);
+    const element = container.getElementsByClassName('is_on_screen');
+    expect(element.length).toBe(1);
+    expect(element[0].textContent).toBe('false');
+  });
+});
+
+describe('useOnScreen Hook set value to true', () => {
+  it('renders useOnScreen hook with value true', () => {
+    const { container } = render(<Screen setTo={true} />);
+    const element = container.getElementsByClassName('is_on_screen');
+    expect(element.length).toBe(1);
+    expect(element[0].textContent).toBe('true');
+  });
+});
+
+describe('useOnScreen Hook set value to false', () => {
+  it('renders useOnScreen hook with value false', () => {
+    const { container } = render(<Screen setTo={false} />);
     const element = container.getElementsByClassName('is_on_screen');
     expect(element.length).toBe(1);
     expect(element[0].textContent).toBe('false');
