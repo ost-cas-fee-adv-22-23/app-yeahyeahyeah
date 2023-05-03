@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Test from './Test';
 
-describe('Testin twin and styled components', () => {
+describe('Testing twin and styled components', () => {
   it('finds a predefined sentence', () => {
     const { container } = render(<Test text="i like styled components" />);
     const text = screen.getByText(/i like styled components/i);
