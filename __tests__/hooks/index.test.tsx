@@ -13,7 +13,7 @@ beforeEach(() => {
    tested in the component library itself. */
 
 describe('Paragraph Mock', () => {
-  it('renders a mocked Paragraph component', () => {
+  it('renders a mocked Paragraph component from the component library', () => {
     const { container } = render(<Paragraph>© 2023 CAS - Frontend Engineering Advanced</Paragraph>);
     expect(container.textContent).toBe('© 2023 CAS - Frontend Engineering Advanced');
   });
