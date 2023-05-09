@@ -8,19 +8,18 @@ const babelConfigStyledComponents = {
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 const customJestConfig = {
   verbose: true,
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
+  moduleDirectories: ['node_modules', 'src'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
-    '^@/components/(.*)$': '<rootDir>/src/components/$1',
-    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
-    '^@/pages/(.*)$': '<rootDir>/src/pages/$1',
-    '^@/reducer/(.*)$': '<rootDir>/src/reducer/$1',
-    '^@/services/(.*)$': '<rootDir>/src/services/$1',
+    '@/(.*)$': '<rootDir>/src/$1',
   },
   transform: {
     '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', babelConfigStyledComponents],
   },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
+  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  transformIgnorePatterns: ['node_modules/(?!(@smartive-education/design-system-component-library-yeahyeahyeah)/)'],
 };
 
 const createJestConfig = nextJest({ dir: './' });
