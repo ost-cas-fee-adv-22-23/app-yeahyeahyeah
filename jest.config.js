@@ -8,21 +8,26 @@ const babelConfigStyledComponents = {
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 const customJestConfig = {
   verbose: true,
-  extensionsToTreatAsEsm: ['.jsx'],
   testEnvironment: 'jest-environment-jsdom',
-  moduleDirectories: ['node_modules', 'src'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
     '@/(.*)$': '<rootDir>/src/$1',
+    '@smartive-education/design-system-component-library-yeahyeahyeah':
+      '<rootDir>/node_modules/@smartive-education/design-system-component-library-yeahyeahyeah/dist/index.js',
   },
   transform: {
     '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', babelConfigStyledComponents],
   },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-  transformIgnorePatterns: ['/node_modules/(?!(@smartive-education/design-system-component-library-yeahyeahyeah)/)'],
 };
 
 const createJestConfig = nextJest({ dir: './' });
 
-module.exports = createJestConfig(customJestConfig);
+module.exports = async () => ({
+  ...(await createJestConfig(customJestConfig)()),
+  transformIgnorePatterns: [
+    'node_modules/(?!(@smartive-education/design-system-component-library-yeahyeahyeah)/)',
+    '^.+\\.module\\.(css|sass|scss)$',
+  ],
+});

@@ -14,7 +14,8 @@
     "dep-graph:create-svg": "npx depcruise src --include-only \"^src\" --config .dependency-cruiser.js --output-type dot | dot -T svg > dependency-graph.svg",
     "prepare": "husky install",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "test:debug": "jest --no-cache --debug"
   },
   "dependencies": {
     "@next/font": "13.1.1",
