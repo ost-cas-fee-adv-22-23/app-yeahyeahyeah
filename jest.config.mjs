@@ -1,4 +1,4 @@
-const nextJest = require('next/jest');
+import nextJest from 'next/jest.js';
 
 const babelConfigStyledComponents = {
   presets: [['next/babel', { 'preset-react': { runtime: 'automatic' } }]],
@@ -24,10 +24,12 @@ const customJestConfig = {
 
 const createJestConfig = nextJest({ dir: './' });
 
-module.exports = async () => ({
+const config = async () => ({
   ...(await createJestConfig(customJestConfig)()),
   transformIgnorePatterns: [
     'node_modules/(?!(@smartive-education/design-system-component-library-yeahyeahyeah)/)',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
 });
+
+export default config;
