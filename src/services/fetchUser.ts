@@ -18,13 +18,7 @@ export const fetchUser = async (params: { id: string; token: string }) => {
       throw new Error('Something was not okay fetching a user.');
     }
 
-    return {
-      id: data.id,
-      userName: data.userName,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      avatarUrl: data.avatarUrl,
-    } as User;
+    return data as User;
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : 'Could not fetch user');
   }
