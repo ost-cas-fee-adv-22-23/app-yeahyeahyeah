@@ -8,6 +8,7 @@ const babelConfigStyledComponents = {
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 const customJestConfig = {
   verbose: true,
+  extensionsToTreatAsEsm: ['.jsx'],
   testEnvironment: 'jest-environment-jsdom',
   moduleDirectories: ['node_modules', 'src'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
@@ -19,7 +20,7 @@ const customJestConfig = {
   },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-  transformIgnorePatterns: ['node_modules/(?!(@smartive-education/design-system-component-library-yeahyeahyeah)/)'],
+  transformIgnorePatterns: ['/node_modules/(?!(@smartive-education/design-system-component-library-yeahyeahyeah)/)'],
 };
 
 const createJestConfig = nextJest({ dir: './' });
