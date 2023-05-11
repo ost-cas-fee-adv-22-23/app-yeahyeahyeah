@@ -2,11 +2,9 @@ name: Jest tests
 
 on:
   push:
-    branches:
-      - feature/jest
+    branches: ['main']
   pull_request:
-    branches:
-      - feature/jest
+    branches: ['main']
   workflow_dispatch:
 
 jobs:
