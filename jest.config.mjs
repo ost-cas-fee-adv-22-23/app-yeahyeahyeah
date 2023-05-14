@@ -20,6 +20,7 @@ const customJestConfig = {
   },
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  modulePathIgnorePatterns: ['<rootDir>/__e2e__'],
 };
 
 const createJestConfig = nextJest({ dir: './' });
