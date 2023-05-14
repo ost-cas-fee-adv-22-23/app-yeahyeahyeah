@@ -1,9 +1,11 @@
-name: Playwright Tests
+name: E23 Tests
+
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
+
 jobs:
   test:
     timeout-minutes: 60
@@ -12,9 +14,13 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 16.x
+          registry-url: https://npm.pkg.github.com/
+          scope: '@smartive-education'
       - name: Install dependencies
         run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
