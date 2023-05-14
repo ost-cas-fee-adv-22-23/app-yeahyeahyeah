@@ -39,3 +39,7 @@ next-env.d.ts
 
 # Docker cleanup
 clean.sh
+
+# Playwright
+./test-results
+/playwright-report/*
