@@ -26,8 +26,8 @@ jobs:
       - name: 'Create env file'
         run: |
           touch .env
-          echo ZITALDEL_USER=${{ secrets.ZITADEL_USER }} >> .env
-          echo ZITALDEL_PW=${{ secrets.ZITADEL_PW }} >> .env
+          echo ZITADEL_USER=${{ secrets.ZITADEL_USER }} >> .env
+          echo ZITADEL_PW=${{ secrets.ZITADEL_PW }} >> .env
           # Authentication
           echo NEXTAUTH_URL=http://localhost:3000 >> .env
           echo NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} >> .env

@@ -5,10 +5,6 @@ const config = dotenv.config();
 const user = process.env.ZITADEL_USER || '';
 const pw = process.env.ZITADEL_PW || '';
 
-console.log('dotenv config', config.parsed);
-console.log('user', user);
-console.log('pw', pw);
-
 setup('authenticate', async ({ page }) => {
   const authFile = './playwright/.auth/user.json';
 
