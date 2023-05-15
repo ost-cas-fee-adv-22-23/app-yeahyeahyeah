@@ -21,17 +21,17 @@ jobs:
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - run: actions/login@v1
       - name: Run Playwright tests
         run: npx playwright test
-        env:
-          ZITADEL_USER: ${{ secrets.ZITADEL_USER }}
-          ZITADEL_PW: ${{ secrets.ZITADEL_PW }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+    env:
+      ZITADEL_USER: ${{ secrets.ZITADEL_USER }}
+      ZITADEL_PW: ${{ secrets.ZITADEL_PW }}
