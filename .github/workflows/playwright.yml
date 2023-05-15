@@ -24,7 +24,11 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: npx playwright test
+        run: |
+          touch .env.production
+          echo ZITADEL_USER=${{ secrets.ZITADEL_USER }} >> .env.production
+          echo ZITADEL_PW=${{ secrets.ZITADEL_PW }} >> .env.production
+          npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
