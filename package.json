@@ -16,6 +16,7 @@
     "test": "jest --watch",
     "test:ci": "jest --ci",
     "test:ci-silent": "jest --ci --silent",
+    "test:ci-coverage": "jest --ci --silent --coverage",
     "test:debug": "jest --no-cache --debug"
   },
   "dependencies": {
