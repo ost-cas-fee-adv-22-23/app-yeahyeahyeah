@@ -36,5 +36,5 @@ jobs:
           path: playwright-report/
           retention-days: 30
     env:
-      ZITADEL_USER: ${{ secrets.ZITADEL_USER }}
-      ZITADEL_PW: ${{ secrets.ZITADEL_PW }}
+      NEXT_PUBLIC_USER: ${{ secrets.NEXT_PUBLIC_USER }}
+      NEXT_PUBLIC_PW: ${{ secrets.NEXT_PUBLIC_PW }}
