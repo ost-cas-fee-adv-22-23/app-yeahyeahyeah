@@ -1,6 +1,6 @@
 import { test as setup } from '@playwright/test';
 import * as dotenv from 'dotenv';
-const config = dotenv.config();
+dotenv.config();
 
 const user = process.env.ZITADEL_USER || '';
 const pw = process.env.ZITADEL_PW || '';
