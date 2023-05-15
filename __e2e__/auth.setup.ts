@@ -2,12 +2,11 @@ import { test as setup } from '@playwright/test';
 
 const username: string = `${process.env.ZITADEL_USER}`;
 const password: string = `${process.env.ZITADEL_PW}`;
-const url: string = `${process.env.NEXTAUTH_URL}`;
 
 setup('authenticate', async ({ page }) => {
   const authFile = './playwright/.auth/user.json';
 
-  await page.goto(url);
+  await page.goto('http://localhost:3000');
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByPlaceholder('username@domain').click();
   await page.getByPlaceholder('username@domain').fill(username);
