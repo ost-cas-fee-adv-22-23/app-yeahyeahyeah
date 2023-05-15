@@ -28,6 +28,11 @@ jobs:
           touch .env
           echo ZITALDEL_USER=${{ secrets.ZITADEL_USER }} >> .env
           echo ZITALDEL_PW=${{ secrets.ZITADEL_PW }} >> .env
+          # Authentication
+          echo NEXTAUTH_URL=http://localhost:3000 >> .env
+          echo NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} >> .env
+          echo ZITADEL_ISSUER=${{ secrets.ZITADEL_ISSUER }} >> .env
+          echo ZITADEL_CLIENT_ID=${{ secrets.ZITADEL_CLIENT_ID }} >> .env
           cat .env
       - name: Run Playwright tests
         run: npm run test:e2e
