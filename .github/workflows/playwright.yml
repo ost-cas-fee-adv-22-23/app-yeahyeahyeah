@@ -23,10 +23,13 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo ZITALDEL_USER=${{ secrets.ZITADEL_USER }} >> .env
+          echo ZITALDEL_PW=${{ secrets.ZITADEL_PW }} >> .env
+          cat .env
       - name: Run Playwright tests
-        env:
-          ZITALDEL_USER: ${{ secrets.ZITADEL_USER }}
-          ZITALDEL_PW: ${{ secrets.ZITALDEL_PW }}
         run: npm run test:e2e
       - uses: actions/upload-artifact@v3
         if: always()
