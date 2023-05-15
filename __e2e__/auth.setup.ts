@@ -7,6 +7,8 @@ console.log('dotenv config', config.parsed);
 setup('authenticate', async ({ page }) => {
   const authFile = './playwright/.auth/user.json';
 
+  console.log('page', page.getByRole('button', { name: 'Login' }));
+
   await page.goto('http://localhost:3000');
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByPlaceholder('username@domain').click();
