@@ -24,10 +24,11 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        env:
-          NEXT_PUBLIC_SECRET_USER: ${{ secrets.NEXT_PUBLIC_SECRET_USER }}
-          NEXT_PUBLIC_SECRET_PW: ${{ secrets.NEXT_PUBLIC_SECRET_PW }}
-        run: npm run test:e2e
+        run: |
+          touch .env
+          echo NEXT_PUBLIC_SECRET_USER=${{ secrets.NEXT_PUBLIC_SECRET_USER }} >> .env
+          echo NEXT_PUBLIC_SECRET_PW=${{ secrets.NEXT_PUBLIC_SECRET_PW }} >> .env
+          npm run test:e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:
