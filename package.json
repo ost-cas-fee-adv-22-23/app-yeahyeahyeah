@@ -16,8 +16,9 @@
     "test": "jest --watch",
     "test:ci": "jest --ci",
     "test:ci-silent": "jest --ci --silent",
+    "test:debug": "jest --no-cache --debug",
     "test:ci-coverage": "jest --ci --silent --coverage",
-    "test:debug": "jest --no-cache --debug"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@next/font": "13.1.1",
@@ -45,6 +46,7 @@
     "@babel/preset-typescript": "^7.21.5",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
+    "@playwright/test": "^1.33.0",
     "@smartive/eslint-config": "^3.1.1",
     "@smartive/prettier-config": "^3.0.0",
     "@testing-library/jest-dom": "5.16.4",
@@ -63,6 +65,7 @@
     "babel-plugin-styled-components": "^2.0.7",
     "babel-plugin-twin": "^1.1.0",
     "dependency-cruiser": "^12.10.0",
+    "dotenv": "^16.0.3",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "husky": "^8.0.3",
