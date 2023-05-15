@@ -25,9 +25,9 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: |
-          touch .env.production
-          echo NEXT_PUBLIC_USER=${{ secrets.NEXT_PUBLIC_USER }} >> .env.production
-          echo NEXT_PUBLIC_PW=${{ secrets.NEXT_PUBLIC_PW }} >> .env.production
+          touch .env.local
+          echo NEXT_PUBLIC_USER=${{ secrets.NEXT_PUBLIC_USER }} >> .env.local
+          echo NEXT_PUBLIC_PW=${{ secrets.NEXT_PUBLIC_PW }} >> .env.local
           npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
@@ -35,6 +35,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-    env:
-      NEXT_PUBLIC_USER: ${{ secrets.NEXT_PUBLIC_USER }}
-      NEXT_PUBLIC_PW: ${{ secrets.NEXT_PUBLIC_PW }}
