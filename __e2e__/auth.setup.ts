@@ -2,6 +2,8 @@ import { test as setup } from '@playwright/test';
 import * as dotenv from 'dotenv';
 const config = dotenv.config();
 
+console.log('dotenv config', config.parsed);
+
 setup('authenticate', async ({ page }) => {
   const authFile = './playwright/.auth/user.json';
 
@@ -10,7 +12,7 @@ setup('authenticate', async ({ page }) => {
   await page.getByPlaceholder('username@domain').click();
   await page.getByPlaceholder('username@domain').fill(process.env.ZITADEL_USER || '');
   await page.getByRole('button', { name: 'next' }).click();
-  await page.getByLabel('Password').fill(process.env.ZITALDEL_PW || '');
+  await page.getByLabel('Password').fill(process.env.ZITADEL_PW || '');
   await page.getByRole('button', { name: 'next' }).click();
   await page.context().storageState({ path: authFile });
 });
