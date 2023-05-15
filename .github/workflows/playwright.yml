@@ -26,8 +26,8 @@ jobs:
       - name: Run Playwright tests
         run: |
           touch .env.local
-          echo NEXT_PUBLIC_USER=${{ secrets.NEXT_PUBLIC_USER }} >> .env.local
-          echo NEXT_PUBLIC_PW=${{ secrets.NEXT_PUBLIC_PW }} >> .env.local
+          echo NEXT_PUBLIC_SECRET_USER=${{ secrets.NEXT_PUBLIC_SECRET_USER }} >> .env.local
+          echo NEXT_PUBLIC_SECRET_PW=${{ secrets.NEXT_PUBLIC_SECRET_PW }} >> .env.local
           npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()

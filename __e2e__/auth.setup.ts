@@ -1,7 +1,7 @@
 import { test as setup } from '@playwright/test';
 
-const username: string = `${process.env.NEXT_PUBLIC_USER}`;
-const password: string = `${process.env.NEXT_PUBLIC_PW}`;
+const username: string = `${process.env.NEXT_PUBLIC_SECRET_USER}`;
+const password: string = `${process.env.NEXT_PUBLIC_SECRET_PW}`;
 
 setup('authenticate', async ({ page }) => {
   const authFile = './playwright/.auth/user.json';
