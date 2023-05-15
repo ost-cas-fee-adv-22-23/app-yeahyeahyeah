@@ -25,9 +25,9 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: |
-          touch .env.local
-          echo NEXT_PUBLIC_SECRET_USER=${{ secrets.NEXT_PUBLIC_SECRET_USER }} >> .env.local
-          echo NEXT_PUBLIC_SECRET_PW=${{ secrets.NEXT_PUBLIC_SECRET_PW }} >> .env.local
+          touch .env.production
+          echo NEXT_PUBLIC_SECRET_USER=${{ secrets.NEXT_PUBLIC_SECRET_USER }} >> .env.production
+          echo NEXT_PUBLIC_SECRET_PW=${{ secrets.NEXT_PUBLIC_SECRET_PW }} >> .env.production
           npx playwright test
       - uses: actions/upload-artifact@v3
         if: always()
