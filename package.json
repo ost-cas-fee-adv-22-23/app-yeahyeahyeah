@@ -17,6 +17,7 @@
     "test:ci": "jest --ci",
     "test:ci-silent": "jest --ci --silent",
     "test:debug": "jest --no-cache --debug",
+    "test:ci-coverage": "jest --ci --silent --coverage",
     "test:e2e": "playwright test"
   },
   "dependencies": {
