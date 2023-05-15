@@ -16,7 +16,8 @@
     "test": "jest --watch",
     "test:ci": "jest --ci",
     "test:ci-silent": "jest --ci --silent",
-    "test:debug": "jest --no-cache --debug"
+    "test:debug": "jest --no-cache --debug",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@next/font": "13.1.1",
@@ -63,6 +64,7 @@
     "babel-plugin-styled-components": "^2.0.7",
     "babel-plugin-twin": "^1.1.0",
     "dependency-cruiser": "^12.10.0",
+    "dotenv": "^16.0.3",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "husky": "^8.0.3",

@@ -43,3 +43,4 @@ clean.sh
 # Playwright
 ./test-results
 /playwright-report/*
+playwright/.auth
