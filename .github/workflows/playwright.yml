@@ -25,8 +25,8 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         env:
-          NEXT_PUBLIC_SECRET_USER: ${{ secrets.ZITALDEL_USER }}
-          NEXT_PUBLIC_SECRET_PW: ${{ secrets.ZITALDEL_USER }}
+          ZITALDEL_USER: ${{ secrets.ZITADEL_USER }}
+          ZITALDEL_PW: ${{ secrets.ZITALDEL_PW }}
         run: npm run test:e2e
       - uses: actions/upload-artifact@v3
         if: always()
