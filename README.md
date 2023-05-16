@@ -10,6 +10,7 @@ We had to develop a **Chat App** based on [NextJS](https://nextjs.org) in a give
 
 ## Table of contents
 
+- [Introduction](#introduction)
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
     - [NODE](#node)
@@ -19,6 +20,9 @@ We had to develop a **Chat App** based on [NextJS](https://nextjs.org) in a give
 - [Start the App](#start-the-app)
   - [Development Mode](#development-mode)
   - [Production Mode](#production-mode)
+- [Testing](#testing)
+  - [Unit testing with jest and react-testing-library](#unit-testing-with-jest-and-react-testing-library)
+  - [E2E testing with playwright](#e2e-testing-with-playwright)
 - [Features](#features)
 - [Live Demo](#live-demo)
 - [Resources](#resources)
@@ -90,6 +94,62 @@ npm run dev
 npm run build
 
 npm start
+```
+
+## Testing
+
+### Unit testing with jest and react-testing-library
+
+Run tests in watch mode
+
+```bash
+npm run test
+```
+
+Run tests once
+
+```bash
+npm run test:ci
+```
+
+Run tests in silent mode (without warnings)
+
+```bash
+npm run test:ci-silent
+```
+
+Run tests once with coverage report
+
+```bash
+npm run test:ci-coverage
+```
+
+Run tests in debug mode
+
+```bash
+npm run test:debug
+```
+
+### E2E testing with playwright
+
+Before the first run, you have to install the default browsers for playwright.
+
+```bash
+npx playwright install
+```
+
+Now you can run the tests.
+
+Run tests in headless mode
+
+```bash
+npm run test:e2e
+```
+
+Run tests in headful mode
+
+```bash
+npm run test:e2e:headful
 ```
 
 ## Features
