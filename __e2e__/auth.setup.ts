@@ -1,19 +1,24 @@
-import { test as setup } from '@playwright/test';
+import { FullConfig, Page } from '@playwright/test';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 const user = process.env.ZITADEL_USER || '';
 const pw = process.env.ZITADEL_PW || '';
 
-setup('authenticate', async ({ page }) => {
+const globalSetup = async (page: Page, config: FullConfig) => {
   const authFile = './playwright/.auth/user.json';
+  const { baseURL } = config.projects[0].use;
 
-  await page.goto('http://localhost:3000');
-  await page.getByRole('button', { name: 'Login' }).click();
-  await page.getByPlaceholder('username@domain').click();
-  await page.getByPlaceholder('username@domain').fill(user);
-  await page.locator('#submit-button').click();
-  await page.getByLabel('Password').fill(pw);
-  await page.locator('#submit-button').click();
-  await page.context().storageState({ path: authFile });
-});
+  await Promise.all([
+    page.goto(baseURL!),
+    page.getByRole('button', { name: 'Login' }).click(),
+    page.getByPlaceholder('username@domain').click(),
+    page.getByPlaceholder('username@domain').fill(user),
+    page.locator('#submit-button').click(),
+    page.getByLabel('Password').fill(pw),
+    page.locator('#submit-button').click(),
+    page.context().storageState({ path: authFile }),
+  ]);
+};
+
+export default globalSetup;
