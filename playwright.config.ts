@@ -8,7 +8,12 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
+    actionTimeout: 0,
     trace: 'on-first-retry',
+    viewport: null,
+    launchOptions: {
+      args: ['--start-maximized'],
+    },
   },
 
   /* Configure projects for major browsers */
