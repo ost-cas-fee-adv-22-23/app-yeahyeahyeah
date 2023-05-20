@@ -20,14 +20,11 @@ test.describe('handle messages', () => {
     await page.goto('/');
 
     const hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
-    let ARTICLE_ID;
 
     if (hasArticleToBeDelete) {
       const articleToBeDeleted = await page.getByRole('article').filter({ hasText: `${testMessage}` });
       const article_id = await articleToBeDeleted.getAttribute('id');
-      expect(page.isVisible(`body:has(#${ARTICLE_ID})`)).not;
-      ARTICLE_ID = article_id;
-      console.log(article_id);
+      expect(page.isVisible(`body:has(#${article_id})`)).not;
       await articleToBeDeleted.locator('svg').last().click();
     }
     expect(await page.getByRole('article').filter({ hasText: `${testMessage}` })).not.toBeVisible;
