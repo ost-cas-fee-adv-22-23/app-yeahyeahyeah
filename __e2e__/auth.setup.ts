@@ -9,10 +9,12 @@ const url = process.env.ZITADEL_ISSUER || '';
 
 async function globalSetup(page: Page, config: FullConfig, browser: Browser) {
   const { baseURL } = config.projects[0].use;
+  const response = await page.request.get(url);
 
   await Promise.all([
     page.goto(baseURL!),
     page.getByRole('button', { name: 'Login' }).click(),
+    expect(response.status()).toBe(200),
     expect(page).toHaveURL(url),
     page.getByPlaceholder('username@domain').click(),
     page.getByPlaceholder('username@domain').fill(user),
