@@ -2,33 +2,38 @@ import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+test.describe.configure({ mode: 'serial' });
+const testMessage = 'Lorem ipsum dolor ...';
 test.describe('handle messages', () => {
-  const testMessage = 'Lorem ipsum dolor ...';
-
-  test('01.timeline - post & delete message', async ({ page }) => {
+  test('01.timeline - post message and set article', async ({ page }) => {
     await Promise.all([
       page.goto('/'),
       page.waitForSelector('[data-testid="testTextarea"]'),
       page.getByTestId('testTextarea').fill(testMessage),
       page.waitForTimeout(3000),
       page.getByRole('button', { name: 'Absenden' }).click(),
-      expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toBeInViewport,
-    ]);
-
-    // DELETE POSTED MESSAGE
-    const article = page.getByRole('article').filter({ hasText: `${testMessage}` });
-    const articleId = await article.getAttribute('id');
-    const svgElement = article.locator('svg').last();
-
-    await Promise.all([
-      page.waitForTimeout(3000),
-      svgElement.click(),
-      page.waitForTimeout(3000),
-      expect(page.locator(`body:has(#${articleId})`)).not.toContain,
+      expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toBeVisible,
     ]);
   });
 
-  test('02.timeline - textbox without message text', async ({ page }) => {
+  test('02.timeline - delete message', async ({ page }) => {
+    await page.goto('/');
+
+    const hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
+    let ARTICLE_ID;
+
+    if (hasArticleToBeDelete) {
+      const articleToBeDeleted = await page.getByRole('article').filter({ hasText: `${testMessage}` });
+      const article_id = await articleToBeDeleted.getAttribute('id');
+      expect(page.isVisible(`body:has(#${ARTICLE_ID})`)).not;
+      ARTICLE_ID = article_id;
+      console.log(article_id);
+      await articleToBeDeleted.locator('svg').last().click();
+    }
+    expect(await page.getByRole('article').filter({ hasText: `${testMessage}` })).not.toBeVisible;
+  });
+
+  test('03.timeline - post without text', async ({ page }) => {
     await Promise.all([
       page.goto('/'),
       page.waitForTimeout(3000),
@@ -37,11 +42,3 @@ test.describe('handle messages', () => {
     ]);
   });
 });
-
-// test('D - profile find and delete', async ({ page }) => {
-//   await page.goto('/profile/201161756305785089');
-//   await page.reload();
-//   const article = await page.getByRole('article').filter({ hasText: `${testMessage}` });
-//   const svgElement = await article.locator('svg').last();
-//   await svgElement.click();
-// });
