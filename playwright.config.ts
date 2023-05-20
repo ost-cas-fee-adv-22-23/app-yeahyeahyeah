@@ -9,16 +9,19 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  reporter: 'list',
   use: {
     baseURL: 'http://localhost:3000/',
     storageState: STORAGE_STATE,
     actionTimeout: 0,
     trace: 'on-first-retry',
     viewport: null,
+    bypassCSP: true,
+    headless: true,
     launchOptions: {
       args: ['--start-maximized'],
     },
+    screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */
