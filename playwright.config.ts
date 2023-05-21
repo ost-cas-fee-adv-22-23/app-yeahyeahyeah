@@ -16,15 +16,13 @@ export default defineConfig({
     actionTimeout: 0,
     storageState: STORAGE_STATE,
     trace: 'on-first-retry',
-    viewport: null,
+    viewport: { width: 1280, height: 720 },
     headless: true,
     launchOptions: {
       args: ['--start-maximized'],
     },
     screenshot: 'only-on-failure',
   },
-
-  /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
@@ -33,9 +31,6 @@ export default defineConfig({
       },
     },
   ],
-
-  /* Run your local dev server before starting the tests */
-
   webServer: {
     command: 'npm run build && npm start',
     url: 'http://localhost:3000/',
