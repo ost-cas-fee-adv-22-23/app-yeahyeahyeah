@@ -1,22 +1,22 @@
-import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
+import { defineConfig, devices } from '@playwright/test';
 
 export const STORAGE_STATE = path.join(__dirname, 'playwright/.auth/user.json');
 
 export default defineConfig({
+  globalSetup: './__e2e__/globalSetup.ts',
   testDir: './__e2e__',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'list',
+  reporter: [['list', { printSteps: true }]],
   use: {
     baseURL: 'http://localhost:3000/',
-    storageState: STORAGE_STATE,
     actionTimeout: 0,
+    storageState: STORAGE_STATE,
     trace: 'on-first-retry',
     viewport: null,
-    bypassCSP: true,
     headless: true,
     launchOptions: {
       args: ['--start-maximized'],
@@ -26,64 +26,12 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
     {
       name: 'chromium',
-      dependencies: ['setup'],
       use: {
         ...devices['Desktop Chrome'],
       },
     },
-
-    // {
-    //   name: 'firefox',
-    //   dependencies: ['setup'],
-    //   use: {
-    //     ...devices['Desktop Firefox'],
-    //   },
-    // },
-
-    // {
-    //   name: 'webkit',
-    //   dependencies: ['setup'],
-    //   use: {
-    //     ...devices['Desktop Safari'],
-    //   },
-    // },
-
-    // /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   dependencies: ['setup'],
-    //   use: {
-    //     ...devices['Pixel 5'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   dependencies: ['setup'],
-    //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
-
-    // /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   dependencies: ['setup'],
-    //   use: {
-    //     ...devices['Desktop Edge'],
-    //     channel: 'msedge',
-    //   },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   dependencies: ['setup'],
-    //   use: {
-    //     ...devices['Desktop Chrome'],
-    //     channel: 'chrome',
-    //   },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */
