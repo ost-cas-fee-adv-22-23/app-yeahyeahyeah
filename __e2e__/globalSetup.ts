@@ -21,6 +21,7 @@ const globalSetup = async (config: FullConfig) => {
 
   // Save the state
   await page.context().storageState({ path: STORAGE_STATE });
+  console.log('✔️ Saved authentication state to ', STORAGE_STATE);
   await browser.close();
 };
 
