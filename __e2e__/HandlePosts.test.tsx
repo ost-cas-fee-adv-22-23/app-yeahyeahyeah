@@ -5,7 +5,7 @@ dotenv.config();
 test.describe.configure({ mode: 'serial' });
 const testMessage = 'Lorem ipsum dolor ...';
 test.describe('handle messages', () => {
-  test('01.timeline - post message and set article', async ({ page }) => {
+  test('01.timeline - post message', async ({ page }) => {
     await Promise.all([
       page.goto('/'),
       page.waitForSelector('[data-testid="testTextarea"]'),
