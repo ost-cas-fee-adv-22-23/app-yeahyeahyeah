@@ -11,6 +11,9 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: [['list', { printSteps: true }]],
+  expect: {
+    timeout: 3000,
+  },
   use: {
     baseURL: 'http://localhost:3000/',
     actionTimeout: 0,
