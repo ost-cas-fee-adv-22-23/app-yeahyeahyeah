@@ -43,6 +43,37 @@ export default defineConfig({
       use: { ...devices['Desktop Firefox'] },
       dependencies: ['setup'],
     },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'Microsoft Edge',
+      use: {
+        ...devices['Desktop Edge'],
+        channel: 'msedge',
+      },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'Google Chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
+      dependencies: ['setup'],
+    },
   ],
   webServer: {
     command: 'npm run build && npm start',
