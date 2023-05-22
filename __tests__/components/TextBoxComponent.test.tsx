@@ -58,7 +58,5 @@ describe('TextBoxComponent', () => {
     fireEvent.click(getByText('Absenden'));
 
     expect(logSpy).toHaveBeenCalledWith('Du musst angemeldet sein, um Mumbles zu posten!');
-
-    screen.debug();
   });
 });
