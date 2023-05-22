@@ -21,22 +21,29 @@ test.describe('handle messages', () => {
     await page.goto('/');
     await page.waitForTimeout(3000);
 
-    const hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
-    console.log(hasArticleToBeDelete === true ? '✔️ test message is present' : '❗ no test message found');
+    await expect(async () => {
+      const hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
+      console.log(hasArticleToBeDelete === true ? '✔️ test message is present' : '  ❗ no test message found');
 
-    if (hasArticleToBeDelete === true) {
-      const articleToBeDeleted = page.getByRole('article').filter({ hasText: `${testMessage}` });
-      expect(articleToBeDeleted, '✔️ test article found in stream. Try to delete this article.').toBeTruthy;
+      if (hasArticleToBeDelete === true) {
+        const articleToBeDeleted = page
+          .getByRole('article')
+          .filter({ hasText: `${testMessage}` })
+          .first();
+        expect(articleToBeDeleted, '✔️ test article found in stream. Try to delete this article.').toBeTruthy;
 
-      const article_id = await articleToBeDeleted.getAttribute('id');
-      await articleToBeDeleted.locator('svg').last().click();
-      expect(page.locator(`body:has(#${article_id})`)).not.toBeVisible;
-    }
+        const article_id = await articleToBeDeleted.getAttribute('id');
+        await articleToBeDeleted.locator('svg').last().click();
+        expect(page.locator(`body:has(#${article_id})`)).not.toBeVisible;
+      }
+      expect(hasArticleToBeDelete, 'should have no test message').toBe(false);
+    }).toPass();
 
     expect(
       page.getByRole('article').filter({ hasText: `${testMessage}` }),
       '❌ something went wrong. there are still test messages present'
-    ).not.toBeInViewport;
+    ).toBeVisible;
+    console.log(`✔️ should have no test message (${testMessage}) on page.`);
   });
 
   test('03.timeline - post without text', async ({ page }) => {
