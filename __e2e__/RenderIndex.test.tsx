@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('E2E - testing index page', async ({ page }) => {
   await page.goto('http://localhost:3000/');
+  await page.waitForSelector('body');
 
   const title = await page.title();
   expect(title).toEqual('Mumble - Willkommen auf Mumble');
