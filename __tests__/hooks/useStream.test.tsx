@@ -158,6 +158,16 @@ describe('useStream', () => {
     expect(result.current[5]).toEqual(false);
   });
 
+  it('renderTimeline should return true', async () => {
+    const { result } = renderHook(() => useStream('/api/mumbles', 10, { count: 10, mumbles: [] }, jest.fn()));
+    expect(result.current[7]).toEqual(true);
+  });
+
+  it('renderTimeline should return false', async () => {
+    const { result } = renderHook(() => useStream('/api/mumbles', 10, { count: 10, mumbles: [] }, jest.fn(), 'test-id'));
+    expect(result.current[7]).toEqual(false);
+  });
+
   it('should call the mutate function when handleDelete is called and deleteMumble succeeds', async () => {
     (fetcher.deleteMumble as jest.Mock).mockResolvedValue({ status: 204 });
 
