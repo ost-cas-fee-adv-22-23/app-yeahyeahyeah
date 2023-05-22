@@ -46,10 +46,11 @@ test.afterAll(async ({ page }) => {
         .filter({ hasText: `${testMessage}` })
         .first();
 
+      expect(articleToBeDeleted, '👉 test article found in stream. Try to delete this article.').toBeTruthy;
+
       const article_id = await articleToBeDeleted.getAttribute('id');
       await articleToBeDeleted.locator('svg').last().click();
 
-      expect(articleToBeDeleted, '👉 test article found in stream. Try to delete this article.').toBeTruthy;
       expect(page.locator(`body:has(#${article_id})`)).toBe(false);
     }
     expect(hasArticleToBeDelete, '👍 should have no test message').toBe(false);
