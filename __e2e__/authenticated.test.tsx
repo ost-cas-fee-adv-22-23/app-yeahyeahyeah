@@ -2,10 +2,10 @@ import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-test.describe.configure({ mode: 'parallel' });
+test.describe.configure({ mode: 'serial' });
 
 const testMessage = 'Lorem ipsum dolor ...';
-test.describe('handle messages', () => {
+test.describe('01.authenticated tests', () => {
   test('01.timeline - post message', async ({ page }) => {
     await Promise.all([
       page.goto('/'),
