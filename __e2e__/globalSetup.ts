@@ -25,7 +25,7 @@ const globalSetup = async (config: FullConfig) => {
 
   // Save the state
   await page.context().storageState({ path: STORAGE_STATE });
-  console.log('👍 Saved authentication state to ', STORAGE_STATE);
+  console.log('💾 Saved authentication state to ', STORAGE_STATE);
   await page.waitForSelector('body');
   await expect(page.getByLabel('Logout')).not.toBeInViewport();
   await browser.close();

@@ -19,7 +19,7 @@ export default defineConfig({
     actionTimeout: 0,
     storageState: STORAGE_STATE,
     trace: 'on-first-retry',
-    viewport: { width: 1280, height: 720 },
+    viewport: null,
     headless: true,
     launchOptions: {
       args: ['--start-maximized'],
