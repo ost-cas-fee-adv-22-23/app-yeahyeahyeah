@@ -122,4 +122,31 @@ describe('Stream', () => {
     expect(screen.getByText('Guten Morgen!')).toBeInTheDocument();
     expect(screen.getByText('☕️')).toBeInTheDocument();
   });
+
+  it('Should render the stream component with hashtags', () => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: null,
+    });
+
+    const fetcherMock = jest.fn();
+
+    render(<Stream url="/api/mumbles" limit={10} fallback={mumblesResult} fetcher={fetcherMock} hashtag="hashtag" />);
+
+    expect(screen.getByText('Latest Hashtags...')).toBeInTheDocument();
+    expect(screen.getByText('...used by other users')).toBeInTheDocument();
+  });
+
+  it('Should render the stream component with id', () => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: null,
+    });
+
+    const fetcherMock = jest.fn();
+
+    render(
+      <Stream url="/api/mumbles" limit={10} fallback={mumblesResult} fetcher={fetcherMock} id="01H0V0YBJHYG3MWFZS6KH45D6Q" />
+    );
+
+    expect(screen.getByText('Hey, was läuft?')).toBeInTheDocument();
+  });
 });
