@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { TextBoxComponent } from '@/components/form/TextBoxComponent';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
@@ -58,7 +58,5 @@ describe('TextBoxComponent', () => {
     fireEvent.click(getByText('Absenden'));
 
     expect(logSpy).toHaveBeenCalledWith('Du musst angemeldet sein, um Mumbles zu posten!');
-
-    screen.debug();
   });
 });
