@@ -48,10 +48,10 @@ export const newMumblesResult: {
     {
       id: '01GZDK2FQCMAVAGDBBAFHB6ZAB',
       creator: '210233754319323393',
-      text: '☕️',
+      text: 'Der erste neue Mumble!',
       mediaUrl: 'https://storage.googleapis.com/qwacker-api-prod-data/40ff8b4a-f762-4df1-ad27-b4fc3b0f6463',
       mediaType: 'image/png',
-      likeCount: 1,
+      likeCount: 9,
       likedByUser: false,
       type: 'post',
       replyCount: 1,
@@ -60,10 +60,10 @@ export const newMumblesResult: {
     {
       id: '01GZDHPVQ0605K0YVPPEV0FQAC',
       creator: '195305735549092097',
-      text: 'Guten Morgen!',
+      text: 'Guten Morgen! Der zweite neue Mumble!',
       mediaUrl: 'https://storage.googleapis.com/qwacker-api-prod-data/d2693fad-2f44-438b-90ae-ea2022b96d76',
       mediaType: 'image/jpeg',
-      likeCount: 1,
+      likeCount: 4,
       likedByUser: false,
       type: 'post',
       replyCount: 2,
@@ -109,17 +109,61 @@ describe('useStream', () => {
     (useSession as jest.Mock).mockReturnValue({ data: { accessToken: 'test-token' } });
   });
 
-  it('should fetch data using useSWRInfinite with the correct parameters', () => {
+  it('should fetch data for the timeline using useSWRInfinite with the correct parameters', () => {
+    const fetcherMock = jest.fn();
+
+    const fallbackData = mumblesResult;
+    const limit = 2;
+    const url = '/api/mumbles';
+
+    renderHook(() => useStream(url, limit, fallbackData, fetcherMock));
+
+    expect(useSWR).toHaveBeenCalledWith(
+      {
+        limit: 2,
+        newerThanMumbleId: '01GZDK2FQCMAVAGDBBAFHB6ZFA',
+        offset: 0,
+        token: 'test-token',
+        url: '/api/mumbles',
+      },
+      fetcherMock,
+      expect.objectContaining({
+        revalidateOnFocus: false,
+        refreshInterval: 10000,
+      })
+    );
+
+    expect(useSWRInfinite).toHaveBeenCalledWith(
+      expect.any(Function),
+      fetcherMock,
+      expect.objectContaining({
+        fallbackData: [fallbackData],
+        revalidateOnFocus: false,
+        refreshInterval: 60000,
+        revalidateAll: false,
+        parallel: true,
+      })
+    );
+  });
+
+  it('should fetch data for the profile page using useSWRInfinite with the correct parameters', () => {
     const fetcherMock = jest.fn();
 
     const fallbackData = mumblesResult;
     const limit = 2;
     const url = '/api/mumbles';
     const id = 'test-id';
-    const hashtag = 'test-hashtag';
-    const creator = { id: 'test-creator-id' };
 
-    renderHook(() => useStream(url, limit, fallbackData, fetcherMock, id, hashtag, creator));
+    renderHook(() => useStream(url, limit, fallbackData, fetcherMock, id));
+
+    expect(useSWR).toHaveBeenCalledWith(
+      null,
+      fetcherMock,
+      expect.objectContaining({
+        revalidateOnFocus: false,
+        refreshInterval: 10000,
+      })
+    );
 
     expect(useSWRInfinite).toHaveBeenCalledWith(
       expect.any(Function),
