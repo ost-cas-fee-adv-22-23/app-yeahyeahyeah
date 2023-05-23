@@ -11,7 +11,7 @@ test.describe('01.authenticated tests', () => {
       page.goto('/'),
       page.waitForSelector('[data-testid="testTextarea"]'),
       page.getByTestId('testTextarea').fill(testMessage),
-      page.waitForTimeout(3000),
+      page.waitForSelector('body'),
       page.getByRole('button', { name: 'Absenden' }).click(),
       expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toBeVisible,
     ]);
