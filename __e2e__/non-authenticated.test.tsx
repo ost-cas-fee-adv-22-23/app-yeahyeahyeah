@@ -14,8 +14,6 @@ test.beforeEach(async ({ page, context }) => {
 
 test.describe('01.non-authenticated', () => {
   test('01.timeline - should have at least one article', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
     await page.waitForSelector('body');
 
     const articles = page.getByRole('article');
@@ -24,8 +22,6 @@ test.describe('01.non-authenticated', () => {
   });
 
   test('02.timeline - should redirect to landingpage', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
     await page.waitForSelector('body');
     const article = page.getByRole('article').filter({ hasText: 'username' }).first();
     const articles = page.getByRole('article');

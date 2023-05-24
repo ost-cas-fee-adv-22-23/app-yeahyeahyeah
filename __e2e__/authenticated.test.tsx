@@ -21,15 +21,7 @@ test.describe('01.authenticated tests', () => {
     expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
   });
 
-  test('03.timeline - post without text', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    await page.waitForSelector('[data-testid="testTextarea"]');
-    await page.getByRole('button', { name: 'Absenden' }).click();
-    await expect(page.locator('p').filter({ hasText: 'Das Textfeld darf nicht leer sein.' })).toBeInViewport();
-  });
-
-  test('03.timeline - click on hashtag', async ({ page }) => {
+  test('02.timeline - click on hashtag', async ({ page }) => {
     await expect(async () => {
       let hasArticleToBeDelete: boolean = false;
       hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
@@ -52,6 +44,14 @@ test.describe('01.authenticated tests', () => {
         expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
       }
     }).toPass();
+  });
+
+  test('03.timeline - post without text', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('[data-testid="testTextarea"]');
+    await page.getByRole('button', { name: 'Absenden' }).click();
+    await expect(page.locator('p').filter({ hasText: 'Das Textfeld darf nicht leer sein.' })).toBeInViewport();
   });
 
   test('04.timeline - delete message', async ({ page }) => {
