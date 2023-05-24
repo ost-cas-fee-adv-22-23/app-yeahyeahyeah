@@ -5,12 +5,12 @@ dotenv.config();
 test.describe.configure({ mode: 'serial' });
 
 const testMessage = 'Lorem ipsum dolor ...';
-const baseURL = '/';
 
 test.describe('01.authenticated tests', () => {
   test('01.timeline - post message', async ({ page }) => {
     await Promise.all([
-      page.goto(baseURL),
+      page.goto('/'),
+      page.waitForLoadState('networkidle'),
       page.waitForSelector('[data-testid="testTextarea"]'),
       page.getByTestId('testTextarea').fill(testMessage),
       page.waitForSelector('body'),
@@ -21,8 +21,9 @@ test.describe('01.authenticated tests', () => {
 
   test('02.timeline - post without text', async ({ page }) => {
     await Promise.all([
-      page.goto(baseURL),
-      page.waitForSelector('body'),
+      page.goto('/'),
+      page.waitForLoadState('networkidle'),
+      page.waitForSelector('[data-testid="testTextarea"]'),
       page.getByRole('button', { name: 'Absenden' }).click(),
       expect(page.getByText('Das Textfeld darf nicht leer sein.', { exact: true })).toBeVisible(),
     ]);
@@ -30,12 +31,14 @@ test.describe('01.authenticated tests', () => {
 });
 
 test.afterAll(async ({ page }) => {
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await page.waitForSelector('body');
   console.log(`🛠️  delete all test messages (${testMessage}) on page.`);
-  await page.goto(baseURL);
-  await page.waitForSelector('article');
 
   await expect(async () => {
     const hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
+
     console.log(
       hasArticleToBeDelete === true
         ? `👉 test message (${testMessage}) is present`
