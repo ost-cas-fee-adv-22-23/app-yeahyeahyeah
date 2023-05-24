@@ -14,6 +14,7 @@ const globalSetup = async (config: FullConfig) => {
   const page: Page = await context.newPage();
 
   await page.goto(baseURL!);
+  await page.waitForLoadState('networkidle');
   await page.getByRole('button', { name: 'Login' }).click();
   await expect(page).toHaveURL(new RegExp(`${url}`));
   await page.waitForSelector('body');
