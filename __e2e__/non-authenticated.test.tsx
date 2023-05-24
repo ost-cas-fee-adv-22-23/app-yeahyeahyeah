@@ -5,7 +5,7 @@ test.describe.configure({ mode: 'serial' });
 test.beforeEach(async ({ page, context }) => {
   await context.clearCookies();
   await page.goto('/');
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForSelector('body');
   await expect(page.getByLabel('Login')).toBeInViewport();
   await expect(page.getByLabel('Logout')).not.toBeInViewport();
@@ -20,18 +20,17 @@ test.describe('01.non-authenticated', () => {
 
     const articles = page.getByRole('article');
     const totalArticles = await articles.count();
-    console.log('totalArticles', totalArticles);
     expect(totalArticles).toBeGreaterThanOrEqual(1);
   });
 
-  test('01.timeline - should redirect to landingpage', async ({ page }) => {
+  test('02.timeline - should redirect to landingpage', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await page.waitForSelector('body');
     const article = page.getByRole('article').filter({ hasText: 'username' }).first();
     const articles = page.getByRole('article');
     const totalArticles = await articles.count();
-    console.log('totalArticles', totalArticles);
+    expect(totalArticles).toBeGreaterThanOrEqual(1);
 
     await article.locator('a').first().click();
     await page.waitForSelector('body');

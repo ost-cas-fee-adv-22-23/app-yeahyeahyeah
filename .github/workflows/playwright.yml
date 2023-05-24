@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: E2E - testing mumble app
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
