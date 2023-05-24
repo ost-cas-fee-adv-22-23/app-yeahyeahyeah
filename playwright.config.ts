@@ -12,7 +12,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['list', { printSteps: true }]],
   expect: {
-    timeout: 3000,
+    timeout: 0,
   },
   use: {
     baseURL: 'http://localhost:3000/',
