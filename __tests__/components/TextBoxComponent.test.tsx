@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { TextBoxComponent } from '@/components/form/TextBoxComponent';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
@@ -46,9 +46,12 @@ describe('TextBoxComponent', () => {
     const { getByText, getByRole, queryByText } = render(
       <TextBoxComponent variant="write" mutate={jest.fn} fallbackUserLoggedIn={user} />
     );
+
     expect(getByText(/Hey, was läuft?/i)).toBeInTheDocument();
     expect(queryByText('Das Textfeld darf nicht leer sein.')).toBeNull();
+
     fireEvent.click(getByText('Absenden'));
+
     expect(getByText('Das Textfeld darf nicht leer sein.')).toBeInTheDocument();
 
     const textarea = getByRole('textbox');
@@ -58,5 +61,24 @@ describe('TextBoxComponent', () => {
     fireEvent.click(getByText('Absenden'));
 
     expect(logSpy).toHaveBeenCalledWith('Du musst angemeldet sein, um Mumbles zu posten!');
+  });
+
+  it("tests Modal that get's triggered inside TextBoxComponent", () => {
+    const { getByText, getByRole, queryByText } = render(
+      <TextBoxComponent variant="write" mutate={jest.fn} fallbackUserLoggedIn={user} />
+    );
+
+    expect(getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'false');
+
+    fireEvent.click(getByText('Bild hochladen'));
+
+    expect(getByText('Datei hierhin ziehen ...')).toBeInTheDocument();
+    expect(getByText('JPEG, GIF oder PNG, maximal 5 MB')).toBeInTheDocument();
+    expect(getByText('... oder Datei auswählen')).toBeInTheDocument();
+    expect(getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'true');
+
+    fireEvent.click(getByText('Abbrechen'));
+
+    expect(getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'false');
   });
 });
