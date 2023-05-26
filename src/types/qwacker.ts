@@ -6,14 +6,17 @@ export type Mumble = {
   id: string;
   creator: string;
   text: string;
-  mediaUrl: string;
-  mediaType: string;
+  mediaUrl: string | null;
+  mediaType: string | null;
   likeCount: number;
   likedByUser: boolean;
   type: string;
-  replyCount: number;
+  replyCount?: number;
+  parentId?: string;
   createdTimestamp: number;
 };
+
+export type Reply = Mumble;
 
 export type User = {
   id: string;
@@ -24,6 +27,13 @@ export type User = {
 };
 
 export type RawMumble = Omit<Mumble, 'createdTimestamp'>;
+
+export type RawReply = Omit<Reply, 'createdTimestamp'>;
+
+export type QwackerReplyResponse = {
+  count: number;
+  mumbles: Reply[];
+};
 
 export type QwackerMumbleResponse = {
   count: number;

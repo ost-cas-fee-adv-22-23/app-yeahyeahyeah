@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { transformMumble, QwackerMumbleResponse } from '../types/qwacker';
+import { RawReply, transformMumble } from '../types/qwacker';
 
 export const fetchReplies = async (params: { id?: string; token?: string }) => {
   const { id, token } = params || {};
@@ -11,7 +11,7 @@ export const fetchReplies = async (params: { id?: string; token?: string }) => {
         'content-type': 'application/json',
         Authorization: token ? `Bearer ${token}` : null,
       },
-    })) as QwackerMumbleResponse;
+    })) as { data: RawReply[] };
 
     if (!data) {
       throw new Error('Something was not okay.');

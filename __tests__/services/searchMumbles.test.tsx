@@ -1,10 +1,10 @@
 import mockAxios from 'jest-mock-axios';
-import { fetchMumbles } from '@/services/fetchMumbles';
-import { Mumble, QwackerMumbleResponse } from '@/services';
+import { searchMumbles } from '@/services/searchMumbles';
+import { Mumble } from '@/services';
 
-type QwackerMumbleResponseNextURL = { next: string };
+type QwackerSearchResponse = { data: { count: number; data: Omit<Mumble, 'createdTimestamp'>[] } };
 
-const mumblesAPIResponse: { data: QwackerMumbleResponse & QwackerMumbleResponseNextURL } = {
+const mumblesAPIResponse: QwackerSearchResponse = {
   data: {
     count: 375,
     data: [
@@ -31,7 +31,6 @@ const mumblesAPIResponse: { data: QwackerMumbleResponse & QwackerMumbleResponseN
         replyCount: 2,
       },
     ],
-    next: '//qwacker-api-http-prod-4cxdci3drq-oa.a.run.app/posts?offset=2&limit=2',
   },
 };
 
@@ -68,38 +67,43 @@ const mumblesResult: {
   ],
 };
 
-describe('fetchMumbles', () => {
+describe('Tests for searchMumbles fetcher', () => {
   afterEach(() => {
     mockAxios.reset();
   });
 
   describe('when API call is successful', () => {
-    it('should return a mumble list', async () => {
-      mockAxios.get.mockResolvedValueOnce(mumblesAPIResponse);
+    it('should return a list with posts that include a hashtag', async () => {
+      mockAxios.post.mockResolvedValueOnce(mumblesAPIResponse);
 
-      const result = await fetchMumbles({ limit: 2, offset: 0 });
+      const result = await searchMumbles({ limit: 2, offset: 0, token: 'token', text: '#' });
 
-      expect(mockAxios.get).toHaveBeenCalledWith(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?limit=2&offset=0`, {
-        headers: { Authorization: null, 'content-type': 'application/json' },
-      });
+      expect(mockAxios.post).toHaveBeenCalledWith(
+        `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/search`,
+        { limit: 2, offset: 0, tags: undefined, text: '#' },
+        { headers: { Authorization: 'Bearer token', 'content-type': 'application/json' } }
+      );
+
       expect(result).toEqual(mumblesResult);
     });
   });
 
   describe('when API call fails', () => {
-    it('should return empty users list', async () => {
+    it('should return empty mumbles list', async () => {
       const message = 'Could not fetch mumbles';
-      mockAxios.get.mockRejectedValueOnce(new Error(message));
+      mockAxios.post.mockRejectedValueOnce(new Error(message));
 
       try {
-        await fetchMumbles({});
+        await searchMumbles({ limit: 2, offset: 0, token: 'token', text: '#' });
       } catch (e) {
         expect(e).toEqual(new Error(message));
       }
 
-      expect(mockAxios.get).toHaveBeenCalledWith(`${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts?limit=10&offset=0`, {
-        headers: { Authorization: null, 'content-type': 'application/json' },
-      });
+      expect(mockAxios.post).toHaveBeenCalledWith(
+        `${process.env.NEXT_PUBLIC_QWACKER_API_URL}/posts/search`,
+        { limit: 2, offset: 0, tags: undefined, text: '#' },
+        { headers: { Authorization: 'Bearer token', 'content-type': 'application/json' } }
+      );
     });
   });
 });
