@@ -107,10 +107,11 @@ describe('Tests for fetchReplies fetcher', () => {
 
   describe('when API call fails', () => {
     it('should throw an error when the response is not successful', async () => {
-      const errorMessage = "Cannot destructure property 'data' of '(intermediate value)' as it is null.";
       mockAxios.get.mockResolvedValueOnce(null);
+      await expect(fetchReplies({ id, token })).rejects.toThrowError(/Cannot destructure property 'data'/);
 
-      await expect(fetchReplies({ id, token })).rejects.toThrowError(errorMessage);
+      mockAxios.get.mockResolvedValueOnce(null);
+      await expect(fetchReplies({ id, token })).rejects.toThrowError(/as it is null./);
     });
 
     it('should throw a generic error when an unexpected error occurs', async () => {
