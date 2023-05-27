@@ -4,7 +4,7 @@ import { User } from '@/services';
 
 const token = 'LPwnxnvQNBkn5DabtZ_env74EPct7UD3IgIXPftR1YoSX6QMfvhOSw819eX6CU5m7SPAAAA';
 
-const mumbleAPIResponse: { count: number; data: User[] } = {
+export const mumbleAPIResponse: { count: number; data: User[] } = {
   count: 5,
   data: [
     {
