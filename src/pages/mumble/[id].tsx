@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import { getToken } from 'next-auth/jwt';
 import { fetchUser, User, fetchSingleMumble, fetchReplies, QwackerUserResponse, fetchUsers } from '@/services';
-import { FetchMumbles, FetchSingleMumble } from '@/types/fallback';
+import { FetchMumbles, FetchReplies, FetchSingleMumble } from '@/types/fallback';
 import { Alert, Detail, Stream } from '@/components';
 import { Container } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 import { swrConfig } from '@/config';
@@ -73,7 +73,7 @@ const MumblePage = ({
 export const getServerSideProps: GetServerSideProps = async ({ req, query: { id } }) => {
   const token = await getToken({ req });
   const mumble: FetchSingleMumble = await fetchSingleMumble({ id: id as string, token: token?.accessToken });
-  const mumbles: FetchMumbles = await fetchReplies({ id: id as string, token: token?.accessToken });
+  const replies: FetchReplies = await fetchReplies({ id: id as string, token: token?.accessToken });
   const user: User | string = token?.accessToken ? await fetchUser({ id: mumble.creator, token: token?.accessToken }) : '';
   const users: QwackerUserResponse =
     (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query: { id 
       limit: 0,
       id,
       fallback: mumble,
-      fallbackReplies: mumbles,
+      fallbackReplies: replies,
       fallbackUser: user || {
         userName: 'username',
         firstName: 'Unknown',

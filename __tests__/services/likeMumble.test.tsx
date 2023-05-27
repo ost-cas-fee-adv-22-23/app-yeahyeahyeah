@@ -1,7 +1,7 @@
 import mockAxios from 'jest-mock-axios';
 import { likeMumble } from '@/services/likeMumble';
 
-describe('Test for likeMumble service', () => {
+describe('Tests for likeMumble fetcher', () => {
   afterEach(() => {
     mockAxios.reset();
   });

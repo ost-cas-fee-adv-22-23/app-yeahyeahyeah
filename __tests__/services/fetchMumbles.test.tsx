@@ -68,7 +68,7 @@ const mumblesResult: {
   ],
 };
 
-describe('fetchMumbles', () => {
+describe('Tests for fetchMumbles fetcher', () => {
   afterEach(() => {
     mockAxios.reset();
   });
@@ -87,7 +87,14 @@ describe('fetchMumbles', () => {
   });
 
   describe('when API call fails', () => {
-    it('should return empty users list', async () => {
+    it('should throw an error when the response is not successful', async () => {
+      const errorMessage = "Cannot read properties of null (reading 'data')";
+      mockAxios.get.mockResolvedValueOnce(null);
+
+      await expect(fetchMumbles({ limit: 2, offset: 0 })).rejects.toThrowError(errorMessage);
+    });
+
+    it('should throw a generic error when an unexpected error occurs', async () => {
       const message = 'Could not fetch mumbles';
       mockAxios.get.mockRejectedValueOnce(new Error(message));
 

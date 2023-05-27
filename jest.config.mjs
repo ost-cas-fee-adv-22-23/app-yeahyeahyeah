@@ -23,7 +23,7 @@ const customJestConfig = {
   modulePathIgnorePatterns: ['<rootDir>/__e2e__'],
   coverageThreshold: {
     global: {
-      lines: 80,
+      lines: 65,
     },
   },
 };

@@ -20,7 +20,7 @@ export const postMumble = async (text: string, file: UploadImage | null, accessT
       throw new Error('Something was not okay');
     }
 
-    return transformMumble(await response.data);
+    return transformMumble(response.data);
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : 'Could not post mumble');
   }

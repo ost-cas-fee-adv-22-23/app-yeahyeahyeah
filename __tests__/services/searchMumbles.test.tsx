@@ -67,7 +67,7 @@ const mumblesResult: {
   ],
 };
 
-describe('Test for searchMumbles service', () => {
+describe('Tests for searchMumbles fetcher', () => {
   afterEach(() => {
     mockAxios.reset();
   });
