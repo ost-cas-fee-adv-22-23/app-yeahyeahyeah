@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { NavigationComponent } from '@/components';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
