@@ -1,15 +1,16 @@
 import { test, expect } from '@playwright/test';
 
 test.describe.configure({ mode: 'serial' });
+test.use({ storageState: './noAuth.json' });
 
 test.beforeEach(async ({ page, context }) => {
-  await context.clearCookies();
+  // await context.clearCookies();
   await page.goto('/');
   await page.waitForLoadState('domcontentloaded');
   await page.waitForSelector('body');
   await expect(page.getByLabel('Login')).toBeInViewport();
   await expect(page.getByLabel('Logout')).not.toBeInViewport();
-  // console.log(await context.storageState());
+  console.log(await context.storageState());
 });
 
 test.describe('01.non-authenticated', () => {
