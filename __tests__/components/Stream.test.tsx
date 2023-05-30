@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react';
 import { Stream } from '@/components';
 import { useSession } from 'next-auth/react';
 import { setupIntersectionObserverMock } from '../hooks/intersectionObserverMock';
-import * as fetcher from '@/services';
+import { Mumble } from '@/services';
 
 export const mumblesResult: {
   count: number;
-  mumbles: fetcher.Mumble[];
+  mumbles: Mumble[];
 } = {
   count: 375,
   mumbles: [
@@ -40,7 +40,7 @@ export const mumblesResult: {
 
 export const newMumblesResult: {
   count: number;
-  mumbles: fetcher.Mumble[];
+  mumbles: Mumble[];
 } = {
   count: 2,
   mumbles: [
