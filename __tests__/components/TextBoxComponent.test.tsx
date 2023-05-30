@@ -82,23 +82,30 @@ describe('TextBoxComponent', () => {
     expect(getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'false');
   });
 
-  it('tests onDrop functionality in TextBoxComponent', () => {
-    const { getByText, getByRole, queryByText } = render(
+  it('should drop valid file', async () => {
+    const { getByText, findByText, container } = render(
       <TextBoxComponent variant="write" mutate={jest.fn} fallbackUserLoggedIn={user} />
     );
 
-    expect(getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'false');
+    window.URL.createObjectURL = jest.fn().mockImplementation(() => 'url');
 
     fireEvent.click(getByText('Bild hochladen'));
+    const inputEl = container.querySelector('[class*=FileUpload]') as HTMLInputElement;
 
-    expect(getByText('Datei hierhin ziehen ...')).toBeInTheDocument();
-    expect(getByText('JPEG, GIF oder PNG, maximal 5 MB')).toBeInTheDocument();
-    expect(getByText('... oder Datei auswählen')).toBeInTheDocument();
-    expect(getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'true');
+    const file = new File(['file'], 'test.jpg', {
+      type: 'application/jpg',
+    });
 
-    fireEvent.click(getByText('Abbrechen'));
+    Object.defineProperty(inputEl, 'files', {
+      value: [file],
+    });
 
-    expect(getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'false');
+    const logSpy = jest.spyOn(console, 'log');
+
+    fireEvent.drop(inputEl);
+    await waitFor(() => getByTestId(container, 'textbox'));
+
+    expect(logSpy).toHaveBeenCalledWith('acceptedFiles', [file]);
   });
 
   it('should drop wrong file', async () => {
