@@ -10,7 +10,7 @@ test.beforeEach(async ({ page, context }) => {
   await page.waitForSelector('body');
   await expect(page.getByLabel('Login')).toBeInViewport();
   await expect(page.getByLabel('Logout')).not.toBeInViewport();
-  console.log(await context.storageState());
+  // console.log(await context.storageState());
 });
 
 test.describe('01.non-authenticated', () => {

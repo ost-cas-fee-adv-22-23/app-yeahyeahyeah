@@ -21,7 +21,36 @@ test.describe('01.authenticated tests', () => {
     expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
   });
 
-  test('02.timeline - click on hashtag', async ({ page }) => {
+  test('02.timeline - should like an article', async ({ page }) => {
+    await expect(async () => {
+      let hasArticleToBeLiked: boolean = false;
+      hasArticleToBeLiked = await page.isVisible(`text=${testMessage}`);
+
+      if (hasArticleToBeLiked === true) {
+        await page.getByRole('article').first().getByRole('button', { name: 'Like' }).click();
+        expect(page.getByRole('button', { name: 'Liked' }));
+      }
+    }).toPass();
+  });
+
+  test('03.timeline - should list liked article', async ({ page }) => {
+    await page.getByRole('link', { name: 'Profile' }).click();
+    await expect(page).toHaveURL(/profile/);
+
+    await expect(async () => {
+      let hasArticleToBeLiked: boolean = false;
+      hasArticleToBeLiked = await page.isVisible(`text=${testMessage}`);
+
+      if (hasArticleToBeLiked === true) {
+        page.getByRole('article').first().getByRole('button', { name: 'Liked' });
+        expect(page.getByRole('button', { name: 'Liked' }));
+        // page.getByRole('article').first().getByRole('button', { name: 'Liked' }).click();
+        // expect(page.getByRole('button', { name: 'Like' }));
+      }
+    }).toPass();
+  });
+
+  test('04.timeline - click on hashtag', async ({ page }) => {
     await expect(async () => {
       let hasArticleToBeDelete: boolean = false;
       hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
@@ -46,7 +75,7 @@ test.describe('01.authenticated tests', () => {
     }).toPass();
   });
 
-  test('03.timeline - post without text', async ({ page }) => {
+  test('05.timeline - post without text', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.waitForSelector('[data-testid="testTextarea"]');
@@ -54,7 +83,7 @@ test.describe('01.authenticated tests', () => {
     await expect(page.locator('p').filter({ hasText: 'Das Textfeld darf nicht leer sein.' })).toBeInViewport();
   });
 
-  test('04.timeline - delete message', async ({ page }) => {
+  test('06.timeline - delete message', async ({ page }) => {
     await page.waitForSelector('body, footer');
     await expect(async () => {
       let hasArticleToBeDelete: boolean = false;
