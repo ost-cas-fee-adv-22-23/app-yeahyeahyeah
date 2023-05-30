@@ -2,7 +2,8 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Like } from '@/components';
 import { useSession } from 'next-auth/react';
-import * as fetcher from '@/services';
+import { dislikeMumble } from '@/services';
+import { likeMumble } from '@/services';
 
 const user = {
   id: '201444056083988737',
@@ -22,7 +23,7 @@ jest.mock('@/services', () => ({
 
 describe('Like component', () => {
   it('Should be disliked', () => {
-    const dislike = (fetcher.dislikeMumble as jest.Mock).mockResolvedValue({});
+    const dislike = (dislikeMumble as jest.Mock).mockResolvedValue({});
 
     (useSession as jest.Mock).mockReturnValue({
       data: {
@@ -50,7 +51,7 @@ describe('Like component', () => {
   });
 
   it('Should be liked', () => {
-    const like = (fetcher.likeMumble as jest.Mock).mockResolvedValue({});
+    const like = (likeMumble as jest.Mock).mockResolvedValue({});
 
     (useSession as jest.Mock).mockReturnValue({
       data: {
