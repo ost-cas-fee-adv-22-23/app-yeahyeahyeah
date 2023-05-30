@@ -119,7 +119,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   }, [state.inputValue, dispatch, state.errorMessage]);
 
   return (
-    <div tw="mb-16">
+    <div tw="mb-16" data-testid="textbox">
       <TextBox
         variant={variant}
         user={{
