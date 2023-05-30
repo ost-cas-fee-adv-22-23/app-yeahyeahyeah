@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
@@ -28,7 +28,7 @@ const MumblePage = ({
   fallbackUser,
   fallbackUsers,
   fallbackUserLoggedIn,
-}: MumblePageProps): InferGetServerSidePropsType<typeof getServerSideProps> => {
+}: MumblePageProps) => {
   const { data: session }: any = useSession();
 
   const { data: mumble } = useSWR({ url: '/api/singleMumble', id, token: session?.accessToken }, fetchSingleMumble, {

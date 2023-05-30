@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor, getByTestId } from '@testing-library/react';
 import { TextBoxComponent } from '@/components/form/TextBoxComponent';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
@@ -80,5 +80,53 @@ describe('TextBoxComponent', () => {
     fireEvent.click(getByText('Abbrechen'));
 
     expect(getByRole('dialog', { hidden: true })).toHaveAttribute('aria-modal', 'false');
+  });
+
+  it('should drop valid file', async () => {
+    const { getByText, findByText, container } = render(
+      <TextBoxComponent variant="write" mutate={jest.fn} fallbackUserLoggedIn={user} />
+    );
+
+    window.URL.createObjectURL = jest.fn().mockImplementation(() => 'url');
+
+    fireEvent.click(getByText('Bild hochladen'));
+    const inputEl = container.querySelector('[class*=FileUpload]') as HTMLInputElement;
+
+    const file = new File(['file'], 'test.jpg', {
+      type: 'application/jpg',
+    });
+
+    Object.defineProperty(inputEl, 'files', {
+      value: [file],
+    });
+
+    const logSpy = jest.spyOn(console, 'log');
+
+    fireEvent.drop(inputEl);
+    await waitFor(() => getByTestId(container, 'textbox'));
+
+    expect(logSpy).toHaveBeenCalledWith('acceptedFiles', [file]);
+  });
+
+  it('should drop wrong file', async () => {
+    const { getByText, findByText, container } = render(
+      <TextBoxComponent variant="write" mutate={jest.fn} fallbackUserLoggedIn={user} />
+    );
+
+    fireEvent.click(getByText('Bild hochladen'));
+    const inputEl = container.querySelector('[class*=FileUpload]') as HTMLInputElement;
+
+    const file = new File(['file'], 'test.pdf', {
+      type: 'application/json',
+    });
+
+    Object.defineProperty(inputEl, 'files', {
+      value: [file],
+    });
+
+    fireEvent.drop(inputEl);
+    await waitFor(() => getByTestId(container, 'textbox'));
+
+    expect(await findByText('Die Datei muss vom Typ jpg, jpeg, png oder gif sein.')).toBeInTheDocument();
   });
 });

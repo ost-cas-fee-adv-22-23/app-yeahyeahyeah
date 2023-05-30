@@ -51,7 +51,7 @@ export const Timeline: React.FC<TimelineProps> = ({
               <Heading label="Latest Hashtags..." color="violet" tag="h1" size="default" mbSpacing="8" />
               <Heading label="...used by other users" color="light" tag="h2" size="xlarge" mbSpacing="32" />
             </div>
-            <HashtagWrapper>
+            <HashtagWrapper data-testid="hashtag">
               <Hashtag size="xlarge" hashtag={hashtag} />
             </HashtagWrapper>
           </>

@@ -13,7 +13,7 @@ const mumblesAPIResponse: { data: QwackerMumbleResponse & QwackerMumbleResponseN
       {
         id: '01GYSYGSWPV3VRRDGXT49NEM53',
         creator: '201444056083988737',
-        text: 'test',
+        text: 'Stop racism!',
         mediaUrl: null,
         mediaType: null,
         likeCount: 0,
@@ -37,7 +37,7 @@ const mumblesAPIResponse: { data: QwackerMumbleResponse & QwackerMumbleResponseN
   },
 };
 
-const mumblesResult: {
+export const mumblesResult: {
   count: number;
   mumbles: Mumble[];
 } = {
@@ -46,7 +46,7 @@ const mumblesResult: {
     {
       id: '01GYSYGSWPV3VRRDGXT49NEM53',
       creator: '201444056083988737',
-      text: 'test',
+      text: 'Stop racism!',
       mediaUrl: null,
       mediaType: null,
       likeCount: 0,

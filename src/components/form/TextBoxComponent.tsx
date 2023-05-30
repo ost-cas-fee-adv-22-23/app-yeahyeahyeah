@@ -86,6 +86,8 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
     }, 2000);
 
   const onDropCallBack = (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+    console.log('acceptedFiles', acceptedFiles);
+
     fileRejections?.length && dispatch({ type: 'SET_FILE_UPLOAD_ERROR', payload: Message.alerts.fileTypeError.text });
     setTimerForError();
 
@@ -119,7 +121,7 @@ export const TextBoxComponent: React.FC<TextBoxComponentProps> = ({ id, variant,
   }, [state.inputValue, dispatch, state.errorMessage]);
 
   return (
-    <div tw="mb-16">
+    <div tw="mb-16" data-testid="textbox">
       <TextBox
         variant={variant}
         user={{
