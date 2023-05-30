@@ -76,45 +76,11 @@ const repliesResult: QwackerReplyResponse = {
   ],
 };
 
-export const newMumblesResult: {
-  count: number;
-  mumbles: Mumble[];
-} = {
-  count: 2,
-  mumbles: [
-    {
-      id: '01GZDK2FQCMAVAGDBBAFHB6ZAB',
-      creator: '201444056083988737',
-      text: 'Der erste neue Mumble!',
-      mediaUrl: 'https://storage.googleapis.com/qwacker-api-prod-data/40ff8b4a-f762-4df1-ad27-b4fc3b0f6463',
-      mediaType: 'image/png',
-      likeCount: 9,
-      likedByUser: false,
-      type: 'post',
-      replyCount: 999,
-      createdTimestamp: 1683009650412,
-    },
-    {
-      id: '01GZDHPVQ0605K0YVPPEV0FQAC',
-      creator: '201444056083988737',
-      text: 'Guten Morgen! Der zweite neue Mumble!',
-      mediaUrl: 'https://storage.googleapis.com/qwacker-api-prod-data/d2693fad-2f44-438b-90ae-ea2022b96d76',
-      mediaType: 'image/jpeg',
-      likeCount: 4,
-      likedByUser: false,
-      type: 'post',
-      replyCount: 999,
-      createdTimestamp: 1683008220896,
-    },
-  ],
-};
-
 beforeEach(() => {
   setupIntersectionObserverMock();
 });
 
 jest.mock('next-auth/react');
-jest.mock('axios');
 
 jest.mock('@/components/alert/Alert', () => ({
   Alert: () => {

@@ -2,8 +2,6 @@ import axios from 'axios';
 import { deleteMumble } from '@/services/deleteMumble';
 import mockAxios from 'jest-mock-axios';
 
-jest.mock('axios');
-
 const id = '01H1BP6RYRRGFY4WPGVB14AKMH';
 const accessToken = 'LPwnxnvQNBkn5DabtZ_env74EPct7UD3IgIXPftR1YoSX6QMfvhOSw819eX6CU5m7SPAAAA';
 
