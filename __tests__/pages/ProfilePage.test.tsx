@@ -78,30 +78,6 @@ beforeEach(() => {
 
 jest.mock('next-auth/react');
 
-// Mock the useSWRInfinite hook
-jest.mock('swr/infinite', () =>
-  jest.fn(() => ({
-    data: [mumblesResult],
-    error: undefined,
-    isValidating: false,
-    isLoading: false,
-    mutate: jest.fn(),
-  }))
-);
-
-// Mock the useSWR hook
-jest.mock('swr', () =>
-  jest.fn(() => ({
-    data: {
-      id: '201444056083988737',
-      userName: 'tomschall',
-      firstName: 'Thomas',
-      lastName: 'Schallert',
-      avatarUrl: '',
-    },
-  }))
-);
-
 jest.mock('@/components/alert/Alert', () => ({
   Alert: () => {
     const AlertMock = 'div';
