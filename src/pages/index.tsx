@@ -41,6 +41,8 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
     (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
   const fallbackUserLoggedIn = (token?.accessToken && users.data.find((x) => x.id === token.user?.id)) || null;
 
+  console.log('mumbles', mumbles);
+
   return {
     props: {
       limit,

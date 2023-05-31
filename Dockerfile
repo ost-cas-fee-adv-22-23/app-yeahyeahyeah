@@ -1,13 +1,23 @@
-FROM node:16-alpine
+FROM node:16-alpine as base
 ARG NPM_TOKEN
-WORKDIR /usr/src/app
-RUN npm install --global pm2
-COPY .npmrc ./
-RUN echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> .npmrc
+WORKDIR /app
 COPY package*.json ./
-RUN npm install
-COPY ./ ./
-RUN npm run build --omit=dev
+RUN npm config set //npm.pkg.github.com/:_authToken $NPM_TOKEN
+
+FROM base as build
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM base as production
+ENV NODE_ENV=production
+RUN npm ci --ignore-scripts && npm install pm2 -g
+
+COPY --from=build /app/next.config.js ./
+COPY --from=build /app/public ./public
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/withTwin.js ./withTwin.js
+
 EXPOSE 3000
 USER node
-CMD [ "pm2-runtime", "npm", "--", "start" ]
+CMD [ "pm2-runtime", "--name", "app-yeahyeahyeah", "start", "npm", "--", "start" ]

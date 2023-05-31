@@ -34,7 +34,7 @@ const HashtagPage = ({
 };
 export const getServerSideProps: GetServerSideProps<any> = async ({ req, query: { hashtag } }) => {
   const limit = 2;
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({ req });
   const mumbles: FetchMumbles = await searchMumbles({
     limit: limit,
     offset: 0,

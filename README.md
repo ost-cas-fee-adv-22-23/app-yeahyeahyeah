@@ -152,6 +152,22 @@ Run tests in headful mode
 npm run test:e2e:headful
 ```
 
+## Docker
+
+Test the docker image locally.
+
+### Build
+
+```bash
+docker build -t app-yeahyeahyeah . --build-arg NPM_TOKEN=$NPM_TOKEN
+```
+
+### Run
+
+```bash
+docker run -p 3000:3000 --env-file .env --rm app-yeahyeahyeah app-yeahyeahyeah
+```
+
 ## Features
 
 The application is equipped with the following features.
