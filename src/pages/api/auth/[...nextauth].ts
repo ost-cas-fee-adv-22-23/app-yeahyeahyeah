@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth/next';
 
 export default NextAuth({
-  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     {
       id: 'zitadel',
