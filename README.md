@@ -225,3 +225,126 @@ You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeah
 <a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
 </a>
+
+## Terraform
+
+### Google Cloud
+
+#### Create secret manager and secret
+
+Go to google cloud and create a new secret manager. Then create a new secret with the name `NEXTAUTH_SECRET` and add the secret value and add a new version.
+
+#### Add needed permissions
+
+Permission "roles/secretmanager.secretAccessor" is needed to access the secret manager. Add this role to "google_project_iam_member" "cloud-runner". Following code snippet shows how to add the role.
+
+```terraform
+resource "google_project_iam_member" "cloud-runner" {
+  for_each = toset([
+    "roles/run.serviceAgent",
+    "roles/viewer",
+    "roles/storage.objectViewer",
+    "roles/run.admin",
+    "roles/cloudsql.client",
+    "roles/secretmanager.secretAccessor",
+  ])
+  role    = each.key
+  member  = "serviceAccount:${google_service_account.cloud-runner.email}"
+  project = data.google_project.project.id
+}
+```
+
+#### Create resource "google_secret_manager_secret"
+
+Create a new resource "google_secret_manager_secret" and add the secret.
+
+```terraform
+resource "google_secret_manager_secret" "default" {
+  secret_id = "NEXTAUTH_SECRET"
+
+  replication {
+    user_managed {
+      replicas {
+        location = local.gcp_region
+      }
+    }
+  }
+}
+```
+
+#### Access the secret in the cloud run service
+
+Access the secret and add it to the cloud run service. The example shows also how to add non secret environment variables to the cloud run service.
+
+```terraform
+resource "google_cloud_run_service" "app-yeahyeahyeah" {
+  name                       = local.name
+  location                   = local.gcp_region
+  autogenerate_revision_name = true
+
+  template {
+    spec {
+      containers {
+        image = "europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah"
+
+        resources {
+          limits = {
+            "memory" = "256Mi"
+            "cpu"    = "1"
+          }
+        }
+
+        env {
+          name = "NEXTAUTH_URL"
+          value = "https://app-yeahyeahyeah-cbvb5d3h6a-oa.a.run.app"
+        }
+
+        env {
+          name = "NEXTAUTH_SECRET"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.default.secret_id
+              key = "1"
+            }
+          }
+        }
+
+        env {
+          name = "ZITADEL_ISSUER"
+          value = "https://cas-fee-advanced-ocvdad.zitadel.cloud"
+        }
+
+        env {
+          name = "ZITADEL_CLIENT_ID"
+          value = "181236603920908545@cas_fee_adv_qwacker_prod"
+        }
+
+        ports {
+          name           = "http1"
+          container_port = 3000
+        }
+      }
+
+      service_account_name = google_service_account.cloud-runner.email
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}
+```
+
+#### Hints
+
+##### Rename service
+
+If you rename the name of the service, you will have to delete the actual state value ("casfea22-tf-state") in the bucket, otherwise terraform will not be able to create the service again. Following code snippet shows the name of the service, that has to be changed.
+
+```terraform
+locals {
+  name       = "app-yeahyeahyeah"
+  gcp_region = "europe-west6"
+}
+```
