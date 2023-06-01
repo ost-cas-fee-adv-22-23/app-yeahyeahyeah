@@ -10,7 +10,8 @@ resource "google_project_iam_member" "cloud-runner" {
     "roles/viewer",
     "roles/storage.objectViewer",
     "roles/run.admin",
-    "roles/cloudsql.client"
+    "roles/cloudsql.client",
+    "roles/secretmanager.secretAccessor",
   ])
   role    = each.key
   member  = "serviceAccount:${google_service_account.cloud-runner.email}"
@@ -27,7 +28,19 @@ output "cloud-runner-email" {
   value = google_service_account.cloud-runner.email
 }
 
-resource "google_cloud_run_service" "deploy-app-yeahyeahyeah" {
+resource "google_secret_manager_secret" "default" {
+  secret_id = "NEXTAUTH_SECRET"
+
+  replication {
+    user_managed {
+      replicas {
+        location = local.gcp_region
+      }
+    }
+  }
+}
+
+resource "google_cloud_run_service" "app-yeahyeahyeah" {
   name                       = local.name
   location                   = local.gcp_region
   autogenerate_revision_name = true
@@ -41,6 +54,31 @@ resource "google_cloud_run_service" "deploy-app-yeahyeahyeah" {
           limits = {
             "memory" = "256Mi"
           }
+        }
+
+        env {
+          name = "NEXTAUTH_URL"
+          value = "https://app-yeahyeahyeah-cbvb5d3h6a-oa.a.run.app"
+        }
+
+        env {
+          name = "NEXTAUTH_SECRET"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.default.secret_id
+              key = "1"
+            }
+          }
+        }
+
+        env {
+          name = "ZITADEL_ISSUER"
+          value = "https://cas-fee-advanced-ocvdad.zitadel.cloud"
+        }
+
+        env {
+          name = "ZITADEL_CLIENT_ID"
+          value = "181236603920908545@cas_fee_adv_qwacker_prod"
         }
 
         ports {
@@ -60,7 +98,7 @@ resource "google_cloud_run_service" "deploy-app-yeahyeahyeah" {
 }
 
 output "cloud-run-url" {
-  value = google_cloud_run_service.demo.status[0].url
+  value = google_cloud_run_service.app-yeahyeahyeah.status[0].url
 }
 
 data "google_iam_policy" "noauth" {
@@ -73,9 +111,9 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location = google_cloud_run_service.demo.location
-  project  = google_cloud_run_service.demo.project
-  service  = google_cloud_run_service.demo.name
+  location = google_cloud_run_service.app-yeahyeahyeah.location
+  project  = google_cloud_run_service.app-yeahyeahyeah.project
+  service  = google_cloud_run_service.app-yeahyeahyeah.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
