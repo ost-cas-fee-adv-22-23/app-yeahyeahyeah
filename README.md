@@ -226,7 +226,45 @@ You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeah
   <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
 </a>
 
+## Google Cloud
+
+### Create a new project
+
+```bash
+gcloud projects create PROJECT_ID --name=PROJECT_NAME --set-as-default
+```
+
+### Enable billing
+
+```bash
+gcloud beta billing projects link PROJECT_ID --billing-account=BILLING_ACCOUNT_ID
+```
+
+### Enable APIs
+
+```bash
+gcloud services enable compute.googleapis.com
+gcloud services enable container.googleapis.com
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable iam.googleapis.com
+gcloud services enable secretmanager.googleapis.com
+```
+
+### Create cloud storage bucket
+
+```bash
+gsutil mb -p PROJECT_ID -c STANDARD -l europe-west6 -b on gs://BUCKET_NAME
+```
+
+### Secrets Manager
+
+#### Create secret manager and secret
+
+Go to google cloud and create a new secret manager. Then create a new secret with the name `NEXTAUTH_SECRET` and add the secret value and add a new version.
+
 ## Terraform
+
+With our terraform configuration, we can create a new project on Google Cloud and deploy our application. First you have to install terraform on your machine.
 
 ### Init
 
@@ -258,11 +296,19 @@ You can pass the -auto-approve option to instruct Terraform to apply the plan wi
 terraform apply -auto-approve
 ```
 
-### Google Cloud
+### Secrets Manager
 
 #### Create secret manager and secret
 
 Go to google cloud and create a new secret manager. Then create a new secret with the name `NEXTAUTH_SECRET` and add the secret value and add a new version.
+
+#### Import secret manager secret
+
+Import the secret manager secret into terraform. Following code snippet shows how to import the secret.
+
+```terraform
+terraform import google_secret_manager_secret.default NEXTAUTH_SECRET
+```
 
 #### Add needed permissions
 
@@ -366,11 +412,11 @@ resource "google_cloud_run_service" "app-yeahyeahyeah" {
 }
 ```
 
-#### Hints
+### Hints
 
-##### Rename service
+##### Rename service or delete service
 
-If you rename the name of the service, you will have to delete the actual state value ("casfea22-tf-state") in the bucket, otherwise terraform will not be able to create the service again. Following code snippet shows the name of the service, that has to be changed.
+If you rename the name of the service or delete the service and create a new one, you will have to delete the actual state value ("casfea22-tf-state") in the bucket. Following code snippet shows the name of the service, that has to be changed.
 
 ```terraform
 locals {
@@ -378,3 +424,7 @@ locals {
   gcp_region = "europe-west6"
 }
 ```
+
+You will also have to delete the service account, because the service account will be created during the first terraform run and will not be deleted if you rename the service.
+
+As a last step, you will have to [import](#import-secret-manager-secret) the secret manager secret again, otherwise the secret will not be found. Please follow these steps, otherwise terraform will not be able to create the service again.
