@@ -44,3 +44,9 @@ clean.sh
 ./test-results
 playwright-report/*
 playwright/.auth
+
+# Terraform
+.terraform
+.terraform.backup
+
+
