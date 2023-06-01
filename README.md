@@ -228,6 +228,12 @@ You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeah
 
 ## Terraform
 
+### Init
+
+```bash
+terraform init
+```
+
 ### Plan
 
 You can use this command to check whether the proposed changes match what you expected before you apply the changes or share your changes with your team for broader review.
