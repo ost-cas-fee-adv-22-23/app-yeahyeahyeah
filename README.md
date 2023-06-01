@@ -228,6 +228,30 @@ You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeah
 
 ## Terraform
 
+### Plan
+
+You can use this command to check whether the proposed changes match what you expected before you apply the changes or share your changes with your team for broader review.
+
+```bash
+terraform plan
+```
+
+`-out=FILENAME` - Writes the generated plan to the given filename in an opaque file format that you can later pass to terraform apply to execute the planned changes, and to some other Terraform commands that can work with saved plan files.
+
+```bash
+terraform plan -out=FILENAME
+```
+
+### Apply
+
+When you run terraform apply without passing a saved plan file, Terraform automatically creates a new execution plan as if you had run terraform plan, prompts you to approve that plan, and takes the indicated actions.
+
+You can pass the -auto-approve option to instruct Terraform to apply the plan without asking for confirmation.
+
+```bash
+terraform apply -auto-approve
+```
+
 ### Google Cloud
 
 #### Create secret manager and secret
