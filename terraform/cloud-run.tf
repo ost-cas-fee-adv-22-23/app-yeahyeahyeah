@@ -53,6 +53,7 @@ resource "google_cloud_run_service" "app-yeahyeahyeah" {
         resources {
           limits = {
             "memory" = "256Mi"
+            "cpu"    = "1"
           }
         }
 
