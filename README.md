@@ -156,16 +156,32 @@ npm run test:e2e:headful
 
 Test the docker image locally.
 
-### Build
+### Local
+
+#### Build
 
 ```bash
 docker build -t app-yeahyeahyeah . --build-arg NPM_TOKEN=$NPM_TOKEN
 ```
 
+#### Run
+
+```bash
+docker run -p 3000:3000 --env-file .env --rm --name app-yeahyeahyeah app-yeahyeahyeah
+```
+
+#### Google Cloud
+
+#### Build
+
+```bash
+docker build -t europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah . --build-arg NPM_TOKEN=$NPM_TOKEN
+```
+
 ### Run
 
 ```bash
-docker run -p 3000:3000 --env-file .env --rm app-yeahyeahyeah app-yeahyeahyeah
+docker run -p 3000:3000 --env-file .env --rm --name app-yeahyeahyeah europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah:latest
 ```
 
 ## Features

@@ -1,4 +1,4 @@
-FROM node:16-alpine as base
+FROM --platform=linux/amd64 node:16-alpine as base
 ARG NPM_TOKEN
 WORKDIR /app
 COPY package*.json ./
