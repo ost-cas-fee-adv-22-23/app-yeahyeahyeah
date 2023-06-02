@@ -1,3 +1,5 @@
+# For local build on a mac (arm), use node:16-alpine without --platform flag
+# FROM node:16-alpine as base
 FROM --platform=linux/amd64 node:16-alpine as base
 ARG NPM_TOKEN
 WORKDIR /app
@@ -11,7 +13,7 @@ RUN npm run build
 
 FROM base as production
 ENV NODE_ENV=production
-RUN npm ci --ignore-scripts && npm install pm2 -g
+RUN npm ci --ignore-scripts
 
 COPY --from=build /app/next.config.js ./
 COPY --from=build /app/public ./public
@@ -20,4 +22,4 @@ COPY --from=build /app/withTwin.js ./withTwin.js
 
 EXPOSE 3000
 USER node
-CMD [ "pm2-runtime", "--name", "app-yeahyeahyeah", "start", "npm", "--", "start" ]
+CMD [ "npm", "--", "start" ]

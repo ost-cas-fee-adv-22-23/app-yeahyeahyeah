@@ -184,6 +184,12 @@ docker build -t europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app
 docker run -p 3000:3000 --env-file .env --rm --name app-yeahyeahyeah europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah:latest
 ```
 
+### Push
+
+```bash
+docker push europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah
+```
+
 ## Features
 
 The application is equipped with the following features.
