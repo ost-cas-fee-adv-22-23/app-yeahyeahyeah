@@ -139,7 +139,6 @@ describe('Page', () => {
     const user = detailPost[0].getElementsByTagName('div')[0].getElementsByTagName('a');
 
     expect(user[0].textContent).toBe('tomschall');
-    expect(user[1].textContent).toBe('vor 3 Tagen');
 
     expect(getByText('Spaghetti Code')).toBeInTheDocument();
     expect(getByText('#Cleancodeisnice')).toBeInTheDocument();

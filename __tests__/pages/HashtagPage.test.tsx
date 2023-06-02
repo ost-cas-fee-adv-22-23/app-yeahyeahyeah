@@ -52,7 +52,7 @@ const mumblesSearchAPIResult: {
       {
         id: '01H0M925WW7KZWSMFDJZRD34D5',
         creator: '201164897906589953',
-        text: '#Wennfliegenhinterfliegenfliegenfliegenfliegenfliegenhinterher',
+        text: 'Testing is not always fun #AntiHero',
         mediaUrl: null,
         mediaType: null,
         likeCount: 0,
@@ -74,7 +74,7 @@ const mumblesSearchAPIResult: {
       {
         id: '01GZVK86D8Q6SCRSZA5X2RMSS8',
         creator: '213020830488068353',
-        text: 'This test was brought to you by #Yeahyeahyeah',
+        text: '#NoMasters',
         mediaUrl: null,
         mediaType: null,
         likeCount: 0,
@@ -127,9 +127,9 @@ describe('Page', () => {
     const description = container.getElementsByTagName('h2');
     expect(description[0].textContent).toBe('...used by other users');
 
-    expect(getByText('#Wennfliegenhinterfliegenfliegenfliegenfliegenfliegenhinterher')).toBeInTheDocument();
-    expect(getAllByText('#Yeahyeahyeah')[0]).toBeInTheDocument();
-    expect(getAllByText('#Yeahyeahyeah')[1]).toBeInTheDocument();
+    expect(getByText('#AntiHero')).toBeInTheDocument();
+    expect(getByText('#Yeahyeahyeah')).toBeInTheDocument();
+    expect(getByText('#NoMasters')).toBeInTheDocument();
 
     expect(getAllByText('#cake')[0]).toBeInTheDocument();
     expect(getAllByText('#coffee')[0]).toBeInTheDocument();

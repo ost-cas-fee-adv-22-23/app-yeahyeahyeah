@@ -152,6 +152,38 @@ Run tests in headful mode
 npm run test:e2e:headful
 ```
 
+## Docker
+
+Test the docker image locally.
+
+### Local
+
+#### Build
+
+```bash
+docker build -t app-yeahyeahyeah . --build-arg NPM_TOKEN=$NPM_TOKEN
+```
+
+#### Run
+
+```bash
+docker run -p 3000:3000 --env-file .env --rm --name app-yeahyeahyeah app-yeahyeahyeah
+```
+
+#### Google Cloud
+
+#### Build
+
+```bash
+docker build -t europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah . --build-arg NPM_TOKEN=$NPM_TOKEN
+```
+
+### Run
+
+```bash
+docker run -p 3000:3000 --env-file .env --rm --name app-yeahyeahyeah europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah:latest
+```
+
 ## Features
 
 The application is equipped with the following features.
@@ -193,3 +225,143 @@ You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeah
 <a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
 </a>
+
+## Google Cloud
+
+### Create a new project
+
+```bash
+gcloud projects create PROJECT_ID --name=PROJECT_NAME --set-as-default
+```
+
+### Enable billing
+
+```bash
+gcloud beta billing projects link PROJECT_ID --billing-account=BILLING_ACCOUNT_ID
+```
+
+### Enable APIs
+
+```bash
+gcloud services enable compute.googleapis.com
+gcloud services enable container.googleapis.com
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable iam.googleapis.com
+gcloud services enable secretmanager.googleapis.com
+```
+
+### Create cloud storage bucket
+
+```bash
+gsutil mb -p PROJECT_ID -c STANDARD -l europe-west6 -b on gs://BUCKET_NAME
+```
+
+### Secret Manager
+
+#### Create secret
+
+```bash
+echo -n "SUPERSECRET" | gcloud secrets create "nextauth_secret" \
+    --data-file - \
+    --replication-policy "automatic"
+```
+
+## Terraform
+
+With our terraform configuration, we can create a new project on Google Cloud and deploy our application. First you have to install terraform on your machine.
+
+### Init
+
+```bash
+terraform init
+```
+
+### Plan
+
+You can use this command to check whether the proposed changes match what you expected before you apply the changes or share your changes with your team for broader review.
+
+```bash
+terraform plan
+```
+
+`-out=FILENAME` - Writes the generated plan to the given filename in an opaque file format that you can later pass to terraform apply to execute the planned changes, and to some other Terraform commands that can work with saved plan files.
+
+```bash
+terraform plan -out=FILENAME
+```
+
+### Apply
+
+When you run terraform apply without passing a saved plan file, Terraform automatically creates a new execution plan as if you had run terraform plan, prompts you to approve that plan, and takes the indicated actions.
+
+You can pass the -auto-approve option to instruct Terraform to apply the plan without asking for confirmation.
+
+```bash
+terraform apply -auto-approve
+```
+
+### Secret Manager
+
+#### Create secret
+
+```bash
+echo -n "SUPERSECRET" | gcloud secrets create "nextauth_secret" \
+    --data-file - \
+    --replication-policy "automatic"
+```
+
+#### Add needed permissions
+
+Permission "roles/secretmanager.secretAccessor" is needed to access the secret manager. Add this role to "google_project_iam_member" "cloud-runner". Following code snippet shows how to add the role.
+
+```terraform
+resource "google_project_iam_member" "cloud-runner" {
+  for_each = toset([
+    "roles/run.serviceAgent",
+    "roles/viewer",
+    "roles/storage.objectViewer",
+    "roles/run.admin",
+    "roles/cloudsql.client",
+    "roles/secretmanager.secretAccessor",
+  ])
+  role    = each.key
+  member  = "serviceAccount:${google_service_account.cloud-runner.email}"
+  project = data.google_project.project.id
+}
+```
+
+#### Access the secret
+
+To access a secret from Google Secret Manager, use `the google_secret_manager_secret_version data` source:
+
+```terraform
+data "google_secret_manager_secret_version" "nextauth_secret" {
+  provider = google
+
+  secret  = "nextauth_secret"
+  version = "1"
+}
+```
+
+#### Print value of the secret
+
+```terraform
+output "secret" {
+  value = data.google_secret_manager_secret_version.my-secret.secret_data
+}
+```
+
+### Hints
+
+##### Rename service or delete service
+
+If you rename the name of the service or delete the service and create a new one, you will have to delete the actual state value ("casfea22-tf-state") in the bucket. Following code snippet shows the name of the service, that has to be changed.
+
+```terraform
+locals {
+  name       = "app-yeahyeahyeah"
+  gcp_region = "europe-west6"
+}
+```
+
+You will also have to delete the service account, because the service account will be created during the first terraform run and will not be deleted if you rename the service.
