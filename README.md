@@ -428,3 +428,9 @@ locals {
 You will also have to delete the service account, because the service account will be created during the first terraform run and will not be deleted if you rename the service.
 
 As a last step, you will have to [import](#import-secret-manager-secret) the secret manager secret again, otherwise the secret will not be found. Please follow these steps, otherwise terraform will not be able to create the service again.
+
+You can use the following command.
+
+```terraform
+terraform import google_secret_manager_secret.default NEXTAUTH_SECRET
+```

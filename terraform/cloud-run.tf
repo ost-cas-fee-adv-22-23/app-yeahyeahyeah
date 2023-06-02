@@ -10,7 +10,6 @@ resource "google_project_iam_member" "cloud-runner" {
     "roles/viewer",
     "roles/storage.objectViewer",
     "roles/run.admin",
-    "roles/cloudsql.client",
     "roles/secretmanager.secretAccessor",
   ])
   role    = each.key
