@@ -256,11 +256,15 @@ gcloud services enable secretmanager.googleapis.com
 gsutil mb -p PROJECT_ID -c STANDARD -l europe-west6 -b on gs://BUCKET_NAME
 ```
 
-### Secrets Manager
+### Secret Manager
 
-#### Create secret manager and secret
+#### Create secret
 
-Go to google cloud and create a new secret manager. Then create a new secret with the name `NEXTAUTH_SECRET` and add the secret value and add a new version.
+```bash
+echo -n "SUPERSECRET" | gcloud secrets create "nextauth_secret" \
+    --data-file - \
+    --replication-policy "automatic"
+```
 
 ## Terraform
 
@@ -296,18 +300,14 @@ You can pass the -auto-approve option to instruct Terraform to apply the plan wi
 terraform apply -auto-approve
 ```
 
-### Secrets Manager
+### Secret Manager
 
-#### Create secret manager and secret
+#### Create secret
 
-Go to google cloud and create a new secret manager. Then create a new secret with the name `NEXTAUTH_SECRET` and add the secret value and add a new version.
-
-#### Import secret manager secret
-
-Import the secret manager secret into terraform. Following code snippet shows how to import the secret.
-
-```terraform
-terraform import google_secret_manager_secret.default NEXTAUTH_SECRET
+```bash
+echo -n "SUPERSECRET" | gcloud secrets create "nextauth_secret" \
+    --data-file - \
+    --replication-policy "automatic"
 ```
 
 #### Add needed permissions
@@ -330,85 +330,24 @@ resource "google_project_iam_member" "cloud-runner" {
 }
 ```
 
-#### Create resource "google_secret_manager_secret"
+#### Access the secret
 
-Create a new resource "google_secret_manager_secret" and add the secret.
+To access a secret from Google Secret Manager, use `the google_secret_manager_secret_version data` source:
 
 ```terraform
-resource "google_secret_manager_secret" "default" {
-  secret_id = "NEXTAUTH_SECRET"
+data "google_secret_manager_secret_version" "nextauth_secret" {
+  provider = google
 
-  replication {
-    user_managed {
-      replicas {
-        location = local.gcp_region
-      }
-    }
-  }
+  secret  = "nextauth_secret"
+  version = "1"
 }
 ```
 
-#### Access the secret in the cloud run service
-
-Access the secret and add it to the cloud run service. The example shows also how to add non secret environment variables to the cloud run service.
+#### Print value of the secret
 
 ```terraform
-resource "google_cloud_run_service" "app-yeahyeahyeah" {
-  name                       = local.name
-  location                   = local.gcp_region
-  autogenerate_revision_name = true
-
-  template {
-    spec {
-      containers {
-        image = "europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah"
-
-        resources {
-          limits = {
-            "memory" = "256Mi"
-            "cpu"    = "1"
-          }
-        }
-
-        env {
-          name = "NEXTAUTH_URL"
-          value = "https://app-yeahyeahyeah-cbvb5d3h6a-oa.a.run.app"
-        }
-
-        env {
-          name = "NEXTAUTH_SECRET"
-          value_from {
-            secret_key_ref {
-              name = google_secret_manager_secret.default.secret_id
-              key = "1"
-            }
-          }
-        }
-
-        env {
-          name = "ZITADEL_ISSUER"
-          value = "https://cas-fee-advanced-ocvdad.zitadel.cloud"
-        }
-
-        env {
-          name = "ZITADEL_CLIENT_ID"
-          value = "181236603920908545@cas_fee_adv_qwacker_prod"
-        }
-
-        ports {
-          name           = "http1"
-          container_port = 3000
-        }
-      }
-
-      service_account_name = google_service_account.cloud-runner.email
-    }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
+output "secret" {
+  value = data.google_secret_manager_secret_version.my-secret.secret_data
 }
 ```
 
@@ -426,11 +365,3 @@ locals {
 ```
 
 You will also have to delete the service account, because the service account will be created during the first terraform run and will not be deleted if you rename the service.
-
-As a last step, you will have to [import](#import-secret-manager-secret) the secret manager secret again, otherwise the secret will not be found. Please follow these steps, otherwise terraform will not be able to create the service again.
-
-You can use the following command.
-
-```terraform
-terraform import google_secret_manager_secret.default NEXTAUTH_SECRET
-```

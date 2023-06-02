@@ -27,16 +27,11 @@ output "cloud-runner-email" {
   value = google_service_account.cloud-runner.email
 }
 
-resource "google_secret_manager_secret" "default" {
-  secret_id = "NEXTAUTH_SECRET"
+data "google_secret_manager_secret_version" "nextauth_secret" {
+  provider = google
 
-  replication {
-    user_managed {
-      replicas {
-        location = local.gcp_region
-      }
-    }
-  }
+  secret  = "nextauth_secret"
+  version = "1"
 }
 
 resource "google_cloud_run_service" "app-yeahyeahyeah" {
@@ -63,12 +58,7 @@ resource "google_cloud_run_service" "app-yeahyeahyeah" {
 
         env {
           name = "NEXTAUTH_SECRET"
-          value_from {
-            secret_key_ref {
-              name = google_secret_manager_secret.default.secret_id
-              key = "1"
-            }
-          }
+          value = data.google_secret_manager_secret_version.nextauth_secret.secret_data
         }
 
         env {
