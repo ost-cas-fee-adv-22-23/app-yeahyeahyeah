@@ -23,7 +23,7 @@ jobs:
         uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: 'projects/655814648425/locations/global/workloadIdentityPools/casfea22-pool/providers/casfea22-provider'
-          service_account: 'cloud-runner@casfea22.iam.gserviceaccount.com'
+          service_account: 'casfea22-service-account@casfea22.iam.gserviceaccount.com'
           token_format: 'access_token'
       - id: 'build'
         name: 'Build docker image and push to GC artifact registry'
