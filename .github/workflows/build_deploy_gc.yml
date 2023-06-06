@@ -25,7 +25,9 @@ jobs:
           workload_identity_provider: 'projects/655814648425/locations/global/workloadIdentityPools/casfea22-pool/providers/casfea22-provider'
           service_account: 'cloud-runner@casfea22.iam.gserviceaccount.com'
           token_format: 'access_token'
-      - uses: 'docker/login-action@v1'
+      - id: 'build'
+        name: 'Build docker image and push to GC artifact registry'
+        uses: 'docker/login-action@v1'
         with:
           registry: 'gcr.io'
           username: 'oauth2accesstoken'
