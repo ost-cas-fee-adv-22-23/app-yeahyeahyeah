@@ -35,3 +35,4 @@ jobs:
       - run: |-
           echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://europe-west6-docker.pkg.dev
           docker build . --file Dockerfile -t europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah --build-arg NPM_TOKEN=${{ secrets.NPM_TOKEN }}
+          docker push europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah
