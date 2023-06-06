@@ -18,7 +18,6 @@ const globalSetup = async (config: FullConfig) => {
   await page.getByRole('button', { name: 'Login' }).click();
   await expect(page).toHaveURL(new RegExp(`${url}`));
   await page.waitForSelector('body');
-  await page.getByPlaceholder('username@domain').click();
   await page.getByPlaceholder('username@domain').fill(user);
   await page.locator('#submit-button').click();
   await page.getByLabel('Password').fill(pw);
