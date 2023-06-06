@@ -1,0 +1,38 @@
+name: Build and deploy app-yeahyeahyeah to GCP
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  autenticate:
+    name: Authenticate to Google Cloud
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: 'actions/checkout@v3'
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/655814648425/locations/global/workloadIdentityPools/casfea22-pool/providers/casfea22-provider'
+          service_account: 'casfea22-service-account@casfea22.iam.gserviceaccount.com'
+          token_format: 'access_token'
+      - id: 'build'
+        name: 'Build docker image and push to GC artifact registry'
+        uses: 'docker/login-action@v1'
+        with:
+          registry: 'gcr.io'
+          username: 'oauth2accesstoken'
+          password: '${{ steps.auth.outputs.access_token }}'
+      - run: |-
+          docker build . --file Dockerfile -t europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah --build-arg NPM_TOKEN=${{ secrets.NPM_TOKEN }}
+          echo '${{ steps.auth.outputs.access_token }}' | docker login -u oauth2accesstoken --password-stdin https://europe-west6-docker.pkg.dev
+          docker push europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah
