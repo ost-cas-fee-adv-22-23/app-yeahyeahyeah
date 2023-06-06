@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-test.describe.configure({ mode: 'serial' });
+test.describe.configure({ mode: 'parallel' });
 
 const testMessage = 'Lorem ipsum dolor dolor sit amet';
 const hashTag = 'e2e';
@@ -112,10 +112,13 @@ test.describe('01.authenticated tests', () => {
       expect(hasArticleToBeDelete, '👍 should have no test message').toBe(false);
     }).toPass();
 
-    expect(
-      page.getByRole('article').filter({ hasText: `${testMessage}` }),
-      '👎 something went wrong. there are still test messages present'
-    ).not.toBeInViewport();
-    console.log(`✅ should have cleaned up all messages.`);
+    const finalResult = expect(
+      await page
+        .getByRole('article')
+        .filter({ hasText: `${testMessage}` })
+        .count()
+    ).toEqual(0);
+
+    expect(finalResult, `✅ should have cleaned up all messages.`).toBe(undefined);
   });
 });
