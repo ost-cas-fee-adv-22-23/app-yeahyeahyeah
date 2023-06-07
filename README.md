@@ -174,6 +174,9 @@ docker run -p 3000:3000 --env-file .env --rm --name app-yeahyeahyeah app-yeahyea
 
 #### Build
 
+Hint: If you build the image on a mac with an M1 chip and you wanna use the image for example on a linux/amd64 machine,
+you should use the `--platform=linux/amd64` flag in your Dockerfile to build the image for this specific platform.
+
 ```bash
 docker build -t europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah . --build-arg NPM_TOKEN=$NPM_TOKEN
 ```
