@@ -2,9 +2,9 @@ name: Release Mumble App
 
 on:
   push:
-    branches: ['main']
+    branches: ['release/*']
   pull_request:
-    branches: ['main']
+    branches: ['release/*']
   workflow_dispatch:
 
 concurrency:
@@ -61,3 +61,4 @@ jobs:
             @codedependant/semantic-release-docker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
