@@ -18,7 +18,7 @@ export default function Page({
   fallbackUsers: QwackerUserResponse;
   fallbackUserLoggedIn: User;
 }) {
-  console.log('app-yeahyeahyeah successfully deployed :-D');
+  console.log('app-yeahyeahyeah successfully deployed (with version.tf) :-D');
   return (
     <>
       <NextSeo title={`${Content.seo.home.title}`} description={`${Content.seo.home.description}`} />
