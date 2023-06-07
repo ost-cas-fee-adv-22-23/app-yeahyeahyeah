@@ -11,6 +11,7 @@ resource "google_project_iam_member" "cloud-runner" {
     "roles/storage.objectViewer",
     "roles/run.admin",
     "roles/secretmanager.secretAccessor",
+    "roles/iam.workloadIdentityUser",
   ])
   role    = each.key
   member  = "serviceAccount:${google_service_account.cloud-runner.email}"
