@@ -2,10 +2,7 @@ name: Release Mumble App
 
 on:
   push:
-    branches: ['release/*']
-  pull_request:
-    branches: ['release/*']
-  workflow_dispatch:
+    branches: 'main'
 
 concurrency:
   group: 'release'
