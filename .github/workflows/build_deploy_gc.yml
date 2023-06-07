@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    name: Build and deploy app-yeahyeahyeah to GCP
+  autenticate:
+    name: Authenticate to Google Cloud
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'

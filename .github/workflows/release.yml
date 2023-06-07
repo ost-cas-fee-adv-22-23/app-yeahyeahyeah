@@ -60,3 +60,30 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  deploy:
+    name: Deploy API on Google Cloud Platform
+    runs-on: ubuntu-latest
+    needs:
+      - release
+    if: needs.release.outputs.new_release_published == 'true'
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/655814648425/locations/global/workloadIdentityPools/casfea22-pool/providers/casfea22-provider'
+          service_account: 'casfea22-service-account@casfea22.iam.gserviceaccount.com'
+          token_format: 'access_token'
+
+      - uses: hashicorp/setup-terraform@v2
+
+      - run: terraform init
+        working-directory: infrastructure/prod
+
+      - run: terraform apply -auto-approve
+        working-directory: infrastructure/prod
+        env:
+          TF_VAR_release_version: ${{ needs.release.outputs.new_release_version }}
