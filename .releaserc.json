@@ -33,7 +33,7 @@
       {
         "dockerRegistry": "europe-west6-docker.pkg.dev",
         "dockerProject": "casfea22/app-yeahyeahyeah-docker",
-        "dockerImage": "europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah",
+        "dockerImage": "app-yeahyeahyeah",
         "dockerLogin": false,
         "dockerContext": "./",
         "dockerFile": "./Dockerfile",
