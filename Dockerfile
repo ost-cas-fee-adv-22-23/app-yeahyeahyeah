@@ -1,7 +1,3 @@
-# Local build on a mac (arm) with M1 chip
-# FROM node:16-alpine as base
-# Local build on linux (amd64) 
-# FROM node:16-alpine --platform=linux/amd64 as base
 FROM node:16-alpine as base
 ARG NPM_TOKEN
 WORKDIR /app
