@@ -61,7 +61,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   deploy:
-    name: Create Infrastructure with Terraform
+    name: Deploy app-yeahyeahyeah with Terraform to Google Cloud
     runs-on: ubuntu-latest
     permissions: write-all
 
@@ -88,3 +88,19 @@ jobs:
         working-directory: terraform
         env:
           TF_VAR_release_version: ${{ needs.release.outputs.new_release_version }}
+
+  build-and-deploy-to-digital-ocean:
+    name: Deploy app-yeahyeahyeah to Digital Ocean
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy container to digital ocean
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            cd /usr/src/app
+            docker-compose pull
+            docker-compose up -d --no-deps --build --force-recreate app-yeahyeahyeah
