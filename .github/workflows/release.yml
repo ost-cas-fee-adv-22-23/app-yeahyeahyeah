@@ -82,9 +82,9 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
 
       - run: terraform init
-        working-directory: infrastructure/prod
+        working-directory: terraform
 
       - run: terraform apply -auto-approve
-        working-directory: infrastructure/prod
+        working-directory: terraform
         env:
           TF_VAR_release_version: ${{ needs.release.outputs.new_release_version }}
