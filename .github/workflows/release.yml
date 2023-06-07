@@ -15,7 +15,6 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-
     permissions: write-all
 
     outputs:
@@ -64,6 +63,8 @@ jobs:
   deploy:
     name: Deploy API on Google Cloud Platform
     runs-on: ubuntu-latest
+    permissions: write-all
+
     needs:
       - release
     if: needs.release.outputs.new_release_published == 'true'
