@@ -88,27 +88,3 @@ jobs:
         working-directory: terraform
         env:
           TF_VAR_release_version: ${{ needs.release.outputs.new_release_version }}
-
-  deploy-cloudrun:
-    name: Deploy to Cloud Run
-    runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    steps:
-      - uses: 'actions/checkout@v3'
-
-      - uses: 'google-github-actions/auth@v1'
-        with:
-          workload_identity_provider: 'projects/655814648425/locations/global/workloadIdentityPools/casfea22-pool/providers/casfea22-provider'
-          service_account: 'casfea22-service-account@casfea22.iam.gserviceaccount.com'
-
-      - id: 'deploy'
-        uses: 'google-github-actions/deploy-cloudrun@v1'
-        with:
-          service: 'app-yeahyeahyeah'
-          image: 'europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah:latest'
-
-      - name: 'Use output'
-        run: 'curl "${{ steps.deploy.outputs.url }}"'

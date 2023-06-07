@@ -1,3 +1,7 @@
+variable "release_version" {
+  type = string
+}
+
 locals {
   name       = "app-yeahyeahyeah"
   gcp_region = "europe-west6"
