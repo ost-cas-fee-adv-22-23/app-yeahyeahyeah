@@ -374,16 +374,18 @@ You will also have to delete the service account, because the service account wi
 
 ##### Service account for terraform deployment
 
+If you deleted the service account, or you want to create a new one with terraform, you will have to add the following roles to the service account.
+
 Necessary permissions for the service account that is used for terraform deployment.
 
 ```bash
 gcloud projects add-iam-policy-binding casfea22 \
 --member='serviceAccount:casfea22-service-account@casfea22.iam.gserviceaccount.com' \
---role='roles/iam.serviceAccountUser'
+--role='roles/resourcemanager.projectIamAdmin'
 ```
 
 ```bash
 gcloud projects add-iam-policy-binding casfea22 \
 --member='serviceAccount:casfea22-service-account@casfea22.iam.gserviceaccount.com' \
---role='roles/resourcemanager.projectIamAdmin'
+--role='roles/iam.serviceAccountAdmin'
 ```
