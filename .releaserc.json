@@ -29,7 +29,8 @@
         ],
         "dockerArgs": {
           "BUILD_VERSION": "{{major}}.{{minor}}.{{patch}}",
-          "COMMIT_SHA": "{{git_sha}}"
+          "COMMIT_SHA": "{{git_sha}}",
+          "NPM_TOKEN": true
         },
         "dockerAutoClean": false
       }
@@ -53,7 +54,8 @@
         ],
         "dockerArgs": {
           "BUILD_VERSION": "{{major}}.{{minor}}.{{patch}}",
-          "COMMIT_SHA": "{{git_sha}}"
+          "COMMIT_SHA": "{{git_sha}}",
+          "NPM_TOKEN": true
         },
         "dockerAutoClean": false
       }
