@@ -29,7 +29,7 @@ export const Detail: React.FC<MumbleSingleProps> = ({ mumble, user }) => {
           key={user?.id}
           variant="medium"
           src={user?.avatarUrl !== '' ? user.avatarUrl : `${Message.contents.defaultAvatar.image}`}
-          alt={user ? user.userName : `${Message.contents.userName.text}`}
+          alt={user ? 'TERRAFORM TEST' : `${Message.contents.userName.text}`}
           href={`/profile/${user && user.id}`}
           legacyBehavior
           passHref

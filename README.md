@@ -371,3 +371,19 @@ locals {
 ```
 
 You will also have to delete the service account, because the service account will be created during the first terraform run and will not be deleted if you rename the service.
+
+##### Service account for terraform deployment
+
+Necessary permissions for the service account that is used for terraform deployment.
+
+```bash
+gcloud projects add-iam-policy-binding casfea22 \
+--member='serviceAccount:casfea22-service-account@casfea22.iam.gserviceaccount.com' \
+--role='roles/iam.serviceAccountUser'
+```
+
+```bash
+gcloud projects add-iam-policy-binding casfea22 \
+--member='serviceAccount:casfea22-service-account@casfea22.iam.gserviceaccount.com' \
+--role='roles/resourcemanager.projectIamAdmin'
+```
