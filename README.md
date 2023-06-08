@@ -237,7 +237,11 @@ You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeah
 
 ## Google Cloud
 
+Here are a few steps, if you want to deploy the application on Google Cloud.
+
 ### Create a new project
+
+First of all you have to create a new project.
 
 ```bash
 gcloud projects create PROJECT_ID --name=PROJECT_NAME --set-as-default
@@ -245,27 +249,45 @@ gcloud projects create PROJECT_ID --name=PROJECT_NAME --set-as-default
 
 ### Enable billing
 
+Next you have to enable billing for your project, otherwise you can't use any services.
+
 ```bash
 gcloud beta billing projects link PROJECT_ID --billing-account=BILLING_ACCOUNT_ID
 ```
 
 ### Enable APIs
 
+You will have to enable a few APIs for your project. Below are some of them listed. Maybe there are more APIs that you have to enable.
+
 ```bash
-gcloud services enable compute.googleapis.com
-gcloud services enable container.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
+gcloud services enable cloudapis.googleapis.com
 gcloud services enable cloudbuild.googleapis.com
+gcloud services enable clouddeploy.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com
+gcloud services enable containerregistry.googleapis.com
+gcloud services enable datastore.googleapis.com
 gcloud services enable iam.googleapis.com
+gcloud services enable iamcredentials.googleapis.com
+gcloud services enable run.googleapis.com
 gcloud services enable secretmanager.googleapis.com
+gcloud services enable servicemanagement.googleapis.com
+gcloud services enable storage-api.googleapis.com
+gcloud services enable storage-component.googleapis.com
+gcloud services enable storage.googleapis.com
 ```
 
 ### Create cloud storage bucket
+
+The storage bucket is in our case used for the terraform state.
 
 ```bash
 gsutil mb -p PROJECT_ID -c STANDARD -l europe-west6 -b on gs://BUCKET_NAME
 ```
 
 ### Secret Manager
+
+With the Secret Manager you can store your secrets in a secure way. Below is an example how you can create a secret. You can also use the UI to create a secret. In the Terraform section you can see how to read these secrets.
 
 #### Create secret
 
@@ -310,6 +332,8 @@ terraform apply -auto-approve
 ```
 
 ### Secret Manager
+
+With the Secret Manager you can store your secrets in a secure way. Below is an example how you can create a secret. You can also use the UI to create a secret.
 
 #### Create secret
 
