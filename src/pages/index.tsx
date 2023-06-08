@@ -18,6 +18,7 @@ export default function Page({
   fallbackUsers: QwackerUserResponse;
   fallbackUserLoggedIn: User;
 }) {
+  console.log('app-yeahyeahyeah deployed from main branch :-D');
   return (
     <>
       <NextSeo title={`${Content.seo.home.title}`} description={`${Content.seo.home.description}`} />
@@ -40,8 +41,6 @@ export const getServerSideProps: GetServerSideProps<any> = async ({ req }) => {
   const users: QwackerUserResponse =
     (token?.accessToken && (await fetchUsers({ token: token?.accessToken, offset: 0, limit: 100 }))) || [];
   const fallbackUserLoggedIn = (token?.accessToken && users.data.find((x) => x.id === token.user?.id)) || null;
-
-  console.log('mumbles', mumbles);
 
   return {
     props: {

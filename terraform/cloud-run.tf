@@ -42,7 +42,7 @@ resource "google_cloud_run_service" "app-yeahyeahyeah" {
   template {
     spec {
       containers {
-        image = "europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah"
+        image = "europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah:${var.release_version}"
 
         resources {
           limits = {
