@@ -96,6 +96,21 @@ npm run build
 npm start
 ```
 
+## Features
+
+The application is equipped with the following features.
+
+- Almost real-time feeling, thanks to SWR. :)
+- Write messages (mumble) with text and an image (optional).
+- Search detail page, where you can navigate through #hashtags.
+- Rate messages with a like.
+- Comment on existing messages.
+- Delete your own messages as needed.
+
+## Live Demo
+
+You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
+
 ## Testing
 
 ### Unit testing with jest and react-testing-library
@@ -192,48 +207,6 @@ docker run -p 3000:3000 --env-file .env --rm --name app-yeahyeahyeah europe-west
 ```bash
 docker push europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah
 ```
-
-## Features
-
-The application is equipped with the following features.
-
-- Almost real-time feeling, thanks to SWR. :)
-- Write messages (mumble) with text and an image (optional).
-- Search detail page, where you can navigate through #hashtags.
-- Rate messages with a like.
-- Comment on existing messages.
-- Delete your own messages as needed.
-
-## Live Demo
-
-You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
-
-## Resources
-
-- [Mumble Component Library Development](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah)
-- [Typescript](https://www.typescriptlang.org/)
-- [React](https://reactjs.org/)
-- [styled-components](https://styled-components.com/)
-- [Twin](https://github.com/ben-rogerson/twin.macro)
-- [Github](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-packages-from-other-organizations)
-
-## Project status
-
-![GitHub pull requests](https://img.shields.io/github/issues-pr/smartive-education/app-yeahyeahyeah?style=for-the-badge)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
-
-![GitHub closed issues](https://img.shields.io/github/issues-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues-raw/smartive-education/app-yeahyeahyeah?style=for-the-badge)
-
-## Design System Component Library Version
-
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/smartive-education/design-system-component-library-yeahyeahyeah?style=for-the-badge)
-
-## Contributors
-
-<a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
-</a>
 
 ## Google Cloud
 
@@ -416,3 +389,36 @@ gcloud projects add-iam-policy-binding casfea22 \
 --member='serviceAccount:casfea22-service-account@casfea22.iam.gserviceaccount.com' \
 --role='roles/iam.serviceAccountAdmin'
 ```
+
+## Github Actions
+
+### Authentication
+
+TBD...
+
+## Resources
+
+- [Mumble Component Library Development](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah)
+- [Typescript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/)
+- [styled-components](https://styled-components.com/)
+- [Twin](https://github.com/ben-rogerson/twin.macro)
+- [Github](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-packages-from-other-organizations)
+
+## Project status
+
+![GitHub pull requests](https://img.shields.io/github/issues-pr/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+
+![GitHub closed issues](https://img.shields.io/github/issues-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+
+## Design System Component Library Version
+
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/smartive-education/design-system-component-library-yeahyeahyeah?style=for-the-badge)
+
+## Contributors
+
+<a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
+</a>
