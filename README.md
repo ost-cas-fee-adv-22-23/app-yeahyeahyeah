@@ -96,6 +96,21 @@ npm run build
 npm start
 ```
 
+## Features
+
+The application is equipped with the following features.
+
+- Almost real-time feeling, thanks to SWR. :)
+- Write messages (mumble) with text and an image (optional).
+- Search detail page, where you can navigate through #hashtags.
+- Rate messages with a like.
+- Comment on existing messages.
+- Delete your own messages as needed.
+
+## Live Demo
+
+You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
+
 ## Testing
 
 ### Unit testing with jest and react-testing-library
@@ -192,48 +207,6 @@ docker run -p 3000:3000 --env-file .env --rm --name app-yeahyeahyeah europe-west
 ```bash
 docker push europe-west6-docker.pkg.dev/casfea22/app-yeahyeahyeah-docker/app-yeahyeahyeah
 ```
-
-## Features
-
-The application is equipped with the following features.
-
-- Almost real-time feeling, thanks to SWR. :)
-- Write messages (mumble) with text and an image (optional).
-- Search detail page, where you can navigate through #hashtags.
-- Rate messages with a like.
-- Comment on existing messages.
-- Delete your own messages as needed.
-
-## Live Demo
-
-You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
-
-## Resources
-
-- [Mumble Component Library Development](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah)
-- [Typescript](https://www.typescriptlang.org/)
-- [React](https://reactjs.org/)
-- [styled-components](https://styled-components.com/)
-- [Twin](https://github.com/ben-rogerson/twin.macro)
-- [Github](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-packages-from-other-organizations)
-
-## Project status
-
-![GitHub pull requests](https://img.shields.io/github/issues-pr/smartive-education/app-yeahyeahyeah?style=for-the-badge)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
-
-![GitHub closed issues](https://img.shields.io/github/issues-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues-raw/smartive-education/app-yeahyeahyeah?style=for-the-badge)
-
-## Design System Component Library Version
-
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/smartive-education/design-system-component-library-yeahyeahyeah?style=for-the-badge)
-
-## Contributors
-
-<a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
-</a>
 
 ## Google Cloud
 
@@ -416,3 +389,108 @@ gcloud projects add-iam-policy-binding casfea22 \
 --member='serviceAccount:casfea22-service-account@casfea22.iam.gserviceaccount.com' \
 --role='roles/iam.serviceAccountAdmin'
 ```
+
+## Github Actions
+
+### Authentication
+
+We use the Github Action auth with Workload Identity Federation to authenticate with Google Cloud.
+
+Workload Identity Federation is recommended over Service Account Keys as it obviates the need to export a long-lived credential and establishes a trust delegation relationship between a particular GitHub Actions workflow invocation and permissions on Google Cloud.
+
+You will find a lot of examples at their [google-github-actions repo]](https://github.com/google-github-actions/auth#setup).
+
+#### Authentication with Workload Identity Federation
+
+1.  Create a Google Cloud service account and grant IAM permissions
+1.  Create and configure a Workload Identity Provider for GitHub
+1.  Exchange the GitHub Actions OIDC token for a short-lived Google Cloud access
+    token
+
+### Prerequisites
+
+- For authenticating via Workload Identity Federation, you must create and
+  configure a Google Cloud Workload Identity Provider. See [setup](#setup)
+  for instructions.
+
+- You must run the `actions/checkout@v3` step _before_ this action. Omitting
+  the checkout step or putting it after `auth` will cause future steps to be
+  unable to authenticate.
+
+- If you plan to create binaries, containers, pull requests, or other
+  releases, add the following to your `.gitignore` to prevent accidentially
+  committing credentials to your release artifact:
+
+  ```text
+  # Ignore generated credentials from google-github-actions/auth
+  gha-creds-*.json
+  ```
+
+- This action runs using Node 16. If you are using self-hosted GitHub Actions
+  runners, you must use runner version [2.285.0](https://github.com/actions/virtual-environments)
+  or newer.
+
+### Usage
+
+```yaml
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    # Add intended permissions.
+    permissions: write-all
+
+    steps:
+      # actions/checkout MUST come before auth
+      - uses: actions/checkout@v3
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/655814648425/locations/global/workloadIdentityPools/casfea22-pool/providers/casfea22-provider'
+          service_account: 'casfea22-service-account@casfea22.iam.gserviceaccount.com'
+          token_format: 'access_token'
+
+      # login to Artifact Registry
+      - name: Login to Google Artifact Registry
+        uses: docker/login-action@v2
+        with:
+          registry: europe-west6-docker.pkg.dev
+          username: 'oauth2accesstoken'
+          # Use the access token from the auth step
+          password: '${{ steps.auth.outputs.access_token }}'
+```
+
+Note that changing the `permissions` block may remove some default permissions.
+See the [permissions documentation][github-perms] for more information.
+
+See [Examples](#examples) for more examples. For help debugging common errors, see [Troubleshooting](docs/TROUBLESHOOTING.md)
+
+## Resources
+
+- [Mumble Component Library Development](https://github.com/smartive-education/design-system-component-library-yeahyeahyeah)
+- [Typescript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/)
+- [styled-components](https://styled-components.com/)
+- [Twin](https://github.com/ben-rogerson/twin.macro)
+- [Github](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-packages-from-other-organizations)
+
+## Project status
+
+![GitHub pull requests](https://img.shields.io/github/issues-pr/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+
+![GitHub closed issues](https://img.shields.io/github/issues-closed/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/smartive-education/app-yeahyeahyeah?style=for-the-badge)
+
+## Design System Component Library Version
+
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/smartive-education/design-system-component-library-yeahyeahyeah?style=for-the-badge)
+
+## Contributors
+
+<a href="https://github.com/smartive-education/design-system-component-library-yeahyeahyeah/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=smartive-education/design-system-component-library-yeahyeahyeah" />
+</a>
