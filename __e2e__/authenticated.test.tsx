@@ -1,11 +1,13 @@
 import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
+import path from 'path';
 dotenv.config();
 
 test.describe.configure({ mode: 'parallel' });
 
 const testMessage = 'Lorem ipsum dolor dolor sit amet';
 const hashTag = 'e2e';
+const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
 
 test.describe('01.authenticated tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -13,12 +15,16 @@ test.describe('01.authenticated tests', () => {
     await page.waitForLoadState('domcontentloaded');
   });
 
-  test('01.timeline - should post a message', async ({ page }) => {
+  test('01.timeline - should post a message with image', async ({ page }) => {
     await page.waitForSelector('[data-testid="testTextarea"]');
     await page.getByTestId('testTextarea').fill(`${testMessage} #${hashTag}`);
-    await page.waitForSelector('body');
+    await page.locator('input[type=file]').setInputFiles(path.join(__dirname, '../public', 'avatar_default.png'));
     await page.getByRole('button', { name: 'Absenden' }).click();
     expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
+    await expect(page.getByRole('img', { name: 'Lorem ipsum dolor dolor sit amet #e2e' })).toHaveAttribute(
+      'src',
+      imageUploadEndPoint
+    );
   });
 
   test('02.timeline - should like an article', async ({ page }) => {
@@ -112,13 +118,10 @@ test.describe('01.authenticated tests', () => {
       expect(hasArticleToBeDelete, '👍 should have no test message').toBe(false);
     }).toPass();
 
-    const finalResult = expect(
-      await page
-        .getByRole('article')
-        .filter({ hasText: `${testMessage}` })
-        .count()
-    ).toEqual(0);
-
-    expect(finalResult, `✅ should have cleaned up all messages.`).toBe(undefined);
+    expect(
+      page.getByRole('article').filter({ hasText: `${testMessage}` }),
+      '👎 something went wrong. there are still test messages present'
+    ).not.toBeInViewport();
+    console.log(`✅ should have cleaned up all messages.`);
   });
 });
