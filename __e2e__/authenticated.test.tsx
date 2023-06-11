@@ -77,16 +77,32 @@ test.describe('01.authenticated tests', () => {
     await expect(page.locator('p').filter({ hasText: 'Das Textfeld darf nicht leer sein.' })).toBeInViewport();
   });
 
-  test('05.timeline - should list liked article', async ({ page }) => {
+  test('05.profile - should list created message and liked article', async ({ page }) => {
+    let articleIsPresent: boolean = false;
+
     await page.getByRole('link', { name: 'Profile' }).click();
     await expect(page).toHaveURL(/profile/);
 
     await expect(async () => {
-      let hasLikedArticle: boolean = false;
-      hasLikedArticle = await page.isVisible(`text=${testMessage}`);
+      articleIsPresent = await page.isVisible(`text=${testMessage}`);
 
-      if (hasLikedArticle === true) {
+      if (articleIsPresent === true) {
         expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
+        expect(page.getByRole('button', { name: 'Liked' }));
+      }
+
+      // CLICK ON SWITCH TAB 'DEINE LIKES'
+      await page.getByRole('tab', { name: 'Deine Likes' }).click();
+
+      articleIsPresent = await page.isVisible(`text=${testMessage}`);
+
+      if (articleIsPresent === true) {
+        expect(
+          page
+            .getByRole('article')
+            .filter({ hasText: `${testMessage}` })
+            .first()
+        );
         expect(page.getByRole('button', { name: 'Liked' }));
       }
     }).toPass();
@@ -118,10 +134,13 @@ test.describe('01.authenticated tests', () => {
       expect(hasArticleToBeDelete, '👍 should have no test message').toBe(false);
     }).toPass();
 
-    expect(
-      page.getByRole('article').filter({ hasText: `${testMessage}` }),
-      '👎 something went wrong. there are still test messages present'
-    ).not.toBeInViewport();
-    console.log(`✅ should have cleaned up all messages.`);
+    const messageShouldBeUndefinded = expect(
+      await page
+        .getByRole('article')
+        .filter({ hasText: `${testMessage}` })
+        .count()
+    ).toEqual(0);
+
+    expect(messageShouldBeUndefinded, `✅ should have cleaned up all messages.`).toBe(undefined);
   });
 });
