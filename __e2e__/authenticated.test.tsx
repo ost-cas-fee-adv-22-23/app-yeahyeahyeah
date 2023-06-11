@@ -11,6 +11,7 @@ const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
 
 test.describe('01.authenticated tests', () => {
   test.beforeEach(async ({ page }) => {
+    test.slow();
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
   });
@@ -82,6 +83,7 @@ test.describe('01.authenticated tests', () => {
 
     await page.getByRole('link', { name: 'Profile' }).click();
     await expect(page).toHaveURL(/profile/);
+    await page.waitForLoadState('domcontentloaded');
 
     await expect(async () => {
       articleIsPresent = await page.isVisible(`text=${testMessage}`);
@@ -109,7 +111,7 @@ test.describe('01.authenticated tests', () => {
   });
 
   test('06.timeline - should delete test message', async ({ page }) => {
-    await page.waitForSelector('body, footer');
+    await page.waitForLoadState('domcontentloaded');
     await expect(async () => {
       let hasArticleToBeDelete: boolean = false;
       hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);

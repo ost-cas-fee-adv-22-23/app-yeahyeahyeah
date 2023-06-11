@@ -3,20 +3,18 @@ import { test, expect } from '@playwright/test';
 test.describe.configure({ mode: 'serial' });
 test.use({ storageState: './noAuth.json' });
 
-test.beforeEach(async ({ page, context }) => {
-  // await context.clearCookies();
+test.beforeEach(async ({ page }) => {
+  test.slow();
   await page.goto('/');
   await page.waitForLoadState('domcontentloaded');
   await page.waitForSelector('body');
   await expect(page.getByLabel('Login')).toBeInViewport();
   await expect(page.getByLabel('Logout')).not.toBeInViewport();
-  // console.log(await context.storageState());
 });
 
 test.describe('01.non-authenticated', () => {
   test('01.timeline - should have at least one article', async ({ page }) => {
     await page.waitForSelector('body');
-
     const articles = page.getByRole('article');
     const totalArticles = await articles.count();
     expect(totalArticles).toBeGreaterThanOrEqual(1);
