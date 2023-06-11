@@ -121,14 +121,11 @@ test.describe('01.authenticated tests', () => {
           .getByRole('article')
           .filter({ hasText: `${testMessage}` })
           .first();
-
         const article_id = await articleToBeDeleted.getAttribute('id');
         expect(article_id, `👉 should have an article id ${article_id}`);
-        expect(articleToBeDeleted.locator('svg').last());
-
+        await expect(articleToBeDeleted.locator('svg').last()).toHaveClass(/PostWithShimmer___StyledCancel/);
         await articleToBeDeleted.locator('svg').last().click();
         console.log(`👉 deleting article with id ${article_id}`);
-
         expect(page.locator(`body:has(#${article_id})`)).toBe(false);
       } else {
         console.log(`❗ no test message (${testMessage}) found`);
