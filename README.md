@@ -140,7 +140,7 @@ npx playwright install
 
 Now you can run the tests.
 
-Run tests in headless mode
+Run all tests in headless mode:
 
 ```bash
 npm run test:e2e
@@ -150,6 +150,66 @@ Run tests in headful mode
 
 ```bash
 npm run test:e2e:headful
+```
+
+#### Prerequisites to running e2e tests
+
+All end-to-end tests can be initiated locally in isolation. It is recommended to use only one browser at a time. However, a test message must be created as a precondition. Use the following command to create a test message.
+
+Alternatively, the debug mode can be used. After each command the --debug option is applied for this purpose.
+
+```bash
+npx playwright test -g 'should post a message with image' --project=chromium
+```
+
+Now you have the possibility to perform all further tests.
+
+#### Like an article
+
+```bash
+npx playwright test -g 'should like an article' --project=chromium
+```
+
+#### Click on hashtag
+
+```bash
+npx playwright test -g 'should click on hashtag' --project=chromium
+```
+
+#### Should post no message
+
+```bash
+npx playwright test -g 'should post no message' --project=chromium
+```
+
+#### Should list created message and liked article
+
+```bash
+npx playwright test -g 'should list created message and liked article' --project=chromium
+```
+
+#### Should delete test message
+
+After you have completed the local tests it is recommended to delete the test message again.
+
+```bash
+npx playwright test -g 'should delete test message' --project=chromium
+```
+
+#### The following browsers are available for e2e-tests:
+
+- chromium
+- Firefox
+- webkit
+- Mobile Chrome
+- Mobile Safari
+- Microsoft Edge
+- Google Chrome
+
+Apply this command to switch the browser. Here is an example for the Edge browser:
+
+```bash
+npx playwright test --project='Microsoft Edge'
 ```
 
 ## Docker
