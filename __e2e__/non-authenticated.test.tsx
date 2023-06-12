@@ -28,7 +28,6 @@ test.describe('01.non-authenticated', () => {
 
     await article.locator('a').first().click();
     await page.waitForLoadState('domcontentloaded');
-    test.slow();
     await expect(page).toHaveURL(/landing/);
     await expect(page.locator('h1')).toContainText('Find out whats new');
     await expect(page).toHaveTitle(`Mumble - Willkommen auf der Mumble App des CAS Frontend Engineer's Advanced`);

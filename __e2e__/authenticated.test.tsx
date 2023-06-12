@@ -80,7 +80,6 @@ test.describe('01.authenticated tests', () => {
     let articleIsPresent: boolean = false;
     await page.waitForLoadState('domcontentloaded');
     await page.getByRole('link', { name: 'Profile' }).click();
-    test.slow();
     await expect(page).toHaveURL(/profile/);
 
     await expect(async () => {
