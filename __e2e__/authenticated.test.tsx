@@ -11,7 +11,6 @@ const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
 
 test.describe('01.authenticated tests', () => {
   test.beforeEach(async ({ page }) => {
-    test.slow();
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
   });
@@ -72,7 +71,6 @@ test.describe('01.authenticated tests', () => {
 
   test('04.timeline - should post no message', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
     await page.waitForSelector('[data-testid="testTextarea"]');
     await page.getByRole('button', { name: 'Absenden' }).click();
     await expect(page.locator('p').filter({ hasText: 'Das Textfeld darf nicht leer sein.' })).toBeInViewport();
@@ -80,10 +78,10 @@ test.describe('01.authenticated tests', () => {
 
   test('05.profile - should list created message and liked article', async ({ page }) => {
     let articleIsPresent: boolean = false;
-
-    await page.getByRole('link', { name: 'Profile' }).click();
-    await expect(page).toHaveURL(/profile/);
     await page.waitForLoadState('domcontentloaded');
+    await page.getByRole('link', { name: 'Profile' }).click();
+    test.slow();
+    await expect(page).toHaveURL(/profile/);
 
     await expect(async () => {
       articleIsPresent = await page.isVisible(`text=${testMessage}`);
@@ -128,18 +126,9 @@ test.describe('01.authenticated tests', () => {
         console.log(`👉 deleting article with id ${article_id}`);
         expect(page.locator(`body:has(#${article_id})`)).toBe(false);
       } else {
-        console.log(`❗ no test message (${testMessage}) found`);
+        console.log(`✅ all test messages should be deleted`);
       }
       expect(hasArticleToBeDelete, '👍 should have no test message').toBe(false);
     }).toPass();
-
-    const messageShouldBeUndefinded = expect(
-      await page
-        .getByRole('article')
-        .filter({ hasText: `${testMessage}` })
-        .count()
-    ).toEqual(0);
-
-    expect(messageShouldBeUndefinded, `✅ should have cleaned up all messages.`).toBe(undefined);
   });
 });

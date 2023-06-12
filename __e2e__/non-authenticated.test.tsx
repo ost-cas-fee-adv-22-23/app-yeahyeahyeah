@@ -4,7 +4,6 @@ test.describe.configure({ mode: 'serial' });
 test.use({ storageState: './noAuth.json' });
 
 test.beforeEach(async ({ page }) => {
-  test.slow();
   await page.goto('/');
   await page.waitForLoadState('domcontentloaded');
   await page.waitForSelector('body');
@@ -28,7 +27,8 @@ test.describe('01.non-authenticated', () => {
     expect(totalArticles).toBeGreaterThanOrEqual(1);
 
     await article.locator('a').first().click();
-    await page.waitForSelector('body');
+    await page.waitForLoadState('domcontentloaded');
+    test.slow();
     await expect(page).toHaveURL(/landing/);
     await expect(page.locator('h1')).toContainText('Find out whats new');
     await expect(page).toHaveTitle(`Mumble - Willkommen auf der Mumble App des CAS Frontend Engineer's Advanced`);
