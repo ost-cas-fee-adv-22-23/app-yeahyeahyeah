@@ -1,13 +1,27 @@
 import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
+import { sentence } from '../src/utils/randomSentence';
 import path from 'path';
 dotenv.config();
 
 test.describe.configure({ mode: 'serial' });
 
-const testMessage = 'Lorem ipsum dolor dolor sit amet';
 const hashTag = 'e2e';
 const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
+const randomSentence = (() => {
+  let executed: boolean = false;
+  let result: any = null; // or any other default value you want to return
+
+  return () => {
+    if (!executed) {
+      executed = true;
+      result = sentence();
+    }
+    return result;
+  };
+})();
+
+let testMessage: string;
 
 test.describe('01.authenticated tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -16,15 +30,14 @@ test.describe('01.authenticated tests', () => {
   });
 
   test('01.timeline - should post a message with image', async ({ page }) => {
+    testMessage = randomSentence();
+
     await page.waitForSelector('[data-testid="testTextarea"]');
     await page.getByTestId('testTextarea').fill(`${testMessage} #${hashTag}`);
     await page.locator('input[type=file]').setInputFiles(path.join(__dirname, '../public', 'avatar_default.png'));
     await page.getByRole('button', { name: 'Absenden' }).click();
     expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
-    await expect(page.getByRole('img', { name: 'Lorem ipsum dolor dolor sit amet #e2e' })).toHaveAttribute(
-      'src',
-      imageUploadEndPoint
-    );
+    await expect(page.getByRole('img', { name: `${testMessage} #${hashTag}` })).toHaveAttribute('src', imageUploadEndPoint);
   });
 
   test('timeline - should like an article', async ({ page }) => {
@@ -44,7 +57,7 @@ test.describe('01.authenticated tests', () => {
     expect(page.getByRole('button', { name: 'Liked' }));
   });
 
-  test('timeline - should click on comment', async ({ page }) => {
+  test('timeline - should click on comment and comment article', async ({ page }) => {
     await expect(async () => {
       let createdArticle: boolean = false;
       createdArticle = await page.isVisible(`text=${testMessage}`);
@@ -77,10 +90,10 @@ test.describe('01.authenticated tests', () => {
     );
 
     await page.waitForSelector('[data-testid="testTextarea"]');
-    await page.getByTestId('testTextarea').fill('This is a comment message');
+    await page.getByTestId('testTextarea').fill(testMessage);
     await page.getByRole('button', { name: 'Absenden' }).click();
 
-    expect(page.getByRole('article').filter({ hasText: 'This is a comment message' }));
+    expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
 
     await page.getByRole('link', { name: 'Startpage' }).click();
 

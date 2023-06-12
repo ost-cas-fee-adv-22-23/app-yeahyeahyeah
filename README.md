@@ -152,17 +152,29 @@ Run tests in headful mode
 npm run test:e2e:headful
 ```
 
-#### Prerequisites to running e2e tests
+#### Prerequisites to running e2e tests locally
+
+To run the tests, the next instance must be running. So please run:
+
+```bash
+npm run build && npm start
+```
 
 All end-to-end tests can be initiated locally in isolation. It is recommended to use only one browser at a time. However, a test message must be created as a precondition. Use the following command to create a test message.
-
-Alternatively, the debug mode can be used. After each command the --debug option is applied for this purpose.
 
 ```bash
 npx playwright test -g 'should post a message with image' --project=chromium
 ```
 
+Alternatively, the debug mode can be used. After each command the --debug option is applied for this purpose.
+
 Now you have the possibility to perform all further tests.
+
+#### Comment an article
+
+```bash
+npx playwright test -g 'should click on comment and comment article' --project=chromium
+```
 
 #### Like an article
 
