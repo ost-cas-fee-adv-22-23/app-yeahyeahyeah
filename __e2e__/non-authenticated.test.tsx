@@ -11,15 +11,15 @@ test.beforeEach(async ({ page }) => {
   await expect(page.getByLabel('Logout')).not.toBeInViewport();
 });
 
-test.describe('01.non-authenticated', () => {
-  test('01.timeline - should have at least one article', async ({ page }) => {
+test.describe('02.non-authenticated', () => {
+  test('timeline - should have at least one article', async ({ page }) => {
     await page.waitForSelector('body');
     const articles = page.getByRole('article');
     const totalArticles = await articles.count();
     expect(totalArticles).toBeGreaterThanOrEqual(1);
   });
 
-  test('02.timeline - should redirect to landingpage', async ({ page }) => {
+  test('timeline - should redirect to landingpage', async ({ page }) => {
     await page.waitForSelector('body');
     const article = page.getByRole('article').filter({ hasText: 'username' }).first();
     const articles = page.getByRole('article');

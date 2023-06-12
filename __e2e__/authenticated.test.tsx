@@ -27,7 +27,7 @@ test.describe('01.authenticated tests', () => {
     );
   });
 
-  test('02.timeline - should like an article', async ({ page }) => {
+  test('timeline - should like an article', async ({ page }) => {
     await expect(async () => {
       let hasArticleToBeLiked: boolean = false;
       hasArticleToBeLiked = await page.isVisible(`text=${testMessage}`);
@@ -44,7 +44,56 @@ test.describe('01.authenticated tests', () => {
     expect(page.getByRole('button', { name: 'Liked' }));
   });
 
-  test('03.timeline - should click on hashtag', async ({ page }) => {
+  test('timeline - should click on comment', async ({ page }) => {
+    await expect(async () => {
+      let createdArticle: boolean = false;
+      createdArticle = await page.isVisible(`text=${testMessage}`);
+
+      if (createdArticle === true) {
+        await page
+          .getByRole('article')
+          .filter({ hasText: `${testMessage}` })
+          .first()
+          .getByRole('link', { name: 'Comment' })
+          .click();
+      }
+    }).toPass();
+
+    const commentArticle = page
+      .getByRole('article')
+      .filter({ hasText: `${testMessage}` })
+      .first();
+
+    const article_id = await commentArticle.getAttribute('id');
+    expect(article_id, `👉 should have an article id ${article_id}`);
+
+    await expect(page).toHaveURL(new RegExp(`/mumble/${article_id}`));
+
+    expect(
+      page
+        .getByRole('article')
+        .filter({ hasText: `${testMessage}` })
+        .first()
+    );
+
+    await page.waitForSelector('[data-testid="testTextarea"]');
+    await page.getByTestId('testTextarea').fill('This is a comment message');
+    await page.getByRole('button', { name: 'Absenden' }).click();
+
+    expect(page.getByRole('article').filter({ hasText: 'This is a comment message' }));
+
+    await page.getByRole('link', { name: 'Startpage' }).click();
+
+    expect(
+      page
+        .getByRole('article')
+        .filter({ hasText: `${testMessage}` })
+        .first()
+        .getByRole('link', { name: '1 Comment' })
+    );
+  });
+
+  test('timeline - should click on hashtag', async ({ page }) => {
     await expect(async () => {
       let hasArticleToBeDelete: boolean = false;
       hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
@@ -69,14 +118,14 @@ test.describe('01.authenticated tests', () => {
     }).toPass();
   });
 
-  test('04.timeline - should post no message', async ({ page }) => {
+  test('timeline - should post no message', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('[data-testid="testTextarea"]');
     await page.getByRole('button', { name: 'Absenden' }).click();
     await expect(page.locator('p').filter({ hasText: 'Das Textfeld darf nicht leer sein.' })).toBeInViewport();
   });
 
-  test('05.profile - should list created message and liked article', async ({ page }) => {
+  test('profile - should list created message and liked article', async ({ page }) => {
     let articleIsPresent: boolean = false;
     await page.waitForLoadState('domcontentloaded');
     await page.getByRole('link', { name: 'Profile' }).click();
@@ -107,7 +156,7 @@ test.describe('01.authenticated tests', () => {
     }).toPass();
   });
 
-  test('06.timeline - should delete test message', async ({ page }) => {
+  test('02.timeline - should delete test message', async ({ page }) => {
     await page.waitForSelector('body, footer');
     await expect(async () => {
       let hasArticleToBeDelete: boolean = false;
