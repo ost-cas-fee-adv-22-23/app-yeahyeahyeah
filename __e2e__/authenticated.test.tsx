@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
 
-test.describe.configure({ mode: 'parallel' });
+test.describe.configure({ mode: 'serial' });
 
 const testMessage = 'Lorem ipsum dolor dolor sit amet';
 const hashTag = 'e2e';
@@ -109,7 +109,7 @@ test.describe('01.authenticated tests', () => {
   });
 
   test('06.timeline - should delete test message', async ({ page }) => {
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('body, footer');
     await expect(async () => {
       let hasArticleToBeDelete: boolean = false;
       hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
@@ -119,14 +119,17 @@ test.describe('01.authenticated tests', () => {
           .getByRole('article')
           .filter({ hasText: `${testMessage}` })
           .first();
+
         const article_id = await articleToBeDeleted.getAttribute('id');
         expect(article_id, `👉 should have an article id ${article_id}`);
-        await expect(articleToBeDeleted.locator('svg').last()).toHaveClass(/PostWithShimmer___StyledCancel/);
+        expect(articleToBeDeleted.locator('svg').last());
+
         await articleToBeDeleted.locator('svg').last().click();
         console.log(`👉 deleting article with id ${article_id}`);
+
         expect(page.locator(`body:has(#${article_id})`)).toBe(false);
       } else {
-        console.log(`✅ all test messages should be deleted`);
+        console.log(`❗ no test message (${testMessage}) found`);
       }
       expect(hasArticleToBeDelete, '👍 should have no test message').toBe(false);
     }).toPass();

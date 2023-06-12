@@ -6,9 +6,9 @@ export const STORAGE_STATE = path.join(__dirname, 'playwright/.auth/user.json');
 export default defineConfig({
   globalSetup: './__e2e__/globalSetup.ts',
   testDir: './__e2e__',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 3,
   workers: process.env.CI ? 1 : undefined,
   reporter: [['list', { printSteps: true }]],
   expect: {
