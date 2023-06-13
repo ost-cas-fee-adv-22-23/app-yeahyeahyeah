@@ -12,11 +12,11 @@ provider "google" {
 data "google_project" "project" {
 }
 
-data "terraform_remote_state" "shared" {
+data "terraform_remote_state" "prod" {
   backend = "gcs"
   config = {
     bucket = "casfea22-tf-state"
-    prefix = "states/shared"
+    prefix = "states/prod"
   }
 }
 
