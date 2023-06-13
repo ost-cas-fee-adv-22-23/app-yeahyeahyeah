@@ -1,5 +1,5 @@
 export const sentence = () => {
-  const nouns = ['bird', 'clock', 'boy', 'plastic', 'duck', 'teacher', 'old lady', 'professor', 'hamster', 'dog'];
+  const nouns = ['bird', 'clock', 'boy', 'plastic', 'duck', 'citizen', 'old lady', 'politician', 'hamster', 'dog'];
   const verbs = ['kicked', 'ran', 'flew', 'dodged', 'sliced', 'rolled', 'died', 'breathed', 'slept', 'killed'];
   const adjectives = ['beautiful', 'lazy', 'professional', 'lovely', 'dumb', 'rough', 'soft', 'hot', 'vibrating', 'slimy'];
   const adverbs = [

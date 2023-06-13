@@ -5,11 +5,12 @@ export const STORAGE_STATE = path.join(__dirname, 'playwright/.auth/user.json');
 
 export default defineConfig({
   globalSetup: './__e2e__/globalSetup.ts',
+  globalTeardown: './__e2e__/globalTeardown.ts',
   testDir: './__e2e__',
-  fullyParallel: false,
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 3,
-  workers: 1,
+  workers: process.env.CI ? 1 : undefined,
   reporter: [['list', { printSteps: true }]],
   expect: {
     timeout: 0,
@@ -27,6 +28,10 @@ export default defineConfig({
     {
       name: 'setup',
       testMatch: /globalSetup\.ts/,
+    },
+    {
+      name: 'cleanup test message',
+      testMatch: /globalTeardown\.ts/,
     },
     {
       name: 'chromium',

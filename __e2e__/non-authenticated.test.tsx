@@ -20,7 +20,6 @@ test.describe('02.non-authenticated', () => {
   });
 
   test('timeline - should redirect to landingpage', async ({ page }) => {
-    await page.waitForSelector('body');
     const article = page.getByRole('article').filter({ hasText: 'username' }).first();
     const articles = page.getByRole('article');
     const totalArticles = await articles.count();

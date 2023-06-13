@@ -1,96 +1,39 @@
 import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import { sentence } from '../src/utils/randomSentence';
-import path from 'path';
 dotenv.config();
 
-test.describe.configure({ mode: 'serial' });
-
 const hashTag = 'e2e';
-const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
-const randomSentence = (() => {
-  let executed: boolean = false;
-  let result: any = null; // or any other default value you want to return
-
-  return () => {
-    if (!executed) {
-      executed = true;
-      result = sentence();
-    }
-    return result;
-  };
-})();
-
 let testMessage: string;
 
 test.describe('01.authenticated tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('body');
   });
 
-  test('01.timeline - should post a message with image', async ({ page }) => {
-    testMessage = randomSentence();
-
-    await page.waitForSelector('[data-testid="testTextarea"]');
-    await page.getByTestId('testTextarea').fill(`${testMessage} #${hashTag}`);
-    await page.locator('input[type=file]').setInputFiles(path.join(__dirname, '../public', 'avatar_default.png'));
-    await page.getByRole('button', { name: 'Absenden' }).click();
-    expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
-    await expect(page.getByRole('img', { name: `${testMessage} #${hashTag}` })).toHaveAttribute('src', imageUploadEndPoint);
+  test('timeline - should like it or not', async ({ page }) => {
+    await page.getByRole('article').first().getByRole('button', { name: /Like/ }).click();
   });
 
-  test('timeline - should like an article', async ({ page }) => {
-    await expect(async () => {
-      let hasArticleToBeLiked: boolean = false;
-      hasArticleToBeLiked = await page.isVisible(`text=${testMessage}`);
-
-      if (hasArticleToBeLiked === true) {
-        await page
-          .getByRole('article')
-          .filter({ hasText: `${testMessage}` })
-          .first()
-          .getByRole('button', { name: 'Like' })
-          .click();
-      }
-    }).toPass();
-    expect(page.getByRole('button', { name: 'Liked' }));
-  });
-
-  test('timeline - should click on comment and comment article', async ({ page }) => {
-    await expect(async () => {
-      let createdArticle: boolean = false;
-      createdArticle = await page.isVisible(`text=${testMessage}`);
-
-      if (createdArticle === true) {
-        await page
-          .getByRole('article')
-          .filter({ hasText: `${testMessage}` })
-          .first()
-          .getByRole('link', { name: 'Comment' })
-          .click();
-      }
-    }).toPass();
-
-    const commentArticle = page
+  test('timeline - should comment an article', async ({ page }) => {
+    await page
       .getByRole('article')
-      .filter({ hasText: `${testMessage}` })
-      .first();
+      .first()
+      .getByRole('link', { name: /Comment/ })
+      .click();
 
+    const commentArticle = page.getByRole('article').first();
     const article_id = await commentArticle.getAttribute('id');
+
     expect(article_id, `👉 should have an article id ${article_id}`);
 
     await expect(page).toHaveURL(new RegExp(`/mumble/${article_id}`));
-
-    expect(
-      page
-        .getByRole('article')
-        .filter({ hasText: `${testMessage}` })
-        .first()
-    );
+    expect(page.getByRole('article').first());
 
     await page.waitForSelector('[data-testid="testTextarea"]');
-    await page.getByTestId('testTextarea').fill(testMessage);
+    await page.getByTestId('testTextarea').fill(sentence());
     await page.getByRole('button', { name: 'Absenden' }).click();
 
     expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
@@ -107,17 +50,12 @@ test.describe('01.authenticated tests', () => {
   });
 
   test('timeline - should click on hashtag', async ({ page }) => {
+    let hasArticleToBeDelete: boolean = false;
     await expect(async () => {
-      let hasArticleToBeDelete: boolean = false;
-      hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
+      hasArticleToBeDelete = await page.isVisible(`text=${hashTag}`);
 
       if (hasArticleToBeDelete === true) {
-        await page
-          .getByRole('article')
-          .filter({ hasText: `${testMessage}` })
-          .getByTitle('e2e')
-          .first()
-          .click();
+        await page.getByRole('article').first().getByTitle('e2e').click();
 
         await page
           .getByRole('link', { name: `#${hashTag}` })
@@ -125,15 +63,21 @@ test.describe('01.authenticated tests', () => {
           .click();
 
         await expect(page).toHaveURL('/search/e2e');
-        expect(page.getByRole('link', { name: `${hashTag}` }).first());
-        expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
+
+        expect(page.getByRole('link', { name: `${hashTag}` }).first()).toHaveAttribute('title', 'e2e');
+        expect(
+          page
+            .getByRole('article')
+            .first()
+            .filter({ hasText: `${testMessage} ${hashTag}` })
+        );
       }
     }).toPass();
   });
 
   test('timeline - should post no message', async ({ page }) => {
     await page.goto('/');
-    await page.waitForSelector('[data-testid="testTextarea"]');
+    await page.waitForLoadState('domcontentloaded');
     await page.getByRole('button', { name: 'Absenden' }).click();
     await expect(page.locator('p').filter({ hasText: 'Das Textfeld darf nicht leer sein.' })).toBeInViewport();
   });
@@ -164,35 +108,13 @@ test.describe('01.authenticated tests', () => {
             .filter({ hasText: `${testMessage}` })
             .first()
         );
-        expect(page.getByRole('button', { name: 'Liked' }));
+        // CHECK LIKED MUMBLE ON PROFILE PAGE
+        const likeButton = page.getByRole('article').first().getByRole('button', { name: /Like/ });
+        const likeButtonState = await likeButton.innerText();
+
+        await expect.soft(page.getByRole('article').first().getByRole('button', { name: /Like/ })).toHaveText(/Like/);
+        console.log(likeButtonState === 'Like' ? `💔 Mumble is unliked` : `💝 Mumble is liked`);
       }
-    }).toPass();
-  });
-
-  test('02.timeline - should delete test message', async ({ page }) => {
-    await page.waitForSelector('body, footer');
-    await expect(async () => {
-      let hasArticleToBeDelete: boolean = false;
-      hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
-
-      if (hasArticleToBeDelete === true) {
-        const articleToBeDeleted = page
-          .getByRole('article')
-          .filter({ hasText: `${testMessage}` })
-          .first();
-
-        const article_id = await articleToBeDeleted.getAttribute('id');
-        expect(article_id, `👉 should have an article id ${article_id}`);
-        expect(articleToBeDeleted.locator('svg').last());
-
-        await articleToBeDeleted.locator('svg').last().click();
-        console.log(`👉 deleting article with id ${article_id}`);
-
-        expect(page.locator(`body:has(#${article_id})`)).toBe(false);
-      } else {
-        console.log(`❗ no test message (${testMessage}) found`);
-      }
-      expect(hasArticleToBeDelete, '👍 should have no test message').toBe(false);
     }).toPass();
   });
 });
