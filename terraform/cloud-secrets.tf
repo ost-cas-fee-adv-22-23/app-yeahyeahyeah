@@ -18,7 +18,7 @@ resource "google_secret_manager_secret_version" "nextauth_secret" {
 
 resource "google_secret_manager_secret_iam_member" "nextauth_secret" {
   secret_id = google_secret_manager_secret_version.nextauth_secret.id
-  role      = "roles/secretmanager.secretAccessor"
+  role      = "roles/secretmanager.admin",
   member    = "serviceAccount:${google_service_account.cloud-runner.email}"
   depends_on = [
     google_secret_manager_secret.nextauth_secret,
