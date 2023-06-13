@@ -18,7 +18,7 @@ export default function Page({
   fallbackUsers: QwackerUserResponse;
   fallbackUserLoggedIn: User;
 }) {
-  console.log('app-yeahyeahyeah deployed with terraform :)');
+  console.log('app-yeahyeahyeah deployed with tf creating secrets dynamically :-O');
   return (
     <>
       <NextSeo title={`${Content.seo.home.title}`} description={`${Content.seo.home.description}`} />
