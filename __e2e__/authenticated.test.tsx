@@ -30,6 +30,7 @@ test.describe('01.authenticated tests', () => {
     expect(article_id, `👉 should have an article id ${article_id}`);
 
     await expect(page).toHaveURL(new RegExp(`/mumble/${article_id}`));
+
     expect(page.getByRole('article').first());
 
     await page.waitForSelector('[data-testid="testTextarea"]');
@@ -55,7 +56,7 @@ test.describe('01.authenticated tests', () => {
       hasArticleToBeDelete = await page.isVisible(`text=${hashTag}`);
 
       if (hasArticleToBeDelete === true) {
-        await page.getByRole('article').first().getByTitle('e2e').click();
+        await page.getByRole('article').first().getByTitle(`${hashTag}`).click();
 
         await page
           .getByRole('link', { name: `#${hashTag}` })
@@ -93,7 +94,7 @@ test.describe('01.authenticated tests', () => {
 
       if (articleIsPresent === true) {
         expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
-        expect(page.getByRole('button', { name: 'Liked' }));
+        expect(page.getByRole('button', { name: /Liked/ }));
       }
 
       // CLICK ON SWITCH TAB 'DEINE LIKES'

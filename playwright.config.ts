@@ -11,7 +11,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 3,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [['list', { printSteps: true }]],
+  reporter: './__e2e__/testReporter.ts',
   expect: {
     timeout: 0,
   },
