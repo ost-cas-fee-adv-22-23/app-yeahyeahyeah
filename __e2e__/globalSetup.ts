@@ -9,7 +9,7 @@ const user: string = process.env.ZITADEL_USER || '';
 const pw: string = process.env.ZITADEL_PW || '';
 const url: string = process.env.ZITADEL_ISSUER || '';
 
-const globalSetup = async (config: FullConfig, mount: any) => {
+const globalSetup = async (config: FullConfig) => {
   const { baseURL } = config.projects[0].use;
   const browser: Browser = await chromium.launch();
   const context = await browser.newContext();

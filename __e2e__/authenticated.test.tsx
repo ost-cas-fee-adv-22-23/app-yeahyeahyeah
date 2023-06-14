@@ -101,7 +101,7 @@ test.describe('01.authenticated tests', () => {
       articleIsPresent = await page.isVisible(`text=${testMessage}`);
       if (articleIsPresent === true) {
         expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).not.toBe('');
-        expect(page.getByRole('button', { name: /Liked/ }));
+        expect(page.getByRole('button', { name: /Liked/ })).toHaveText(/Liked/);
       }
 
       // CLICK ON SWITCH TAB 'DEINE LIKES'
