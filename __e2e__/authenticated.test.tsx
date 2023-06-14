@@ -13,7 +13,7 @@ test.describe('01.authenticated tests', () => {
     await page.waitForSelector('body');
   });
 
-  test.only('timeline - should like it or not', async ({ page }) => {
+  test('timeline - should like it or not', async ({ page }) => {
     await page.getByRole('article').first().getByRole('button', { name: /Like/ }).click();
   });
 
@@ -86,13 +86,12 @@ test.describe('01.authenticated tests', () => {
 
   test('profile - should list created message and liked article', async ({ page }) => {
     let articleIsPresent: boolean = false;
-    await page.waitForLoadState('domcontentloaded');
     await page.getByRole('link', { name: 'Profile' }).click();
+    await page.waitForLoadState('domcontentloaded');
     await expect(page).toHaveURL(/profile/);
 
     await expect(async () => {
       articleIsPresent = await page.isVisible(`text=${testMessage}`);
-
       if (articleIsPresent === true) {
         expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
         expect(page.getByRole('button', { name: /Liked/ }));
@@ -100,9 +99,6 @@ test.describe('01.authenticated tests', () => {
 
       // CLICK ON SWITCH TAB 'DEINE LIKES'
       await page.getByRole('tab', { name: 'Deine Likes' }).click();
-
-      articleIsPresent = await page.isVisible(`text=${testMessage}`);
-
       if (articleIsPresent === true) {
         expect(
           page

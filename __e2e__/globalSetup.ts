@@ -19,7 +19,6 @@ const globalSetup = async (config: FullConfig, mount: any) => {
   let testMessage: string;
 
   // LOGIN
-
   await page.goto(baseURL!);
   await page.waitForLoadState('domcontentloaded');
   await page.getByRole('button', { name: 'Login' }).click();
@@ -36,13 +35,12 @@ const globalSetup = async (config: FullConfig, mount: any) => {
   await page.waitForSelector('body');
   await expect(page.getByLabel('Logout')).not.toBeInViewport();
 
-  testMessage = sentence();
-
+  // ADD TEST MESSAGE IF NOT PRESENT
   const hasTestMessage = await page.isVisible(`text=#${hashTag}`);
-  console.log(hasTestMessage);
 
   if (hasTestMessage === false) {
     await expect(async () => {
+      testMessage = sentence();
       await page.waitForSelector('[data-testid="testTextarea"]');
       await page.getByTestId('testTextarea').fill(`${testMessage} #${hashTag}`);
       await page.locator('input[type=file]').setInputFiles(path.join(__dirname, '../public', 'avatar_default.png'));

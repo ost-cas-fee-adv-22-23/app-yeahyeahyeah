@@ -24,8 +24,14 @@ test.describe('02.non-authenticated', () => {
   });
 
   test('timeline - should redirect to landingpage', async ({ page }) => {
-    await page.locator('a').first().click();
+    const article = page.getByRole('article').filter({ hasText: 'username' }).first();
+    const articles = page.getByRole('article');
+    const totalArticles = await articles.count();
+    expect(totalArticles).toBeGreaterThanOrEqual(1);
+
+    await article.locator('a').first().click();
     await page.waitForLoadState('domcontentloaded');
+
     await expect(page).toHaveURL(/landing/);
     await expect(page.locator('h1')).toContainText('Find out whats new');
     await expect(page).toHaveTitle(`Mumble - Willkommen auf der Mumble App des CAS Frontend Engineer's Advanced`);
