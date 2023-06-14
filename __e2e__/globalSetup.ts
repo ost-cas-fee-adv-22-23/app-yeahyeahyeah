@@ -1,24 +1,46 @@
 import { expect, Browser, chromium, Page, FullConfig } from '@playwright/test';
-import { LoginForm } from './lib/LoginForm';
 import { sentence } from '../src/utils/randomSentence';
+import { STORAGE_STATE } from './../playwright.config';
+import * as dotenv from 'dotenv';
 import path from 'path';
+dotenv.config();
 
-const globalSetup = async (config: FullConfig) => {
+const user: string = process.env.ZITADEL_USER || '';
+const pw: string = process.env.ZITADEL_PW || '';
+const url: string = process.env.ZITADEL_ISSUER || '';
+
+const globalSetup = async (config: FullConfig, mount: any) => {
+  const { baseURL } = config.projects[0].use;
   const browser: Browser = await chromium.launch();
   const context = await browser.newContext();
   const page: Page = await context.newPage();
   const hashTag = 'e2e';
   const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
-  const hasTestMessage = await page.isVisible(`text=#${hashTag}`);
-
-  // GENERATE RANDOM SENTENCE
   let testMessage: string;
+
+  // LOGIN
+
+  await page.goto(baseURL!);
+  await page.waitForLoadState('domcontentloaded');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await expect(page).toHaveURL(new RegExp(`${url}`));
+  await page.waitForSelector('body');
+  await page.getByPlaceholder('username@domain').fill(user);
+  await page.locator('#submit-button').click();
+  await page.getByLabel('Password').fill(pw);
+  await page.getByRole('button', { name: 'next' }).click();
+
+  // Save the state
+  await page.context().storageState({ path: STORAGE_STATE });
+  console.log('💾 Saved authentication state to ', STORAGE_STATE);
+  await page.waitForSelector('body');
+  await expect(page.getByLabel('Logout')).not.toBeInViewport();
+
   testMessage = sentence();
 
-  // LOGIN USER
-  LoginForm;
+  const hasTestMessage = await page.isVisible(`text=#${hashTag}`);
+  console.log(hasTestMessage);
 
-  // CHECK FOR TEST MESSAGE
   if (hasTestMessage === false) {
     await expect(async () => {
       await page.waitForSelector('[data-testid="testTextarea"]');

@@ -4,14 +4,14 @@ import { defineConfig, devices } from '@playwright/test';
 export const STORAGE_STATE = path.join(__dirname, 'playwright/.auth/user.json');
 
 export default defineConfig({
-  globalSetup: './__e2e__/globalSetup.ts',
-  globalTeardown: './__e2e__/globalTeardown.ts',
+  globalSetup: './__e2e__/GlobalSetup.ts',
+  globalTeardown: './__e2e__/GlobalTeardown.ts',
   testDir: './__e2e__',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 3,
   workers: process.env.CI ? 1 : undefined,
-  reporter: './__e2e__/testReporter.ts',
+  reporter: './__e2e__/TestReporter.ts',
   expect: {
     timeout: 0,
   },
@@ -27,11 +27,11 @@ export default defineConfig({
   projects: [
     {
       name: 'setup',
-      testMatch: /globalSetup\.ts/,
+      testMatch: /GlobalSetup\.ts/,
     },
     {
       name: 'cleanup test message',
-      testMatch: /globalTeardown\.ts/,
+      testMatch: /GlobalTeardown\.ts/,
     },
     {
       name: 'chromium',

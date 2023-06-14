@@ -13,7 +13,7 @@ test.describe('01.authenticated tests', () => {
     await page.waitForSelector('body');
   });
 
-  test('timeline - should like it or not', async ({ page }) => {
+  test.only('timeline - should like it or not', async ({ page }) => {
     await page.getByRole('article').first().getByRole('button', { name: /Like/ }).click();
   });
 
@@ -51,11 +51,12 @@ test.describe('01.authenticated tests', () => {
   });
 
   test('timeline - should click on hashtag', async ({ page }) => {
-    let hasArticleToBeDelete: boolean = false;
-    await expect(async () => {
-      hasArticleToBeDelete = await page.isVisible(`text=${hashTag}`);
+    let hasHashtag: boolean = false;
+    hasHashtag = await page.isVisible(`text=${hashTag}`);
+    console.log(hasHashtag);
 
-      if (hasArticleToBeDelete === true) {
+    await expect(async () => {
+      if (hasHashtag === true) {
         await page.getByRole('article').first().getByTitle(`${hashTag}`).click();
 
         await page
