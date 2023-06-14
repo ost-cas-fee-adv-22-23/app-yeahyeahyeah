@@ -1,6 +1,6 @@
 import { expect, Browser, chromium, Page, FullConfig } from '@playwright/test';
 import { sentence } from '../src/utils/randomSentence';
-import { STORAGE_STATE } from './../playwright.config';
+import { STORAGE_STATE } from '../playwright.config';
 import * as dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
