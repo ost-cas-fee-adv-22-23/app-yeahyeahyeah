@@ -9,9 +9,9 @@ export default defineConfig({
   testDir: './__e2e__',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 3,
+  retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: './__e2e__/testReporter.ts',
+  reporter: process.env.CI ? './__e2e__/testReporter.ts' : [['list', { printSteps: true }]],
   expect: {
     timeout: 0,
   },

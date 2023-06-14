@@ -46,7 +46,7 @@ const globalSetup = async (config: FullConfig, mount: any) => {
       await page.locator('input[type=file]').setInputFiles(path.join(__dirname, '../public', 'avatar_default.png'));
       await page.getByRole('button', { name: 'Absenden' }).click();
 
-      expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
+      await expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toBeVisible();
       await expect(page.getByRole('img', { name: `${testMessage} #${hashTag}` })).toHaveAttribute(
         'src',
         imageUploadEndPoint

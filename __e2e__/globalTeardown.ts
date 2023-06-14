@@ -39,8 +39,7 @@ const globalTeardown = async (config: FullConfig) => {
       const articleToBeDeleted = page.getByRole('article').filter({ hasText: `#e2e` });
       const article_id = await articleToBeDeleted.getAttribute('id');
 
-      expect(article_id, `👉 should have an article id ${article_id}`);
-      expect(articleToBeDeleted.locator('svg').last());
+      expect(article_id, `👉 should have an article id ${article_id}`).not.toBeUndefined();
 
       await articleToBeDeleted.locator('svg').last().click();
       console.log(`🧹 deleting test message ${article_id}`);

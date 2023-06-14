@@ -27,27 +27,34 @@ test.describe('01.authenticated tests', () => {
     const commentArticle = page.getByRole('article').first();
     const article_id = await commentArticle.getAttribute('id');
 
-    expect(article_id, `👉 should have an article id ${article_id}`);
-
+    expect(article_id, `👉 should have an article id ${article_id}`).not.toBeNull();
     await expect(page).toHaveURL(new RegExp(`/mumble/${article_id}`));
+    expect(page.getByRole('article').first()).toBeVisible();
 
-    expect(page.getByRole('article').first());
-
+    // COMMENT ARTICLE
     await page.waitForSelector('[data-testid="testTextarea"]');
-    await page.getByTestId('testTextarea').fill(sentence());
+
+    let commentMessage = sentence();
+    await page.getByTestId('testTextarea').fill(commentMessage);
     await page.getByRole('button', { name: 'Absenden' }).click();
 
-    expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
+    await expect(
+      page
+        .getByRole('article')
+        .filter({ hasText: `${commentMessage}` })
+        .locator('p')
+    ).toHaveText(commentMessage);
 
     await page.getByRole('link', { name: 'Startpage' }).click();
 
-    expect(
-      page
-        .getByRole('article')
-        .filter({ hasText: `${testMessage}` })
-        .first()
-        .getByRole('link', { name: '1 Comment' })
-    );
+    await expect(async () => {
+      const commentLink = page.locator(`[id="${article_id}"]`).getByRole('link', { name: /Comment/ });
+      const countComments = await commentLink.innerText();
+      const getCommentsNumber = countComments.split(' ');
+
+      await expect(commentLink).toHaveText(/(\d+ )?Comments?/);
+      expect(parseInt(getCommentsNumber[0])).toBeGreaterThanOrEqual(1);
+    }).toPass();
   });
 
   test('timeline - should click on hashtag', async ({ page }) => {
@@ -66,13 +73,13 @@ test.describe('01.authenticated tests', () => {
 
         await expect(page).toHaveURL('/search/e2e');
 
-        expect(page.getByRole('link', { name: `${hashTag}` }).first()).toHaveAttribute('title', 'e2e');
-        expect(
+        expect(page.getByRole('link', { name: `${hashTag}` }).first()).toHaveAttribute('title', `${hashTag}`);
+        await expect(
           page
             .getByRole('article')
             .first()
-            .filter({ hasText: `${testMessage} ${hashTag}` })
-        );
+            .filter({ hasText: `${hashTag}` })
+        ).toBeVisible();
       }
     }).toPass();
   });
@@ -93,7 +100,7 @@ test.describe('01.authenticated tests', () => {
     await expect(async () => {
       articleIsPresent = await page.isVisible(`text=${testMessage}`);
       if (articleIsPresent === true) {
-        expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
+        expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).not.toBe('');
         expect(page.getByRole('button', { name: /Liked/ }));
       }
 
@@ -105,7 +112,7 @@ test.describe('01.authenticated tests', () => {
             .getByRole('article')
             .filter({ hasText: `${testMessage}` })
             .first()
-        );
+        ).toContainText(`${hashTag}`);
         // CHECK LIKED MUMBLE ON PROFILE PAGE
         const likeButton = page.getByRole('article').first().getByRole('button', { name: /Like/ });
         const likeButtonState = await likeButton.innerText();

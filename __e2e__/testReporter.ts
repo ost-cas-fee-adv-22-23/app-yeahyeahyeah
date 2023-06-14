@@ -3,6 +3,7 @@ import { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from '@
 class MyReporter implements Reporter {
   onBegin(config: FullConfig, suite: Suite) {
     console.log(`Starting the run with ${suite.allTests().length} tests`);
+    console.log(`${suite.project()}`);
   }
 
   onTestBegin(test: TestCase) {
