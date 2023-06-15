@@ -1,5 +1,6 @@
 import { expect, Browser, chromium, Page, FullConfig } from '@playwright/test';
 import { STORAGE_STATE } from '../playwright.config';
+import { generatedHashTag } from './utils/hastagGenerator';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -7,12 +8,12 @@ const user = process.env.ZITADEL_USER || '';
 const pw = process.env.ZITADEL_PW || '';
 const url = process.env.ZITADEL_ISSUER || '';
 
-const globalTeardown = async (config: FullConfig) => {
+const globalTeardown = async (config: FullConfig): Promise<void> => {
   const { baseURL } = config.projects[0].use;
   const browser: Browser = await chromium.launch();
   const context = await browser.newContext();
   const page: Page = await context.newPage();
-  const hashTag = 'e2e';
+  const hashTag: string = generatedHashTag;
 
   // LOGIN
   await page.goto(baseURL!);
