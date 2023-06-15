@@ -1,6 +1,6 @@
 import { expect, Browser, chromium, Page, FullConfig } from '@playwright/test';
 import { STORAGE_STATE } from '../playwright.config';
-import { generatedHashTag } from './utils/hastagGenerator';
+import { generateHashtag } from './utils/hastagGenerator';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -13,7 +13,7 @@ const globalTeardown = async (config: FullConfig): Promise<void> => {
   const browser: Browser = await chromium.launch();
   const context = await browser.newContext();
   const page: Page = await context.newPage();
-  const hashTag: string = generatedHashTag;
+  const hashTag: string = generateHashtag();
 
   // LOGIN
   await page.goto(baseURL!);
@@ -34,11 +34,10 @@ const globalTeardown = async (config: FullConfig): Promise<void> => {
 
   // DELETING TEST MESSAGE
   await expect(async () => {
-    let hasArticleToBeDelete: boolean = false;
-    hasArticleToBeDelete = await page.isVisible(`text=#${hashTag}`);
+    let hasArticleToBeDelete: boolean = await page.isVisible(`text=${hashTag}`);
 
     if (hasArticleToBeDelete === true) {
-      const articleToBeDeleted = page.getByRole('article').filter({ hasText: `#${hashTag}` });
+      const articleToBeDeleted = page.getByRole('article').filter({ hasText: `${hashTag}` });
       const article_id = await articleToBeDeleted.getAttribute('id');
 
       expect(article_id).toBeTruthy();
