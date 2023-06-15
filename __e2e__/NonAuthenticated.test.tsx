@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { sentence } from '../src/utils/randomSentence';
+import { sentence } from './randomSentence';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

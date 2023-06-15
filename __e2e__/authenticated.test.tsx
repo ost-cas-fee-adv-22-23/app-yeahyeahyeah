@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
-import { sentence } from '../src/utils/randomSentence';
+import { sentence } from './randomSentence';
 dotenv.config();
 
 const hashTag = 'e2e';
