@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { sentence } from './randomSentence';
+import { sentence } from './utils/randomSentence';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-test.use({ storageState: './noAuth.json' });
-
 const url: string = process.env.ZITADEL_ISSUER || '';
+
+test.use({ storageState: './data/noAuth.json' });
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');

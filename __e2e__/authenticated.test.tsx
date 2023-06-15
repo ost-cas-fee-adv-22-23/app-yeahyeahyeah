@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import * as dotenv from 'dotenv';
-import { sentence } from './randomSentence';
+import { sentence } from './utils/randomSentence';
 dotenv.config();
 
 const hashTag = 'e2e';
@@ -60,7 +60,6 @@ test.describe('01.authenticated tests', () => {
   test('timeline - should click on hashtag', async ({ page }) => {
     let hasHashtag: boolean = false;
     hasHashtag = await page.isVisible(`text=${hashTag}`);
-    console.log(hasHashtag);
 
     await expect(async () => {
       if (hasHashtag === true) {
