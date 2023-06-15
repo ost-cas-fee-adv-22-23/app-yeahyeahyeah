@@ -3,7 +3,7 @@
  * adverbs, and prepositions.
  * @returns A randomly generated sentence as a string.
  */
-const generateSentence = (): string => {
+export const generateSentence = (): string => {
   const nouns: string[] = ['bird', 'clock', 'boy', 'plastic', 'duck', 'citizen', 'old lady', 'politician', 'hamster', 'dog'];
   const verbs: string[] = ['kicked', 'ran', 'flew', 'dodged', 'sliced', 'rolled', 'died', 'breathed', 'slept', 'killed'];
   const adjectives: string[] = [
@@ -41,37 +41,9 @@ const generateSentence = (): string => {
   const rand6: number = Math.floor(Math.random() * 10);
 
   // Combine the randomly selected words to form the sentence
-  const content: string =
-    'The ' +
-    adjectives[rand1] +
-    ' ' +
-    nouns[rand2] +
-    ' ' +
-    adverbs[rand3] +
-    ' ' +
-    verbs[rand4] +
-    ' because some ' +
-    nouns[rand1] +
-    ' ' +
-    adverbs[rand1] +
-    ' ' +
-    verbs[rand1] +
-    ' ' +
-    preposition[rand1] +
-    ' a ' +
-    adjectives[rand2] +
-    ' ' +
-    nouns[rand5] +
-    ' which, became a ' +
-    adjectives[rand3] +
-    ', ' +
-    adjectives[rand4] +
-    ' ' +
-    nouns[rand6] +
-    '.';
+  const content: string = `The ${adjectives[rand1]} ${nouns[rand2]} ${adverbs[rand3]} ${verbs[rand4]} 
+  because some ${nouns[rand1]} ${adverbs[rand1]} ${verbs[rand1]} ${preposition[rand1]} a ${adjectives[rand2]} 
+  ${nouns[rand5]} which, became a ${adjectives[rand3]}, ${adjectives[rand4]} ${nouns[rand6]}.`;
 
   return content;
 };
-
-// Export random generated sentence
-export const sentence = generateSentence();

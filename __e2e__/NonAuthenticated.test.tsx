@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { sentence } from './utils/randomSentence';
+import { generateSentence } from './utils/randomSentence';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -41,7 +41,7 @@ test.describe('02.non-authenticated', () => {
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForSelector('[data-testid="testTextarea"]');
-    await page.getByTestId('testTextarea').fill(sentence);
+    await page.getByTestId('testTextarea').fill(generateSentence());
     await page.getByRole('button', { name: 'Absenden' }).click();
 
     await expect(page.locator('#default-alert')).toHaveText('Du musst angemeldet sein, um Mumbles zu posten!');

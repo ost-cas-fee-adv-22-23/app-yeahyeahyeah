@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { generatedHashTag } from './utils/hastagGenerator';
+import { generateHashtag } from './utils/hastagGenerator';
 import * as dotenv from 'dotenv';
-import { sentence } from './utils/randomSentence';
+import { generateSentence } from './utils/randomSentence';
 dotenv.config();
 
-const hashTag: string = generatedHashTag;
+const hashTag: string = generateHashtag();
 let testMessage: string;
 
 test.describe('01.authenticated tests', () => {
@@ -40,10 +40,9 @@ test.describe('01.authenticated tests', () => {
     await expect(page).toHaveURL(new RegExp(`/mumble/${article_id}`));
     expect(page.getByRole('article').first()).toBeVisible();
 
-    // COMMENT ARTICLE
     await page.waitForSelector('[data-testid="testTextarea"]');
 
-    let commentMessage = sentence;
+    let commentMessage = generateSentence();
     await page.getByTestId('testTextarea').fill(commentMessage);
     await page.getByRole('button', { name: 'Absenden' }).click();
 
@@ -67,8 +66,7 @@ test.describe('01.authenticated tests', () => {
   });
 
   test('timeline - should click on hashtag', async ({ page }) => {
-    let hasHashtag: boolean = false;
-    hasHashtag = await page.isVisible(`text=${hashTag}`);
+    const hasHashtag: boolean = await page.isVisible(`text=${hashTag}`);
 
     await expect(async () => {
       if (hasHashtag === true) {
@@ -100,19 +98,18 @@ test.describe('01.authenticated tests', () => {
   });
 
   test('profile - should list created message and liked article', async ({ page }) => {
-    let articleIsPresent: boolean = false;
     await page.getByRole('link', { name: 'Profile' }).click();
     await page.waitForLoadState('domcontentloaded');
     await expect(page).toHaveURL(/profile/);
 
     await expect(async () => {
-      articleIsPresent = await page.isVisible(`text=${testMessage}`);
+      let articleIsPresent: boolean = await page.isVisible(`text=${testMessage}`);
+
       if (articleIsPresent === true) {
-        expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toContainText(`${hashTag}`);
+        await expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toContainText(`${hashTag}`);
         expect(page.getByRole('button', { name: /Liked/ })).toHaveText(/Liked/);
       }
 
-      // CLICK ON SWITCH TAB 'DEINE LIKES'
       await page.getByRole('tab', { name: 'Deine Likes' }).click();
       if (articleIsPresent === true) {
         expect(
@@ -121,7 +118,7 @@ test.describe('01.authenticated tests', () => {
             .filter({ hasText: `${testMessage}` })
             .first()
         ).toContainText(`${hashTag}`);
-        // CHECK LIKED MUMBLE ON PROFILE PAGE
+
         const likeButton = page.getByRole('article').first().getByRole('button', { name: /Like/ });
         const likeButtonState = await likeButton.innerText();
 
