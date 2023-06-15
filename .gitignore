@@ -43,7 +43,7 @@ clean.sh
 # Playwright
 ./test-results
 playwright-report/*
-playwright/.auth
+__e2e__/data/playwright/.auth
 
 # Terraform
 .terraform

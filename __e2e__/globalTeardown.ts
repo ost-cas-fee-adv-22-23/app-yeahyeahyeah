@@ -12,6 +12,7 @@ const globalTeardown = async (config: FullConfig) => {
   const browser: Browser = await chromium.launch();
   const context = await browser.newContext();
   const page: Page = await context.newPage();
+  const hashTag = 'e2e';
 
   // LOGIN
   await page.goto(baseURL!);
@@ -33,10 +34,10 @@ const globalTeardown = async (config: FullConfig) => {
   // DELETING TEST MESSAGE
   await expect(async () => {
     let hasArticleToBeDelete: boolean = false;
-    hasArticleToBeDelete = await page.isVisible(`text=#e2e`);
+    hasArticleToBeDelete = await page.isVisible(`text=#${hashTag}`);
 
     if (hasArticleToBeDelete === true) {
-      const articleToBeDeleted = page.getByRole('article').filter({ hasText: `#e2e` });
+      const articleToBeDeleted = page.getByRole('article').filter({ hasText: `#${hashTag}` });
       const article_id = await articleToBeDeleted.getAttribute('id');
 
       expect(article_id, `👉 should have an article id ${article_id}`).not.toBeUndefined();

@@ -1,7 +1,7 @@
 import path from 'path';
 import { defineConfig, devices } from '@playwright/test';
 
-export const STORAGE_STATE = path.join(__dirname, './data/playwright/.auth/user.json');
+export const STORAGE_STATE = path.join(__dirname, './__e2e__/data/playwright/.auth/user.json');
 
 export default defineConfig({
   globalSetup: './__e2e__/globalSetup.ts',

@@ -5,7 +5,7 @@ dotenv.config();
 
 const url: string = process.env.ZITADEL_ISSUER || '';
 
-test.use({ storageState: './data/noAuth.json' });
+test.use({ storageState: './__e2e__/data/noAuth.json' });
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');

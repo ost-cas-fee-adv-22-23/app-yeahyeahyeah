@@ -1,5 +1,6 @@
 import { expect, Browser, chromium, Page, FullConfig } from '@playwright/test';
 import { sentence } from './utils/randomSentence';
+import { generateHashtag } from './utils/hastagGenerator';
 import { STORAGE_STATE } from '../playwright.config';
 import * as dotenv from 'dotenv';
 import path from 'path';
@@ -14,7 +15,7 @@ const globalSetup = async (config: FullConfig) => {
   const browser: Browser = await chromium.launch();
   const context = await browser.newContext();
   const page: Page = await context.newPage();
-  const hashTag = 'e2e';
+  const hashTag = generateHashtag();
   const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
   let testMessage: string;
 
