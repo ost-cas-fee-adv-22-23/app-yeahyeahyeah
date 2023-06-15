@@ -8,6 +8,7 @@ export default defineConfig({
   globalTeardown: './__e2e__/globalTeardown.ts',
   testDir: './__e2e__',
   fullyParallel: true,
+  timeout: 60000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,

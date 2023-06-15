@@ -3,7 +3,7 @@
  * adverbs, and prepositions.
  * @returns A randomly generated sentence as a string.
  */
-export const sentence = (): string => {
+const generateSentence = (): string => {
   const nouns: string[] = ['bird', 'clock', 'boy', 'plastic', 'duck', 'citizen', 'old lady', 'politician', 'hamster', 'dog'];
   const verbs: string[] = ['kicked', 'ran', 'flew', 'dodged', 'sliced', 'rolled', 'died', 'breathed', 'slept', 'killed'];
   const adjectives: string[] = [
@@ -72,3 +72,6 @@ export const sentence = (): string => {
 
   return content;
 };
+
+// Export random generated sentence
+export const sentence = generateSentence();

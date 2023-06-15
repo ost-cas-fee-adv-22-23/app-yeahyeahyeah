@@ -41,7 +41,7 @@ test.describe('02.non-authenticated', () => {
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForSelector('[data-testid="testTextarea"]');
-    await page.getByTestId('testTextarea').fill(sentence());
+    await page.getByTestId('testTextarea').fill(sentence);
     await page.getByRole('button', { name: 'Absenden' }).click();
 
     await expect(page.locator('#default-alert')).toHaveText('Du musst angemeldet sein, um Mumbles zu posten!');

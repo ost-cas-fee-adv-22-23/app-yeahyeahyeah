@@ -1,7 +1,7 @@
 import { expect, Browser, chromium, Page, FullConfig } from '@playwright/test';
-import { sentence } from './utils/randomSentence';
-import { generateHashtag } from './utils/hastagGenerator';
 import { STORAGE_STATE } from '../playwright.config';
+import { sentence } from './utils/randomSentence';
+import { generatedHashTag } from './utils/hastagGenerator';
 import * as dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
@@ -15,9 +15,9 @@ const globalSetup = async (config: FullConfig) => {
   const browser: Browser = await chromium.launch();
   const context = await browser.newContext();
   const page: Page = await context.newPage();
-  const hashTag = generateHashtag();
   const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
-  let testMessage: string;
+  const hashTag: string = generatedHashTag;
+  const testMessage: string = sentence;
 
   // LOGIN
   await page.goto(baseURL!);
@@ -41,7 +41,6 @@ const globalSetup = async (config: FullConfig) => {
 
   if (hasTestMessage === false) {
     await expect(async () => {
-      testMessage = sentence();
       await page.waitForSelector('[data-testid="testTextarea"]');
       await page.getByTestId('testTextarea').fill(`${testMessage} #${hashTag}`);
       await page.locator('input[type=file]').setInputFiles(path.join(__dirname, '../public', 'avatar_default.png'));

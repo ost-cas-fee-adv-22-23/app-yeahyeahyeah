@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { generatedHashTag } from './utils/hastagGenerator';
 import * as dotenv from 'dotenv';
 import { sentence } from './utils/randomSentence';
 dotenv.config();
 
-let hashTagPrefix: string = 'e2e3yeah';
-let hashTag: string;
+const hashTag: string = generatedHashTag;
 let testMessage: string;
 
 test.describe('01.authenticated tests', () => {
@@ -12,8 +12,10 @@ test.describe('01.authenticated tests', () => {
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForSelector('body');
-    const getHashTag = (await page.getByRole('article').first().getByTitle(`${hashTagPrefix}`).innerText()).substring(1);
-    hashTag = getHashTag;
+
+    expect(async () => {
+      await expect(page.getByRole('article').first().getByTitle(`${hashTag}`)).toHaveAttribute('href', `/search/${hashTag}`);
+    });
   });
 
   test('timeline - should like it or not', async ({ page }) => {
@@ -37,7 +39,7 @@ test.describe('01.authenticated tests', () => {
     // COMMENT ARTICLE
     await page.waitForSelector('[data-testid="testTextarea"]');
 
-    let commentMessage = sentence();
+    let commentMessage = sentence;
     await page.getByTestId('testTextarea').fill(commentMessage);
     await page.getByRole('button', { name: 'Absenden' }).click();
 
@@ -62,11 +64,11 @@ test.describe('01.authenticated tests', () => {
 
   test('timeline - should click on hashtag', async ({ page }) => {
     let hasHashtag: boolean = false;
-    hasHashtag = await page.isVisible(`text=${hashTagPrefix}`);
+    hasHashtag = await page.isVisible(`text=${hashTag}`);
 
     await expect(async () => {
       if (hasHashtag === true) {
-        await page.getByRole('article').first().getByTitle(`${hashTagPrefix}`).click();
+        await page.getByRole('article').first().getByTitle(`${hashTag}`).click();
 
         await page
           .getByRole('link', { name: `${hashTag}` })
@@ -75,7 +77,7 @@ test.describe('01.authenticated tests', () => {
 
         await expect(page).toHaveURL(`/search/${hashTag}`);
 
-        expect(page.getByRole('link', { name: `${hashTag}` }).first()).toHaveAttribute('title', `${hashTag}`);
+        await expect(page.getByRole('link', { name: `${hashTag}` }).first()).toHaveAttribute('title', `${hashTag}`);
         await expect(
           page
             .getByRole('article')
@@ -102,7 +104,7 @@ test.describe('01.authenticated tests', () => {
     await expect(async () => {
       articleIsPresent = await page.isVisible(`text=${testMessage}`);
       if (articleIsPresent === true) {
-        expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).not.toBe('');
+        expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toContainText(`${hashTag}`);
         expect(page.getByRole('button', { name: /Liked/ })).toHaveText(/Liked/);
       }
 
