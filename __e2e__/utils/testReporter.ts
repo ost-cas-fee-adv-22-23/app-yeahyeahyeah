@@ -12,12 +12,13 @@ class MyReporter implements Reporter {
 
   onTestEnd(test: TestCase, result: TestResult): void {
     const ms = result.duration;
-    console.log(`Finished test ${test.title}: ${result.status}`);
+    console.log(`Finished test: ${result.status}`);
     console.log('Testing duration:', new Date(ms).toISOString().slice(11, 19));
     console.log('---------------------------------');
   }
 
   onEnd(result: FullResult): void {
+    console.log('---------------------------------');
     console.log(`Finished the run: ${result.status}`);
   }
 }
