@@ -31,8 +31,12 @@ test.describe('01.authenticated tests', () => {
 
     const commentArticle = page.getByRole('article').first();
     const article_id = await commentArticle.getAttribute('id');
+    expect(article_id).toBeTruthy();
+    expect(typeof article_id).toBe('string');
+    expect(article_id, `👉 article_id should be a string of 26 alphanumeric and/or - characters: ${article_id}`).toMatch(
+      /^[\w-]{26}$/i
+    );
 
-    expect(article_id, `👉 should have an article id ${article_id}`).not.toBeNull();
     await expect(page).toHaveURL(new RegExp(`/mumble/${article_id}`));
     expect(page.getByRole('article').first()).toBeVisible();
 

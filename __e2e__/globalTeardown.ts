@@ -25,7 +25,7 @@ const globalTeardown = async (config: FullConfig) => {
   await page.getByLabel('Password').fill(pw);
   await page.getByRole('button', { name: 'next' }).click();
 
-  // Save the state
+  // SAVE STORAGE STATE
   await page.context().storageState({ path: STORAGE_STATE });
   console.log('💾 Saved authentication state to ', STORAGE_STATE);
   await page.waitForSelector('body');
@@ -40,7 +40,11 @@ const globalTeardown = async (config: FullConfig) => {
       const articleToBeDeleted = page.getByRole('article').filter({ hasText: `#${hashTag}` });
       const article_id = await articleToBeDeleted.getAttribute('id');
 
-      expect(article_id, `👉 should have an article id ${article_id}`).not.toBeUndefined();
+      expect(article_id).toBeTruthy();
+      expect(typeof article_id).toBe('string');
+      expect(article_id, `👉 article_id should be a string of 26 alphanumeric and/or - characters: ${article_id}`).toMatch(
+        /^[\w-]{26}$/i
+      );
 
       await articleToBeDeleted.locator('svg').last().click();
       console.log(`🧹 deleting test message ${article_id}`);
