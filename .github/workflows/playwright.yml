@@ -39,9 +39,11 @@ jobs:
           labels: invalid
           title: E2E test runner failed
           body: |
-            ### Context
+            ### Something went wrong in E2E test runner. You may need to check what happened:
+
             [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            [Codebase](https://github.com/${{ github.repository }}/tree/${{ github.sha }})
+            [Codebase](https://github.com/${{ github.repository }}/tree/feature/${{ github.base_ref }})
+
             Workflow name - `${{ github.workflow }}`
             Job -           `${{ github.job }}`
             status -        `${{ job.status }}`
