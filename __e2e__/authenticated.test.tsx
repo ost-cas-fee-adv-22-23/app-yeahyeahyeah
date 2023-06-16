@@ -1,121 +1,132 @@
 import { test, expect } from '@playwright/test';
+import { generateHashtag } from './utils/hastagGenerator';
 import * as dotenv from 'dotenv';
+import { generateSentence } from './utils/randomSentence';
 dotenv.config();
 
-test.describe.configure({ mode: 'serial' });
-
-const testMessage = 'Lorem ipsum dolor dolor sit amet';
-const hashTag = 'e2e';
+const hashTag: string = generateHashtag();
+let testMessage: string;
 
 test.describe('01.authenticated tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
-  });
-
-  test('01.timeline - should post a message', async ({ page }) => {
-    await page.waitForSelector('[data-testid="testTextarea"]');
-    await page.getByTestId('testTextarea').fill(`${testMessage} #${hashTag}`);
     await page.waitForSelector('body');
-    await page.getByRole('button', { name: 'Absenden' }).click();
-    expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
+
+    expect(async () => {
+      await expect(page.getByRole('article').first().getByTitle(`${hashTag}`)).toHaveAttribute('href', `/search/${hashTag}`);
+    });
   });
 
-  test('02.timeline - should like an article', async ({ page }) => {
+  test('timeline - should like it or not', async ({ page }) => {
+    await page.getByRole('article').first().getByRole('button', { name: /Like/ }).click();
+  });
+
+  test('timeline - should comment an article', async ({ page }) => {
     await expect(async () => {
-      let hasArticleToBeLiked: boolean = false;
-      hasArticleToBeLiked = await page.isVisible(`text=${testMessage}`);
-
-      if (hasArticleToBeLiked === true) {
-        await page
-          .getByRole('article')
-          .filter({ hasText: `${testMessage}` })
-          .first()
-          .getByRole('button', { name: 'Like' })
-          .click();
-      }
+      await page
+        .getByRole('article')
+        .first()
+        .getByRole('link', { name: /Comment/ })
+        .click();
     }).toPass();
-    expect(page.getByRole('button', { name: 'Liked' }));
-  });
 
-  test('03.timeline - should click on hashtag', async ({ page }) => {
-    await expect(async () => {
-      let hasArticleToBeDelete: boolean = false;
-      hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
+    const commentArticle = page.getByRole('article').first();
+    const article_id = await commentArticle.getAttribute('id');
+    expect(article_id).toBeTruthy();
+    expect(typeof article_id).toBe('string');
+    expect(article_id, `👉 article_id should be a string of 26 alphanumeric and/or - characters: ${article_id}`).toMatch(
+      /^[\w-]{26}$/i
+    );
 
-      if (hasArticleToBeDelete === true) {
-        await page
-          .getByRole('article')
-          .filter({ hasText: `${testMessage}` })
-          .getByTitle('e2e')
-          .first()
-          .click();
+    await expect(page).toHaveURL(new RegExp(`/mumble/${article_id}`));
+    expect(page.getByRole('article').first()).toBeVisible();
 
-        await page
-          .getByRole('link', { name: `#${hashTag}` })
-          .first()
-          .click();
-
-        await expect(page).toHaveURL('/search/e2e');
-        expect(page.getByRole('link', { name: `${hashTag}` }).first());
-        expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
-      }
-    }).toPass();
-  });
-
-  test('04.timeline - should post no message', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
     await page.waitForSelector('[data-testid="testTextarea"]');
+
+    const commentMessage = generateSentence();
+    await page.getByTestId('testTextarea').fill(commentMessage);
+    await page.getByRole('button', { name: 'Absenden' }).click();
+
+    await expect(
+      page
+        .getByRole('article')
+        .filter({ hasText: `${commentMessage}` })
+        .locator('p')
+    ).toHaveText(commentMessage);
+
+    await page.getByRole('link', { name: 'Startpage' }).click();
+
+    await expect(async () => {
+      const commentLink = page.locator(`[id="${article_id}"]`).getByRole('link', { name: /Comment/ });
+      const countComments = await commentLink.innerText();
+      const getCommentsNumber = countComments.split(' ');
+
+      await expect(commentLink).toHaveText(/(\d+ )?Comments?/);
+      expect(parseInt(getCommentsNumber[0])).toBeGreaterThanOrEqual(1);
+    }).toPass();
+  });
+
+  test('timeline - should click on hashtag', async ({ page }) => {
+    const hasHashtag: boolean = await page.isVisible(`text=${hashTag}`);
+
+    await expect(async () => {
+      if (hasHashtag === true) {
+        await page.getByRole('article').first().getByTitle(`${hashTag}`).click();
+
+        await page
+          .getByRole('link', { name: `${hashTag}` })
+          .first()
+          .click();
+
+        await expect(page).toHaveURL(`/search/${hashTag}`);
+
+        await expect(page.getByRole('link', { name: `${hashTag}` }).first()).toHaveAttribute('title', `${hashTag}`);
+        await expect(
+          page
+            .getByRole('article')
+            .first()
+            .filter({ hasText: `${hashTag}` })
+        ).toBeVisible();
+      }
+    }).toPass();
+  });
+
+  test('timeline - should post no message', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('domcontentloaded');
     await page.getByRole('button', { name: 'Absenden' }).click();
     await expect(page.locator('p').filter({ hasText: 'Das Textfeld darf nicht leer sein.' })).toBeInViewport();
   });
 
-  test('05.timeline - should list liked article', async ({ page }) => {
+  test('profile - should list created message and liked article', async ({ page }) => {
     await page.getByRole('link', { name: 'Profile' }).click();
+    await page.waitForLoadState('domcontentloaded');
     await expect(page).toHaveURL(/profile/);
 
     await expect(async () => {
-      let hasLikedArticle: boolean = false;
-      hasLikedArticle = await page.isVisible(`text=${testMessage}`);
+      const articleIsPresent: boolean = await page.isVisible(`text=${testMessage}`);
 
-      if (hasLikedArticle === true) {
-        expect(page.getByRole('article').filter({ hasText: `${testMessage}` }));
-        expect(page.getByRole('button', { name: 'Liked' }));
+      if (articleIsPresent === true) {
+        await expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toContainText(`${hashTag}`);
+        expect(page.getByRole('button', { name: /Liked/ })).toHaveText(/Liked/);
+      }
+
+      await page.getByRole('tab', { name: 'Deine Likes' }).click();
+      if (articleIsPresent === true) {
+        expect(
+          page
+            .getByRole('article')
+            .filter({ hasText: `${testMessage}` })
+            .first()
+        ).toContainText(`${hashTag}`);
+
+        const likeButton = page.getByRole('article').first().getByRole('button', { name: /Like/ });
+        const likeButtonState = await likeButton.innerText();
+
+        await expect.soft(page.getByRole('article').first().getByRole('button', { name: /Like/ })).toHaveText(/Like/);
+        console.log(likeButtonState === 'Like' ? `💔 Mumble is unliked` : `💝 Mumble is liked`);
       }
     }).toPass();
-  });
-
-  test('06.timeline - should delete test message', async ({ page }) => {
-    await page.waitForSelector('body, footer');
-    await expect(async () => {
-      let hasArticleToBeDelete: boolean = false;
-      hasArticleToBeDelete = await page.isVisible(`text=${testMessage}`);
-
-      if (hasArticleToBeDelete === true) {
-        const articleToBeDeleted = page
-          .getByRole('article')
-          .filter({ hasText: `${testMessage}` })
-          .first();
-
-        const article_id = await articleToBeDeleted.getAttribute('id');
-        expect(article_id, `👉 should have an article id ${article_id}`);
-        expect(articleToBeDeleted.locator('svg').last());
-
-        await articleToBeDeleted.locator('svg').last().click();
-        console.log(`👉 deleting article with id ${article_id}`);
-
-        expect(page.locator(`body:has(#${article_id})`)).toBe(false);
-      } else {
-        console.log(`❗ no test message (${testMessage}) found`);
-      }
-      expect(hasArticleToBeDelete, '👍 should have no test message').toBe(false);
-    }).toPass();
-
-    expect(
-      page.getByRole('article').filter({ hasText: `${testMessage}` }),
-      '👎 something went wrong. there are still test messages present'
-    ).not.toBeInViewport();
-    console.log(`✅ should have cleaned up all messages.`);
   });
 });

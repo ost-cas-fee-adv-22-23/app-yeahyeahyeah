@@ -1,16 +1,18 @@
 import path from 'path';
 import { defineConfig, devices } from '@playwright/test';
 
-export const STORAGE_STATE = path.join(__dirname, 'playwright/.auth/user.json');
+export const STORAGE_STATE = path.join(__dirname, './__e2e__/data/playwright/.auth/user.json');
 
 export default defineConfig({
   globalSetup: './__e2e__/globalSetup.ts',
+  globalTeardown: './__e2e__/globalTeardown.ts',
   testDir: './__e2e__',
   fullyParallel: true,
+  timeout: 30000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [['list', { printSteps: true }]],
+  reporter: process.env.CI ? './__e2e__/utils/testReporter.ts' : [['list', { printSteps: true }]],
   expect: {
     timeout: 0,
   },
@@ -29,20 +31,24 @@ export default defineConfig({
       testMatch: /globalSetup\.ts/,
     },
     {
+      name: 'cleanup test message',
+      testMatch: /globalTeardown\.ts/,
+    },
+    {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
+        ...devices['Chrome'],
       },
       dependencies: ['setup'],
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { ...devices['Firefox'] },
       dependencies: ['setup'],
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { ...devices['Safari'] },
       dependencies: ['setup'],
     },
     {
@@ -56,20 +62,12 @@ export default defineConfig({
       dependencies: ['setup'],
     },
     {
-      name: 'Microsoft Edge',
-      use: {
-        ...devices['Desktop Edge'],
-        channel: 'msedge',
-      },
-      dependencies: ['setup'],
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     },
     {
-      name: 'Google Chrome',
-      use: {
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',
-      },
-      dependencies: ['setup'],
+      name: 'Microsoft Edge',
+      use: { ...devices['Desktop Edge'], channel: 'msedge' },
     },
   ],
   webServer: {

@@ -1,4 +1,4 @@
-import tw, { styled } from 'twin.macro';
+import tw from 'twin.macro';
 import Message from '../../../data/content.json';
 import { Paragraph } from '@smartive-education/design-system-component-library-yeahyeahyeah';
 
