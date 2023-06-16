@@ -36,7 +36,8 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: Action workflow failed.
+          labels: invalid
+          title: E2E test runner failed
           body: |
             ### Context
             [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
@@ -44,4 +45,5 @@ jobs:
             Workflow name - `${{ github.workflow }}`
             Job -           `${{ github.job }}`
             status -        `${{ job.status }}`
+
           assignees: webrooster, tomschall
