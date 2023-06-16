@@ -9,7 +9,6 @@ let testMessage: string;
 
 test.describe('01.authenticated tests', () => {
   test.beforeEach(async ({ page }) => {
-    test.fail();
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await page.waitForSelector('body');
