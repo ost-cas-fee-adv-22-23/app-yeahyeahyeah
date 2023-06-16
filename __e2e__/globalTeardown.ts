@@ -34,7 +34,7 @@ const globalTeardown = async (config: FullConfig): Promise<void> => {
 
   // DELETING TEST MESSAGE
   await expect(async () => {
-    let hasArticleToBeDelete: boolean = await page.isVisible(`text=${hashTag}`);
+    const hasArticleToBeDelete: boolean = await page.isVisible(`text=${hashTag}`);
 
     if (hasArticleToBeDelete === true) {
       const articleToBeDeleted = page.getByRole('article').filter({ hasText: `${hashTag}` });

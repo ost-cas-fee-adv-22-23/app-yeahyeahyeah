@@ -23,11 +23,13 @@ test.describe('01.authenticated tests', () => {
   });
 
   test('timeline - should comment an article', async ({ page }) => {
-    await page
-      .getByRole('article')
-      .first()
-      .getByRole('link', { name: /Comment/ })
-      .click();
+    await expect(async () => {
+      await page
+        .getByRole('article')
+        .first()
+        .getByRole('link', { name: /Comment/ })
+        .click();
+    }).toPass();
 
     const commentArticle = page.getByRole('article').first();
     const article_id = await commentArticle.getAttribute('id');
