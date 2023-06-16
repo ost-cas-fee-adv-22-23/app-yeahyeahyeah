@@ -18,6 +18,7 @@ const globalSetup = async (config: FullConfig) => {
   const imageUploadEndPoint = /storage.googleapis.com\/qwacker-api-prod-data/;
   const hashTag: string = generateHashtag();
   const testMessage: string = generateSentence();
+  const testImage: string = 'e2e_test.jpg';
 
   // LOGIN
   await page.goto(baseURL!);
@@ -43,7 +44,7 @@ const globalSetup = async (config: FullConfig) => {
     await expect(async () => {
       await page.waitForSelector('[data-testid="testTextarea"]');
       await page.getByTestId('testTextarea').fill(`${testMessage} #${hashTag}`);
-      await page.locator('input[type=file]').setInputFiles(path.join(__dirname, '../public', 'avatar_default.png'));
+      await page.locator('input[type=file]').setInputFiles(path.join(__dirname, '../public', testImage));
       await page.getByRole('button', { name: 'Absenden' }).click();
 
       await expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toBeVisible();
