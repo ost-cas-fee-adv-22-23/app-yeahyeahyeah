@@ -2,7 +2,8 @@ name: Release Mumble App
 
 on:
   push:
-    branches: 'main'
+    branches: ['main']
+  workflow_dispatch:
 
 concurrency:
   group: 'release'
@@ -86,6 +87,8 @@ jobs:
         working-directory: terraform
         env:
           TF_VAR_release_version: ${{ needs.release.outputs.new_release_version }}
+          TF_VAR_zitadel_issuer: ${{ secrets.ZITADEL_ISSUER }}
+          TF_VAR_zitadel_client_id: ${{ secrets.ZITADEL_CLIENT_ID }}
 
   build-and-deploy-to-digital-ocean:
     name: Deploy app-yeahyeahyeah to Digital Ocean

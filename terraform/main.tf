@@ -1,6 +1,7 @@
 locals {
   name       = "app-yeahyeahyeah"
   gcp_region = "europe-west6"
+  env        = "prod"
 }
 
 provider "google" {

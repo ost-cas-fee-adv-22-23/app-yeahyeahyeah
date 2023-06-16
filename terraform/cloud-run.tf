@@ -10,7 +10,6 @@ resource "google_project_iam_member" "cloud-runner" {
     "roles/viewer",
     "roles/storage.objectViewer",
     "roles/run.admin",
-    "roles/secretmanager.secretAccessor",
   ])
   role    = each.key
   member  = "serviceAccount:${google_service_account.cloud-runner.email}"
@@ -25,13 +24,6 @@ resource "google_project_iam_member" "cloud-runner-svc" {
 
 output "cloud-runner-email" {
   value = google_service_account.cloud-runner.email
-}
-
-data "google_secret_manager_secret_version" "nextauth_secret" {
-  provider = google
-
-  secret  = "nextauth_secret"
-  version = "1"
 }
 
 resource "google_cloud_run_service" "app-yeahyeahyeah" {
@@ -58,17 +50,32 @@ resource "google_cloud_run_service" "app-yeahyeahyeah" {
 
         env {
           name = "NEXTAUTH_SECRET"
-          value = data.google_secret_manager_secret_version.nextauth_secret.secret_data
+          value_from {
+            secret_key_ref {
+              key  = "latest"
+              name = google_secret_manager_secret.nextauth_secret.secret_id
+            }
+          }
         }
 
         env {
           name = "ZITADEL_ISSUER"
-          value = "https://cas-fee-advanced-ocvdad.zitadel.cloud"
+          value_from {
+            secret_key_ref {
+              key  = "latest"
+              name = google_secret_manager_secret.zitadel_issuer.secret_id
+            }
+          }
         }
 
         env {
           name = "ZITADEL_CLIENT_ID"
-          value = "181236603920908545@cas_fee_adv_qwacker_prod"
+          value_from {
+            secret_key_ref {
+              key  = "latest"
+              name = google_secret_manager_secret.zitadel_client_id.secret_id
+            }
+          }
         }
 
         ports {
@@ -85,6 +92,15 @@ resource "google_cloud_run_service" "app-yeahyeahyeah" {
     percent         = 100
     latest_revision = true
   }
+
+  depends_on = [
+    google_secret_manager_secret_version.nextauth_secret,
+    google_secret_manager_secret_iam_member.nextauth_secret,
+    google_secret_manager_secret_version.zitadel_issuer,
+    google_secret_manager_secret_iam_member.zitadel_issuer,
+    google_secret_manager_secret_version.zitadel_client_id,
+    google_secret_manager_secret_iam_member.zitadel_client_id,
+  ]
 }
 
 output "cloud-run-url" {
