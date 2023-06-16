@@ -21,7 +21,7 @@ export default function Page({
   console.log(
     `Testing app-yeahyeahyeah deployment with terraform: ${new Date().toLocaleString('de-DE', {
       timeZone: 'Europe/Zurich',
-    })}`
+    })} :-D`
   );
   return (
     <>
