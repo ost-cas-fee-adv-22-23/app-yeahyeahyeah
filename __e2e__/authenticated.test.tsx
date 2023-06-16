@@ -42,7 +42,7 @@ test.describe('01.authenticated tests', () => {
 
     await page.waitForSelector('[data-testid="testTextarea"]');
 
-    let commentMessage = generateSentence();
+    const commentMessage = generateSentence();
     await page.getByTestId('testTextarea').fill(commentMessage);
     await page.getByRole('button', { name: 'Absenden' }).click();
 
@@ -103,7 +103,7 @@ test.describe('01.authenticated tests', () => {
     await expect(page).toHaveURL(/profile/);
 
     await expect(async () => {
-      let articleIsPresent: boolean = await page.isVisible(`text=${testMessage}`);
+      const articleIsPresent: boolean = await page.isVisible(`text=${testMessage}`);
 
       if (articleIsPresent === true) {
         await expect(page.getByRole('article').filter({ hasText: `${testMessage}` })).toContainText(`${hashTag}`);
