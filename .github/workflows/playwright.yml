@@ -49,10 +49,3 @@ jobs:
             status -        `${{ job.status }}`
 
           assignees: webrooster, tomschall
-
-      - name: Close GitHub issue for successful tests
-        if: success()
-        uses: peter-evans/close-issue@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          labels: e2e
