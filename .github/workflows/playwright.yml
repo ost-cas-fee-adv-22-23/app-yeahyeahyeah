@@ -36,7 +36,7 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          labels: invalid
+          labels: e2e
           title: E2E test runner failed
           body: |
             ### Something went wrong in E2E test runner. You may need to check what happened:
@@ -49,3 +49,10 @@ jobs:
             status -        `${{ job.status }}`
 
           assignees: webrooster, tomschall
+
+      - name: Close GitHub issue for successful tests
+        if: success()
+        uses: peter-evans/close-issue@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          labels: e2e
