@@ -13,6 +13,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? './__e2e__/utils/testReporter.ts' : [['list', { printSteps: true }]],
+  testIgnore: '**/checks/**',
   expect: {
     timeout: 0,
   },
@@ -31,8 +32,12 @@ export default defineConfig({
       testMatch: /globalSetup\.ts/,
     },
     {
-      name: 'cleanup test message',
+      name: 'teardown',
       testMatch: /globalTeardown\.ts/,
+    },
+    {
+      name: 'healthcheck',
+      testMatch: './__e2e__/HealthCheck.test.tsx',
     },
     {
       name: 'chromium',

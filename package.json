@@ -19,7 +19,8 @@
     "test:ci-coverage": "jest --ci --silent --coverage",
     "test:debug": "jest --no-cache --debug",
     "test:e2e": "playwright test",
-    "test:e2e:headful": "playwright test --headed"
+    "test:e2e:headful": "playwright test --headed",
+    "test:healthcheck": "npx playwright test --project=chromium -g '@healthcheck' --config=./playwright.checks.config.ts"
   },
   "dependencies": {
     "@next/font": "13.1.1",
