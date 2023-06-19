@@ -30,3 +30,22 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Run Playwright tests
         run: npm run test:e2e
+
+      - name: Create GitHub issue for failed tests
+        if: failure()
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          labels: e2e
+          title: E2E test runner failed
+          body: |
+            ### Something went wrong in E2E test runner. You may need to check what happened:
+
+            [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            [Codebase](https://github.com/${{ github.repository }}/tree/feature/${{ github.base_ref }})
+
+            Workflow name - `${{ github.workflow }}`
+            Job -           `${{ github.job }}`
+            status -        `${{ job.status }}`
+
+          assignees: webrooster, tomschall
