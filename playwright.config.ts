@@ -31,8 +31,12 @@ export default defineConfig({
       testMatch: /globalSetup\.ts/,
     },
     {
-      name: 'cleanup test message',
+      name: 'teardown',
       testMatch: /globalTeardown\.ts/,
+    },
+    {
+      name: 'healthcheck',
+      testMatch: './__e2e__/HealthCheck.test.tsx',
     },
     {
       name: 'chromium',
