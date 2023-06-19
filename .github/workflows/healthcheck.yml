@@ -2,11 +2,11 @@ name: System Health Check
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 */6 * * *'
 
 jobs:
   test:
-    name: System Health Check
+    name: Reliability Tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +21,26 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium
 
       - name: Run health check
         run: npm run test:healthcheck
+
+      - name: Create GitHub issue for health/smoke tests
+        if: failure()
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          labels: reliability
+          title: Reliability tests failed
+          body: |
+            ### Your system not working properly. Please check your endpoints:
+
+            [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            [Codebase](https://github.com/${{ github.repository }}/tree/feature/${{ github.base_ref }})
+
+            Workflow name - `${{ github.workflow }}`
+            Job -           `${{ github.job }}`
+            status -        `${{ job.status }}`
+
+          assignees: webrooster, tomschall

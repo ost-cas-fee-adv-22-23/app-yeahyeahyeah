@@ -29,7 +29,6 @@ test.describe('@healthcheck', () => {
     );
 
     const apiResponse = await response.json();
-    console.log(apiResponse.data);
 
     expect(response.status()).toBe(200);
     expect(apiResponse.data[0].id).not.toBe('');
