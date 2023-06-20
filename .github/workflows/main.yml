@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  quality_checks:
+    uses: ./.github/workflows/quality_checks.yml
+
+  tests:
+    uses: ./.github/workflows/test.yml
+
+  release-and-deploy:
+    uses: ./.github/workflows/release.yml
+    needs: [quality_checks, tests]
