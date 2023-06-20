@@ -1,6 +1,22 @@
 name: Release Mumble App
 
-on: ['workflow_dispatch', workflow_call]
+on:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+      GITHUB_TOKEN:
+        required: true
+      HOST:
+        required: true
+      USERNAME:
+        required: true
+      PASSWORD:
+        required: true
+      ZITADEL_ISSUER:
+        required: true
+      ZITADEL_CLIENT_ID:
+        required: true
 
 concurrency:
   group: 'release'

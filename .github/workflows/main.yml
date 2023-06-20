@@ -11,10 +11,22 @@ on:
 jobs:
   quality_checks:
     uses: ./.github/workflows/quality_checks.yml
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   tests:
     uses: ./.github/workflows/test.yml
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   release-and-deploy:
     uses: ./.github/workflows/release.yml
     needs: [quality_checks, tests]
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HOST: ${{ secrets.HOST }}
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      ZITADEL_CLIENT_ID: ${{ secrets.ZITADEL_CLIENT_ID }}
+      ZITADEL_ISSUER: ${{ secrets.ZITADEL_ISSUER }}
