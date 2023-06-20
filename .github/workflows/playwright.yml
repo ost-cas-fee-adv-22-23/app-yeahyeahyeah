@@ -1,16 +1,6 @@
 name: E2E Tests
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  workflow_dispatch:
-  workflow_run:
-    workflows: ['CI']
-    branches: [main]
-    types:
-      - completed
+on: ['workflow_dispatch', workflow_call]
 
 jobs:
   test:

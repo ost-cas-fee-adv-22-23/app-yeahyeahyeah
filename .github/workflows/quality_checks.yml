@@ -1,6 +1,6 @@
 name: Code quality checks, dependency graph and build
 
-on: [pull_request, push, workflow_call]
+on: ['workflow_dispatch', workflow_call]
 
 jobs:
   quality-checks:
