@@ -18,11 +18,7 @@ export default function Page({
   fallbackUsers: QwackerUserResponse;
   fallbackUserLoggedIn: User;
 }) {
-  console.log(
-    `Testing app-yeahyeahyeah deployment with terraform: ${new Date().toLocaleString('de-DE', {
-      timeZone: 'Europe/Zurich',
-    })} :-D`
-  );
+  console.log(`Testing workflows :-)`);
   return (
     <>
       <NextSeo title={`${Content.seo.home.title}`} description={`${Content.seo.home.description}`} />

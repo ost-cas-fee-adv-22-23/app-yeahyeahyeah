@@ -1,11 +1,10 @@
 name: Jest tests
 
 on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
-  workflow_dispatch:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
 
 jobs:
   testing-with-jest:

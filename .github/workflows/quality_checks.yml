@@ -1,16 +1,16 @@
 name: Code quality checks, dependency graph and build
 
 on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
-  workflow_dispatch:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
 
 jobs:
-  quality:
+  quality-checks:
     name: Code quality checks, dependency graph and build
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -30,3 +30,12 @@ jobs:
         run: npm run dep-graph:validate
       - name: Run Build
         run: npm run build
+
+  commitlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v5
