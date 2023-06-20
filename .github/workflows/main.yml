@@ -33,5 +33,6 @@ jobs:
   healthchecks:
     uses: ./.github/workflows/healthcheck.yml
     needs: [release-and-deploy]
+    if: ${{ needs.release-and-deploy.outputs.new_release_published == 'true' }}
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
