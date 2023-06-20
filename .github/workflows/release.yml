@@ -15,6 +15,10 @@ on:
         required: true
       ZITADEL_CLIENT_ID:
         required: true
+    outputs:
+      new_release_published:
+        description: 'New release published'
+        value: ${{ jobs.release.outputs.new_release_published }}
 
 concurrency:
   group: 'release'
