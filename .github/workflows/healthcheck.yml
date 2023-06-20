@@ -1,4 +1,4 @@
-name: System Health Check
+name: 'System Health Check - $(date +%Y-%m-%d_%H:%M:%S)'
 
 on:
   schedule:
