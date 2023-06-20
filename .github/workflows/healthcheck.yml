@@ -3,6 +3,10 @@ name: System Health Check
 on:
   schedule:
     - cron: '0 */6 * * *'
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
 
 jobs:
   test:

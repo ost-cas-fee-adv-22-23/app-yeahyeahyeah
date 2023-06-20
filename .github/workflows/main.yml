@@ -29,3 +29,9 @@ jobs:
       PASSWORD: ${{ secrets.PASSWORD }}
       ZITADEL_CLIENT_ID: ${{ secrets.ZITADEL_CLIENT_ID }}
       ZITADEL_ISSUER: ${{ secrets.ZITADEL_ISSUER }}
+
+  healthchecks:
+    uses: ./.github/workflows/healthcheck.yml
+    needs: [release-and-deploy]
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
