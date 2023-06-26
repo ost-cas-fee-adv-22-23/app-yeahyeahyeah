@@ -37,7 +37,7 @@ describe('Like component', () => {
 
     expect(screen.getByText('123 Likes')).toBeInTheDocument();
 
-    const svgFilled = container.querySelector('[class*=LikeButton__StyledHeartFilled]') as HTMLInputElement;
+    const svgFilled = container.querySelector('[class*=LikeButton__StyledHeartFilled]');
     expect(svgFilled).toBeInTheDocument();
 
     fireEvent.click(getByText('123 Likes'));
@@ -46,7 +46,7 @@ describe('Like component', () => {
 
     expect(screen.getByText('122 Likes')).toBeInTheDocument();
 
-    const svgOutlined = container.querySelector('[class*=LikeButton__StyledHeartOutlined]') as HTMLInputElement;
+    const svgOutlined = container.querySelector('[class*=LikeButton__StyledHeartOutlined]');
     expect(svgOutlined).toBeInTheDocument();
   });
 
@@ -65,14 +65,14 @@ describe('Like component', () => {
 
     expect(screen.getByText('321 Likes')).toBeInTheDocument();
 
-    const svgOutlined = container.querySelector('[class*=LikeButton__StyledHeartOutlined]') as HTMLInputElement;
+    const svgOutlined = container.querySelector('[class*=LikeButton__StyledHeartOutlined]');
     expect(svgOutlined).toBeInTheDocument();
 
     fireEvent.click(getByText('321 Likes'));
 
     expect(screen.getByText('322 Likes')).toBeInTheDocument();
 
-    const svgFilled2 = container.querySelector('[class*=LikeButton__StyledHeartFilled]') as HTMLInputElement;
+    const svgFilled2 = container.querySelector('[class*=LikeButton__StyledHeartFilled]');
     expect(svgFilled2).toBeInTheDocument();
 
     expect(like).toHaveBeenCalled();
