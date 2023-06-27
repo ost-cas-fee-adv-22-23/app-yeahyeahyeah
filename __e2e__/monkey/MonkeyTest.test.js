@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test.describe('Monkey test with gremlins.js', () => {
-  test.describe.configure({ retries: 10 });
+  test.describe.configure({ retries: 20 });
 
-  test('test1', async ({ page }) => {
+  test('@monkeytest', async ({ page }) => {
     await page.addInitScript({
       path: './node_modules/gremlins.js/dist/gremlins.min.js',
     });

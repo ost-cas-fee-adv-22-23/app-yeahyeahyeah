@@ -20,7 +20,9 @@
     "test:debug": "jest --no-cache --debug",
     "test:e2e": "playwright test",
     "test:e2e:headful": "playwright test --headed",
-    "test:healthcheck": "npx playwright test --project=chromium -g '@healthcheck' --config=./playwright.checks.config.ts"
+    "test:healthcheck": "npx playwright test --project=chromium -g '@healthcheck' --config=./playwright.checks.config.ts",
+    "test:monkeytest": "npx playwright test --project=chromium -g '@monkeytest' --config=./playwright.monkey.config.ts",
+    "test:monkeytest:headful": "npx playwright test --project=chromium --ui -g '@monkeytest' --config=./playwright.monkey.config.ts"
   },
   "dependencies": {
     "@next/font": "13.1.1",

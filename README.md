@@ -239,6 +239,20 @@ Apply this command to switch the browser. Here is an example for the Edge browse
 npx playwright test --project='Microsoft Edge'
 ```
 
+### Monkey testing with playwright and gremlins.js
+
+Run monkey tests in headless mode:
+
+```bash
+npm run test:monkeytest
+```
+
+Run monkey tests in headful mode:
+
+```bash
+npm run test:monkeytest:headful
+```
+
 ## Docker
 
 Test the docker image locally.
