@@ -52,4 +52,5 @@ __e2e__/data/playwright/.auth
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json
 
-
+# gremlins.js
+test-results

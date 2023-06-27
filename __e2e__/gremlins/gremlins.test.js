@@ -1,24 +1,39 @@
-const { test } = require('@playwright/test');
-// Test 2: Test Katalon Demo CURA with the allTogether strategy and a 30-second timeout
-test('test2', async ({ page }) => {
-  // Load gremlins.js library
-  await page.addInitScript({
-    path: './node_modules/gremlins.js/dist/gremlins.min.js',
-  });
-  // Navigate to the test page
-  await page.goto('https://app-yeahyeahyeah-cbvb5d3h6a-oa.a.run.app/');
+import { test, expect } from '@playwright/test';
 
-  // Execute chaos testing with the allTogether strategy and a 30-second timeout
-  await page.evaluate(() =>
-    Promise.race([
-      new Promise((resolve) => {
-        gremlins
-          .createHorde({
-            strategies: [gremlins.strategies.allTogether({ nb: 10000 })],
-          })
-          .unleash();
-      }),
-      new Promise((resolve) => setTimeout(resolve, 30000)), // 30 seconds timeout
-    ])
-  );
+test.describe('Monkey test with gremlins.js', () => {
+  test.describe.configure({ retries: 10 });
+
+  test('test1', async ({ page }) => {
+    await page.addInitScript({
+      path: './node_modules/gremlins.js/dist/gremlins.min.js',
+    });
+
+    await page.goto('/');
+
+    await page.evaluate(() =>
+      Promise.race([
+        new Promise((resolve) => {
+          gremlins
+            .createHorde({
+              species: [
+                gremlins.species.clicker({
+                  clickTypes: ['click'],
+                  canClick: function (element) {
+                    return !element.classList.contains('NaviButton__StyledButton-sc-vc44vg-2 cCUvUJ');
+                  },
+                }),
+                gremlins.species.formFiller(),
+                gremlins.species.typer(),
+                gremlins.species.scroller(),
+              ],
+              mogwais: [gremlins.mogwais.alert()],
+              distribution: [0.25, 0.25, 0.25, 0.25],
+              delay: 250,
+            })
+            .unleash();
+        }),
+        new Promise((resolve) => setTimeout(resolve, 10000)),
+      ])
+    );
+  });
 });
