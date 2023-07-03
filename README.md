@@ -242,6 +242,19 @@ npx playwright test --project='Microsoft Edge'
 
 ### Monkey testing with playwright and gremlins.js
 
+Monkey testing can help identify issues such as:
+
+- Application crashes
+- Unexpected behavior or responses
+- Memory leaks
+- Performance issues
+
+Monkey testing can be performed manually or automated using various tools and libraries, such as gremlins.js for web applications, which simulates random user interactions on a web page.
+
+While monkey testing can uncover issues that might not be found through structured testing, it is not a substitute for other testing techniques, such as unit testing, integration testing, or end-to-end testing. Monkey testing should be used as a complementary approach to more targeted and structured testing methods.
+
+At the moment, the monkey tests are not very stable. Therefore, the tests are not executed in the CI pipeline. However, you can run the tests locally. If the test fails, it will be repeated until it succeeds (up to 20 times).
+
 Run monkey tests in headless mode:
 
 ```bash
