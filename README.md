@@ -109,9 +109,13 @@ The application is equipped with the following features.
 - Comment on existing messages.
 - Delete your own messages as needed.
 
-## Live Demo
+## Live Demo deployed to Digital Ocean
 
 You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
+
+## Live Demo deployed to Google Cloud
+
+You can view a live demo at [Google Cloud](https://app-yeahyeahyeah-cbvb5d3h6a-oa.a.run.app/). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
 
 ## Testing
 
