@@ -6,6 +6,7 @@ export const STORAGE_STATE = path.join(__dirname, './__e2e__/data/playwright/.au
 export default defineConfig({
   globalSetup: './__e2e__/globalSetup.ts',
   globalTeardown: './__e2e__/globalTeardown.ts',
+  testIgnore: ['**/monkey/**', '**/checks/**'],
   testDir: './__e2e__',
   fullyParallel: true,
   timeout: 30000,
@@ -13,7 +14,6 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? './__e2e__/utils/testReporter.ts' : [['list', { printSteps: true }]],
-  testIgnore: '**/checks/**, **/monkey/**',
   expect: {
     timeout: 0,
   },
