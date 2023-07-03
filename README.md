@@ -23,6 +23,7 @@ We had to develop a **Chat App** based on [NextJS](https://nextjs.org) in a give
 - [Testing](#testing)
   - [Unit testing with jest and react-testing-library](#unit-testing-with-jest-and-react-testing-library)
   - [E2E testing with playwright](#e2e-testing-with-playwright)
+  - [Monkey testing with playwright and gremlins.js](#monkey-testing-with-playwright-and-gremlinsjs)
   - [User testing](#user-testing)
 - [Features](#features)
 - [Live Demo](#live-demo)
@@ -108,9 +109,13 @@ The application is equipped with the following features.
 - Comment on existing messages.
 - Delete your own messages as needed.
 
-## Live Demo
+## Live Demo deployed to Digital Ocean
 
 You can view a live demo at [www.mumble-yeahyeahyeah.ch](https://www.mumble-yeahyeahyeah.ch). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
+
+## Live Demo deployed to Google Cloud
+
+You can view a live demo at [Google Cloud](https://app-yeahyeahyeah-cbvb5d3h6a-oa.a.run.app/). Please note that you must have a valid and active account on [Zitadel](https://zitadel.com/).
 
 ## Testing
 
@@ -230,6 +235,33 @@ Apply this command to switch the browser. Here is an example for the Edge browse
 
 ```bash
 npx playwright test --project='Microsoft Edge'
+```
+
+### Monkey testing with playwright and gremlins.js
+
+Monkey testing can help identify issues such as:
+
+- Application crashes
+- Unexpected behavior or responses
+- Memory leaks
+- Performance issues
+
+Monkey testing can be performed manually or automated using various tools and libraries, such as gremlins.js for web applications, which simulates random user interactions on a web page.
+
+While monkey testing can uncover issues that might not be found through structured testing, it is not a substitute for other testing techniques, such as unit testing, integration testing, or end-to-end testing. Monkey testing should be used as a complementary approach to more targeted and structured testing methods.
+
+At the moment, the monkey tests are not very stable. Therefore, the tests are not executed in the CI pipeline. However, you can run the tests locally. If the test fails, it will be repeated until it succeeds (up to 20 times).
+
+Run monkey tests in headless mode:
+
+```bash
+npm run test:monkeytest
+```
+
+Run monkey tests in headful mode:
+
+```bash
+npm run test:monkeytest:headful
 ```
 
 ### Reliability tests

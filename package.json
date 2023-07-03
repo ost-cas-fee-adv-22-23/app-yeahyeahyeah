@@ -20,7 +20,9 @@
     "test:debug": "jest --no-cache --debug",
     "test:e2e": "playwright test",
     "test:e2e:headful": "playwright test --headed",
-    "test:healthcheck": "npx playwright test --project=chromium -g '@healthcheck' --config=./playwright.checks.config.ts"
+    "test:healthcheck": "npx playwright test --project=chromium -g '@healthcheck' --config=./playwright.checks.config.ts",
+    "test:monkeytest": "npx playwright test --project=chromium -g '@monkeytest' --config=./playwright.monkey.config.ts",
+    "test:monkeytest:headful": "npx playwright test --project=chromium --ui -g '@monkeytest' --config=./playwright.monkey.config.ts"
   },
   "dependencies": {
     "@next/font": "13.1.1",
@@ -70,6 +72,7 @@
     "dotenv": "^16.0.3",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
+    "gremlins.js": "^2.2.0",
     "husky": "^8.0.3",
     "jest": "29.5.0",
     "jest-environment-jsdom": "29.5.0",
