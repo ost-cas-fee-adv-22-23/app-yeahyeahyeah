@@ -242,7 +242,7 @@ npx playwright test --project=chromium -g '@healthcheck' --config=./playwright.c
 
 ### User testing
 
-User testing was performed for this application. The testing was done by a 15 year old girl with basic computer skills. As a result, it was concluded that the image upload needs to be improved. The user test can be viewed here: [Mumble App - User Testing](https://docs.google.com/presentation/d/1kvJjgmPnBgXk69_TPcuVk6CGFh5JfceadXYyP-KSRdo/edit?usp=drive_link).
+User testing was performed for this application. The testing was done by a 15 year old girl with basic computer skills. As a result, it was concluded that the image upload needs to be improved. The user test can be viewed here: [Mumble App - User Testing](https://docs.google.com/presentation/d/1kvJjgmPnBgXk69_TPcuVk6CGFh5JfceadXYyP-KSRdo/edit?usp=drive_link 'Mumble App - User testing').
 
 ## Docker
 
