@@ -19,7 +19,7 @@ test.describe('Monkey test with gremlins.js', () => {
                 gremlins.species.clicker({
                   clickTypes: ['click'],
                   canClick: function (element) {
-                    return !element.classList.contains('NaviButton__StyledButton-sc-vc44vg-2 cCUvUJ');
+                    return !element.classList.contains('NaviButton__StyledButton-sc-vc44vg-2');
                   },
                 }),
                 gremlins.species.formFiller(),
