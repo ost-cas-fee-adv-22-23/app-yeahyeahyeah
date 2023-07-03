@@ -24,6 +24,7 @@ We had to develop a **Chat App** based on [NextJS](https://nextjs.org) in a give
   - [Unit testing with jest and react-testing-library](#unit-testing-with-jest-and-react-testing-library)
   - [E2E testing with playwright](#e2e-testing-with-playwright)
   - [Monkey testing with playwright and gremlins.js](#monkey-testing-with-playwright-and-gremlinsjs)
+  - [User testing](#user-testing)
 - [Features](#features)
 - [Live Demo](#live-demo)
 - [Resources](#resources)
@@ -189,13 +190,13 @@ Now you have the possibility to perform all further tests.
 #### Comment an article
 
 ```bash
-npx playwright test -g 'should click on comment and comment article' --project=chromium
+npx playwright test -g 'should comment an article' --project=chromium
 ```
 
 #### Like an article
 
 ```bash
-npx playwright test -g 'should like an article' --project=chromium
+npx playwright test -g 'should like it or not' --project=chromium
 ```
 
 #### Click on hashtag
@@ -216,19 +217,11 @@ npx playwright test -g 'should post no message' --project=chromium
 npx playwright test -g 'should list created message and liked article' --project=chromium
 ```
 
-#### Should delete test message
-
-After you have completed the local tests it is recommended to delete the test message again.
-
-```bash
-npx playwright test -g 'should delete test message' --project=chromium
-```
-
 #### The following browsers are available for e2e-tests:
 
-- chromium
+- Chromium
 - Firefox
-- webkit
+- Webkit
 - Mobile Chrome
 - Mobile Safari
 - Microsoft Edge
@@ -266,6 +259,18 @@ Run monkey tests in headful mode:
 ```bash
 npm run test:monkeytest:headful
 ```
+
+### Reliability tests
+
+We perform 6 hourly testing with Playwright to check endpoints for availability. The app that is installed on Google Cloud is checked. Additionally, the Qwacker API posts are tested for availability. The availability test can be executed directly with this command:
+
+```bash
+npx playwright test --project=chromium -g '@healthcheck' --config=./playwright.checks.config.ts
+```
+
+### User testing
+
+User testing was performed for this application. The testing was done by a 15 year old girl with basic computer skills. As a result, it was concluded that the image upload needs to be improved. The user test can be viewed here: [Mumble App - User Testing](https://docs.google.com/presentation/d/1kvJjgmPnBgXk69_TPcuVk6CGFh5JfceadXYyP-KSRdo/edit?usp=drive_link 'Mumble App - User testing').
 
 ## Docker
 
