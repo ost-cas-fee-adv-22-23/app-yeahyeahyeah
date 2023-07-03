@@ -23,6 +23,7 @@ We had to develop a **Chat App** based on [NextJS](https://nextjs.org) in a give
 - [Testing](#testing)
   - [Unit testing with jest and react-testing-library](#unit-testing-with-jest-and-react-testing-library)
   - [E2E testing with playwright](#e2e-testing-with-playwright)
+  - [Monkey testing with playwright and gremlins.js](#monkey-testing-with-playwright-and-gremlinsjs)
 - [Features](#features)
 - [Live Demo](#live-demo)
 - [Resources](#resources)
